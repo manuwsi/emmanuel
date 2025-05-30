@@ -1,0 +1,24 @@
+@font-face {
+  font-family: 'Ade Display';
+  src: url('/fonts/Ade-Display.otf') format('opentype');
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+}
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Inter:wght@300;400;500&display=swap');
+
+/* ensuite ton CSS actuel */
+body {
+  margin: 0;
+  background: #000;
+  color: white;
+  font-family: 'Inter', sans-serif;
+  overflow-x: hidden;
+}
+
+/* etc. ton code CSS suit... */

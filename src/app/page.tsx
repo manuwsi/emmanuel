@@ -1,103 +1,187 @@
-import Image from "next/image";
+'use client';
+
+import { useRef, useEffect, useState } from 'react';
+import { motion, useScroll, useTransform } from 'framer-motion';
+import Image from 'next/image';
+import Link from 'next/link';
+import Lenis from '@studio-freight/lenis';
+import { usePathname } from 'next/navigation';
+import '../styles/globals.css';
+
+const projects = [
+  {
+    title: 'Post Archive Faction',
+    subtitle: '2025 — Creative Direction, Fashion Tech',
+    image: '/project1.png',
+    link: '/post-archive-faction',
+  },
+  {
+    title: 'Z_Lab',
+    subtitle: '2024 — Web Redesign, UI/UX Design',
+    image: '/1.png',
+    link: '/z_lab',
+  },
+  {
+    title: 'Pleated Assortment',
+    subtitle: '2024 — Product Visualization, UI/UX Design',
+    image: '/pleatedcover.png',
+    link: '/pleated',
+  },
+];
 
 export default function Home() {
-  return (
-    <div className="grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-geist-sans)]">
-      <main className="flex flex-col gap-[32px] row-start-2 items-center sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={180}
-          height={38}
-          priority
-        />
-        <ol className="list-inside list-decimal text-sm/6 text-center sm:text-left font-[family-name:var(--font-geist-mono)]">
-          <li className="mb-2 tracking-[-.01em]">
-            Get started by editing{" "}
-            <code className="bg-black/[.05] dark:bg-white/[.06] px-1 py-0.5 rounded font-[family-name:var(--font-geist-mono)] font-semibold">
-              src/app/page.tsx
-            </code>
-            .
-          </li>
-          <li className="tracking-[-.01em]">
-            Save and see your changes instantly.
-          </li>
-        </ol>
+  const pathname = usePathname();
 
-        <div className="flex gap-4 items-center flex-col sm:flex-row">
+  const scrollRef = useRef<HTMLDivElement>(null);
+  const [cursorPos, setCursorPos] = useState({ x: 0, y: 0 });
+  const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
+
+  // Lenis Smooth Scroll
+  useEffect(() => {
+    const lenis = new Lenis({
+      lerp: 0.07,
+      smooth: true,
+      direction: 'horizontal',
+      gestureDirection: 'both',
+    });
+
+    function raf(time: number) {
+      lenis.raf(time);
+      requestAnimationFrame(raf);
+    }
+
+    requestAnimationFrame(raf);
+
+    return () => {
+      lenis.destroy();
+    };
+  }, []);
+
+  // Cursor Follow
+  useEffect(() => {
+    const moveCursor = (e: MouseEvent) => {
+      setCursorPos({ x: e.clientX, y: e.clientY });
+    };
+    window.addEventListener('mousemove', moveCursor);
+    return () => window.removeEventListener('mousemove', moveCursor);
+  }, []);
+
+  return (
+    <main className="w-screen h-screen bg-[#0a0a0a] text-white overflow-hidden font-sans cursor-none">
+      {/* Background Noise */}
+      <motion.div
+        className="fixed top-0 left-0 w-full h-full z-[-1] opacity-10"
+        animate={{ backgroundPosition: ['0% 0%', '100% 100%'] }}
+        transition={{ repeat: Infinity, duration: 25, ease: 'linear' }}
+        style={{
+          backgroundImage: 'url(/noise.png)',
+          backgroundSize: '300% 300%',
+          backgroundRepeat: 'repeat',
+          filter: 'blur(1px)',
+        }}
+      />
+
+      {/* Cursor */}
+      <motion.div
+        className="fixed top-0 left-0 w-5 h-5 z-[998] bg-white rounded-full pointer-events-none mix-blend-difference"
+        animate={{ x: cursorPos.x, y: cursorPos.y }}
+        transition={{ type: 'spring', stiffness: 500, damping: 30 }}
+        style={{ translateX: '-50%', translateY: '-50%' }}
+      />
+
+      {/* Header */}
+      <header className="fixed top-0 z-50 w-full px-6 md:px-10 py-6 flex justify-between text-xs md:text-sm uppercase tracking-wider">
+        <span>Emmanuel — Paris, France</span>
+        <nav className="space-x-6 md:space-x-8">
+          <Link href="/" className={pathname === '/' ? 'line-through' : 'hover:underline transition-all duration-300'}>
+            [Works]
+          </Link>
+          <Link href="/about" className={pathname === '/about' ? 'line-through' : 'hover:underline transition-all duration-300'}>
+            [About]
+          </Link>
           <a
-            className="rounded-full border border-solid border-transparent transition-colors flex items-center justify-center bg-foreground text-background gap-2 hover:bg-[#383838] dark:hover:bg-[#ccc] font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 sm:w-auto"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
+            href="mailto:emmanuelijjou@gmail.com"
+            className="hover:underline transition-all duration-300"
           >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={20}
-              height={20}
-            />
-            Deploy now
+            [Contact]
           </a>
-          <a
-            className="rounded-full border border-solid border-black/[.08] dark:border-white/[.145] transition-colors flex items-center justify-center hover:bg-[#f2f2f2] dark:hover:bg-[#1a1a1a] hover:border-transparent font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 w-full sm:w-auto md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Read our docs
-          </a>
-        </div>
-      </main>
-      <footer className="row-start-3 flex gap-[24px] flex-wrap items-center justify-center">
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/file.svg"
-            alt="File icon"
-            width={16}
-            height={16}
-          />
-          Learn
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/window.svg"
-            alt="Window icon"
-            width={16}
-            height={16}
-          />
-          Examples
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/globe.svg"
-            alt="Globe icon"
-            width={16}
-            height={16}
-          />
-          Go to nextjs.org →
-        </a>
+        </nav>
+      </header>
+
+      {/* Projects */}
+      <div
+        ref={scrollRef}
+        className="h-full w-full flex overflow-x-scroll overflow-y-hidden items-center gap-[10vw] px-[8vw] md:px-[12vw]"
+      >
+        {projects.map((project, index) => {
+          const sectionRef = useRef(null);
+          const { scrollYProgress } = useScroll({ target: sectionRef });
+          const imageY = useTransform(scrollYProgress, [0, 1], ['-5%', '5%']);
+          const textY = useTransform(scrollYProgress, [0, 1], ['2%', '-2%']);
+
+          return (
+            <motion.section
+              key={index}
+              ref={sectionRef}
+              className="relative w-[70vw] md:w-[56vw] h-[60vh] md:h-[72vh] flex-shrink-0 group overflow-hidden shadow-2xl transform-gpu"
+              initial={{ opacity: 0, y: 40 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ duration: 1.2, ease: 'easeOut' }}
+              onMouseEnter={() => setHoveredIndex(index)}
+              onMouseLeave={() => setHoveredIndex(null)}
+            >
+              <motion.div
+                className="absolute w-full h-full top-0 left-0"
+                style={{ y: imageY }}
+              >
+                <Image
+                  src={project.image}
+                  alt={project.title}
+                  fill
+                  priority
+                  className="object-cover w-full h-full"
+                />
+              </motion.div>
+              <div className="absolute inset-0 z-20 flex flex-col items-center justify-center bg-black/25 backdrop-blur-sm text-center p-4">
+                <motion.h2
+                  className="text-[6vw] md:text-[4vw] font-ade font-semibold tracking-tight text-white drop-shadow-md"
+                  style={{ y: textY }}
+                  initial={{ opacity: 0 }}
+                  whileInView={{ opacity: 1 }}
+                  transition={{ delay: 0.3, duration: 1 }}
+                >
+                  {project.title}
+                </motion.h2>
+                <motion.div
+                  initial={{ opacity: 0, y: 10 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  transition={{ delay: 0.5, duration: 0.8 }}
+                >
+                  <Link
+                    href={project.link}
+                    className="mt-4 border border-white px-4 py-2 md:px-6 md:py-2 uppercase text-[0.6rem] md:text-[0.65rem] tracking-widest hover:bg-white hover:text-black transition-all duration-300"
+                  >
+                    Open Project →
+                  </Link>
+                </motion.div>
+                <motion.p
+                  className="text-[0.6rem] md:text-xs mt-4 text-gray-300 font-light"
+                  initial={{ opacity: 0, y: 10 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  transition={{ delay: 0.7, duration: 0.8 }}
+                >
+                  {project.subtitle}
+                </motion.p>
+              </div>
+            </motion.section>
+          );
+        })}
+      </div>
+
+      {/* Footer */}
+      <footer className="absolute bottom-5 left-1/2 -translate-x-1/2 text-center text-[0.6rem] md:text-xs tracking-widest text-neutral-500">
+        © {new Date().getFullYear()} Emmanuel
       </footer>
-    </div>
+    </main>
   );
 }

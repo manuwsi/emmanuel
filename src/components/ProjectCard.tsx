@@ -1,6 +1,7 @@
 'use client'
 
 import { useState } from 'react'
+import Image from 'next/image'
 
 interface ProjectProps {
   title: string
@@ -10,7 +11,7 @@ interface ProjectProps {
 }
 
 export default function ProjectCard({ title, image, date, tags }: ProjectProps) {
-  const [hovered, setHovered] = useState(false)
+  const [, setHovered] = useState(false) // Ne pas utiliser 'hovered'
 
   return (
     <div
@@ -18,10 +19,12 @@ export default function ProjectCard({ title, image, date, tags }: ProjectProps) 
       onMouseEnter={() => setHovered(true)}
       onMouseLeave={() => setHovered(false)}
     >
-      <img
+      <Image
         src={image}
         alt={title}
+        fill
         className="w-full h-full object-cover scale-105 group-hover:scale-100 transition-transform duration-1000 ease-in-out"
+        sizes="(max-width: 768px) 100vw, 33vw"
       />
 
       <div className="absolute inset-0 flex items-end p-4 text-white">

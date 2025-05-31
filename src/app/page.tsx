@@ -31,18 +31,33 @@ const projects = [
 
 export default function Home() {
   const pathname = usePathname();
-
   const scrollRef = useRef<HTMLDivElement>(null);
   const [cursorPos, setCursorPos] = useState({ x: 0, y: 0 });
-  const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
 
-  // Lenis Smooth Scroll
+  const sectionRef0 = useRef(null);
+  const sectionRef1 = useRef(null);
+  const sectionRef2 = useRef(null);
+
+  const { scrollYProgress: scrollY0 } = useScroll({ target: sectionRef0 });
+  const { scrollYProgress: scrollY1 } = useScroll({ target: sectionRef1 });
+  const { scrollYProgress: scrollY2 } = useScroll({ target: sectionRef2 });
+
+  const imageY0 = useTransform(scrollY0, [0, 1], ['-5%', '5%']);
+  const textY0 = useTransform(scrollY0, [0, 1], ['2%', '-2%']);
+  const imageY1 = useTransform(scrollY1, [0, 1], ['-5%', '5%']);
+  const textY1 = useTransform(scrollY1, [0, 1], ['2%', '-2%']);
+  const imageY2 = useTransform(scrollY2, [0, 1], ['-5%', '5%']);
+  const textY2 = useTransform(scrollY2, [0, 1], ['2%', '-2%']);
+
+  const scrollHooks = [
+    { ref: sectionRef0, imageY: imageY0, textY: textY0 },
+    { ref: sectionRef1, imageY: imageY1, textY: textY1 },
+    { ref: sectionRef2, imageY: imageY2, textY: textY2 },
+  ];
+
   useEffect(() => {
     const lenis = new Lenis({
       lerp: 0.07,
-      smooth: true,
-      direction: 'horizontal',
-      gestureDirection: 'both',
     });
 
     function raf(time: number) {
@@ -57,7 +72,6 @@ export default function Home() {
     };
   }, []);
 
-  // Cursor Follow
   useEffect(() => {
     const moveCursor = (e: MouseEvent) => {
       setCursorPos({ x: e.clientX, y: e.clientY });
@@ -113,69 +127,60 @@ export default function Home() {
         ref={scrollRef}
         className="h-full w-full flex overflow-x-scroll overflow-y-hidden items-center gap-[10vw] px-[8vw] md:px-[12vw]"
       >
-        {projects.map((project, index) => {
-          const sectionRef = useRef(null);
-          const { scrollYProgress } = useScroll({ target: sectionRef });
-          const imageY = useTransform(scrollYProgress, [0, 1], ['-5%', '5%']);
-          const textY = useTransform(scrollYProgress, [0, 1], ['2%', '-2%']);
-
-          return (
-            <motion.section
-              key={index}
-              ref={sectionRef}
-              className="relative w-[70vw] md:w-[56vw] h-[60vh] md:h-[72vh] flex-shrink-0 group overflow-hidden shadow-2xl transform-gpu"
-              initial={{ opacity: 0, y: 40 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              transition={{ duration: 1.2, ease: 'easeOut' }}
-              onMouseEnter={() => setHoveredIndex(index)}
-              onMouseLeave={() => setHoveredIndex(null)}
+        {projects.map((project, index) => (
+          <motion.section
+            key={index}
+            ref={scrollHooks[index].ref}
+            className="relative w-[70vw] md:w-[56vw] h-[60vh] md:h-[72vh] flex-shrink-0 group overflow-hidden shadow-2xl transform-gpu"
+            initial={{ opacity: 0, y: 40 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 1.2, ease: 'easeOut' }}
+          >
+            <motion.div
+              className="absolute w-full h-full top-0 left-0"
+              style={{ y: scrollHooks[index].imageY }}
             >
-              <motion.div
-                className="absolute w-full h-full top-0 left-0"
-                style={{ y: imageY }}
+              <Image
+                src={project.image}
+                alt={project.title}
+                fill
+                priority
+                className="object-cover w-full h-full"
+              />
+            </motion.div>
+            <div className="absolute inset-0 z-20 flex flex-col items-center justify-center bg-black/25 backdrop-blur-sm text-center">
+              <motion.h2
+                className="text-[6vw] md:text-[4vw] font-ivy font-light tracking-tight text-white drop-shadow-md"
+                style={{ y: scrollHooks[index].textY }}
+                initial={{ opacity: 0 }}
+                whileInView={{ opacity: 1 }}
+                transition={{ delay: 0.3, duration: 1 }}
               >
-                <Image
-                  src={project.image}
-                  alt={project.title}
-                  fill
-                  priority
-                  className="object-cover w-full h-full"
-                />
+                {project.title}
+              </motion.h2>
+              <motion.div
+                initial={{ opacity: 0, y: 10 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.5, duration: 0.8 }}
+              >
+                <Link
+                  href={project.link}
+                  className="mt-4 border border-white px-4 py-2 md:px-6 md:py-2 uppercase text-[0.6rem] md:text-[0.65rem] tracking-widest hover:bg-white hover:text-black transition-all duration-300"
+                >
+                  Open Project →
+                </Link>
               </motion.div>
-              <div className="absolute inset-0 z-20 flex flex-col items-center justify-center bg-black/25 backdrop-blur-sm text-center p-4">
-                <motion.h2
-                  className="text-[6vw] md:text-[4vw] font-ade font-semibold tracking-tight text-white drop-shadow-md"
-                  style={{ y: textY }}
-                  initial={{ opacity: 0 }}
-                  whileInView={{ opacity: 1 }}
-                  transition={{ delay: 0.3, duration: 1 }}
-                >
-                  {project.title}
-                </motion.h2>
-                <motion.div
-                  initial={{ opacity: 0, y: 10 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  transition={{ delay: 0.5, duration: 0.8 }}
-                >
-                  <Link
-                    href={project.link}
-                    className="mt-4 border border-white px-4 py-2 md:px-6 md:py-2 uppercase text-[0.6rem] md:text-[0.65rem] tracking-widest hover:bg-white hover:text-black transition-all duration-300"
-                  >
-                    Open Project →
-                  </Link>
-                </motion.div>
-                <motion.p
-                  className="text-[0.6rem] md:text-xs mt-4 text-gray-300 font-light"
-                  initial={{ opacity: 0, y: 10 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  transition={{ delay: 0.7, duration: 0.8 }}
-                >
-                  {project.subtitle}
-                </motion.p>
-              </div>
-            </motion.section>
-          );
-        })}
+              <motion.p
+                className="text-[0.6rem] md:text-xs mt-4 text-gray-300 font-light"
+                initial={{ opacity: 0, y: 10 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.7, duration: 0.8 }}
+              >
+                {project.subtitle}
+              </motion.p>
+            </div>
+          </motion.section>
+        ))}
       </div>
 
       {/* Footer */}

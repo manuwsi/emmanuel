@@ -2,7 +2,11 @@
 module.exports = {
     content: ['./src/**/*.{js,ts,jsx,tsx}'],
     theme: {
-      extend: {},
+      extend: {
+        fontFamily: {
+          ivy: ['ivyora-display', 'serif'], // 👈 IvyOra Display pour les titres
+        },
+      },
     },
     plugins: [],
   }

@@ -1,6 +1,7 @@
 'use client'
 
 import { motion } from 'framer-motion'
+import Image from 'next/image' // ✅ On utilise Next.js Image !
 
 interface ProjectProps {
   title: string
@@ -22,10 +23,13 @@ export default function ProjectBlock({ title, image, date, tags, index }: Projec
         transition={{ duration: 0.8, ease: 'easeOut' }}
         viewport={{ once: true }}
       >
-        <img
+        <Image
           src={image}
           alt={title}
-          className="w-full h-full object-cover scale-105 hover:scale-100 transition-transform duration-1000 ease-in-out"
+          fill
+          className="object-cover scale-105 hover:scale-100 transition-transform duration-1000 ease-in-out rounded-2xl" // ✅ petit plus : rounded aussi
+          sizes="(max-width: 768px) 100vw, 50vw"
+          priority={index === 0} // Optionnel : priorité sur la première image
         />
       </motion.div>
 
@@ -36,7 +40,7 @@ export default function ProjectBlock({ title, image, date, tags, index }: Projec
         transition={{ duration: 0.6, delay: 0.1 }}
         viewport={{ once: true }}
       >
-        <h2 className="text-4xl md:text-6xl font-semibold leading-tight mb-4 tracking-tight">{title}</h2>
+        <h2 className="text-4xl md:text-6xl font-ivy font-light leading-tight mb-4 tracking-tight">{title}</h2>
         <p className="uppercase text-sm opacity-60 mb-1">{date}</p>
         <p className="text-base opacity-80 mb-4">{tags}</p>
         <a href="#" className="inline-flex items-center gap-2 text-white text-sm uppercase tracking-widest hover:opacity-70 transition">

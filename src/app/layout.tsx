@@ -1,4 +1,3 @@
-// ✅ Il faut importer le CSS global ici
 import '../styles/globals.css';
 
 export const metadata = {
@@ -13,6 +12,10 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
+      <head>
+        {/* 🔗 Ajout du lien pour IvyOra */}
+        <link rel="stylesheet" href="https://use.typekit.net/cgb0rtc.css" />
+      </head>
       <body>{children}</body>
     </html>
   );

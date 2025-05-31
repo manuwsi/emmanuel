@@ -59,9 +59,10 @@ export default function ProjectPage() {
           transition={{ duration: 1 }}
           className="space-y-6 text-left"
         >
-          <h1 className="text-4xl md:text-6xl font-semibold">
+          <h1 className="text-4xl md:text-6xl font-ivy font-light tracking-tight text-white drop-shadow-md">
             Z_Lab
           </h1>
+
           <h2 className="text-base md:text-lg text-gray-400 uppercase tracking-wide">
             Architecture Studio — Website Redesign
           </h2>

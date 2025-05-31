@@ -65,7 +65,7 @@ export default function AboutPage() {
             className="space-y-8 text-left mx-auto max-w-3xl text-sm md:text-base leading-relaxed text-gray-300"
           >
             <p>
-              Designer spécialisé en UI et Product Design, j’ai développé une approche exigeante et contemporaine du design numérique. Formé en studio au sein d'OkC'estCool, j'ai collaboré sur des projets variés mêlant design d’interfaces, direction artistique et branding.
+              Designer spécialisé en UI et Product Design, j&apos;ai développé une approche exigeante et contemporaine du design numérique. Formé en studio au sein d&apos;OKCC, j&apos;ai collaboré sur des projets variés mêlant design d&apos;interfaces, direction artistique et branding.
             </p>
             <p>
               Curieux et rigoureux, je cherche à concevoir des expériences esthétiques, fonctionnelles et adaptées aux nouveaux usages digitaux. Sensible aux secteurs du luxe, de la tech et de la mode, je reste ouvert à tous les univers où design et innovation se rencontrent. Actuellement basé à Paris, je suis disponible pour collaborer sur des projets exigeants et ambitieux.

@@ -1,7 +1,7 @@
-// 📁 src/components/ProjectSlide.tsx
 'use client'
 
 import { motion } from 'framer-motion'
+import Image from 'next/image' // ✅ Importer Next Image optimisée
 import './luxetype.css'
 
 interface ProjectProps {
@@ -9,24 +9,29 @@ interface ProjectProps {
   image: string
   date: string
   tags: string
-  index: number
 }
 
-export default function ProjectSlide({ title, image, date, tags, index }: ProjectProps) {
+export default function ProjectSlide({ title, image, date, tags }: ProjectProps) {
   return (
     <div
       className="grid place-items-center h-screen w-screen flex-shrink-0 px-[5vw]"
       style={{ scrollSnapAlign: 'center' }}
     >
       <div className="relative max-w-[36rem] w-full aspect-[3/4] group">
-        <motion.img
-          src={image}
-          alt={title}
+        <motion.div
           initial={{ scale: 1.03, opacity: 0 }}
           whileInView={{ scale: 1, opacity: 1 }}
           transition={{ duration: 1.8, ease: 'easeOut' }}
-          className="w-full h-full object-cover transition-transform duration-[1800ms] ease-[cubic-bezier(0.25,1,0.5,1)] group-hover:scale-[1.01]"
-        />
+          className="w-full h-full"
+        >
+          <Image
+            src={image}
+            alt={title}
+            fill
+            className="object-cover transition-transform duration-[1800ms] ease-[cubic-bezier(0.25,1,0.5,1)] group-hover:scale-[1.01] rounded-2xl"
+            sizes="(max-width: 768px) 100vw, 33vw"
+          />
+        </motion.div>
 
         <div className="absolute inset-0 z-10 flex flex-col items-center justify-center text-center pointer-events-none">
           <motion.h1

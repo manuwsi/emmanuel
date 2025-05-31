@@ -179,10 +179,10 @@ export default function ProjectPage() {
         >
           <div className="relative w-full h-[40vh] md:h-[60vh] max-w-4xl">
             <Image
-              src="/project1.png"
+              src="/PAF1.png"
               alt="Project Image 1"
               layout="fill"
-              objectFit="cover"
+              objectFit="contain"
             />
           </div>
         </motion.div>

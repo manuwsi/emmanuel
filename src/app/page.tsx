@@ -12,7 +12,7 @@ const projects = [
   {
     title: 'Post Archive Faction',
     subtitle: '2025 — Creative Direction, Fashion Tech',
-    image: '/project1.png',
+    image: '/PAF1.png',
     link: '/post-archive-faction',
   },
   {

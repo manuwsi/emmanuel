@@ -83,7 +83,7 @@ export default function ProjectPage() {
         <motion.div
           initial={{ opacity: 0 }}
           whileInView={{ opacity: 1 }}
-          transition={{ duration: 1, delay: 0.3 }}
+          transition={{ duration: 0.5, delay: 0.3 }}
           viewport={{ once: true }}
           className="w-full flex justify-center"
         >
@@ -101,7 +101,7 @@ export default function ProjectPage() {
         <motion.div
           initial={{ opacity: 0 }}
           whileInView={{ opacity: 1 }}
-          transition={{ duration: 1, delay: 0.4 }}
+          transition={{ duration: 0.5, delay: 0.4 }}
           viewport={{ once: true }}
           className="flex justify-center"
         >
@@ -119,7 +119,7 @@ export default function ProjectPage() {
         <motion.div
           initial={{ opacity: 0 }}
           whileInView={{ opacity: 1 }}
-          transition={{ duration: 1, delay: 0.5 }}
+          transition={{ duration: 0.5, delay: 0.5 }}
           viewport={{ once: true }}
           className="w-full flex justify-center"
         >
@@ -137,7 +137,7 @@ export default function ProjectPage() {
         <motion.div
           initial={{ opacity: 0 }}
           whileInView={{ opacity: 1 }}
-          transition={{ duration: 1, delay: 0.6 }}
+          transition={{ duration: 0.5, delay: 0.6 }}
           viewport={{ once: true }}
           className="flex justify-center"
         >
@@ -155,7 +155,7 @@ export default function ProjectPage() {
         <motion.div
           initial={{ opacity: 0 }}
           whileInView={{ opacity: 1 }}
-          transition={{ duration: 1, delay: 0.7 }}
+          transition={{ duration: 0.5, delay: 0.7 }}
           viewport={{ once: true }}
           className="w-full flex justify-center"
         >
@@ -173,7 +173,7 @@ export default function ProjectPage() {
         <motion.div
           initial={{ opacity: 0 }}
           whileInView={{ opacity: 1 }}
-          transition={{ duration: 1, delay: 0.8 }}
+          transition={{ duration: 0.5, delay: 0.8 }}
           viewport={{ once: true }}
           className="flex justify-center"
         >
@@ -191,7 +191,7 @@ export default function ProjectPage() {
         <motion.div
           initial={{ opacity: 0 }}
           whileInView={{ opacity: 1 }}
-          transition={{ duration: 1, delay: 0.9 }}
+          transition={{ duration: 0.5, delay: 0.9 }}
           viewport={{ once: true }}
           className="text-center mt-20"
         >
@@ -205,7 +205,7 @@ export default function ProjectPage() {
         <motion.div
           initial={{ opacity: 0, y: 50 }}
           whileInView={{ opacity: 1, y: 0 }}
-          transition={{ duration: 1, delay: 1 }}
+          transition={{ duration: 0.5, delay: 1 }}
           viewport={{ once: true }}
           className="flex justify-center mt-32"
         >

@@ -17,7 +17,7 @@ const projects = [
   },
   {
     title: 'Z_Lab',
-    subtitle: '2024 — Web Redesign, UI/UX Design',
+    subtitle: '2025 — Web Redesign, UI/UX Design',
     image: '/1.png',
     link: '/z_lab',
   },
@@ -26,6 +26,12 @@ const projects = [
     subtitle: '2024 — Product Visualization, UI/UX Design',
     image: '/pleatedcover.png',
     link: '/pleated',
+  },
+  {
+    title: 'Aether',
+    subtitle: '2024 — Design System, Tarot Game',
+    image: '/AETHERCOVER.png',
+    link: '/aether',
   },
 ];
 
@@ -37,10 +43,12 @@ export default function Home() {
   const sectionRef0 = useRef(null);
   const sectionRef1 = useRef(null);
   const sectionRef2 = useRef(null);
+  const sectionRef3 = useRef(null);
 
   const { scrollYProgress: scrollY0 } = useScroll({ target: sectionRef0 });
   const { scrollYProgress: scrollY1 } = useScroll({ target: sectionRef1 });
   const { scrollYProgress: scrollY2 } = useScroll({ target: sectionRef2 });
+  const { scrollYProgress: scrollY3 } = useScroll({ target: sectionRef3 });
 
   const imageY0 = useTransform(scrollY0, [0, 1], ['-5%', '5%']);
   const textY0 = useTransform(scrollY0, [0, 1], ['2%', '-2%']);
@@ -48,11 +56,14 @@ export default function Home() {
   const textY1 = useTransform(scrollY1, [0, 1], ['2%', '-2%']);
   const imageY2 = useTransform(scrollY2, [0, 1], ['-5%', '5%']);
   const textY2 = useTransform(scrollY2, [0, 1], ['2%', '-2%']);
+  const imageY3 = useTransform(scrollY3, [0, 1], ['-5%', '5%']);
+  const textY3 = useTransform(scrollY3, [0, 1], ['2%', '-2%']);
 
   const scrollHooks = [
     { ref: sectionRef0, imageY: imageY0, textY: textY0 },
     { ref: sectionRef1, imageY: imageY1, textY: textY1 },
     { ref: sectionRef2, imageY: imageY2, textY: textY2 },
+    { ref: sectionRef3, imageY: imageY3, textY: textY3 },
   ];
 
   useEffect(() => {
@@ -80,6 +91,23 @@ export default function Home() {
     return () => window.removeEventListener('mousemove', moveCursor);
   }, []);
 
+  // Ajout du scroll horizontal à la molette
+  useEffect(() => {
+    const container = scrollRef.current;
+    if (!container) return;
+
+    const handleWheel = (e: WheelEvent) => {
+      e.preventDefault();
+      container.scrollLeft += e.deltaY;
+    };
+
+    container.addEventListener('wheel', handleWheel, { passive: false });
+
+    return () => {
+      container.removeEventListener('wheel', handleWheel);
+    };
+  }, []);
+
   return (
     <main className="w-screen h-screen bg-[#0a0a0a] text-white overflow-hidden font-sans cursor-none">
       {/* Background Noise */}
@@ -104,21 +132,12 @@ export default function Home() {
       />
 
       {/* Header */}
-      <header className="fixed top-0 z-50 w-full px-6 md:px-10 py-6 flex justify-between text-xs md:text-sm uppercase tracking-wider">
+      <header className="fixed top-0 z-50 w-full px-6 md:px-10 py-6 flex justify-between items-center text-xs md:text-sm uppercase tracking-wider">
         <span>Emmanuel — Paris, France</span>
         <nav className="space-x-6 md:space-x-8">
-          <Link href="/" className={pathname === '/' ? 'line-through' : 'hover:underline transition-all duration-300'}>
-            [Works]
-          </Link>
-          <Link href="/about" className={pathname === '/about' ? 'line-through' : 'hover:underline transition-all duration-300'}>
-            [About]
-          </Link>
-          <a
-            href="mailto:emmanuelijjou@gmail.com"
-            className="hover:underline transition-all duration-300"
-          >
-            [Contact]
-          </a>
+          <span className="line-through">[Works]</span>
+          <Link href="/about" className="hover:underline transition-all duration-300">[About]</Link>
+          <a href="mailto:emmanuelijjou@gmail.com" className="hover:underline transition-all duration-300">[Contact]</a>
         </nav>
       </header>
 

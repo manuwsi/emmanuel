@@ -56,79 +56,63 @@ export default function ProjectPage() {
         <motion.div
           initial={{ opacity: 0, y: 40 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 1 }}
+          transition={{ duration: 0.5 }}
           className="space-y-6 text-left"
         >
           <h1 className="text-4xl md:text-6xl font-ivy font-light tracking-tight text-white drop-shadow-md">
-            Pleated Assortment
+            Aether
           </h1>
 
           <h2 className="text-base md:text-lg text-gray-400 uppercase tracking-wide">
-            Furniture Collection Inspired by Issey Miyake
+            Design System — Tarot Game
           </h2>
           <p className="text-sm md:text-base max-w-2xl text-gray-300 leading-relaxed">
-            Pleated Assortment is a 2024 experimental project where a furniture collection was generated based on the garment design philosophy of Issey Miyake. It served as a playground to explore UI concepts for a modern e-commerce experience.
+            Aether is a collaborative project where we developed a complete design system to build a fully coherent tarot game. I was in charge of building a strong universe, crafting a rich visual identity and storytelling where each card has its own meaning inside a deep narrative world. This project was highly enriching, combining design system, storytelling and visual direction.
           </p>
 
           {/* META */}
           <div className="flex flex-wrap gap-6 text-xs md:text-sm uppercase tracking-widest text-gray-500 pt-8">
             <span>2024</span>
-            <span>Creative Direction</span>
-            <span>UI/UX Design</span>
-            <span>Product Visualization</span>
+            <span>Design System</span>
+            <span>Art Direction</span>
+            <span>Worldbuilding</span>
           </div>
         </motion.div>
 
         {/* IMAGES */}
-        {['pleated1.png', 'pleated2.png', 'pleated3.png'].map((src, index) => (
+        {['AETHER1.png', 'AETHER2.png', 'AETHER3.jpg', 'AETHER4.jpg', 'AETHER5.png', 'AETHER6.jpg'].map((filename, index) => (
           <motion.div
             key={index}
             initial={{ opacity: 0 }}
             whileInView={{ opacity: 1 }}
-            transition={{ duration: 0.5, delay: 0.3 + index * 0.1 }}
+            transition={{ duration: 0.5 }}
             viewport={{ once: true }}
             className="flex justify-center"
           >
-            <div className="relative w-full h-[40vh] md:h-[60vh] max-w-4xl">
+            <div className="relative w-full max-w-4xl">
               <Image
-                src={`/${src}`}
-                alt={`Pleated Assortment ${index + 1}`}
-                layout="fill"
-                objectFit="contain" // <-- contain partout
+                src={`/${filename}`}
+                alt={`Aether Image ${index + 1}`}
+                layout="responsive"
+                width={1920}
+                height={1080}
+                objectFit="contain"
               />
             </div>
           </motion.div>
         ))}
 
-        {/* VIDEO */}
-        <motion.div
-          initial={{ opacity: 0 }}
-          whileInView={{ opacity: 1 }}
-          transition={{ duration: 0.5, delay: 0.6 }}
-          viewport={{ once: true }}
-          className="w-full flex justify-center"
-        >
-          <video
-            src="/pleatedvid.mp4"
-            autoPlay
-            muted
-            loop
-            playsInline
-            className="w-full max-w-4xl h-[45vh] md:h-[70vh] object-contain" // <-- contain ici aussi
-          />
-        </motion.div>
-
         {/* TOOLS SECTION */}
         <motion.div
           initial={{ opacity: 0 }}
           whileInView={{ opacity: 1 }}
-          transition={{ duration: 0.5, delay: 0.7 }}
+          transition={{ duration: 0.5 }}
           viewport={{ once: true }}
           className="text-center mt-20"
         >
           <h3 className="text-sm uppercase tracking-widest text-neutral-500 mb-4">Tools</h3>
           <p className="text-sm md:text-base text-gray-300">
-            Figma — DALL·E
+            Figma — Photoshop — Midjourney
           </p>
         </motion.div>
 
@@ -136,11 +120,11 @@ export default function ProjectPage() {
         <motion.div
           initial={{ opacity: 0, y: 50 }}
           whileInView={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.5, delay: 0.8 }}
+          transition={{ duration: 0.5 }}
           viewport={{ once: true }}
           className="flex flex-col items-center mt-32"
         >
-          <Link href="/aether">
+          <Link href="/post-archive-faction">
             <div className="group relative cursor-pointer px-6 py-3 border border-neutral-700 w-48 md:w-64 flex items-center justify-center hover:border-transparent transition-all duration-300">
               <span className="relative text-xs font-light uppercase tracking-widest text-neutral-400 group-hover:text-white transition">
                 Next Project →

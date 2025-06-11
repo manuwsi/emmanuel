@@ -40,14 +40,15 @@ export default function AboutPage() {
       {/* CONTENT */}
       <div className="flex-1 flex items-center justify-center px-6 md:px-10 pt-32">
         <div className="max-w-4xl w-full space-y-10 text-center">
-          <motion.h1
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 1 }}
-            className="text-4xl md:text-6xl font-semibold"
+        <motion.h1
+          initial={{ opacity: 0, y: 20 }}
+           animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 1 }}
+          className="text-4xl md:text-6xl font-ivy font-light tracking-tight text-white drop-shadow-md"
           >
-            About Me
-          </motion.h1>
+          About Me
+        </motion.h1>
+
 
           <motion.h2
             initial={{ opacity: 0, y: 20 }}

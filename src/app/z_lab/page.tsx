@@ -67,12 +67,12 @@ export default function ProjectPage() {
             Architecture Studio — Website Redesign
           </h2>
           <p className="text-sm md:text-base max-w-2xl text-gray-300 leading-relaxed">
-            Z_Lab is a Korean architecture studio known for its minimal yet sophisticated spaces. This 2024 redesign focuses on modernizing their online presence, highlighting their design philosophy with a clean, immersive web experience.
+            Z_Lab is a Korean architecture studio known for its minimal yet sophisticated spaces. This 2025 redesign focuses on modernizing their online presence, highlighting their design philosophy with a clean, immersive web experience.
           </p>
 
           {/* META */}
           <div className="flex flex-wrap gap-6 text-xs md:text-sm uppercase tracking-widest text-gray-500 pt-8">
-            <span>2024</span>
+            <span>2025</span>
             <span>Creative Direction</span>
             <span>UI/UX Design</span>
             <span>Web Redesign</span>
@@ -85,7 +85,7 @@ export default function ProjectPage() {
             key={index}
             initial={{ opacity: 0 }}
             whileInView={{ opacity: 1 }}
-            transition={{ duration: 1, delay: 0.3 + index * 0.1 }}
+            transition={{ duration: 0.5, delay: 0.3 + index * 0.1 }}
             viewport={{ once: true }}
             className="flex justify-center"
           >
@@ -104,7 +104,7 @@ export default function ProjectPage() {
         <motion.div
           initial={{ opacity: 0 }}
           whileInView={{ opacity: 1 }}
-          transition={{ duration: 1, delay: 0.9 }}
+          transition={{ duration: 0.5, delay: 0.9 }}
           viewport={{ once: true }}
           className="text-center mt-20"
         >
@@ -118,7 +118,7 @@ export default function ProjectPage() {
         <motion.div
           initial={{ opacity: 0, y: 50 }}
           whileInView={{ opacity: 1, y: 0 }}
-          transition={{ duration: 1, delay: 1 }}
+          transition={{ duration: 0.5, delay: 1 }}
           viewport={{ once: true }}
           className="flex flex-col items-center mt-32"
         >

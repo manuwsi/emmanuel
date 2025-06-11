@@ -4,7 +4,7 @@ module.exports = {
     theme: {
       extend: {
         fontFamily: {
-          ivy: ['ivyora-display', 'serif'], // 👈 IvyOra Display pour les titres
+          ivy: ['ivyora-display', 'serif'], // IvyOra Display 
         },
       },
     },

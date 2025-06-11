@@ -124,7 +124,7 @@ export default function ProjectPage() {
           className="w-full flex justify-center"
         >
           <video
-            src="/PAF4.mp4"
+            src="/PAF4.MP4"
             autoPlay
             muted
             loop

@@ -13,7 +13,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <head>
-        {/* 🔗 Ajout du lien pour IvyOra */}
+        {/* IvyOra */}
         <link rel="stylesheet" href="https://use.typekit.net/cgb0rtc.css" />
       </head>
       <body>{children}</body>

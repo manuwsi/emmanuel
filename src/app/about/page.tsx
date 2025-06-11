@@ -32,7 +32,7 @@ export default function AboutPage() {
         </div>
         <nav className="space-x-6 md:space-x-8">
           <Link href="/">[Works]</Link>
-          <Link href="/about">[About]</Link>
+          <span className="line-through">[About]</span>
           <a href="mailto:emmanuelijjou@gmail.com">[Contact]</a>
         </nav>
       </header>
@@ -80,7 +80,7 @@ export default function AboutPage() {
             className="pt-8 flex justify-center space-x-6"
           >
             <a
-              href="https://www.linkedin.com/in/emmanuel-ijjou/"
+              href="https://www.linkedin.com/in/emmanuel-ijjou-00a7a9213/"
               target="_blank"
               rel="noopener noreferrer"
               className="border border-white px-6 py-2 text-xs uppercase tracking-widest hover:bg-white hover:text-black transition-all duration-300"
@@ -88,12 +88,10 @@ export default function AboutPage() {
               LinkedIn
             </a>
             <a
-              href="https://www.instagram.com/manu.wsi/"
-              target="_blank"
-              rel="noopener noreferrer"
+              href="mailto:emmanuelijjou@gmail.com"
               className="border border-white px-6 py-2 text-xs uppercase tracking-widest hover:bg-white hover:text-black transition-all duration-300"
             >
-              Instagram
+              Mail
             </a>
           </motion.div>
         </div>

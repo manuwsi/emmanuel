@@ -5,7 +5,6 @@ import { motion, useScroll, useTransform } from 'framer-motion';
 import Image from 'next/image';
 import Link from 'next/link';
 import Lenis from '@studio-freight/lenis';
-import { usePathname } from 'next/navigation';
 import '../styles/globals.css';
 
 const projects = [
@@ -36,15 +35,16 @@ const projects = [
 ];
 
 export default function Home() {
-  const pathname = usePathname();
   const scrollRef = useRef<HTMLDivElement>(null);
   const [cursorPos, setCursorPos] = useState({ x: 0, y: 0 });
 
+  // Tes refs séparées comme à l'origine : SAFE
   const sectionRef0 = useRef(null);
   const sectionRef1 = useRef(null);
   const sectionRef2 = useRef(null);
   const sectionRef3 = useRef(null);
 
+  // Hooks bien à plat, comme React veut
   const { scrollYProgress: scrollY0 } = useScroll({ target: sectionRef0 });
   const { scrollYProgress: scrollY1 } = useScroll({ target: sectionRef1 });
   const { scrollYProgress: scrollY2 } = useScroll({ target: sectionRef2 });
@@ -66,23 +66,20 @@ export default function Home() {
     { ref: sectionRef3, imageY: imageY3, textY: textY3 },
   ];
 
+  // Lenis smooth scroll
   useEffect(() => {
-    const lenis = new Lenis({
-      lerp: 0.07,
-    });
+    const lenis = new Lenis({ lerp: 0.07 });
 
     function raf(time: number) {
       lenis.raf(time);
       requestAnimationFrame(raf);
     }
-
     requestAnimationFrame(raf);
 
-    return () => {
-      lenis.destroy();
-    };
+    return () => lenis.destroy();
   }, []);
 
+  // Custom cursor
   useEffect(() => {
     const moveCursor = (e: MouseEvent) => {
       setCursorPos({ x: e.clientX, y: e.clientY });
@@ -91,7 +88,7 @@ export default function Home() {
     return () => window.removeEventListener('mousemove', moveCursor);
   }, []);
 
-  // Ajout du scroll horizontal à la molette
+  // Scroll horizontal avec molette
   useEffect(() => {
     const container = scrollRef.current;
     if (!container) return;
@@ -155,10 +152,7 @@ export default function Home() {
             whileInView={{ opacity: 1, y: 0 }}
             transition={{ duration: 1.2, ease: 'easeOut' }}
           >
-            <motion.div
-              className="absolute w-full h-full top-0 left-0"
-              style={{ y: scrollHooks[index].imageY }}
-            >
+            <motion.div className="absolute w-full h-full top-0 left-0" style={{ y: scrollHooks[index].imageY }}>
               <Image
                 src={project.image}
                 alt={project.title}

@@ -4,11 +4,9 @@ import { useEffect, useState } from 'react';
 import { motion } from 'framer-motion';
 import Image from 'next/image';
 import Link from 'next/link';
-import { usePathname } from 'next/navigation';
 import '../../styles/globals.css';
 
 export default function ProjectPage() {
-  const pathname = usePathname();
   const [cursorPos, setCursorPos] = useState({ x: 0, y: 0 });
 
   useEffect(() => {
@@ -30,23 +28,12 @@ export default function ProjectPage() {
       />
 
       {/* HEADER */}
-      <header className="fixed top-0 z-50 w-full px-6 md:px-10 py-6 flex justify-between text-xs md:text-sm uppercase tracking-wider">
-        <div>
-          <span>Emmanuel</span> — <span>Paris, France</span>
-        </div>
-        <nav className="space-x-6 md:space-x-8">
-          <Link href="/" className={pathname === '/' ? 'line-through' : 'hover:underline transition-all duration-300'}>
-            [Works]
-          </Link>
-          <Link href="/about" className={pathname === '/about' ? 'line-through' : 'hover:underline transition-all duration-300'}>
-            [About]
-          </Link>
-          <a
-            href="mailto:emmanuelijjou@gmail.com"
-            className="hover:underline transition-all duration-300"
-          >
-            [Contact]
-          </a>
+      <header className="fixed top-0 z-50 w-full px-4 md:px-10 py-4 flex flex-col md:flex-row md:justify-between items-center gap-2 md:gap-0 text-[0.6rem] md:text-sm uppercase tracking-wider">
+        <span className="text-center">Emmanuel — Paris, France</span>
+        <nav className="flex space-x-6 md:space-x-8">
+          <Link href="/" className="hover:underline transition-all duration-300">[Works]</Link>
+          <Link href="/about" className="hover:underline transition-all duration-300">[About]</Link>
+          <a href="mailto:emmanuelijjou@gmail.com" className="hover:underline transition-all duration-300">[Contact]</a>
         </nav>
       </header>
 
@@ -122,7 +109,7 @@ export default function ProjectPage() {
           viewport={{ once: true }}
           className="flex flex-col items-center mt-32"
         >
-          <Link href="/pleated">
+          <Link href="/spectre">
             <div className="group relative cursor-pointer px-6 py-3 border border-neutral-700 w-48 md:w-64 flex items-center justify-center hover:border-transparent transition-all duration-300">
               <span className="relative text-xs font-light uppercase tracking-widest text-neutral-400 group-hover:text-white transition">
                 Next Project →

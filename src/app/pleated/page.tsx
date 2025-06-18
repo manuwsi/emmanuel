@@ -30,23 +30,12 @@ export default function ProjectPage() {
       />
 
       {/* HEADER */}
-      <header className="fixed top-0 z-50 w-full px-6 md:px-10 py-6 flex justify-between text-xs md:text-sm uppercase tracking-wider">
-        <div>
-          <span>Emmanuel</span> — <span>Paris, France</span>
-        </div>
-        <nav className="space-x-6 md:space-x-8">
-          <Link href="/" className={pathname === '/' ? 'line-through' : 'hover:underline transition-all duration-300'}>
-            [Works]
-          </Link>
-          <Link href="/about" className={pathname === '/about' ? 'line-through' : 'hover:underline transition-all duration-300'}>
-            [About]
-          </Link>
-          <a
-            href="mailto:emmanuelijjou@gmail.com"
-            className="hover:underline transition-all duration-300"
-          >
-            [Contact]
-          </a>
+      <header className="fixed top-0 z-50 w-full px-4 md:px-10 py-4 flex flex-col md:flex-row md:justify-between items-center gap-2 md:gap-0 text-[0.6rem] md:text-sm uppercase tracking-wider">
+        <span className="text-center">Emmanuel — Paris, France</span>
+        <nav className="flex space-x-6 md:space-x-8">
+          <Link href="/" className="hover:underline transition-all duration-300">[Works]</Link>
+          <Link href="/about" className="hover:underline transition-all duration-300">[About]</Link>
+          <a href="mailto:emmanuelijjou@gmail.com" className="hover:underline transition-all duration-300">[Contact]</a>
         </nav>
       </header>
 
@@ -94,7 +83,7 @@ export default function ProjectPage() {
                 src={`/${src}`}
                 alt={`Pleated Assortment ${index + 1}`}
                 layout="fill"
-                objectFit="contain" // <-- contain partout
+                objectFit="contain"
               />
             </div>
           </motion.div>
@@ -114,7 +103,7 @@ export default function ProjectPage() {
             muted
             loop
             playsInline
-            className="w-full max-w-4xl h-[45vh] md:h-[70vh] object-contain" // <-- contain ici aussi
+            className="w-full max-w-4xl h-[45vh] md:h-[70vh] object-contain"
           />
         </motion.div>
 

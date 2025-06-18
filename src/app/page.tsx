@@ -1,6 +1,6 @@
 'use client';
 
-import { useRef, useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { motion, useScroll, useTransform } from 'framer-motion';
 import Image from 'next/image';
 import Link from 'next/link';
@@ -15,10 +15,22 @@ const projects = [
     link: '/post-archive-faction',
   },
   {
+    title: 'Hennessy with OKCC',
+    subtitle: '2025 — UI Design',
+    image: '/hennessy.png',
+    link: '/hennessy',
+  },
+  {
     title: 'Z_Lab',
     subtitle: '2025 — Web Redesign, UI/UX Design',
     image: '/1.png',
     link: '/z_lab',
+  },
+  {
+    title: 'SPECTRE',
+    subtitle: '2025 — Editorial Design, AI Art Direction',
+    image: '/spectre1.png',
+    link: '/spectre',
   },
   {
     title: 'Pleated Assortment',
@@ -38,48 +50,32 @@ export default function Home() {
   const scrollRef = useRef<HTMLDivElement>(null);
   const [cursorPos, setCursorPos] = useState({ x: 0, y: 0 });
 
-  // Tes refs séparées comme à l'origine : SAFE
-  const sectionRef0 = useRef(null);
-  const sectionRef1 = useRef(null);
-  const sectionRef2 = useRef(null);
-  const sectionRef3 = useRef(null);
+  const sectionRefs = useRef<(HTMLElement | null)[]>([]);
 
-  // Hooks bien à plat, comme React veut
-  const { scrollYProgress: scrollY0 } = useScroll({ target: sectionRef0 });
-  const { scrollYProgress: scrollY1 } = useScroll({ target: sectionRef1 });
-  const { scrollYProgress: scrollY2 } = useScroll({ target: sectionRef2 });
-  const { scrollYProgress: scrollY3 } = useScroll({ target: sectionRef3 });
+  const scrollHooks = projects.map((_, i) => {
+    const ref = useRef<HTMLElement | null>(null);
+    const { scrollYProgress } = useScroll({ target: ref });
+    const imageY = useTransform(scrollYProgress, [0, 1], ['-5%', '5%']);
+    const textY = useTransform(scrollYProgress, [0, 1], ['2%', '-2%']);
+    sectionRefs.current[i] = ref.current;
 
-  const imageY0 = useTransform(scrollY0, [0, 1], ['-5%', '5%']);
-  const textY0 = useTransform(scrollY0, [0, 1], ['2%', '-2%']);
-  const imageY1 = useTransform(scrollY1, [0, 1], ['-5%', '5%']);
-  const textY1 = useTransform(scrollY1, [0, 1], ['2%', '-2%']);
-  const imageY2 = useTransform(scrollY2, [0, 1], ['-5%', '5%']);
-  const textY2 = useTransform(scrollY2, [0, 1], ['2%', '-2%']);
-  const imageY3 = useTransform(scrollY3, [0, 1], ['-5%', '5%']);
-  const textY3 = useTransform(scrollY3, [0, 1], ['2%', '-2%']);
+    return {
+      ref,
+      imageY,
+      textY,
+    };
+  });
 
-  const scrollHooks = [
-    { ref: sectionRef0, imageY: imageY0, textY: textY0 },
-    { ref: sectionRef1, imageY: imageY1, textY: textY1 },
-    { ref: sectionRef2, imageY: imageY2, textY: textY2 },
-    { ref: sectionRef3, imageY: imageY3, textY: textY3 },
-  ];
-
-  // Lenis smooth scroll
   useEffect(() => {
     const lenis = new Lenis({ lerp: 0.07 });
-
     function raf(time: number) {
       lenis.raf(time);
       requestAnimationFrame(raf);
     }
     requestAnimationFrame(raf);
-
     return () => lenis.destroy();
   }, []);
 
-  // Custom cursor
   useEffect(() => {
     const moveCursor = (e: MouseEvent) => {
       setCursorPos({ x: e.clientX, y: e.clientY });
@@ -88,21 +84,15 @@ export default function Home() {
     return () => window.removeEventListener('mousemove', moveCursor);
   }, []);
 
-  // Scroll horizontal avec molette
   useEffect(() => {
     const container = scrollRef.current;
     if (!container) return;
-
     const handleWheel = (e: WheelEvent) => {
       e.preventDefault();
       container.scrollLeft += e.deltaY;
     };
-
     container.addEventListener('wheel', handleWheel, { passive: false });
-
-    return () => {
-      container.removeEventListener('wheel', handleWheel);
-    };
+    return () => container.removeEventListener('wheel', handleWheel);
   }, []);
 
   return (
@@ -129,10 +119,10 @@ export default function Home() {
       />
 
       {/* Header */}
-      <header className="fixed top-0 z-50 w-full px-6 md:px-10 py-6 flex justify-between items-center text-xs md:text-sm uppercase tracking-wider">
-        <span>Emmanuel — Paris, France</span>
-        <nav className="space-x-6 md:space-x-8">
-          <span className="line-through">[Works]</span>
+      <header className="fixed top-0 z-50 w-full px-4 md:px-10 py-4 flex flex-col md:flex-row md:justify-between items-center gap-2 md:gap-0 text-[0.6rem] md:text-sm uppercase tracking-wider">
+        <span className="text-center">Emmanuel — Paris, France</span>
+        <nav className="flex space-x-6 md:space-x-8">
+          <Link href="#" className="pointer-events-none line-through hover:underline transition-all duration-300 uppercase tracking-wider">[Works]</Link>
           <Link href="/about" className="hover:underline transition-all duration-300">[About]</Link>
           <a href="mailto:emmanuelijjou@gmail.com" className="hover:underline transition-all duration-300">[Contact]</a>
         </nav>
@@ -147,23 +137,27 @@ export default function Home() {
           <motion.section
             key={index}
             ref={scrollHooks[index].ref}
-            className="relative w-[70vw] md:w-[56vw] h-[60vh] md:h-[72vh] flex-shrink-0 group overflow-hidden shadow-2xl transform-gpu"
+            className="relative w-[70vw] md:w-[56vw] h-[45vh] md:h-[72vh] flex-shrink-0 group overflow-hidden shadow-2xl transform-gpu"
             initial={{ opacity: 0, y: 40 }}
             whileInView={{ opacity: 1, y: 0 }}
             transition={{ duration: 1.2, ease: 'easeOut' }}
           >
-            <motion.div className="absolute w-full h-full top-0 left-0" style={{ y: scrollHooks[index].imageY }}>
+            <motion.div
+              className="absolute w-full h-full top-0 left-0"
+              style={{ y: scrollHooks[index].imageY }}
+            >
               <Image
                 src={project.image}
                 alt={project.title}
                 fill
                 priority
-                className="object-cover w-full h-full"
+                className="object-cover w-full h-full blur-[1.5px]"
               />
             </motion.div>
+
             <div className="absolute inset-0 z-20 flex flex-col items-center justify-center bg-black/25 backdrop-blur-sm text-center">
               <motion.h2
-                className="text-[6vw] md:text-[4vw] font-ivy font-light tracking-tight text-white drop-shadow-md"
+                className="text-[5vw] md:text-[4vw] font-ivy font-light tracking-tight text-white drop-shadow-md"
                 style={{ y: scrollHooks[index].textY }}
                 initial={{ opacity: 0 }}
                 whileInView={{ opacity: 1 }}

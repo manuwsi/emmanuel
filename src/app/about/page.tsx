@@ -3,9 +3,11 @@
 import { useEffect, useState } from 'react';
 import { motion } from 'framer-motion';
 import Link from 'next/link';
+import { usePathname } from 'next/navigation';
 
 export default function AboutPage() {
   const [cursorPos, setCursorPos] = useState({ x: 0, y: 0 });
+  const pathname = usePathname();
 
   useEffect(() => {
     const moveCursor = (e: MouseEvent) => {
@@ -26,29 +28,43 @@ export default function AboutPage() {
       />
 
       {/* HEADER */}
-      <header className="fixed top-0 z-50 w-full px-6 md:px-10 py-6 flex justify-between text-xs md:text-sm uppercase tracking-wider">
-        <div>
-          <span>Emmanuel</span> — <span>Paris, France</span>
-        </div>
-        <nav className="space-x-6 md:space-x-8">
-          <Link href="/">[Works]</Link>
-          <span className="line-through">[About]</span>
-          <a href="mailto:emmanuelijjou@gmail.com">[Contact]</a>
-        </nav>
-      </header>
+      <header className="fixed top-0 z-50 w-full px-4 md:px-10 py-4 flex flex-col md:flex-row md:justify-between items-center gap-2 md:gap-0 text-[0.6rem] md:text-sm uppercase tracking-wider">
+  <span className="text-center">Emmanuel — Paris, France</span>
+  <nav className="flex space-x-6 md:space-x-8">
+    <Link
+      href="/"
+      className="hover:underline transition-all duration-300"
+    >
+      [Works]
+    </Link>
+    <Link
+      href="#"
+      className="pointer-events-none line-through hover:underline transition-all duration-300 uppercase tracking-wider"
+    >
+      [About]
+    </Link>
+    <a
+      href="mailto:emmanuelijjou@gmail.com"
+      className="hover:underline transition-all duration-300"
+    >
+      [Contact]
+    </a>
+  </nav>
+</header>
+
+
 
       {/* CONTENT */}
       <div className="flex-1 flex items-center justify-center px-6 md:px-10 pt-32">
         <div className="max-w-4xl w-full space-y-10 text-center">
-        <motion.h1
-          initial={{ opacity: 0, y: 20 }}
-           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 1 }}
-          className="text-4xl md:text-6xl font-ivy font-light tracking-tight text-white drop-shadow-md"
+          <motion.h1
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 1 }}
+            className="text-4xl md:text-6xl font-ivy font-light tracking-tight text-white drop-shadow-md"
           >
-          About Me
-        </motion.h1>
-
+            About Me
+          </motion.h1>
 
           <motion.h2
             initial={{ opacity: 0, y: 20 }}
@@ -99,9 +115,10 @@ export default function AboutPage() {
       </div>
 
       {/* FOOTER */}
-      <footer className="text-center text-xs tracking-widest text-neutral-500 mb-10">
-        © {new Date().getFullYear()} Emmanuel
-      </footer>
+      <footer className="mt-16 text-center text-xs tracking-widest text-neutral-500 mb-10">
+  © {new Date().getFullYear()} Emmanuel
+</footer>
+
     </main>
   );
 }

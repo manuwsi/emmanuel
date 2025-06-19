@@ -4,7 +4,7 @@ import { useEffect, useState } from 'react';
 import { motion } from 'framer-motion';
 import Image from 'next/image';
 import Link from 'next/link';
-import '../../styles/globals.css'; // Ce fichier doit exister dans src/styles/globals.css
+import '../../styles/globals.css';
 
 export default function ProjectPage() {
   const [cursorPos, setCursorPos] = useState({ x: 0, y: 0 });
@@ -47,27 +47,27 @@ export default function ProjectPage() {
           className="space-y-6 text-left"
         >
           <h1 className="text-4xl md:text-6xl font-ivy font-light tracking-tight text-white drop-shadow-md">
-            Hennessy with OKCC
+            Z_Lab
           </h1>
 
           <h2 className="text-base md:text-lg text-gray-400 uppercase tracking-wide">
-            UI Design — Digital Experience
+            Architecture Studio — Website Redesign
           </h2>
           <p className="text-sm md:text-base max-w-2xl text-gray-300 leading-relaxed">
-            A digital interface concept made for Hennessy in collaboration with OKCC. The goal was to bring a bold and immersive aesthetic into the luxury world through sleek UI elements.
+            Z_Lab is a Korean architecture studio known for its minimal yet sophisticated spaces. This 2025 redesign focuses on modernizing their online presence, highlighting their design philosophy with a clean, immersive web experience.
           </p>
 
           {/* META */}
           <div className="flex flex-wrap gap-6 text-xs md:text-sm uppercase tracking-widest text-gray-500 pt-8">
             <span>2025</span>
-            <span>UI Design</span>
-            <span>Digital Luxury</span>
-            <span>Art Direction</span>
+            <span>Creative Direction</span>
+            <span>UI/UX Design</span>
+            <span>Web Redesign</span>
           </div>
         </motion.div>
 
         {/* IMAGES */}
-        {[1, 2, 3, 4, 5, 6].map((num, index) => (
+        {[1, 2, 3, 4, 5, 6, 7].map((num, index) => (
           <motion.div
             key={index}
             initial={{ opacity: 0 }}
@@ -78,8 +78,8 @@ export default function ProjectPage() {
           >
             <div className="relative w-full h-[40vh] md:h-[60vh] max-w-4xl">
               <Image
-                src={`/hennessy${num}.png`}
-                alt={`Hennessy Image ${num}`}
+                src={`/${num}.png`}
+                alt={`Z_Lab Image ${num}`}
                 layout="fill"
                 objectFit="cover"
               />
@@ -97,7 +97,7 @@ export default function ProjectPage() {
         >
           <h3 className="text-sm uppercase tracking-widest text-neutral-500 mb-4">Tools</h3>
           <p className="text-sm md:text-base text-gray-300">
-            Figma — After Effects
+            Figma — Protopie
           </p>
         </motion.div>
 
@@ -109,7 +109,7 @@ export default function ProjectPage() {
           viewport={{ once: true }}
           className="flex flex-col items-center mt-32"
         >
-          <Link href="/z_lab">
+          <Link href="/spectre">
             <div className="group relative cursor-pointer px-6 py-3 border border-neutral-700 w-48 md:w-64 flex items-center justify-center hover:border-transparent transition-all duration-300">
               <span className="relative text-xs font-light uppercase tracking-widest text-neutral-400 group-hover:text-white transition">
                 Next Project →

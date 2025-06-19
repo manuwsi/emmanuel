@@ -4,11 +4,10 @@ import { useEffect, useState } from 'react';
 import { motion } from 'framer-motion';
 import Image from 'next/image';
 import Link from 'next/link';
-import { usePathname } from 'next/navigation';
+// import { usePathname } from 'next/navigation'; // ❌ supprimé car non utilisé
 import '../../styles/globals.css';
 
 export default function ProjectPage() {
-  const pathname = usePathname();
   const [cursorPos, setCursorPos] = useState({ x: 0, y: 0 });
 
   useEffect(() => {
@@ -59,7 +58,6 @@ export default function ProjectPage() {
             PAF is an experimental design project exploring hybrid aesthetics, functional layering, and the abstraction of technical garment language. The UI concepts take inspiration from utilitarian grids, modularity, and the future of digital fashion storytelling.
           </p>
 
-          {/* META */}
           <div className="flex flex-wrap gap-6 text-xs md:text-sm uppercase tracking-widest text-gray-500 pt-8">
             <span>2025</span>
             <span>Creative Direction</span>
@@ -203,7 +201,6 @@ export default function ProjectPage() {
               <span className="relative text-xs font-light uppercase tracking-widest text-neutral-400 group-hover:text-white transition">
                 Next Project →
               </span>
-              {/* Corners */}
               <div className="absolute top-0 left-0 w-3 h-3 border-t border-l border-neutral-500 group-hover:border-white transition"></div>
               <div className="absolute top-0 right-0 w-3 h-3 border-t border-r border-neutral-500 group-hover:border-white transition"></div>
               <div className="absolute bottom-0 left-0 w-3 h-3 border-b border-l border-neutral-500 group-hover:border-white transition"></div>

@@ -4,11 +4,10 @@ import { useEffect, useState } from 'react';
 import { motion } from 'framer-motion';
 import Image from 'next/image';
 import Link from 'next/link';
-import { usePathname } from 'next/navigation';
+// import { usePathname } from 'next/navigation'; ❌ inutilisé
 import '../../styles/globals.css';
 
 export default function ProjectPage() {
-  const pathname = usePathname();
   const [cursorPos, setCursorPos] = useState({ x: 0, y: 0 });
 
   useEffect(() => {
@@ -59,7 +58,6 @@ export default function ProjectPage() {
             Aether is a collaborative project where we developed a complete design system to build a fully coherent tarot game. I was in charge of building a strong universe, crafting a rich visual identity and storytelling where each card has its own meaning inside a deep narrative world. This project was highly enriching, combining design system, storytelling and visual direction.
           </p>
 
-          {/* META */}
           <div className="flex flex-wrap gap-6 text-xs md:text-sm uppercase tracking-widest text-gray-500 pt-8">
             <span>2024</span>
             <span>Design System</span>
@@ -118,7 +116,6 @@ export default function ProjectPage() {
               <span className="relative text-xs font-light uppercase tracking-widest text-neutral-400 group-hover:text-white transition">
                 Next Project →
               </span>
-              {/* Corners */}
               <div className="absolute top-0 left-0 w-3 h-3 border-t border-l border-neutral-500 group-hover:border-white transition"></div>
               <div className="absolute top-0 right-0 w-3 h-3 border-t border-r border-neutral-500 group-hover:border-white transition"></div>
               <div className="absolute bottom-0 left-0 w-3 h-3 border-b border-l border-neutral-500 group-hover:border-white transition"></div>

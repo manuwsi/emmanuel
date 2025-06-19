@@ -4,11 +4,10 @@ import { useEffect, useState } from 'react';
 import { motion } from 'framer-motion';
 import Image from 'next/image';
 import Link from 'next/link';
-import { usePathname } from 'next/navigation';
+// import { usePathname } from 'next/navigation'; ❌ supprimé car inutile
 import '../../styles/globals.css';
 
 export default function ProjectPage() {
-  const pathname = usePathname();
   const [cursorPos, setCursorPos] = useState({ x: 0, y: 0 });
 
   useEffect(() => {
@@ -59,7 +58,6 @@ export default function ProjectPage() {
             Pleated Assortment is a 2024 experimental project where a furniture collection was generated based on the garment design philosophy of Issey Miyake. It served as a playground to explore UI concepts for a modern e-commerce experience.
           </p>
 
-          {/* META */}
           <div className="flex flex-wrap gap-6 text-xs md:text-sm uppercase tracking-widest text-gray-500 pt-8">
             <span>2024</span>
             <span>Creative Direction</span>

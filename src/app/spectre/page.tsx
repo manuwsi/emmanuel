@@ -4,11 +4,10 @@ import { useEffect, useState } from 'react';
 import { motion } from 'framer-motion';
 import Image from 'next/image';
 import Link from 'next/link';
-import { usePathname } from 'next/navigation';
+// import { usePathname } from 'next/navigation'; // ❌ supprimé car non utilisé
 import '../../styles/globals.css';
 
 export default function ProjectPage() {
-  const pathname = usePathname();
   const [cursorPos, setCursorPos] = useState({ x: 0, y: 0 });
 
   useEffect(() => {

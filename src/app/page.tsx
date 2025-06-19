@@ -50,28 +50,21 @@ export default function Home() {
   const scrollRef = useRef<HTMLDivElement>(null);
   const [cursorPos, setCursorPos] = useState({ x: 0, y: 0 });
 
-  const sectionRefs = useRef<(HTMLElement | null)[]>([]);
-
-  const scrollHooks = projects.map((_, i) => {
-    const ref = useRef<HTMLElement | null>(null);
+  // Crée les refs au bon endroit
+  const sectionRefs = projects.map(() => useRef<HTMLElement | null>(null));
+  const scrollData = sectionRefs.map((ref) => {
     const { scrollYProgress } = useScroll({ target: ref });
     const imageY = useTransform(scrollYProgress, [0, 1], ['-5%', '5%']);
     const textY = useTransform(scrollYProgress, [0, 1], ['2%', '-2%']);
-    sectionRefs.current[i] = ref.current;
-
-    return {
-      ref,
-      imageY,
-      textY,
-    };
+    return { ref, imageY, textY };
   });
 
   useEffect(() => {
     const lenis = new Lenis({ lerp: 0.07 });
-    function raf(time: number) {
+    const raf = (time: number) => {
       lenis.raf(time);
       requestAnimationFrame(raf);
-    }
+    };
     requestAnimationFrame(raf);
     return () => lenis.destroy();
   }, []);
@@ -97,7 +90,7 @@ export default function Home() {
 
   return (
     <main className="w-screen h-screen bg-[#0a0a0a] text-white overflow-hidden font-sans cursor-none">
-      {/* Background Noise */}
+      {/* Noise */}
       <motion.div
         className="fixed top-0 left-0 w-full h-full z-[-1] opacity-10"
         animate={{ backgroundPosition: ['0% 0%', '100% 100%'] }}
@@ -136,7 +129,7 @@ export default function Home() {
         {projects.map((project, index) => (
           <motion.section
             key={index}
-            ref={scrollHooks[index].ref}
+            ref={scrollData[index].ref}
             className="relative w-[70vw] md:w-[56vw] h-[45vh] md:h-[72vh] flex-shrink-0 group overflow-hidden shadow-2xl transform-gpu"
             initial={{ opacity: 0, y: 40 }}
             whileInView={{ opacity: 1, y: 0 }}
@@ -144,7 +137,7 @@ export default function Home() {
           >
             <motion.div
               className="absolute w-full h-full top-0 left-0"
-              style={{ y: scrollHooks[index].imageY }}
+              style={{ y: scrollData[index].imageY }}
             >
               <Image
                 src={project.image}
@@ -158,7 +151,7 @@ export default function Home() {
             <div className="absolute inset-0 z-20 flex flex-col items-center justify-center bg-black/25 backdrop-blur-sm text-center">
               <motion.h2
                 className="text-[5vw] md:text-[4vw] font-ivy font-light tracking-tight text-white drop-shadow-md"
-                style={{ y: scrollHooks[index].textY }}
+                style={{ y: scrollData[index].textY }}
                 initial={{ opacity: 0 }}
                 whileInView={{ opacity: 1 }}
                 transition={{ delay: 0.3, duration: 1 }}

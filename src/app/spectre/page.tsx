@@ -52,11 +52,21 @@ export default function ProjectPage() {
           </h1>
 
           <h2 className="text-base md:text-lg text-gray-400 uppercase tracking-wide">
-            AI-Generated Editorial Magazine
+            Magazine éditorial généré par IA — OKCC
           </h2>
-          <p className="text-sm md:text-base max-w-2xl text-gray-300 leading-relaxed">
-            Official project created at OKCC in 2025. SPECTRE is a luxury-oriented magazine exploring the power of realistic AI-generated imagery. This project was developed as an internal showcase for clients, highlighting our creative and technical expertise. I led the layout design of the magazine, curated two complete visual series (green and violet), and managed the print production using InDesign.
-          </p>
+          <div className="max-w-2xl space-y-6 text-sm md:text-base text-gray-300 leading-relaxed">
+            <p>
+              SPECTRE est né d&apos;un exercice interne chez OKCC : explorer ce que
+              l&apos;intelligence artificielle permet en matière d&apos;image, avec une totale
+              liberté artistique. Seule contrainte, chaque membre de l&apos;équipe recevait
+              deux couleurs imposées à décliner en série.
+            </p>
+            <p>
+              Le résultat a été imprimé et offert aux clients du groupe (dont LVMH) à Noël, à
+              la fois comme démonstration de savoir-faire et comme objet à part entière. J&apos;ai
+              porté les deux séries vert et violet, et la mise en page complète sous InDesign.
+            </p>
+          </div>
 
           {/* META */}
           <div className="flex flex-wrap gap-6 text-xs md:text-sm uppercase tracking-widest text-gray-500 pt-8">

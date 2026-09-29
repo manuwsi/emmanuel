@@ -78,7 +78,12 @@ export default function ProjectPage() {
         </motion.div>
 
         {/* IMAGES */}
-        {[1, 2, 3, 4].map((num, index) => (
+        {[
+          'spectre1.png', 'spectre2.png', 'spectre3.png', 'spectre4.png',
+          'spectre7.jpg', 'spectre8.jpg', 'spectre9.jpg', 'spectre10.jpg',
+          'spectre11.jpg', 'spectre12.jpg', 'spectre13.jpg', 'spectre14.jpg',
+          'spectre15.jpg', 'spectre16.jpg', 'spectre17.jpg', 'spectre18.jpg',
+        ].map((filename, index) => (
           <motion.div
             key={index}
             initial={{ opacity: 0 }}
@@ -89,8 +94,8 @@ export default function ProjectPage() {
           >
             <div className="relative w-full h-[40vh] md:h-[60vh] max-w-4xl">
               <Image
-                src={`/spectre${num}.png`}
-                alt={`Spectre Image ${num}`}
+                src={`/${filename}`}
+                alt={`Spectre Image ${index + 1}`}
                 layout="fill"
                 objectFit="contain"
               />

@@ -1,6 +1,6 @@
 'use client';
 
-import { ReactNode, useEffect, useState } from 'react';
+import { ReactNode } from 'react';
 import { motion } from 'framer-motion';
 import Image from 'next/image';
 import Link from 'next/link';
@@ -23,24 +23,8 @@ export function ProjectPage({
   next: { href: string; title: string };
   children: ReactNode;
 }) {
-  const [cursorPos, setCursorPos] = useState({ x: 0, y: 0 });
-
-  useEffect(() => {
-    const moveCursor = (e: MouseEvent) => setCursorPos({ x: e.clientX, y: e.clientY });
-    window.addEventListener('mousemove', moveCursor);
-    return () => window.removeEventListener('mousemove', moveCursor);
-  }, []);
-
   return (
-    <main className="w-screen min-h-screen bg-[#0a0a0a] text-white font-sans overflow-x-hidden relative flex flex-col">
-      {/* Custom Cursor */}
-      <motion.div
-        className="fixed top-0 left-0 w-5 h-5 z-[998] bg-white rounded-full pointer-events-none mix-blend-difference"
-        animate={{ x: cursorPos.x, y: cursorPos.y }}
-        transition={{ type: 'spring', stiffness: 500, damping: 30 }}
-        style={{ translateX: '-50%', translateY: '-50%' }}
-      />
-
+    <main className="w-full min-h-screen bg-[#0a0a0a] text-white font-sans overflow-x-hidden relative flex flex-col">
       {/* HEADER */}
       <header className="fixed top-0 z-50 w-full px-4 md:px-10 py-4 flex flex-col md:flex-row md:justify-between items-center gap-2 md:gap-0 text-[0.6rem] md:text-sm uppercase tracking-wider mix-blend-difference">
         <span className="text-center">Emmanuel — Paris, France</span>

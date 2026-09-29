@@ -1,10 +1,9 @@
 'use client';
 
-import { useEffect, useRef, useState } from 'react';
+import { RefObject, useEffect, useRef } from 'react';
 import { motion, useScroll, useTransform } from 'framer-motion';
 import Image from 'next/image';
 import Link from 'next/link';
-import Lenis from '@studio-freight/lenis';
 import '../styles/globals.css';
 
 const projects = [
@@ -67,6 +66,8 @@ const projects = [
 // Composant enfant qui gère les hooks proprement
 function ProjectSection({
   project,
+  index,
+  containerRef,
 }: {
   project: {
     title: string;
@@ -74,37 +75,45 @@ function ProjectSection({
     image: string;
     link: string;
   };
+  index: number;
+  containerRef: RefObject<HTMLDivElement | null>;
 }) {
   const ref = useRef<HTMLElement>(null);
-  const { scrollYProgress } = useScroll({ target: ref });
-  const imageY = useTransform(scrollYProgress, [0, 1], ['-5%', '5%']);
-  const textY = useTransform(scrollYProgress, [0, 1], ['2%', '-2%']);
+  // Horizontal parallax, driven by the horizontal scroller (not the window)
+  const { scrollXProgress } = useScroll({
+    container: containerRef,
+    target: ref,
+    axis: 'x',
+    offset: ['start end', 'end start'],
+  });
+  const imageX = useTransform(scrollXProgress, [0, 1], ['-6%', '6%']);
 
   return (
     <motion.section
       ref={ref}
-      className="relative w-[70vw] md:w-[56vw] h-[45vh] md:h-[72vh] flex-shrink-0 group overflow-hidden shadow-2xl transform-gpu"
+      className="relative w-[78vw] md:w-[56vw] h-[52vh] md:h-[72vh] flex-shrink-0 group overflow-hidden shadow-2xl"
       initial={{ opacity: 0, y: 40 }}
       whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true, root: containerRef }}
       transition={{ duration: 1.2, ease: 'easeOut' }}
     >
       <motion.div
-        className="absolute w-full h-full top-0 left-0"
-        style={{ y: imageY }}
+        className="absolute inset-y-0 -inset-x-[8%] will-change-transform"
+        style={{ x: imageX }}
       >
         <Image
           src={project.image}
           alt={project.title}
           fill
-          priority
-          className="object-cover w-full h-full blur-[1.5px]"
+          priority={index < 2}
+          sizes="(max-width: 768px) 90vw, 65vw"
+          className="object-cover blur-[5px] scale-105 transition-[filter] duration-700 group-hover:blur-[1px]"
         />
       </motion.div>
 
-      <div className="absolute inset-0 z-20 flex flex-col items-center justify-center bg-black/25 backdrop-blur-sm text-center">
+      <div className="absolute inset-0 z-20 flex flex-col items-center justify-center bg-black/50 text-center px-4">
         <motion.h2
-          className="text-[5vw] md:text-[4vw] font-ivy font-light tracking-tight text-white drop-shadow-md"
-          style={{ y: textY }}
+          className="text-[8vw] md:text-[4vw] leading-none font-ivy font-light tracking-tight text-white drop-shadow-md"
           initial={{ opacity: 0 }}
           whileInView={{ opacity: 1 }}
           transition={{ delay: 0.3, duration: 1 }}
@@ -138,59 +147,46 @@ function ProjectSection({
 
 export default function Home() {
   const scrollRef = useRef<HTMLDivElement>(null);
-  const [cursorPos, setCursorPos] = useState({ x: 0, y: 0 });
 
-  useEffect(() => {
-    const lenis = new Lenis({ lerp: 0.07 });
-    function raf(time: number) {
-      lenis.raf(time);
-      requestAnimationFrame(raf);
-    }
-    requestAnimationFrame(raf);
-    return () => lenis.destroy();
-  }, []);
-
-  useEffect(() => {
-    const moveCursor = (e: MouseEvent) => {
-      setCursorPos({ x: e.clientX, y: e.clientY });
-    };
-    window.addEventListener('mousemove', moveCursor);
-    return () => window.removeEventListener('mousemove', moveCursor);
-  }, []);
-
+  // Smooth horizontal scrolling with the mouse wheel (desktop).
+  // Touch devices keep native horizontal swipe.
   useEffect(() => {
     const container = scrollRef.current;
     if (!container) return;
-    const handleWheel = (e: WheelEvent) => {
-      e.preventDefault();
-      container.scrollLeft += e.deltaY;
+    let target = container.scrollLeft;
+    let raf = 0;
+
+    const tick = () => {
+      const current = container.scrollLeft;
+      const next = current + (target - current) * 0.12;
+      if (Math.abs(target - next) < 0.5) {
+        container.scrollLeft = target;
+        raf = 0;
+        return;
+      }
+      container.scrollLeft = next;
+      raf = requestAnimationFrame(tick);
     };
+
+    const handleWheel = (e: WheelEvent) => {
+      const delta = Math.abs(e.deltaX) > Math.abs(e.deltaY) ? e.deltaX : e.deltaY;
+      if (delta === 0) return;
+      e.preventDefault();
+      if (!raf) target = container.scrollLeft;
+      const max = container.scrollWidth - container.clientWidth;
+      target = Math.max(0, Math.min(max, target + delta));
+      if (!raf) raf = requestAnimationFrame(tick);
+    };
+
     container.addEventListener('wheel', handleWheel, { passive: false });
-    return () => container.removeEventListener('wheel', handleWheel);
+    return () => {
+      container.removeEventListener('wheel', handleWheel);
+      cancelAnimationFrame(raf);
+    };
   }, []);
 
   return (
-    <main className="w-screen h-screen bg-[#0a0a0a] text-white overflow-hidden font-sans cursor-none">
-      {/* Background Noise */}
-      <motion.div
-        className="fixed top-0 left-0 w-full h-full z-[-1] opacity-10"
-        animate={{ backgroundPosition: ['0% 0%', '100% 100%'] }}
-        transition={{ repeat: Infinity, duration: 25, ease: 'linear' }}
-        style={{
-          backgroundImage: 'url(/noise.png)',
-          backgroundSize: '300% 300%',
-          backgroundRepeat: 'repeat',
-          filter: 'blur(1px)',
-        }}
-      />
-
-      {/* Cursor */}
-      <motion.div
-        className="fixed top-0 left-0 w-5 h-5 z-[998] bg-white rounded-full pointer-events-none mix-blend-difference"
-        animate={{ x: cursorPos.x, y: cursorPos.y }}
-        transition={{ type: 'spring', stiffness: 500, damping: 30 }}
-        style={{ translateX: '-50%', translateY: '-50%' }}
-      />
+    <main className="w-screen h-[100svh] bg-[#0a0a0a] text-white overflow-hidden font-sans [@media(pointer:fine)]:cursor-none">
 
       {/* Header */}
       <header className="fixed top-0 z-50 w-full px-4 md:px-10 py-4 flex flex-col md:flex-row md:justify-between items-center gap-2 md:gap-0 text-[0.6rem] md:text-sm uppercase tracking-wider">
@@ -205,10 +201,12 @@ export default function Home() {
       {/* Projects */}
       <div
         ref={scrollRef}
-        className="h-full w-full flex overflow-x-scroll overflow-y-hidden items-center gap-[10vw] px-[8vw] md:px-[12vw]"
+        className="h-full w-full flex overflow-x-auto overflow-y-hidden items-center gap-[8vw] md:gap-[10vw] px-[11vw] md:px-[12vw] snap-x snap-mandatory md:snap-none [scrollbar-width:none] [&::-webkit-scrollbar]:hidden overscroll-x-contain"
       >
         {projects.map((project, i) => (
-          <ProjectSection key={i} project={project} />
+          <div key={project.link} className="snap-center flex-shrink-0">
+            <ProjectSection project={project} index={i} containerRef={scrollRef} />
+          </div>
         ))}
       </div>
 

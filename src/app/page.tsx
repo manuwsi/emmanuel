@@ -23,13 +23,13 @@ const projects = [
   {
     title: 'Shu Uemura',
     subtitle: '2024 — UI Design, AI Beauty Tutor',
-    image: '/shuuemura1.png',
+    image: '/shu-flow-01-cover.png',
     link: '/shu-uemura',
   },
   {
     title: 'Serena',
     subtitle: '2024 — Concept, Design & Wireframing',
-    image: '/serena1.png',
+    image: '/serena-dashboard.png',
     link: '/serena',
   },
   {

@@ -1,191 +1,87 @@
 'use client';
 
-import { useEffect, useState } from 'react';
-import { motion } from 'framer-motion';
-import Image from 'next/image';
-import Link from 'next/link';
-import '../../styles/globals.css';
+import { ProjectPage, Media, Row, Chapter } from '@/components/project/ProjectPage';
 
-export default function ProjectPage() {
-  const [cursorPos, setCursorPos] = useState({ x: 0, y: 0 });
+const screen = (file: string, alt: string) => ({ src: `/shu-flow-${file}.png`, alt: `Shu Uemura — ${alt}` });
 
-  useEffect(() => {
-    const moveCursor = (e: MouseEvent) => {
-      setCursorPos({ x: e.clientX, y: e.clientY });
-    };
-    window.addEventListener('mousemove', moveCursor);
-    return () => window.removeEventListener('mousemove', moveCursor);
-  }, []);
+const steps = [
+  {
+    n: '01',
+    title: 'Choisir son mentor',
+    text: 'La cliente choisit son coach virtuel parmi Yoko, Ren ou Haruto, chacun avec sa propre signature beauté.',
+    screens: [screen('01-cover', 'écran d’accueil AI:tutor'), screen('02-select-haruto', 'sélection du mentor')],
+  },
+  {
+    n: '02',
+    title: 'Échanger',
+    text: 'Un chat guidé pour cerner les besoins de la cliente, jusqu’à proposer un tutoriel filmé en direct.',
+    screens: [screen('03-chat', 'conversation avec Haruto'), screen('04-camera-cta', 'activation de la caméra')],
+  },
+  {
+    n: '03',
+    title: 'Analyser le visage',
+    text: 'Reconnaissance des proportions du visage, puis recommandation de la forme de sourcil la plus adaptée.',
+    screens: [screen('05-face-scan', 'analyse faciale'), screen('06-brow-shape', 'recommandation de forme')],
+  },
+  {
+    n: '04',
+    title: 'Apprendre le geste',
+    text: 'Un tutoriel pas-à-pas avec repères sur le visage et le produit Shu Uemura associé à chaque étape.',
+    screens: [screen('07-pencil', 'tutoriel, crayon sourcils'), screen('08-flex-styler', 'tutoriel, flex styler')],
+  },
+];
 
-  const flowImages = [
-    { src: '/shu-flow-01-cover.png', alt: 'Shu Uemura — AI:tutor, écran d’accueil' },
-    { src: '/shu-flow-02-select-haruto.png', alt: 'Shu Uemura — Sélection du mentor, Haruto' },
-    { src: '/shu-flow-03-chat.png', alt: 'Shu Uemura — Conversation personnalisée' },
-    { src: '/shu-flow-04-camera-cta.png', alt: 'Shu Uemura — Activation de la caméra' },
-    { src: '/shu-flow-05-face-scan.png', alt: 'Shu Uemura — Analyse faciale' },
-    { src: '/shu-flow-06-brow-shape.png', alt: 'Shu Uemura — Recommandation de forme de sourcil' },
-    { src: '/shu-flow-07-pencil.png', alt: 'Shu Uemura — Tutoriel pas-à-pas, crayon sourcils' },
-    { src: '/shu-flow-08-flex-styler.png', alt: 'Shu Uemura — Tutoriel pas-à-pas, flex styler' },
-    { src: '/shu-flow-09-recommendations.png', alt: 'Shu Uemura — Recommandations produits et prise de rendez-vous' },
-  ];
-
+export default function Page() {
   return (
-    <main className="w-screen min-h-screen bg-[#0a0a0a] text-white font-sans overflow-hidden relative flex flex-col">
-      {/* Custom Cursor */}
-      <motion.div
-        className="fixed top-0 left-0 w-5 h-5 z-[998] bg-white rounded-full pointer-events-none mix-blend-difference"
-        animate={{ x: cursorPos.x, y: cursorPos.y }}
-        transition={{ type: 'spring', stiffness: 500, damping: 30 }}
-        style={{ translateX: '-50%', translateY: '-50%' }}
-      />
-
-      {/* HEADER */}
-      <header className="fixed top-0 z-50 w-full px-4 md:px-10 py-4 flex flex-col md:flex-row md:justify-between items-center gap-2 md:gap-0 text-[0.6rem] md:text-sm uppercase tracking-wider">
-        <span className="text-center">Emmanuel — Paris, France</span>
-        <nav className="flex space-x-6 md:space-x-8">
-          <Link href="/" className="hover:underline transition-all duration-300">[Travaux]</Link>
-          <Link href="/about" className="hover:underline transition-all duration-300">[À propos]</Link>
-          <a href="mailto:emmanuelijjou@gmail.com" className="hover:underline transition-all duration-300">[Contact]</a>
-        </nav>
-      </header>
-
-      {/* CONTENT */}
-      <div className="pt-32 px-6 md:px-10 max-w-6xl mx-auto flex-grow space-y-24">
-        {/* TITLE & INFO */}
-        <motion.div
-          initial={{ opacity: 0, y: 40 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 1 }}
-          className="space-y-6 text-left"
-        >
-          <h1 className="text-4xl md:text-6xl font-ivy font-light tracking-tight text-white drop-shadow-md">
-            Shu Uemura AI Tutor
-          </h1>
-
-          <h2 className="text-base md:text-lg text-gray-400 uppercase tracking-wide">
-            UI Design for a personalized beauty assistant
-          </h2>
-
-          <div className="max-w-2xl space-y-6 text-sm md:text-base text-gray-300 leading-relaxed">
-            <p>
-              Shu Uemura voulait un assistant capable de guider ses clientes dans le choix et
-              l&apos;application de leurs produits, comme un coach beauté personnel accessible
-              depuis mobile.
-            </p>
-            <p>
-              J&apos;ai conçu les maquettes de bout en bout, en échange direct avec le client
-              sur trois itérations. Chacune a affiné un point précis : mieux mettre en avant
-              le savoir-faire de la marque, rendre la personnalisation réellement fidèle au
-              visage de chaque cliente, et jusqu&apos;au choix des décors, avec des mannequins
-              IA posés devant du béton façon Tokyo pour ancrer l&apos;univers visuel.
-            </p>
-          </div>
-
-          <div className="flex flex-wrap gap-6 text-xs md:text-sm uppercase tracking-widest text-gray-500 pt-8">
-            <span>2024</span>
-            <span>UI Design</span>
-            <span>OKCC</span>
-          </div>
-        </motion.div>
-
-        {/* PARCOURS */}
-        <motion.div
-          initial={{ opacity: 0 }}
-          whileInView={{ opacity: 1 }}
-          transition={{ duration: 0.6 }}
-          viewport={{ once: true }}
-          className="grid grid-cols-1 md:grid-cols-4 gap-8 max-w-5xl"
-        >
-          {[
-            { n: '01', t: 'Sélection du tutor', d: 'La cliente choisit son coach virtuel parmi Yoko, Ren ou Haruto, chacun avec sa propre identité.' },
-            { n: '02', t: 'Chat conversationnel', d: 'Un échange guidé pour cerner les besoins et attentes de la cliente.' },
-            { n: '03', t: 'Analyse faciale', d: 'Reconnaissance des traits du visage avec repères visuels pas-à-pas, pour une application réellement adaptée.' },
-            { n: '04', t: 'Prise de rendez-vous', d: 'Passage naturel de l’app vers une expérience en point de vente.' },
-          ].map((step) => (
-            <div key={step.n} className="space-y-2">
-              <span className="text-xs text-neutral-600 tracking-widest">{step.n}</span>
-              <h3 className="text-sm uppercase tracking-wide text-white">{step.t}</h3>
-              <p className="text-xs text-gray-400 leading-relaxed">{step.d}</p>
-            </div>
-          ))}
-        </motion.div>
-
-        {/* IMAGES */}
-        <motion.div
-          initial={{ opacity: 0 }}
-          whileInView={{ opacity: 1 }}
-          transition={{ duration: 0.6 }}
-          viewport={{ once: true }}
-          className="grid grid-cols-2 md:grid-cols-3 gap-4 md:gap-6"
-        >
-          {flowImages.map((img) => (
-            <div key={img.src} className="relative w-full aspect-[390/846]">
-              <Image
-                src={img.src}
-                alt={img.alt}
-                fill
-                className="object-contain"
-              />
-            </div>
-          ))}
-        </motion.div>
-
-        {/* TEMPS FORT */}
-        <motion.div
-          initial={{ opacity: 0 }}
-          whileInView={{ opacity: 1 }}
-          transition={{ duration: 0.5 }}
-          viewport={{ once: true }}
-          className="max-w-2xl mx-auto text-center space-y-4"
-        >
-          <h3 className="text-sm uppercase tracking-widest text-neutral-500">Un temps fort</h3>
-          <p className="text-sm md:text-base text-gray-300 leading-relaxed">
-            En complément des maquettes, j&apos;ai produit une vidéo générée par IA pour
-            présenter le concept directement au CEO de Shu Uemura, avant même le
-            développement. Le concept a été très bien reçu, et le projet livré.
+    <ProjectPage
+      title="Shu Uemura AI:tutor"
+      subtitle="Un coach beauté IA personnel, sur mobile"
+      meta={[
+        { label: 'Année', value: '2024' },
+        { label: 'Contexte', value: 'OKCC' },
+        { label: 'Rôle', value: 'UI Design, vidéo de présentation IA' },
+        { label: 'Outils', value: 'Figma, Runway, Kling' },
+      ]}
+      intro={
+        <>
+          <p>
+            Shu Uemura voulait un assistant capable de guider ses clientes dans le choix et
+            l&apos;application de leurs produits, comme un coach beauté personnel accessible
+            depuis mobile.
           </p>
-        </motion.div>
-
-        {/* TOOLS SECTION */}
-        <motion.div
-          initial={{ opacity: 0 }}
-          whileInView={{ opacity: 1 }}
-          transition={{ duration: 0.5 }}
-          viewport={{ once: true }}
-          className="text-center mt-20"
-        >
-          <h3 className="text-sm uppercase tracking-widest text-neutral-500 mb-4">Outils</h3>
-          <p className="text-sm md:text-base text-gray-300">
-            Figma — Runway — Kling
+          <p>
+            J&apos;ai conçu les maquettes de bout en bout, en échange direct avec le client sur
+            trois itérations. Chacune a affiné un point précis : mieux mettre en avant le
+            savoir-faire de la marque, rendre la personnalisation réellement fidèle au visage de
+            chaque cliente, et jusqu&apos;au choix des décors, avec des mannequins IA posés
+            devant du béton façon Tokyo pour ancrer l&apos;univers visuel.
           </p>
-        </motion.div>
+          <p>
+            En complément, j&apos;ai produit une vidéo générée par IA pour présenter le concept
+            directement au CEO de Shu Uemura, avant même le développement. Le concept a été très
+            bien reçu, et le projet livré.
+          </p>
+        </>
+      }
+      next={{ href: '/serena', title: 'Serena' }}
+    >
+      {steps.map((step, i) => (
+        <div key={step.n}>
+          <Chapter title={`${step.n} — ${step.title}`}>
+            <p>{step.text}</p>
+          </Chapter>
+          <Row cols={2} mobileCols={2} className="max-w-3xl mx-auto">
+            {step.screens.map((s) => (
+              <Media key={s.src} src={s.src} alt={s.alt} width={390} height={844} priority={i === 0} />
+            ))}
+          </Row>
+        </div>
+      ))}
 
-        {/* NEXT PROJECT BUTTON */}
-        <motion.div
-          initial={{ opacity: 0, y: 50 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.5 }}
-          viewport={{ once: true }}
-          className="flex justify-center mt-32"
-        >
-          <Link href="/serena">
-            <div className="group relative cursor-pointer px-6 py-3 border border-neutral-700 w-48 md:w-64 flex items-center justify-center hover:border-transparent transition-all duration-300">
-              <span className="relative text-xs font-light uppercase tracking-widest text-neutral-400 group-hover:text-white transition">
-                Projet suivant →
-              </span>
-              <div className="absolute top-0 left-0 w-3 h-3 border-t border-l border-neutral-500 group-hover:border-white transition"></div>
-              <div className="absolute top-0 right-0 w-3 h-3 border-t border-r border-neutral-500 group-hover:border-white transition"></div>
-              <div className="absolute bottom-0 left-0 w-3 h-3 border-b border-l border-neutral-500 group-hover:border-white transition"></div>
-              <div className="absolute bottom-0 right-0 w-3 h-3 border-b border-r border-neutral-500 group-hover:border-white transition"></div>
-            </div>
-          </Link>
-        </motion.div>
-
-        {/* FOOTER */}
-        <footer className="mt-20 mb-10 text-center text-xs tracking-widest text-neutral-500">
-          © {new Date().getFullYear()} Emmanuel
-        </footer>
-      </div>
-    </main>
+      <Chapter title="05 — Prolonger en boutique">
+        <p>L&apos;expérience se conclut sur les produits utilisés et une prise de rendez-vous avec les maquilleurs en boutique.</p>
+      </Chapter>
+      <Media src="/shu-flow-09-recommendations.png" alt="Shu Uemura — recommandations produits et rendez-vous" width={390} height={844} className="max-w-[340px] mx-auto" />
+    </ProjectPage>
   );
 }

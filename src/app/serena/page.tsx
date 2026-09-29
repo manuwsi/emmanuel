@@ -4,6 +4,74 @@ import Image from 'next/image';
 import { ProjectPage, Media, Row, Chapter } from '@/components/project/ProjectPage';
 import { useT } from '@/components/i18n';
 
+type T = <V,>(fr: V, en: V) => V;
+
+const researchSteps = (t: T) => [
+  {
+    title: t('Zones d’ombre', 'Blind spots'),
+    text: t('Ce que les chiffres en ligne ne permettent pas de comprendre.', 'What online figures can’t explain.'),
+  },
+  {
+    title: t('Hypothèses', 'Assumptions'),
+    text: t('Charge mentale, isolement, outils dispersés, rapport à la tech.', 'Mental load, isolation, scattered tools, attitude to tech.'),
+  },
+  {
+    title: t('Questionnaire', 'Questionnaire'),
+    text: t('Usages et outils, charge mentale, réseaux, vision d’avenir.', 'Tools and habits, mental load, networks, outlook.'),
+  },
+  {
+    title: t('Entretiens', 'Interviews'),
+    text: t('Échanges avec des agriculteurs, puis synthèse des réponses.', 'Conversations with farmers, then a synthesis of answers.'),
+  },
+];
+
+const insights = (t: T) => [
+  {
+    title: t('L’administratif déborde sur la vie privée', 'Paperwork spills into private life'),
+    quote: t(
+      'Avoir un site web qui regroupe toute la paperasse, car on le fait le soir.',
+      'A website that gathers all the paperwork, because we do it in the evening.'
+    ),
+    answer: t(
+      'Un seul espace qui centralise tâches et documents, dès le tableau de bord.',
+      'A single space centralising tasks and documents, right from the dashboard.'
+    ),
+  },
+  {
+    title: t('La technologie est adoptée quand elle soulage', 'Technology is adopted when it takes the load off'),
+    quote: t(
+      'Un robot de traite change la vie. Avant, t’étais obligé d’y aller à 6h le dimanche. Avec le robot, non.',
+      'A milking robot changes your life. You used to have to go at 6am on Sundays. With the robot, you don’t.'
+    ),
+    answer: t(
+      'L’IA n’est pas un gadget : elle remplit les documents et prépare les démarches.',
+      'AI isn’t a gimmick: it fills in documents and prepares the paperwork.'
+    ),
+  },
+  {
+    title: t('Formés à tout, sauf à l’administratif', 'Trained for everything except paperwork'),
+    quote: t(
+      'T’as des formations pour épandre, mais rien pour utiliser les sites administratifs.',
+      'There’s training for spreading fertiliser, but nothing for using the admin websites.'
+    ),
+    answer: t(
+      'Une interface claire, sans jargon ni surcharge technique.',
+      'A clear interface, with no jargon or technical clutter.'
+    ),
+  },
+  {
+    title: t('Garder la main', 'Staying in control'),
+    quote: t(
+      'J’utiliserai peut-être pas la reco vocale, mais j’aime bien faire le truc moi-même.',
+      'I might not use voice recognition, but I like doing things myself.'
+    ),
+    answer: t(
+      'L’assistant propose, l’agriculteur vérifie et valide.',
+      'The assistant suggests; the farmer checks and approves.'
+    ),
+  },
+];
+
 export default function Page() {
   const t = useT();
   const palette = [
@@ -63,7 +131,65 @@ export default function Page() {
     >
       <Media src="/serena-dashboard.png" alt={t('Serena — tableau de bord', 'Serena — dashboard')} width={1010} height={632} priority className="max-w-4xl mx-auto" />
 
-      <Chapter title="Desktop">
+      {/* RESEARCH */}
+      <Chapter title={t('Comprendre le terrain', 'Understanding the field')}>
+        <p>
+          {t(
+            'Avant de dessiner quoi que ce soit, nous avons listé ce que les données publiques ne disaient pas, formulé nos hypothèses, puis construit un questionnaire en quatre thèmes pour aller interroger des agriculteurs.',
+            'Before drawing anything, we listed what public data couldn’t tell us, wrote down our assumptions, then built a four-theme questionnaire to interview farmers.'
+          )}
+        </p>
+      </Chapter>
+      <ol className="grid grid-cols-2 md:grid-cols-4 gap-px bg-neutral-800 border border-neutral-800">
+        {researchSteps(t).map((s, i) => (
+          <li key={s.title} className="bg-[#0a0a0a] p-5 md:p-6 space-y-2">
+            <span className="text-[0.65rem] tracking-widest text-neutral-500">0{i + 1}</span>
+            <h4 className="text-sm uppercase tracking-wide text-white">{s.title}</h4>
+            <p className="text-xs text-gray-400 leading-relaxed">{s.text}</p>
+          </li>
+        ))}
+      </ol>
+
+      <div className="!mt-10 md:!mt-16 grid grid-cols-1 md:grid-cols-2 gap-px bg-neutral-800 border border-neutral-800">
+        {insights(t).map((ins, i) => (
+          <div key={ins.title} className="bg-[#0a0a0a] p-6 md:p-10 flex flex-col gap-6">
+            <span className="text-[0.65rem] uppercase tracking-widest text-neutral-500">
+              {t('Enseignement', 'Insight')} 0{i + 1}
+            </span>
+            <h4 className="text-xl md:text-2xl font-ivy font-light text-white leading-snug">{ins.title}</h4>
+            <blockquote className="text-sm md:text-base italic text-gray-300 leading-relaxed border-l border-[#eed349] pl-4">
+              {`« ${ins.quote} »`}
+            </blockquote>
+            <p className="mt-auto text-xs text-gray-400 leading-relaxed">
+              <span className="text-[#eed349]">→ </span>
+              {ins.answer}
+            </p>
+          </div>
+        ))}
+      </div>
+
+      {/* ITERATIONS */}
+      <Chapter title={t('Itérations', 'Iterations')}>
+        <p>
+          {t(
+            'La V1, encore baptisée Agriprev, posait une fenêtre de chat sur une simple liste de tâches. La V2 recentre le tableau de bord sur les tâches et les documents, ajoute des statuts, le choix de l’exploitation, et place l’assistant en bas de l’écran avec des actions proposées plutôt qu’un chat vide.',
+            'V1, still called Agriprev, placed a chat window over a plain task list. V2 refocuses the dashboard on tasks and documents, adds statuses and a farm switcher, and moves the assistant to the bottom of the screen with suggested actions instead of an empty chat.'
+          )}
+        </p>
+      </Chapter>
+      <div className="max-w-4xl mx-auto space-y-3">
+        <span className="block text-[0.65rem] uppercase tracking-widest text-neutral-500">V1 — Agriprev</span>
+        <div className="grid grid-cols-[3.4fr_1fr] gap-4 md:gap-8 items-end">
+          <Media src="/serena-wf-v1-desktop.png" alt={t('Serena — wireframe V1 desktop', 'Serena — V1 desktop wireframe')} width={702} height={426} />
+          <Media src="/serena-wf-v1-mobile.png" alt={t('Serena — wireframe V1 mobile', 'Serena — V1 mobile wireframe')} width={205} height={425} />
+        </div>
+      </div>
+      <div className="max-w-3xl mx-auto space-y-3 pt-6">
+        <span className="block text-[0.65rem] uppercase tracking-widest text-neutral-500">V2</span>
+        <Media src="/serena-wf-v2-desktop.png" alt={t('Serena — wireframe V2', 'Serena — V2 wireframe')} width={704} height={427} />
+      </div>
+
+      <Chapter title={t('Version finale — desktop', 'Final version — desktop')}>
         <p>
           {t(
             'L’assistant est pensé comme un fil conducteur plutôt qu’un simple chatbot : suggestions d’actions contextuelles sur le tableau de bord, tâches priorisées, et bibliothèque de documents classés automatiquement.',
@@ -77,7 +203,7 @@ export default function Page() {
         <Media src="/serena-doc-viewer.png" alt={t('Serena — lecture de document', 'Serena — document viewer')} width={1047} height={653} />
       </Row>
 
-      <Chapter title="Mobile">
+      <Chapter title={t('Version finale — mobile', 'Final version — mobile')}>
         <p>
           {t(
             'Sur le terrain, l’agriculteur scanne un document depuis son téléphone pour alimenter l’assistant directement.',

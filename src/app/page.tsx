@@ -111,36 +111,37 @@ function ProjectSection({
         />
       </motion.div>
 
-      <div className="absolute inset-0 z-20 flex flex-col items-center justify-center bg-black/50 text-center px-4">
+      {/* The whole card is the link: large, easy hitbox */}
+      <Link
+        href={project.link}
+        aria-label={`Voir le projet ${project.title}`}
+        className="absolute inset-0 z-20 flex flex-col items-center justify-center bg-black/50 text-center px-6 md:px-10 focus-visible:outline focus-visible:outline-1 focus-visible:outline-white"
+      >
         <motion.h2
-          className="text-[8vw] md:text-[4vw] leading-none font-ivy font-light tracking-tight text-white drop-shadow-md"
+          className="text-[8vw] md:text-[4vw] leading-[1.1] font-ivy font-light tracking-tight text-white drop-shadow-md"
           initial={{ opacity: 0 }}
           whileInView={{ opacity: 1 }}
           transition={{ delay: 0.3, duration: 1 }}
         >
           {project.title}
         </motion.h2>
-        <motion.div
+        <motion.p
+          className="mt-4 md:mt-5 text-[0.65rem] md:text-xs uppercase tracking-widest text-gray-300 font-light"
           initial={{ opacity: 0, y: 10 }}
           whileInView={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.5, duration: 0.8 }}
         >
-          <Link
-            href={project.link}
-            className="mt-4 border border-white px-4 py-2 md:px-6 md:py-2 uppercase text-[0.6rem] md:text-[0.65rem] tracking-widest hover:bg-white hover:text-black transition-all duration-300"
-          >
-            Open Project →
-          </Link>
-        </motion.div>
-        <motion.p
-          className="text-[0.6rem] md:text-xs mt-4 text-gray-300 font-light"
+          {project.subtitle}
+        </motion.p>
+        <motion.span
+          className="mt-8 md:mt-10 inline-block border border-white px-7 py-3 md:px-9 md:py-3.5 uppercase text-[0.65rem] md:text-[0.7rem] tracking-widest text-white transition-colors duration-300 group-hover:bg-white group-hover:text-black"
           initial={{ opacity: 0, y: 10 }}
           whileInView={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.7, duration: 0.8 }}
         >
-          {project.subtitle}
-        </motion.p>
-      </div>
+          Voir le projet →
+        </motion.span>
+      </Link>
     </motion.section>
   );
 }

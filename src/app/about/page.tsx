@@ -96,8 +96,8 @@ export default function AboutPage() {
           </span>
           <h1 className="text-4xl md:text-7xl font-ivy font-light tracking-tight leading-[1.05] max-w-4xl">
             {t(
-              'Product Designer à Paris, entre interface, direction artistique et IA.',
-              'Product Designer in Paris, between interface, art direction and AI.'
+              'Product Designer à Paris, de la recherche utilisateur à l’interface.',
+              'Product Designer in Paris, from user research to interface.'
             )}
           </h1>
           <div className="grid grid-cols-1 md:grid-cols-12 gap-6 md:gap-8">

@@ -5,6 +5,7 @@ export type Project = {
   link: string;
   /** Cover already contains text (logo, tagline): blur it more so it doesn't clash with the card title */
   softCover?: boolean;
+  group: 'product' | 'explorations';
 };
 
 const same = (s: string) => ({ fr: s, en: s });
@@ -12,7 +13,7 @@ const same = (s: string) => ({ fr: s, en: s });
 /**
  * Single source of truth for project order.
  * Used by the home carousel and by the "Next project" link on each case study.
- * Product / UI case studies come first.
+ * Product design case studies first, then visual explorations (OKCC AI projects last).
  */
 export const projects: Project[] = [
   {
@@ -20,6 +21,7 @@ export const projects: Project[] = [
     subtitle: { fr: '2025 — Recherche, wireframes & UI', en: '2025 — Research, wireframes & UI' },
     image: '/serena-cover.png',
     link: '/serena',
+    group: 'product',
     softCover: true,
   },
   {
@@ -27,48 +29,56 @@ export const projects: Project[] = [
     subtitle: { fr: '2025 — UI Design, coach beauté IA', en: '2025 — UI design, AI beauty tutor' },
     image: '/shu-flow-01-cover.png',
     link: '/shu-uemura',
+    group: 'product',
   },
   {
     title: same('Hennessy X.O Second Skin'),
     subtitle: { fr: '2025 — UI Design, 3D', en: '2025 — UI design, 3D' },
     image: '/hennessy.png',
     link: '/hennessy',
+    group: 'product',
   },
   {
     title: same('Z_Lab'),
     subtitle: { fr: '2025 — Refonte de site, UI/UX', en: '2025 — Website redesign, UI/UX' },
     image: '/1.png',
     link: '/z_lab',
+    group: 'product',
   },
   {
     title: same('Post Archive Faction'),
     subtitle: { fr: '2025 — Direction créative, UI & motion', en: '2025 — Creative direction, UI & motion' },
     image: '/PAF1.png',
     link: '/post-archive-faction',
-  },
-  {
-    title: same('SPECTRE'),
-    subtitle: { fr: '2025 — Design éditorial, direction artistique IA', en: '2025 — Editorial design, AI art direction' },
-    image: '/spectre1.png',
-    link: '/spectre',
+    group: 'explorations',
   },
   {
     title: same('Aether'),
     subtitle: { fr: '2024 — Design system, jeu de tarot', en: '2024 — Design system, tarot deck' },
     image: '/AETHERCOVER.png',
     link: '/aether',
-  },
-  {
-    title: { fr: 'Recherche visuelle IA', en: 'AI Visual Research' },
-    subtitle: { fr: '2025 — Motion, direction artistique IA', en: '2025 — Motion, AI art direction' },
-    image: '/f1-cover.png',
-    link: '/ai-research',
+    group: 'explorations',
   },
   {
     title: same('Pleated Assortment'),
     subtitle: { fr: '2024 — Direction créative, UI/UX', en: '2024 — Creative direction, UI/UX' },
     image: '/pleatedcover.png',
     link: '/pleated',
+    group: 'explorations',
+  },
+  {
+    title: same('SPECTRE'),
+    subtitle: { fr: '2025 — Design éditorial, direction artistique IA', en: '2025 — Editorial design, AI art direction' },
+    image: '/spectre1.png',
+    link: '/spectre',
+    group: 'explorations',
+  },
+  {
+    title: { fr: 'Recherche visuelle IA', en: 'AI Visual Research' },
+    subtitle: { fr: '2025 — Motion, direction artistique IA', en: '2025 — Motion, AI art direction' },
+    image: '/f1-cover.png',
+    link: '/ai-research',
+    group: 'explorations',
   },
 ];
 

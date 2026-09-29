@@ -4,7 +4,7 @@ import Cursor from '@/components/Cursor';
 import { LangProvider } from '@/components/i18n';
 
 const description =
-  'Portfolio d’Emmanuel Ijjou, Product Designer à Paris : UI, direction artistique et IA pour le luxe, la beauté et la tech.';
+  'Portfolio d’Emmanuel Ijjou, Product Designer à Paris : recherche utilisateur, UX et UI pour le luxe, la beauté et la tech.';
 
 export const metadata: Metadata = {
   metadataBase: new URL('https://www.ijjouemmanuel.com'),

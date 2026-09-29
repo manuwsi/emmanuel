@@ -1,6 +1,6 @@
 'use client';
 
-import { RefObject, useEffect, useRef, useState } from 'react';
+import { Fragment, RefObject, useEffect, useRef, useState } from 'react';
 import { motion, useScroll, useTransform } from 'framer-motion';
 import Image from 'next/image';
 import Link from 'next/link';
@@ -104,8 +104,8 @@ function Intro() {
       </h1>
       <p className="text-sm md:text-base text-gray-300 leading-relaxed max-w-md">
         {t(
-          'Je conçois des interfaces et des expériences digitales pour le luxe, la beauté et la tech, de la recherche utilisateur à l’UI, avec l’IA comme outil de création.',
-          'I design interfaces and digital experiences for luxury, beauty and tech, from user research to UI, with AI as a creative tool.'
+          'Je conçois des produits digitaux clairs et utiles : recherche utilisateur, parcours, wireframes, puis UI desktop et mobile.',
+          'I design clear, useful digital products: user research, user flows, wireframes, then desktop and mobile UI.'
         )}
       </p>
       <p className="text-xs text-neutral-400 leading-relaxed max-w-md">
@@ -126,9 +126,33 @@ function Intro() {
   );
 }
 
+function GroupDivider() {
+  const t = useT();
+  return (
+    <motion.section
+      className="w-[78vw] md:w-[30vw] flex-shrink-0 flex flex-col justify-center gap-5 md:gap-6 border-l border-neutral-800 pl-6 md:pl-10"
+      initial={{ opacity: 0 }}
+      whileInView={{ opacity: 1 }}
+      transition={{ duration: 1 }}
+    >
+      <span className="text-[0.7rem] uppercase tracking-widest text-neutral-400">{t('Au-delà du produit', 'Beyond product')}</span>
+      <h2 className="text-[9vw] md:text-[3.2vw] leading-[1.05] font-ivy font-light tracking-tight">
+        {t('Explorations visuelles', 'Visual explorations')}
+      </h2>
+      <p className="text-sm text-gray-300 leading-relaxed max-w-sm">
+        {t(
+          'Projets personnels et projets de studio où j’explore l’image : direction artistique, motion, édition et IA générative.',
+          'Personal and studio projects where I explore imagery: art direction, motion, editorial and generative AI.'
+        )}
+      </p>
+    </motion.section>
+  );
+}
+
 export default function Home() {
   const scrollRef = useRef<HTMLDivElement>(null);
   const cardRefs = useRef<(HTMLDivElement | null)[]>([]);
+  const t = useT();
   const [active, setActive] = useState(0);
   const { scrollXProgress } = useScroll({ container: scrollRef, axis: 'x' });
 
@@ -212,8 +236,13 @@ export default function Home() {
           <Intro />
         </div>
         {projects.map((project, i) => (
+          <Fragment key={project.link}>
+          {project.group === 'explorations' && projects[i - 1]?.group === 'product' && (
+            <div className="snap-center flex-shrink-0">
+              <GroupDivider />
+            </div>
+          )}
           <div
-            key={project.link}
             ref={(el) => {
               cardRefs.current[i] = el;
             }}
@@ -221,6 +250,7 @@ export default function Home() {
           >
             <ProjectSection project={project} index={i} containerRef={scrollRef} />
           </div>
+          </Fragment>
         ))}
       </div>
 
@@ -230,8 +260,14 @@ export default function Home() {
           <motion.div className="h-full bg-white origin-left" style={{ scaleX: scrollXProgress }} />
         </div>
         <div className="flex justify-between items-center text-[0.65rem] md:text-xs tracking-widest text-neutral-400">
-          <span className="tabular-nums">
+          <span className="tabular-nums uppercase">
             <span className="text-white">{String(active + 1).padStart(2, '0')}</span> / {String(projects.length).padStart(2, '0')}
+            <span className="hidden sm:inline">
+              {'  ·  '}
+              {projects[active]?.group === 'product'
+                ? 'Product design'
+                : t('Explorations visuelles', 'Visual explorations')}
+            </span>
           </span>
           <span>© {new Date().getFullYear()} Emmanuel Ijjou</span>
         </div>

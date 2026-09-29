@@ -17,13 +17,13 @@ const same = (s: string) => ({ fr: s, en: s });
 export const projects: Project[] = [
   {
     title: same('Shu Uemura AI:tutor'),
-    subtitle: { fr: '2024 — UI Design, coach beauté IA', en: '2024 — UI design, AI beauty tutor' },
+    subtitle: { fr: '2025 — UI Design, coach beauté IA', en: '2025 — UI design, AI beauty tutor' },
     image: '/shu-flow-01-cover.png',
     link: '/shu-uemura',
   },
   {
     title: same('Serena'),
-    subtitle: { fr: '2024 — Recherche, wireframes & UI', en: '2024 — Research, wireframes & UI' },
+    subtitle: { fr: '2025 — Recherche, wireframes & UI', en: '2025 — Research, wireframes & UI' },
     image: '/serena-cover.png',
     link: '/serena',
     softCover: true,

@@ -86,7 +86,7 @@ export default function Page() {
       title="Serena"
       subtitle={t('Un assistant IA pour l’administratif agricole', 'An AI assistant for farm paperwork')}
       meta={{
-        year: '2024',
+        year: '2025',
         context: t('Projet d’équipe, ESD', 'Team project, ESD'),
         role: t('Concept produit, wireframes, UI desktop & mobile', 'Product concept, wireframes, desktop & mobile UI'),
         tools: 'Figma',

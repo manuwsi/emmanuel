@@ -66,7 +66,7 @@ export default function Page() {
       title="Shu Uemura AI:tutor"
       subtitle={t('Un coach beauté IA personnel, sur mobile', 'A personal AI beauty coach, on mobile')}
       meta={{
-        year: '2024',
+        year: '2025',
         context: 'OKCC',
         role: t('UI Design, vidéo de présentation IA', 'UI design, AI concept video'),
         tools: 'Figma, Runway, Kling',

@@ -17,7 +17,18 @@ export default function ProjectPage() {
     return () => window.removeEventListener('mousemove', moveCursor);
   }, []);
 
-  const images = ['/serena1.png', '/serena2.png', '/serena3.png', '/serena4.png'];
+  const desktopImages = [
+    { src: '/serena-dashboard.png', alt: 'Serena — Dashboard' },
+    { src: '/serena-tasks.png', alt: 'Serena — Gestion des tâches' },
+    { src: '/serena-documents.png', alt: 'Serena — Documents' },
+    { src: '/serena-doc-viewer.png', alt: 'Serena — Lecture de document' },
+  ];
+  const mobileImages = [
+    { src: '/serena-mobile-chat.png', alt: 'Serena — Assistant mobile' },
+    { src: '/serena-mobile-scan.png', alt: 'Serena — Scan de document' },
+    { src: '/serena-mobile-tasks.png', alt: 'Serena — Tâches mobile' },
+  ];
+  const deckImages = ['/serena1.png', '/serena3.png'];
 
   return (
     <main className="w-screen min-h-screen bg-[#0a0a0a] text-white font-sans overflow-hidden relative flex flex-col">
@@ -77,6 +88,13 @@ export default function ProjectPage() {
               wireframing des premières pistes jusqu&apos;aux maquettes finales, desktop et
               mobile.
             </p>
+            <p>
+              L&apos;assistant IA est pensé comme un fil conducteur plutôt qu&apos;un simple
+              chatbot : suggestions d&apos;actions contextuelles sur le tableau de bord,
+              gestion des tâches priorisées, bibliothèque de documents classés
+              automatiquement, et scan de document depuis le mobile pour alimenter
+              l&apos;assistant directement depuis le terrain.
+            </p>
           </div>
 
           <div className="flex flex-wrap gap-6 text-xs md:text-sm uppercase tracking-widest text-gray-500 pt-8">
@@ -87,26 +105,69 @@ export default function ProjectPage() {
           </div>
         </motion.div>
 
-        {/* IMAGES */}
-        {images.map((src, index) => (
+        {/* DESKTOP SCREENS */}
+        {desktopImages.map((img, index) => (
           <motion.div
-            key={index}
+            key={img.src}
             initial={{ opacity: 0 }}
             whileInView={{ opacity: 1 }}
             transition={{ duration: 0.5, delay: 0.3 + index * 0.1 }}
             viewport={{ once: true }}
             className="flex justify-center"
           >
-            <div className="relative w-full h-[30vh] md:h-[50vh] max-w-4xl">
+            <div className="relative w-full h-[35vh] md:h-[55vh] max-w-4xl">
               <Image
-                src={src}
-                alt={`Serena Image ${index + 1}`}
+                src={img.src}
+                alt={img.alt}
                 fill
                 className="object-contain"
               />
             </div>
           </motion.div>
         ))}
+
+        {/* MOBILE SCREENS */}
+        <motion.div
+          initial={{ opacity: 0 }}
+          whileInView={{ opacity: 1 }}
+          transition={{ duration: 0.6 }}
+          viewport={{ once: true }}
+          className="flex flex-wrap justify-center gap-6"
+        >
+          {mobileImages.map((img) => (
+            <div key={img.src} className="relative w-[45%] md:w-[22%] h-[45vh]">
+              <Image
+                src={img.src}
+                alt={img.alt}
+                fill
+                className="object-contain"
+              />
+            </div>
+          ))}
+        </motion.div>
+
+        {/* PITCH CONTEXT */}
+        <motion.div
+          initial={{ opacity: 0 }}
+          whileInView={{ opacity: 1 }}
+          transition={{ duration: 0.5 }}
+          viewport={{ once: true }}
+          className="space-y-6"
+        >
+          <h3 className="text-sm uppercase tracking-widest text-neutral-500 text-center">Le pitch</h3>
+          {deckImages.map((src, index) => (
+            <div key={src} className="flex justify-center">
+              <div className="relative w-full h-[25vh] md:h-[40vh] max-w-3xl">
+                <Image
+                  src={src}
+                  alt={`Serena — Pitch ${index + 1}`}
+                  fill
+                  className="object-contain"
+                />
+              </div>
+            </div>
+          ))}
+        </motion.div>
 
         {/* LE MODELE */}
         <motion.div

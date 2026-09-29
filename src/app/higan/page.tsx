@@ -118,10 +118,10 @@ export default function Page() {
         <Media src="/higan/ampoule.jpg" alt={t('HIGAN — format ampoule 20 ml', 'HIGAN — 20 ml ampoule')} {...P} />
         <Media src="/higan/tshirt.jpg" alt={t('HIGAN — t-shirt brodé', 'HIGAN — embroidered t-shirt')} {...P} />
       </Row>
-      <Row cols={2}>
-        <Media src="/higan/shoot-1.jpg" alt={t('HIGAN — éditorial', 'HIGAN — editorial')} {...P} />
+      <div className="grid grid-cols-2">
         <Media src="/higan/shoot-2.jpg" alt={t('HIGAN — éditorial', 'HIGAN — editorial')} {...P} />
-      </Row>
+        <Media src="/higan/shoot-1.jpg" alt={t('HIGAN — éditorial', 'HIGAN — editorial')} {...P} />
+      </div>
     </ProjectPage>
   );
 }

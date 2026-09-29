@@ -21,6 +21,18 @@ const projects = [
     link: '/hennessy',
   },
   {
+    title: 'Shu Uemura',
+    subtitle: '2024 — UI Design, AI Beauty Tutor',
+    image: '/shuuemura1.png',
+    link: '/shu-uemura',
+  },
+  {
+    title: 'Serena',
+    subtitle: '2024 — Concept, Design & Wireframing',
+    image: '/serena1.png',
+    link: '/serena',
+  },
+  {
     title: 'Z_Lab',
     subtitle: '2025 — Web Redesign, UI/UX Design',
     image: '/1.png',

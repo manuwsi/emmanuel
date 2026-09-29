@@ -52,11 +52,26 @@ export default function ProjectPage() {
           </h1>
 
           <h2 className="text-base md:text-lg text-gray-400 uppercase tracking-wide">
-            Design System — Tarot Game
+            Design system pour un jeu de tarot — Projet d&apos;équipe
           </h2>
-          <p className="text-sm md:text-base max-w-2xl text-gray-300 leading-relaxed">
-            Aether is a collaborative project where we developed a complete design system to build a fully coherent tarot game. I was in charge of building a strong universe, crafting a rich visual identity and storytelling where each card has its own meaning inside a deep narrative world. This project was highly enriching, combining design system, storytelling and visual direction.
-          </p>
+          <div className="max-w-2xl space-y-6 text-sm md:text-base text-gray-300 leading-relaxed">
+            <p>
+              Aether est un jeu de tarot complet imaginé à quatre. Le défi n&apos;était pas
+              seulement de dessiner 22 cartes, mais de construire un design system capable de
+              les générer toutes de façon cohérente : une colorimétrie, des textures, des
+              ornements et un traitement du texte pensés comme des briques assemblées à
+              chaque carte, IA et retouche manuelle à l&apos;appui pour garder la qualité et
+              l&apos;originalité de chaque rendu.
+            </p>
+            <p>
+              Autour de ce système, nous avons construit un lore entier : les âmes des défunts
+              traversent le royaume d&apos;Aether entre mort et purgatoire, chaque arcane
+              majeure incarnant une étape de ce voyage initiatique. Nous sommes même allés
+              jusqu&apos;à inventer un alphabet de treize caractères propre à cet univers. J&apos;ai
+              contribué à l&apos;ensemble du projet, de la construction de l&apos;univers à la
+              direction visuelle des cartes.
+            </p>
+          </div>
 
           <div className="flex flex-wrap gap-6 text-xs md:text-sm uppercase tracking-widest text-gray-500 pt-8">
             <span>2024</span>
@@ -67,7 +82,7 @@ export default function ProjectPage() {
         </motion.div>
 
         {/* IMAGES */}
-        {["AETHER1.png", "AETHER2.png", "AETHER3.jpg", "AETHER4.jpg", "AETHER5.png", "AETHER6.jpg"].map((filename, index) => (
+        {["aether-design-system.png", "AETHER1.png", "AETHER2.png", "aether-cards-grid.png", "AETHER3.jpg", "AETHER4.jpg", "aether-alphabet.png", "AETHER5.png", "AETHER6.jpg"].map((filename, index) => (
           <motion.div
             key={index}
             initial={{ opacity: 0 }}

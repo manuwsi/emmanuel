@@ -48,7 +48,6 @@ export default function Page() {
           </p>
         </>
       )}
-      next={{ href: '/hennessy', title: 'Hennessy X.O' }}
     >
       <Media src="/paf-video-1.mp4" alt={t('Post Archive Faction — navigation dans les œuvres', 'Post Archive Faction — browsing the works')} width={864} height={616} video />
 

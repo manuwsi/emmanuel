@@ -94,7 +94,7 @@ export default function AboutPage() {
         </div>
       </div>
 
-      <footer className="mt-16 text-center text-xs tracking-widest text-neutral-500 mb-10">
+      <footer className="mt-16 text-center text-xs tracking-widest text-neutral-400 mb-10">
         © {new Date().getFullYear()} Emmanuel
       </footer>
     </main>

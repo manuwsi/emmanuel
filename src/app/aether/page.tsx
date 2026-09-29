@@ -50,7 +50,6 @@ export default function Page() {
           </p>
         </>
       )}
-      next={{ href: '/post-archive-faction', title: 'Post Archive Faction' }}
     >
       <Media src="/AETHERCOVER.png" alt={t('Aether — visuel d’univers', 'Aether — key visual')} width={1445} height={1024} priority />
 

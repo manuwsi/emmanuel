@@ -1,78 +1,13 @@
 'use client';
 
-import { RefObject, useEffect, useRef } from 'react';
+import { RefObject, useEffect, useRef, useState } from 'react';
 import { motion, useScroll, useTransform } from 'framer-motion';
 import Image from 'next/image';
 import Link from 'next/link';
 import Header from '@/components/Header';
 import { useT } from '@/components/i18n';
+import { projects, type Project } from '@/components/projects';
 import '../styles/globals.css';
-
-type Project = {
-  title: { fr: string; en: string };
-  subtitle: { fr: string; en: string };
-  image: string;
-  link: string;
-};
-
-const same = (s: string) => ({ fr: s, en: s });
-
-const projects: Project[] = [
-  {
-    title: same('Post Archive Faction'),
-    subtitle: { fr: '2025 — Direction créative, mode & tech', en: '2025 — Creative direction, fashion tech' },
-    image: '/PAF1.png',
-    link: '/post-archive-faction',
-  },
-  {
-    title: { fr: 'Hennessy avec OKCC', en: 'Hennessy with OKCC' },
-    subtitle: { fr: '2025 — UI Design, 3D', en: '2025 — UI design, 3D' },
-    image: '/hennessy.png',
-    link: '/hennessy',
-  },
-  {
-    title: same('Shu Uemura'),
-    subtitle: { fr: '2024 — UI Design, coach beauté IA', en: '2024 — UI design, AI beauty tutor' },
-    image: '/shu-flow-01-cover.png',
-    link: '/shu-uemura',
-  },
-  {
-    title: same('Serena'),
-    subtitle: { fr: '2024 — Concept, wireframes & UI', en: '2024 — Concept, wireframes & UI' },
-    image: '/serena-cover.png',
-    link: '/serena',
-  },
-  {
-    title: same('Z_Lab'),
-    subtitle: { fr: '2025 — Refonte de site, UI/UX', en: '2025 — Website redesign, UI/UX' },
-    image: '/1.png',
-    link: '/z_lab',
-  },
-  {
-    title: same('SPECTRE'),
-    subtitle: { fr: '2025 — Design éditorial, direction artistique IA', en: '2025 — Editorial design, AI art direction' },
-    image: '/spectre1.png',
-    link: '/spectre',
-  },
-  {
-    title: { fr: 'Recherche visuelle IA', en: 'AI Visual Research' },
-    subtitle: { fr: '2025 — Motion, direction artistique IA', en: '2025 — Motion, AI art direction' },
-    image: '/f1-cover.png',
-    link: '/ai-research',
-  },
-  {
-    title: same('Pleated Assortment'),
-    subtitle: { fr: '2024 — Direction créative, UI/UX', en: '2024 — Creative direction, UI/UX' },
-    image: '/pleatedcover.png',
-    link: '/pleated',
-  },
-  {
-    title: same('Aether'),
-    subtitle: { fr: '2024 — Design system, jeu de tarot', en: '2024 — Design system, tarot deck' },
-    image: '/AETHERCOVER.png',
-    link: '/aether',
-  },
-];
 
 // Composant enfant qui gère les hooks proprement
 function ProjectSection({
@@ -115,7 +50,7 @@ function ProjectSection({
           fill
           priority={index < 2}
           sizes="(max-width: 768px) 90vw, 65vw"
-          className="object-cover blur-[5px] scale-105 transition-[filter] duration-700 group-hover:blur-[1px]"
+          className={`object-cover scale-105 transition-[filter] duration-700 ${project.softCover ? 'blur-[12px] group-hover:blur-[8px]' : 'blur-[5px] group-hover:blur-[1px]'}`}
         />
       </motion.div>
 
@@ -154,8 +89,79 @@ function ProjectSection({
   );
 }
 
+function Intro() {
+  const t = useT();
+  return (
+    <motion.section
+      className="w-[78vw] md:w-[38vw] flex-shrink-0 flex flex-col justify-center gap-6 md:gap-8"
+      initial={{ opacity: 0, y: 30 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 1.1, ease: 'easeOut' }}
+    >
+      <span className="text-[0.7rem] uppercase tracking-widest text-neutral-400">Emmanuel Ijjou</span>
+      <h1 className="text-[11vw] md:text-[4.6vw] leading-[1.02] font-ivy font-light tracking-tight">
+        {t('Product Designer à Paris.', 'Product Designer in Paris.')}
+      </h1>
+      <p className="text-sm md:text-base text-gray-300 leading-relaxed max-w-md">
+        {t(
+          'Je conçois des interfaces et des expériences digitales pour le luxe, la beauté et la tech, de la recherche utilisateur à l’UI, avec l’IA comme outil de création.',
+          'I design interfaces and digital experiences for luxury, beauty and tech, from user research to UI, with AI as a creative tool.'
+        )}
+      </p>
+      <p className="text-xs text-neutral-400 leading-relaxed max-w-md">
+        {t('Formé chez OKCC pour', 'Trained at OKCC for')} Hennessy, Shu Uemura, Louis Vuitton, L&apos;Oréal, Dior, YSL Beauty.
+      </p>
+      <span className="text-[0.7rem] uppercase tracking-widest text-white flex items-center gap-3">
+        <span className="hidden md:inline">{t('Faites défiler', 'Scroll')}</span>
+        <span className="md:hidden">{t('Glissez', 'Swipe')}</span>
+        <motion.span
+          aria-hidden
+          animate={{ x: [0, 8, 0] }}
+          transition={{ repeat: Infinity, duration: 1.6, ease: 'easeInOut' }}
+        >
+          →
+        </motion.span>
+      </span>
+    </motion.section>
+  );
+}
+
 export default function Home() {
   const scrollRef = useRef<HTMLDivElement>(null);
+  const cardRefs = useRef<(HTMLDivElement | null)[]>([]);
+  const [active, setActive] = useState(0);
+  const { scrollXProgress } = useScroll({ container: scrollRef, axis: 'x' });
+
+  // Track which project is centred (state changes only when the index changes)
+  useEffect(() => {
+    const container = scrollRef.current;
+    if (!container) return;
+    let raf = 0;
+    const measure = () => {
+      raf = 0;
+      const mid = container.getBoundingClientRect().left + container.clientWidth / 2;
+      let best = 0;
+      let bestDist = Infinity;
+      cardRefs.current.forEach((el, i) => {
+        if (!el) return;
+        const r = el.getBoundingClientRect();
+        const d = Math.abs(r.left + r.width / 2 - mid);
+        if (d < bestDist) {
+          bestDist = d;
+          best = i;
+        }
+      });
+      setActive((prev) => (prev === best ? prev : best));
+    };
+    const onScroll = () => {
+      if (!raf) raf = requestAnimationFrame(measure);
+    };
+    container.addEventListener('scroll', onScroll, { passive: true });
+    return () => {
+      container.removeEventListener('scroll', onScroll);
+      cancelAnimationFrame(raf);
+    };
+  }, []);
 
   // Smooth horizontal scrolling with the mouse wheel (desktop).
   // Touch devices keep native horizontal swipe.
@@ -202,17 +208,34 @@ export default function Home() {
         ref={scrollRef}
         className="h-full w-full flex overflow-x-auto overflow-y-hidden items-center gap-[8vw] md:gap-[10vw] px-[11vw] md:px-[12vw] snap-x snap-mandatory md:snap-none [scrollbar-width:none] [&::-webkit-scrollbar]:hidden overscroll-x-contain"
       >
+        <div className="snap-center flex-shrink-0">
+          <Intro />
+        </div>
         {projects.map((project, i) => (
-          <div key={project.link} className="snap-center flex-shrink-0">
+          <div
+            key={project.link}
+            ref={(el) => {
+              cardRefs.current[i] = el;
+            }}
+            className="snap-center flex-shrink-0"
+          >
             <ProjectSection project={project} index={i} containerRef={scrollRef} />
           </div>
         ))}
       </div>
 
-      {/* Footer */}
-      <footer className="absolute bottom-5 left-1/2 -translate-x-1/2 text-center text-[0.6rem] md:text-xs tracking-widest text-neutral-500">
-        © {new Date().getFullYear()} Emmanuel
-      </footer>
+      {/* Bottom bar: counter, progress, copyright */}
+      <div className="absolute bottom-0 inset-x-0 px-4 md:px-10 pb-4 md:pb-5 pointer-events-none">
+        <div className="h-px w-full bg-neutral-800 mb-3 overflow-hidden">
+          <motion.div className="h-full bg-white origin-left" style={{ scaleX: scrollXProgress }} />
+        </div>
+        <div className="flex justify-between items-center text-[0.65rem] md:text-xs tracking-widest text-neutral-400">
+          <span className="tabular-nums">
+            <span className="text-white">{String(active + 1).padStart(2, '0')}</span> / {String(projects.length).padStart(2, '0')}
+          </span>
+          <span>© {new Date().getFullYear()} Emmanuel Ijjou</span>
+        </div>
+      </div>
     </main>
   );
 }

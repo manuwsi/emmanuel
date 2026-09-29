@@ -1,9 +1,11 @@
 'use client';
 
-import { ReactNode } from 'react';
+import { ReactNode, useEffect, useRef } from 'react';
 import { motion } from 'framer-motion';
 import Image from 'next/image';
 import Link from 'next/link';
+import { usePathname } from 'next/navigation';
+import { nextProject } from '../projects';
 import Header from '../Header';
 import { useT } from '../i18n';
 import '../../styles/globals.css';
@@ -15,17 +17,18 @@ export function ProjectPage({
   subtitle,
   meta,
   intro,
-  next,
   children,
 }: {
   title: string;
   subtitle: string;
   meta: Meta;
   intro: ReactNode;
-  next: { href: string; title: string };
   children: ReactNode;
 }) {
   const t = useT();
+  const pathname = usePathname();
+  const np = nextProject(pathname);
+  const next = { href: np.link, title: t(np.title.fr, np.title.en) };
   const metaRows = [
     { label: t('Année', 'Year'), value: meta.year },
     { label: t('Contexte', 'Context'), value: meta.context },
@@ -64,7 +67,7 @@ export function ProjectPage({
           <dl className="md:col-span-4 grid grid-cols-2 md:grid-cols-1 gap-6 content-start">
             {metaRows.map((m) => (
               <div key={m.label} className="space-y-1">
-                <dt className="text-[0.65rem] uppercase tracking-widest text-neutral-500">{m.label}</dt>
+                <dt className="text-[0.65rem] uppercase tracking-widest text-neutral-400">{m.label}</dt>
                 <dd className="text-sm text-gray-200">{m.value}</dd>
               </div>
             ))}
@@ -85,7 +88,7 @@ export function ProjectPage({
           viewport={{ once: true }}
           className="mt-40 border-t border-neutral-800 pt-12 flex flex-col items-center gap-6"
         >
-          <span className="text-[0.65rem] uppercase tracking-widest text-neutral-500">{t('Projet suivant', 'Next project')}</span>
+          <span className="text-[0.65rem] uppercase tracking-widest text-neutral-400">{t('Projet suivant', 'Next project')}</span>
           <Link href={next.href} className="group">
             <span className="text-3xl md:text-5xl font-ivy font-light tracking-tight text-neutral-300 group-hover:text-white transition">
               {next.title} →
@@ -93,7 +96,7 @@ export function ProjectPage({
           </Link>
         </motion.div>
 
-        <footer className="mt-24 mb-10 text-center text-xs tracking-widest text-neutral-500">
+        <footer className="mt-24 mb-10 text-center text-xs tracking-widest text-neutral-400">
           © {new Date().getFullYear()} Emmanuel
         </footer>
       </div>
@@ -128,19 +131,7 @@ export function Media({
       className={`w-full ${className}`}
     >
       {video ? (
-        <video
-          src={src}
-          width={width}
-          height={height}
-          autoPlay
-          muted
-          loop
-          playsInline
-          preload="metadata"
-          poster={`/posters/${src.split('/').pop()!.replace(/\.mp4$/, '.jpg')}`}
-          aria-label={alt}
-          className="w-full h-auto block"
-        />
+        <LazyVideo src={src} width={width} height={height} alt={alt} />
       ) : (
         <Image
           src={src}
@@ -153,6 +144,47 @@ export function Media({
         />
       )}
     </motion.div>
+  );
+}
+
+/**
+ * Video that only downloads and plays while on screen (pauses when scrolled away),
+ * with a poster frame so it never shows as an empty block.
+ */
+function LazyVideo({ src, width, height, alt }: { src: string; width: number; height: number; alt: string }) {
+  const ref = useRef<HTMLVideoElement>(null);
+
+  useEffect(() => {
+    const el = ref.current;
+    if (!el) return;
+    const io = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          if (!el.src) el.src = src;
+          el.play().catch(() => {});
+        } else if (!el.paused) {
+          el.pause();
+        }
+      },
+      { rootMargin: '200px 0px' }
+    );
+    io.observe(el);
+    return () => io.disconnect();
+  }, [src]);
+
+  return (
+    <video
+      ref={ref}
+      width={width}
+      height={height}
+      muted
+      loop
+      playsInline
+      preload="none"
+      poster={`/posters/${src.split('/').pop()!.replace(/\.mp4$/, '.jpg')}`}
+      aria-label={alt}
+      className="w-full h-auto block"
+    />
   );
 }
 
@@ -190,7 +222,7 @@ export function Chapter({ title, children }: { title: string; children?: ReactNo
       viewport={{ once: true }}
       className="pt-20 pb-6 md:pt-28 md:pb-10 grid grid-cols-1 md:grid-cols-12 gap-6"
     >
-      <h3 className="md:col-span-4 text-[0.65rem] md:text-xs uppercase tracking-widest text-neutral-500">
+      <h3 className="md:col-span-4 text-[0.65rem] md:text-xs uppercase tracking-widest text-neutral-400">
         {title}
       </h3>
       {children && (

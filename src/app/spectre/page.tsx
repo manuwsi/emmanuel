@@ -46,7 +46,6 @@ export default function Page() {
           </p>
         </>
       )}
-      next={{ href: '/ai-research', title: t('Recherche visuelle IA', 'AI Visual Research') }}
     >
       <Row cols={2}>
         <Media src="/spectre1.png" alt={t('SPECTRE — couverture du magazine imprimé', 'SPECTRE — printed magazine cover')} width={1080} height={1350} priority />

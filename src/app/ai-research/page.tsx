@@ -75,7 +75,6 @@ export default function Page() {
           question: how else could we show heat, a crowd, matter, movement?
         </p>
       )}
-      next={{ href: '/pleated', title: 'Pleated Assortment' }}
     >
       <div className="space-y-20 md:space-y-28">
         <Captioned p={f1} />

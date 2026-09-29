@@ -28,7 +28,6 @@ export default function Page() {
           built an e-commerce interface around them to present them and sharpen my UI skills.
         </p>
       )}
-      next={{ href: '/aether', title: 'Aether' }}
     >
       <Media src="/pleatedcover.png" alt={t('Pleated Assortment — pièce murale plissée', 'Pleated Assortment — pleated wall piece')} width={1792} height={1024} priority />
       <Media src="/pleated2.png" alt={t('Pleated Assortment — la collection', 'Pleated Assortment — the collection')} width={1856} height={1048} />

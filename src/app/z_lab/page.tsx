@@ -46,7 +46,6 @@ export default function Page() {
           </p>
         </>
       )}
-      next={{ href: '/spectre', title: 'SPECTRE' }}
     >
       <Media src="/2.png" alt={t('Z_Lab — page d’accueil', 'Z_Lab — homepage')} width={1080} height={1080} priority className="max-w-4xl mx-auto" />
 

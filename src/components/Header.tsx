@@ -29,13 +29,13 @@ export default function Header({ active }: { active?: 'work' | 'about' }) {
         <span className="flex items-center gap-1 pl-1" role="group" aria-label={t('Langue', 'Language')}>
           {(['fr', 'en'] as const).map((l, i) => (
             <span key={l} className="flex items-center gap-1">
-              {i > 0 && <span className="text-neutral-500">/</span>}
+              {i > 0 && <span className="text-neutral-400">/</span>}
               <button
                 type="button"
                 onClick={() => setLang(l)}
                 aria-pressed={lang === l}
                 className={`uppercase py-2 px-1 -my-2 transition-colors ${
-                  lang === l ? 'text-white' : 'text-neutral-500 hover:text-white'
+                  lang === l ? 'text-white' : 'text-neutral-400 hover:text-white'
                 }`}
               >
                 {l}

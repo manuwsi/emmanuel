@@ -42,7 +42,6 @@ export default function Page() {
           </p>
         </>
       )}
-      next={{ href: '/shu-uemura', title: 'Shu Uemura' }}
     >
       <Media src="/hennessy.png" alt={t('Hennessy X.O Second Skin — rendu 3D', 'Hennessy X.O Second Skin — 3D render')} width={3000} height={1688} priority />
 

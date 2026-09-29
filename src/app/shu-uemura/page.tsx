@@ -110,7 +110,6 @@ export default function Page() {
           </p>
         </>
       )}
-      next={{ href: '/serena', title: 'Serena' }}
     >
       {steps.map((step, i) => (
         <div key={step.n}>

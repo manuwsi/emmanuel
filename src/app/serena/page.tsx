@@ -127,7 +127,6 @@ export default function Page() {
           </p>
         </>
       )}
-      next={{ href: '/z_lab', title: 'Z_Lab' }}
     >
       <Media src="/serena-dashboard.png" alt={t('Serena — tableau de bord', 'Serena — dashboard')} width={1010} height={632} priority className="max-w-4xl mx-auto" />
 
@@ -143,7 +142,7 @@ export default function Page() {
       <ol className="grid grid-cols-2 md:grid-cols-4 gap-px bg-neutral-800 border border-neutral-800">
         {researchSteps(t).map((s, i) => (
           <li key={s.title} className="bg-[#0a0a0a] p-5 md:p-6 space-y-2">
-            <span className="text-[0.65rem] tracking-widest text-neutral-500">0{i + 1}</span>
+            <span className="text-[0.65rem] tracking-widest text-neutral-400">0{i + 1}</span>
             <h4 className="text-sm uppercase tracking-wide text-white">{s.title}</h4>
             <p className="text-xs text-gray-400 leading-relaxed">{s.text}</p>
           </li>
@@ -153,7 +152,7 @@ export default function Page() {
       <div className="!mt-10 md:!mt-16 grid grid-cols-1 md:grid-cols-2 gap-px bg-neutral-800 border border-neutral-800">
         {insights(t).map((ins, i) => (
           <div key={ins.title} className="bg-[#0a0a0a] p-6 md:p-10 flex flex-col gap-6">
-            <span className="text-[0.65rem] uppercase tracking-widest text-neutral-500">
+            <span className="text-[0.65rem] uppercase tracking-widest text-neutral-400">
               {t('Enseignement', 'Insight')} 0{i + 1}
             </span>
             <h4 className="text-xl md:text-2xl font-ivy font-light text-white leading-snug">{ins.title}</h4>
@@ -178,18 +177,18 @@ export default function Page() {
         </p>
       </Chapter>
       <div className="max-w-4xl mx-auto space-y-3">
-        <span className="block text-[0.65rem] uppercase tracking-widest text-neutral-500">{t('Wireframe V1 — Agriprev', 'Wireframe V1 — Agriprev')}</span>
+        <span className="block text-[0.65rem] uppercase tracking-widest text-neutral-400">{t('Wireframe V1 — Agriprev', 'Wireframe V1 — Agriprev')}</span>
         <div className="grid grid-cols-[3.4fr_1fr] gap-4 md:gap-8 items-end">
           <Media src="/serena-wf-v1-desktop.png" alt={t('Serena — wireframe V1 desktop', 'Serena — V1 desktop wireframe')} width={702} height={426} />
           <Media src="/serena-wf-v1-mobile.png" alt={t('Serena — wireframe V1 mobile', 'Serena — V1 mobile wireframe')} width={205} height={425} />
         </div>
       </div>
       <div className="max-w-3xl mx-auto space-y-3 pt-6">
-        <span className="block text-[0.65rem] uppercase tracking-widest text-neutral-500">{t('Wireframe V2', 'Wireframe V2')}</span>
+        <span className="block text-[0.65rem] uppercase tracking-widest text-neutral-400">{t('Wireframe V2', 'Wireframe V2')}</span>
         <Media src="/serena-wf-v2-desktop.png" alt={t('Serena — wireframe V2', 'Serena — V2 wireframe')} width={704} height={427} />
       </div>
       <div className="max-w-4xl mx-auto space-y-3 pt-6">
-        <span className="block text-[0.65rem] uppercase tracking-widest text-neutral-500">{t('Maquette V1', 'Mockup V1')}</span>
+        <span className="block text-[0.65rem] uppercase tracking-widest text-neutral-400">{t('Maquette V1', 'Mockup V1')}</span>
         <Media src="/serena-mockup-v1.png" alt={t('Serena — première maquette', 'Serena — first mockup')} width={1017} height={620} />
         <p className="text-xs text-gray-400 leading-relaxed max-w-2xl pt-2">
           {t(
@@ -241,7 +240,7 @@ export default function Page() {
           {palette.map((c) => (
             <div key={c.hex} className="flex flex-col items-center gap-2">
               <div className="w-12 h-12 md:w-14 md:h-14 rounded-full border border-neutral-700" style={{ backgroundColor: c.hex }} />
-              <span className="text-[0.6rem] uppercase tracking-widest text-neutral-500">{c.label}</span>
+              <span className="text-[0.6rem] uppercase tracking-widest text-neutral-400">{c.label}</span>
             </div>
           ))}
         </div>

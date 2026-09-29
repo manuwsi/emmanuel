@@ -29,7 +29,7 @@ const projects = [
   {
     title: 'Serena',
     subtitle: '2024 — Concept, Design & Wireframing',
-    image: '/serena-dashboard.png',
+    image: '/serena-cover.png',
     link: '/serena',
   },
   {

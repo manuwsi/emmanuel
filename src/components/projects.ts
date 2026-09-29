@@ -46,6 +46,13 @@ export const projects: Project[] = [
     group: 'product',
   },
   {
+    title: same('HIGAN'),
+    subtitle: { fr: '2026 — Design de flacon, 3D & direction artistique', en: '2026 — Bottle design, 3D & art direction' },
+    image: '/higan/silhouette.jpg',
+    link: '/higan',
+    group: 'explorations',
+  },
+  {
     title: same('Post Archive Faction'),
     subtitle: { fr: '2025 — Direction créative, UI & motion', en: '2025 — Creative direction, UI & motion' },
     image: '/PAF1.png',
@@ -57,13 +64,6 @@ export const projects: Project[] = [
     subtitle: { fr: '2024 — Design system, jeu de tarot', en: '2024 — Design system, tarot deck' },
     image: '/AETHERCOVER.png',
     link: '/aether',
-    group: 'explorations',
-  },
-  {
-    title: same('Pleated Assortment'),
-    subtitle: { fr: '2024 — Direction créative, UI/UX', en: '2024 — Creative direction, UI/UX' },
-    image: '/pleatedcover.png',
-    link: '/pleated',
     group: 'explorations',
   },
   {

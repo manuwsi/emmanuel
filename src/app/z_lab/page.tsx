@@ -51,11 +51,21 @@ export default function ProjectPage() {
           </h1>
 
           <h2 className="text-base md:text-lg text-gray-400 uppercase tracking-wide">
-            Architecture Studio — Website Redesign
+            Refonte de site — Studio d&apos;architecture, projet école
           </h2>
-          <p className="text-sm md:text-base max-w-2xl text-gray-300 leading-relaxed">
-            Z_Lab is a Korean architecture studio known for its minimal yet sophisticated spaces. This 2025 redesign focuses on modernizing their online presence, highlighting their design philosophy with a clean, immersive web experience.
-          </p>
+          <div className="max-w-2xl space-y-6 text-sm md:text-base text-gray-300 leading-relaxed">
+            <p>
+              Z_Lab est un studio d&apos;architecture coréen connu pour ses espaces minimaux et
+              sophistiqués. En étudiant leurs réalisations, une chose revenait sans cesse : la
+              ligne, présente aussi bien dans leur architecture que dans leur identité
+              visuelle. C&apos;est devenu le fil conducteur du projet.
+            </p>
+            <p>
+              J&apos;ai commencé par un audit de leur site existant pour identifier ce qui
+              desservait leur image, avant de construire un ensemble cohérent qui reflète
+              vraiment leur professionnalisme et leur parti pris artistique.
+            </p>
+          </div>
 
           {/* META */}
           <div className="flex flex-wrap gap-6 text-xs md:text-sm uppercase tracking-widest text-gray-500 pt-8">

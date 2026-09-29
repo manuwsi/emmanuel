@@ -169,6 +169,45 @@ export default function ProjectPage() {
           ))}
         </motion.div>
 
+        {/* IDENTITE */}
+        <motion.div
+          initial={{ opacity: 0 }}
+          whileInView={{ opacity: 1 }}
+          transition={{ duration: 0.5 }}
+          viewport={{ once: true }}
+          className="max-w-2xl mx-auto text-center space-y-8"
+        >
+          <h3 className="text-sm uppercase tracking-widest text-neutral-500">Identité</h3>
+          <p className="text-sm md:text-base text-gray-300 leading-relaxed">
+            Au-delà de l&apos;interface, Serena porte une identité pensée pour rassurer plutôt
+            qu&apos;imposer : un vert profond et un jaune chaleureux, loin du vocabulaire froid
+            des logiciels de gestion habituels du secteur.
+          </p>
+
+          <div className="flex justify-center gap-4 md:gap-6">
+            {[
+              { hex: '#0b3628', label: 'Vert profond' },
+              { hex: '#629784', label: 'Vert sauge' },
+              { hex: '#eed347', label: 'Jaune' },
+              { hex: '#e6f9d4', label: 'Vert clair' },
+            ].map((c) => (
+              <div key={c.hex} className="flex flex-col items-center gap-2">
+                <div
+                  className="w-12 h-12 md:w-16 md:h-16 rounded-full border border-neutral-700"
+                  style={{ backgroundColor: c.hex }}
+                />
+                <span className="text-[0.6rem] md:text-xs uppercase tracking-widest text-neutral-500">
+                  {c.label}
+                </span>
+              </div>
+            ))}
+          </div>
+
+          <blockquote className="border-l border-neutral-700 pl-6 text-left mx-auto max-w-md text-sm md:text-base italic text-gray-300">
+            « Serena s&apos;exprime avec calme, clarté et bienveillance. »
+          </blockquote>
+        </motion.div>
+
         {/* LE MODELE */}
         <motion.div
           initial={{ opacity: 0 }}

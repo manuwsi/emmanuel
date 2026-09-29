@@ -109,7 +109,7 @@ function Intro() {
         )}
       </p>
       <p className="text-xs text-neutral-400 leading-relaxed max-w-md">
-        {t('Formé chez OKCC pour', 'Trained at OKCC for')} Hennessy, Shu Uemura, Louis Vuitton, L&apos;Oréal, Dior, YSL Beauty.
+        {t('Chez OKCC, pour', 'At OKCC, for')} Hennessy, Shu Uemura, Louis Vuitton, L&apos;Oréal, YSL Beauty, HOKA.
       </p>
       <span className="text-[0.7rem] uppercase tracking-widest text-white flex items-center gap-3">
         <span className="hidden md:inline">{t('Faites défiler', 'Scroll')}</span>

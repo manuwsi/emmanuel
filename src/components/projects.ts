@@ -22,17 +22,17 @@ export const projects: Project[] = [
     link: '/shu-uemura',
   },
   {
-    title: same('Hennessy X.O Second Skin'),
-    subtitle: { fr: '2025 — UI Design, 3D', en: '2025 — UI design, 3D' },
-    image: '/hennessy.png',
-    link: '/hennessy',
-  },
-  {
     title: same('Serena'),
     subtitle: { fr: '2024 — Recherche, wireframes & UI', en: '2024 — Research, wireframes & UI' },
     image: '/serena-cover.png',
     link: '/serena',
     softCover: true,
+  },
+  {
+    title: same('Hennessy X.O Second Skin'),
+    subtitle: { fr: '2025 — UI Design, 3D', en: '2025 — UI design, 3D' },
+    image: '/hennessy.png',
+    link: '/hennessy',
   },
   {
     title: same('Z_Lab'),

@@ -29,8 +29,8 @@ export default function AboutPage() {
       <header className="fixed top-0 z-50 w-full px-4 md:px-10 py-4 flex flex-col md:flex-row md:justify-between items-center gap-2 md:gap-0 text-[0.6rem] md:text-sm uppercase tracking-wider">
         <span className="text-center">Emmanuel — Paris, France</span>
         <nav className="flex space-x-6 md:space-x-8">
-          <Link href="/" className="hover:underline transition-all duration-300">[Works]</Link>
-          <Link href="#" className="pointer-events-none line-through hover:underline transition-all duration-300 uppercase tracking-wider">[About]</Link>
+          <Link href="/" className="hover:underline transition-all duration-300">[Travaux]</Link>
+          <Link href="#" className="pointer-events-none line-through hover:underline transition-all duration-300 uppercase tracking-wider">[À propos]</Link>
           <a href="mailto:emmanuelijjou@gmail.com" className="hover:underline transition-all duration-300">[Contact]</a>
         </nav>
       </header>

@@ -32,8 +32,8 @@ export default function ProjectPage() {
       <header className="fixed top-0 z-50 w-full px-4 md:px-10 py-4 flex flex-col md:flex-row md:justify-between items-center gap-2 md:gap-0 text-[0.6rem] md:text-sm uppercase tracking-wider">
         <span className="text-center">Emmanuel — Paris, France</span>
         <nav className="flex space-x-6 md:space-x-8">
-          <Link href="/" className="hover:underline transition-all duration-300">[Works]</Link>
-          <Link href="/about" className="hover:underline transition-all duration-300">[About]</Link>
+          <Link href="/" className="hover:underline transition-all duration-300">[Travaux]</Link>
+          <Link href="/about" className="hover:underline transition-all duration-300">[À propos]</Link>
           <a href="mailto:emmanuelijjou@gmail.com" className="hover:underline transition-all duration-300">[Contact]</a>
         </nav>
       </header>
@@ -113,7 +113,7 @@ export default function ProjectPage() {
           viewport={{ once: true }}
           className="text-center mt-20"
         >
-          <h3 className="text-sm uppercase tracking-widest text-neutral-500 mb-4">Tools</h3>
+          <h3 className="text-sm uppercase tracking-widest text-neutral-500 mb-4">Outils</h3>
           <p className="text-sm md:text-base text-gray-300">
             Figma — DALL·E
           </p>
@@ -130,7 +130,7 @@ export default function ProjectPage() {
           <Link href="/aether">
             <div className="group relative cursor-pointer px-6 py-3 border border-neutral-700 w-48 md:w-64 flex items-center justify-center hover:border-transparent transition-all duration-300">
               <span className="relative text-xs font-light uppercase tracking-widest text-neutral-400 group-hover:text-white transition">
-                Next Project →
+                Projet suivant →
               </span>
               {/* Corners */}
               <div className="absolute top-0 left-0 w-3 h-3 border-t border-l border-neutral-500 group-hover:border-white transition"></div>

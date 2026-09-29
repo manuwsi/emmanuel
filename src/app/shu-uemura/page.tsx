@@ -139,6 +139,58 @@ export default function Page() {
         height={844}
         className="max-w-[340px] mx-auto"
       />
+
+      {/* ITERATIONS */}
+      <Chapter title={t('Itérations', 'Iterations')}>
+        <p>
+          {t(
+            'Le premier jet posait les bases fonctionnelles : un compte, une galerie de demandes et un chat texte neutre. La V1 installe l’univers de marque (rouge Shu Uemura, choix d’un mentor, analyse faciale) mais reste générique. La version finale ancre tout dans le savoir-faire maison : mesures du visage propres à Shu Uemura, décors béton façon Tokyo et tutoriels liés aux produits.',
+            'The first draft laid the functional groundwork: an account, a request gallery and a neutral text chat. V1 brought in the brand world (Shu Uemura red, mentor choice, face analysis) but stayed generic. The final version roots everything in the house’s craft: Shu Uemura’s own face measurements, Tokyo-style concrete settings and product-linked tutorials.'
+          )}
+        </p>
+      </Chapter>
+      <div className="max-w-3xl mx-auto space-y-3">
+        <span className="block text-[0.65rem] uppercase tracking-widest text-neutral-400">{t('Premier jet', 'First draft')}</span>
+        <Row cols={3} mobileCols={2}>
+          <Media src="/shu-draft-login.png" alt={t('Shu Uemura — premier jet, connexion', 'Shu Uemura — first draft, login')} width={390} height={844} />
+          <Media src="/shu-draft-requests.png" alt={t('Shu Uemura — premier jet, galerie de demandes', 'Shu Uemura — first draft, request gallery')} width={390} height={844} />
+          <Media src="/shu-draft-chat.png" alt={t('Shu Uemura — premier jet, chat', 'Shu Uemura — first draft, chat')} width={390} height={844} className="hidden md:block" />
+        </Row>
+      </div>
+      <div className="max-w-3xl mx-auto space-y-3 pt-6">
+        <span className="block text-[0.65rem] uppercase tracking-widest text-neutral-400">V1</span>
+        <Row cols={3} mobileCols={2}>
+          <Media src="/shu-v1-cover.png" alt={t('Shu Uemura — V1, accueil', 'Shu Uemura — V1, welcome')} width={390} height={844} />
+          <Media src="/shu-v1-mentor.png" alt={t('Shu Uemura — V1, choix du mentor', 'Shu Uemura — V1, mentor choice')} width={390} height={844} />
+          <Media src="/shu-v1-facemesh.png" alt={t('Shu Uemura — V1, analyse faciale', 'Shu Uemura — V1, face analysis')} width={390} height={844} className="hidden md:block" />
+        </Row>
+      </div>
+
+      {/* STORYBOARD */}
+      <Chapter title={t('Le film de présentation', 'The concept film')}>
+        <p>
+          {t(
+            'Pour convaincre avant le développement, j’ai écrit et produit un film en IA présenté au CEO de Shu Uemura : du geste d’un maquilleur de la maison jusqu’aux mentors virtuels qui accompagnent chaque cliente.',
+            'To win buy-in before development, I wrote and produced an AI film shown to Shu Uemura’s CEO: from the gesture of a house make-up artist to the virtual mentors guiding each client.'
+          )}
+        </p>
+      </Chapter>
+      <Row cols={2}>
+        {[
+          { n: 1, fr: 'La cliente choisit son mentor.', en: 'The client picks her mentor.' },
+          { n: 2, fr: 'Le mentor apparaît et engage la conversation.', en: 'The mentor appears and starts the conversation.' },
+          { n: 3, fr: 'Les mesures Shu Uemura se dessinent sur le visage.', en: 'Shu Uemura’s measurements are drawn on the face.' },
+          { n: 4, fr: 'Les trois mentors accompagnent des milliers de clientes.', en: 'The three mentors guide thousands of clients.' },
+        ].map((f) => (
+          <figure key={f.n} className="space-y-3">
+            <Media src={`/shu-sb-${f.n}.jpg`} alt={t(`Storyboard — ${f.fr}`, `Storyboard — ${f.en}`)} width={540} height={292} />
+            <figcaption className="text-xs text-gray-400">
+              <span className="text-neutral-400 tabular-nums">0{f.n} — </span>
+              {t(f.fr, f.en)}
+            </figcaption>
+          </figure>
+        ))}
+      </Row>
     </ProjectPage>
   );
 }

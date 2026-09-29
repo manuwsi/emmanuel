@@ -17,7 +17,17 @@ export default function ProjectPage() {
     return () => window.removeEventListener('mousemove', moveCursor);
   }, []);
 
-  const images = ['/shuuemura1.png', '/shuuemura2.png', '/shuuemura3.png'];
+  const flowImages = [
+    { src: '/shu-flow-01-cover.png', alt: 'Shu Uemura — AI:tutor, écran d’accueil' },
+    { src: '/shu-flow-02-select-haruto.png', alt: 'Shu Uemura — Sélection du mentor, Haruto' },
+    { src: '/shu-flow-03-chat.png', alt: 'Shu Uemura — Conversation personnalisée' },
+    { src: '/shu-flow-04-camera-cta.png', alt: 'Shu Uemura — Activation de la caméra' },
+    { src: '/shu-flow-05-face-scan.png', alt: 'Shu Uemura — Analyse faciale' },
+    { src: '/shu-flow-06-brow-shape.png', alt: 'Shu Uemura — Recommandation de forme de sourcil' },
+    { src: '/shu-flow-07-pencil.png', alt: 'Shu Uemura — Tutoriel pas-à-pas, crayon sourcils' },
+    { src: '/shu-flow-08-flex-styler.png', alt: 'Shu Uemura — Tutoriel pas-à-pas, flex styler' },
+    { src: '/shu-flow-09-recommendations.png', alt: 'Shu Uemura — Recommandations produits et prise de rendez-vous' },
+  ];
 
   return (
     <main className="w-screen min-h-screen bg-[#0a0a0a] text-white font-sans overflow-hidden relative flex flex-col">
@@ -101,25 +111,24 @@ export default function ProjectPage() {
         </motion.div>
 
         {/* IMAGES */}
-        {images.map((src, index) => (
-          <motion.div
-            key={index}
-            initial={{ opacity: 0 }}
-            whileInView={{ opacity: 1 }}
-            transition={{ duration: 0.5, delay: 0.3 + index * 0.1 }}
-            viewport={{ once: true }}
-            className="flex justify-center"
-          >
-            <div className="relative w-full h-[30vh] md:h-[50vh] max-w-4xl">
+        <motion.div
+          initial={{ opacity: 0 }}
+          whileInView={{ opacity: 1 }}
+          transition={{ duration: 0.6 }}
+          viewport={{ once: true }}
+          className="grid grid-cols-2 md:grid-cols-3 gap-4 md:gap-6"
+        >
+          {flowImages.map((img) => (
+            <div key={img.src} className="relative w-full aspect-[390/846]">
               <Image
-                src={src}
-                alt={`Shu Uemura Image ${index + 1}`}
+                src={img.src}
+                alt={img.alt}
                 fill
                 className="object-contain"
               />
             </div>
-          </motion.div>
-        ))}
+          ))}
+        </motion.div>
 
         {/* TEMPS FORT */}
         <motion.div

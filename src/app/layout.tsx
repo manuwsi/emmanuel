@@ -1,9 +1,10 @@
 import '../styles/globals.css';
 import Cursor from '@/components/Cursor';
+import { LangProvider } from '@/components/i18n';
 
 export const metadata = {
-  title: 'Portfolio Emmanuel',
-  description: 'Creative Developer',
+  title: 'Emmanuel Ijjou — Product Designer',
+  description: 'Portfolio d’Emmanuel Ijjou, Product Designer à Paris : UI, direction artistique et IA.',
 };
 
 export default function RootLayout({
@@ -12,7 +13,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en">
+    <html lang="fr">
       <head>
         {/* IvyOra */}
         <link rel="stylesheet" href="https://use.typekit.net/cgb0rtc.css" />
@@ -21,8 +22,10 @@ export default function RootLayout({
         className="bg-[#0a0a0a] text-white font-sans"
         suppressHydrationWarning={true}
       >
-        <Cursor />
-        {children}
+        <LangProvider>
+          <Cursor />
+          {children}
+        </LangProvider>
       </body>
     </html>
   );

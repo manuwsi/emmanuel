@@ -4,9 +4,11 @@ import { ReactNode } from 'react';
 import { motion } from 'framer-motion';
 import Image from 'next/image';
 import Link from 'next/link';
+import Header from '../Header';
+import { useT } from '../i18n';
 import '../../styles/globals.css';
 
-type Meta = { label: string; value: string };
+type Meta = { year: string; context: string; role: string; tools: string; award?: string };
 
 export function ProjectPage({
   title,
@@ -18,22 +20,23 @@ export function ProjectPage({
 }: {
   title: string;
   subtitle: string;
-  meta: Meta[];
+  meta: Meta;
   intro: ReactNode;
   next: { href: string; title: string };
   children: ReactNode;
 }) {
+  const t = useT();
+  const metaRows = [
+    { label: t('Année', 'Year'), value: meta.year },
+    { label: t('Contexte', 'Context'), value: meta.context },
+    { label: t('Rôle', 'Role'), value: meta.role },
+    { label: t('Outils', 'Tools'), value: meta.tools },
+    ...(meta.award ? [{ label: t('Distinction', 'Award'), value: meta.award }] : []),
+  ];
+
   return (
     <main className="w-full min-h-screen bg-[#0a0a0a] text-white font-sans overflow-x-hidden relative flex flex-col">
-      {/* HEADER */}
-      <header className="fixed top-0 z-50 w-full px-4 md:px-10 py-4 flex flex-col md:flex-row md:justify-between items-center gap-2 md:gap-0 text-[0.6rem] md:text-sm uppercase tracking-wider mix-blend-difference">
-        <span className="text-center">Emmanuel — Paris, France</span>
-        <nav className="flex space-x-6 md:space-x-8">
-          <Link href="/" className="hover:underline transition-all duration-300">[Travaux]</Link>
-          <Link href="/about" className="hover:underline transition-all duration-300">[À propos]</Link>
-          <a href="mailto:emmanuelijjou@gmail.com" className="hover:underline transition-all duration-300">[Contact]</a>
-        </nav>
-      </header>
+      <Header />
 
       <div className="pt-32 md:pt-40 px-6 md:px-10 w-full max-w-6xl mx-auto flex-grow">
         {/* TITLE */}
@@ -59,7 +62,7 @@ export function ProjectPage({
           className="mt-14 md:mt-20 grid grid-cols-1 md:grid-cols-12 gap-10 md:gap-8 border-t border-neutral-800 pt-10"
         >
           <dl className="md:col-span-4 grid grid-cols-2 md:grid-cols-1 gap-6 content-start">
-            {meta.map((m) => (
+            {metaRows.map((m) => (
               <div key={m.label} className="space-y-1">
                 <dt className="text-[0.65rem] uppercase tracking-widest text-neutral-500">{m.label}</dt>
                 <dd className="text-sm text-gray-200">{m.value}</dd>
@@ -82,7 +85,7 @@ export function ProjectPage({
           viewport={{ once: true }}
           className="mt-40 border-t border-neutral-800 pt-12 flex flex-col items-center gap-6"
         >
-          <span className="text-[0.65rem] uppercase tracking-widest text-neutral-500">Projet suivant</span>
+          <span className="text-[0.65rem] uppercase tracking-widest text-neutral-500">{t('Projet suivant', 'Next project')}</span>
           <Link href={next.href} className="group">
             <span className="text-3xl md:text-5xl font-ivy font-light tracking-tight text-neutral-300 group-hover:text-white transition">
               {next.title} →

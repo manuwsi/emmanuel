@@ -1,23 +1,25 @@
 'use client';
 
 import { ProjectPage, Media, Row, Chapter } from '@/components/project/ProjectPage';
-
-const sq = (n: number, alt: string) => (
-  <Media src={`/${n}.png`} alt={`Z_Lab — ${alt}`} width={1080} height={1080} />
-);
+import { useT } from '@/components/i18n';
 
 export default function Page() {
+  const t = useT();
+  const sq = (n: number, fr: string, en: string) => (
+    <Media src={`/${n}.png`} alt={`Z_Lab — ${t(fr, en)}`} width={1080} height={1080} />
+  );
+
   return (
     <ProjectPage
       title="Z_Lab"
-      subtitle="Refonte de site pour un studio d’architecture"
-      meta={[
-        { label: 'Année', value: '2025' },
-        { label: 'Contexte', value: 'Projet école, ESD' },
-        { label: 'Rôle', value: 'Audit, direction créative, UI/UX' },
-        { label: 'Outils', value: 'Figma, Protopie' },
-      ]}
-      intro={
+      subtitle={t('Refonte de site pour un studio d’architecture', 'Website redesign for an architecture studio')}
+      meta={{
+        year: '2025',
+        context: t('Projet école, ESD', 'School project, ESD'),
+        role: t('Audit, direction créative, UI/UX', 'Audit, creative direction, UI/UX'),
+        tools: 'Figma, Protopie',
+      }}
+      intro={t(
         <>
           <p>
             Z_Lab est un studio d&apos;architecture coréen connu pour ses espaces minimaux et
@@ -30,30 +32,52 @@ export default function Page() {
             desservait leur image, avant de construire un ensemble cohérent qui reflète vraiment
             leur professionnalisme et leur parti pris artistique.
           </p>
+        </>,
+        <>
+          <p>
+            Z_Lab is a Korean architecture studio known for minimal, refined spaces. Studying
+            their work, one thing kept coming back: the line, present in their architecture as
+            much as in their visual identity. It became the common thread of the project.
+          </p>
+          <p>
+            I started with an audit of their existing website to find what was holding their
+            image back, then built a coherent whole that truly reflects their professionalism
+            and artistic stance.
+          </p>
         </>
-      }
+      )}
       next={{ href: '/spectre', title: 'SPECTRE' }}
     >
-      <Media src="/2.png" alt="Z_Lab — page d’accueil" width={1080} height={1080} priority className="max-w-4xl mx-auto" />
+      <Media src="/2.png" alt={t('Z_Lab — page d’accueil', 'Z_Lab — homepage')} width={1080} height={1080} priority className="max-w-4xl mx-auto" />
 
-      <Chapter title="Le site">
-        <p>Une page d&apos;accueil sobre, un index des projets en grille, et des pages projet qui laissent toute la place à la photographie.</p>
+      <Chapter title={t('Le site', 'The website')}>
+        <p>
+          {t(
+            'Une page d’accueil sobre, un index des projets en grille, et des pages projet qui laissent toute la place à la photographie.',
+            'A restrained homepage, a grid index of projects, and project pages that give photography all the room.'
+          )}
+        </p>
       </Chapter>
       <Row cols={2}>
-        {sq(1, 'site sur ordinateur')}
-        {sq(3, 'index des projets')}
+        {sq(1, 'site sur ordinateur', 'website on desktop')}
+        {sq(3, 'index des projets', 'project index')}
       </Row>
       <Row cols={2}>
-        {sq(4, 'page projet sur ordinateur')}
-        {sq(5, 'page projet')}
+        {sq(4, 'page projet sur ordinateur', 'project page on desktop')}
+        {sq(5, 'page projet', 'project page')}
       </Row>
 
-      <Chapter title="Au-delà de l’écran">
-        <p>Le même vocabulaire de lignes se prolonge sur mobile et sur les supports imprimés.</p>
+      <Chapter title={t('Au-delà de l’écran', 'Beyond the screen')}>
+        <p>
+          {t(
+            'Le même vocabulaire de lignes se prolonge sur mobile et sur les supports imprimés.',
+            'The same language of lines carries over to mobile and to print.'
+          )}
+        </p>
       </Chapter>
       <Row cols={2}>
-        {sq(7, 'site sur mobile')}
-        {sq(6, 'papeterie')}
+        {sq(7, 'site sur mobile', 'website on mobile')}
+        {sq(6, 'papeterie', 'stationery')}
       </Row>
     </ProjectPage>
   );

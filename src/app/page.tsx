@@ -4,60 +4,71 @@ import { RefObject, useEffect, useRef } from 'react';
 import { motion, useScroll, useTransform } from 'framer-motion';
 import Image from 'next/image';
 import Link from 'next/link';
+import Header from '@/components/Header';
+import { useT } from '@/components/i18n';
 import '../styles/globals.css';
 
-const projects = [
+type Project = {
+  title: { fr: string; en: string };
+  subtitle: { fr: string; en: string };
+  image: string;
+  link: string;
+};
+
+const same = (s: string) => ({ fr: s, en: s });
+
+const projects: Project[] = [
   {
-    title: 'Post Archive Faction',
-    subtitle: '2025 — Creative Direction, Fashion Tech',
+    title: same('Post Archive Faction'),
+    subtitle: { fr: '2025 — Direction créative, mode & tech', en: '2025 — Creative direction, fashion tech' },
     image: '/PAF1.png',
     link: '/post-archive-faction',
   },
   {
-    title: 'Hennessy with OKCC',
-    subtitle: '2025 — UI Design',
+    title: { fr: 'Hennessy avec OKCC', en: 'Hennessy with OKCC' },
+    subtitle: { fr: '2025 — UI Design, 3D', en: '2025 — UI design, 3D' },
     image: '/hennessy.png',
     link: '/hennessy',
   },
   {
-    title: 'Shu Uemura',
-    subtitle: '2024 — UI Design, AI Beauty Tutor',
+    title: same('Shu Uemura'),
+    subtitle: { fr: '2024 — UI Design, coach beauté IA', en: '2024 — UI design, AI beauty tutor' },
     image: '/shu-flow-01-cover.png',
     link: '/shu-uemura',
   },
   {
-    title: 'Serena',
-    subtitle: '2024 — Concept, Design & Wireframing',
+    title: same('Serena'),
+    subtitle: { fr: '2024 — Concept, wireframes & UI', en: '2024 — Concept, wireframes & UI' },
     image: '/serena-cover.png',
     link: '/serena',
   },
   {
-    title: 'Z_Lab',
-    subtitle: '2025 — Web Redesign, UI/UX Design',
+    title: same('Z_Lab'),
+    subtitle: { fr: '2025 — Refonte de site, UI/UX', en: '2025 — Website redesign, UI/UX' },
     image: '/1.png',
     link: '/z_lab',
   },
   {
-    title: 'SPECTRE',
-    subtitle: '2025 — Editorial Design, AI Art Direction',
+    title: same('SPECTRE'),
+    subtitle: { fr: '2025 — Design éditorial, direction artistique IA', en: '2025 — Editorial design, AI art direction' },
     image: '/spectre1.png',
     link: '/spectre',
   },
   {
-    title: 'AI Visual Research',
-    subtitle: '2025 — Motion Design, AI Art Direction',
+    title: { fr: 'Recherche visuelle IA', en: 'AI Visual Research' },
+    subtitle: { fr: '2025 — Motion, direction artistique IA', en: '2025 — Motion, AI art direction' },
     image: '/f1-cover.png',
     link: '/ai-research',
   },
   {
-    title: 'Pleated Assortment',
-    subtitle: '2024 — Product Visualization, UI/UX Design',
+    title: same('Pleated Assortment'),
+    subtitle: { fr: '2024 — Direction créative, UI/UX', en: '2024 — Creative direction, UI/UX' },
     image: '/pleatedcover.png',
     link: '/pleated',
   },
   {
-    title: 'Aether',
-    subtitle: '2024 — Design System, Tarot Game',
+    title: same('Aether'),
+    subtitle: { fr: '2024 — Design system, jeu de tarot', en: '2024 — Design system, tarot deck' },
     image: '/AETHERCOVER.png',
     link: '/aether',
   },
@@ -69,15 +80,12 @@ function ProjectSection({
   index,
   containerRef,
 }: {
-  project: {
-    title: string;
-    subtitle: string;
-    image: string;
-    link: string;
-  };
+  project: Project;
   index: number;
   containerRef: RefObject<HTMLDivElement | null>;
 }) {
+  const t = useT();
+  const title = t(project.title.fr, project.title.en);
   const ref = useRef<HTMLElement>(null);
   // Horizontal parallax, driven by the horizontal scroller (not the window)
   const { scrollXProgress } = useScroll({
@@ -103,7 +111,7 @@ function ProjectSection({
       >
         <Image
           src={project.image}
-          alt={project.title}
+          alt={title}
           fill
           priority={index < 2}
           sizes="(max-width: 768px) 90vw, 65vw"
@@ -114,7 +122,7 @@ function ProjectSection({
       {/* The whole card is the link: large, easy hitbox */}
       <Link
         href={project.link}
-        aria-label={`Voir le projet ${project.title}`}
+        aria-label={t(`Voir le projet ${title}`, `View project ${title}`)}
         className="absolute inset-0 z-20 flex flex-col items-center justify-center bg-black/50 text-center px-6 md:px-10 focus-visible:outline focus-visible:outline-1 focus-visible:outline-white"
       >
         <motion.h2
@@ -123,7 +131,7 @@ function ProjectSection({
           whileInView={{ opacity: 1 }}
           transition={{ delay: 0.3, duration: 1 }}
         >
-          {project.title}
+          {title}
         </motion.h2>
         <motion.p
           className="mt-4 md:mt-5 text-[0.65rem] md:text-xs uppercase tracking-widest text-gray-300 font-light"
@@ -131,7 +139,7 @@ function ProjectSection({
           whileInView={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.5, duration: 0.8 }}
         >
-          {project.subtitle}
+          {t(project.subtitle.fr, project.subtitle.en)}
         </motion.p>
         <motion.span
           className="mt-8 md:mt-10 inline-block border border-white px-7 py-3 md:px-9 md:py-3.5 uppercase text-[0.65rem] md:text-[0.7rem] tracking-widest text-white transition-colors duration-300 group-hover:bg-white group-hover:text-black"
@@ -139,7 +147,7 @@ function ProjectSection({
           whileInView={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.7, duration: 0.8 }}
         >
-          Voir le projet →
+          {t('Voir le projet →', 'View project →')}
         </motion.span>
       </Link>
     </motion.section>
@@ -188,17 +196,7 @@ export default function Home() {
 
   return (
     <main className="w-screen h-[100svh] bg-[#0a0a0a] text-white overflow-hidden font-sans [@media(pointer:fine)]:cursor-none">
-
-      {/* Header */}
-      <header className="fixed top-0 z-50 w-full px-4 md:px-10 py-4 flex flex-col md:flex-row md:justify-between items-center gap-2 md:gap-0 text-[0.6rem] md:text-sm uppercase tracking-wider">
-        <span className="text-center">Emmanuel — Paris, France</span>
-        <nav className="flex space-x-6 md:space-x-8">
-          <Link href="#" className="pointer-events-none line-through hover:underline transition-all duration-300 uppercase tracking-wider">[Travaux]</Link>
-          <Link href="/about" className="hover:underline transition-all duration-300">[À propos]</Link>
-          <a href="mailto:emmanuelijjou@gmail.com" className="hover:underline transition-all duration-300">[Contact]</a>
-        </nav>
-      </header>
-
+      <Header active="work" />
       {/* Projects */}
       <div
         ref={scrollRef}

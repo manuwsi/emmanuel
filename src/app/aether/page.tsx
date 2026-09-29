@@ -82,7 +82,7 @@ export default function ProjectPage() {
         </motion.div>
 
         {/* IMAGES */}
-        {["aether-design-system.png", "AETHER1.png", "AETHER2.png", "aether-cards-grid.png", "AETHER3.jpg", "AETHER4.jpg", "aether-alphabet.png", "AETHER5.png", "AETHER6.jpg"].map((filename, index) => (
+        {["aether-design-system.png", "AETHER1.png", "AETHER2.png", "aether-cards-grid.jpg", "AETHER3.jpg", "AETHER4.jpg", "aether-alphabet.png", "AETHER5.png", "AETHER6.jpg"].map((filename, index) => (
           <motion.div
             key={index}
             initial={{ opacity: 0 }}

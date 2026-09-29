@@ -45,6 +45,12 @@ const projects = [
     link: '/spectre',
   },
   {
+    title: 'F1 Aesthetic',
+    subtitle: '2025 — Motion Design, AI Art Direction',
+    image: '/f1-cover.png',
+    link: '/f1-aesthetic',
+  },
+  {
     title: 'Pleated Assortment',
     subtitle: '2024 — Product Visualization, UI/UX Design',
     image: '/pleatedcover.png',

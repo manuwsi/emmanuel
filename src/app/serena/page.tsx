@@ -4,9 +4,9 @@ import Image from 'next/image';
 import { ProjectPage, Media, Row, Chapter } from '@/components/project/ProjectPage';
 
 const palette = [
-  { hex: '#0d3b2a', label: 'Vert profond' },
+  { hex: '#0b3628', label: 'Vert profond' },
   { hex: '#629784', label: 'Vert sauge' },
-  { hex: '#f0d94a', label: 'Jaune' },
+  { hex: '#eed349', label: 'Jaune' },
   { hex: '#e6f9d4', label: 'Vert clair' },
 ];
 
@@ -78,7 +78,7 @@ export default function Page() {
         </p>
       </Chapter>
       <div className="flex flex-col md:flex-row items-center justify-center gap-12 md:gap-20 py-6">
-        <Image src="/serena-logo.png" alt="Logo Serena" width={156} height={48} className="w-48 h-auto" />
+        <Image src="/serena-logo.png" alt="Logo Serena" width={1166} height={463} className="w-64 md:w-80 h-auto" />
         <div className="flex gap-5 md:gap-6">
           {palette.map((c) => (
             <div key={c.hex} className="flex flex-col items-center gap-2">

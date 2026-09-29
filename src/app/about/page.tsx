@@ -36,9 +36,9 @@ export default function AboutPage() {
 
   const experience = [
     {
-      role: t('Digital Designer — Freelance', 'Digital Designer — Freelance'),
+      role: t('Digital Designer — Mission freelance', 'Digital Designer — Freelance mission'),
       where: 'OKCC × L’Oréal Professionnel',
-      date: t('Nov. 2025 — aujourd’hui', 'Nov. 2025 — present'),
+      date: t('Nov. 2025 · 2 semaines', 'Nov. 2025 · 2 weeks'),
       items: [
         t(
           'Conception et production de vidéos animées générées par IA pour L’Oréal Professionnel.',

@@ -28,8 +28,6 @@ export default function ProjectPage() {
     { src: '/serena-mobile-scan.png', alt: 'Serena — Scan de document' },
     { src: '/serena-mobile-tasks.png', alt: 'Serena — Tâches mobile' },
   ];
-  const deckImages = ['/serena1.png', '/serena3.png'];
-
   return (
     <main className="w-screen min-h-screen bg-[#0a0a0a] text-white font-sans overflow-hidden relative flex flex-col">
       {/* Custom Cursor */}
@@ -142,29 +140,6 @@ export default function ProjectPage() {
                 fill
                 className="object-contain"
               />
-            </div>
-          ))}
-        </motion.div>
-
-        {/* PITCH CONTEXT */}
-        <motion.div
-          initial={{ opacity: 0 }}
-          whileInView={{ opacity: 1 }}
-          transition={{ duration: 0.5 }}
-          viewport={{ once: true }}
-          className="space-y-6"
-        >
-          <h3 className="text-sm uppercase tracking-widest text-neutral-500 text-center">Le pitch</h3>
-          {deckImages.map((src, index) => (
-            <div key={src} className="flex justify-center">
-              <div className="relative w-full h-[25vh] md:h-[40vh] max-w-3xl">
-                <Image
-                  src={src}
-                  alt={`Serena — Pitch ${index + 1}`}
-                  fill
-                  className="object-contain"
-                />
-              </div>
             </div>
           ))}
         </motion.div>

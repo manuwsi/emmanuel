@@ -178,6 +178,13 @@ export default function ProjectPage() {
           className="max-w-2xl mx-auto text-center space-y-8"
         >
           <h3 className="text-sm uppercase tracking-widest text-neutral-500">Identité</h3>
+
+          <div className="flex justify-center">
+            <div className="relative w-40 h-14 md:w-48 md:h-16">
+              <Image src="/serena-logo.png" alt="Logo Serena" fill className="object-contain" />
+            </div>
+          </div>
+
           <p className="text-sm md:text-base text-gray-300 leading-relaxed">
             Au-delà de l&apos;interface, Serena porte une identité pensée pour rassurer plutôt
             qu&apos;imposer : un vert profond et un jaune chaleureux, loin du vocabulaire froid
@@ -186,9 +193,9 @@ export default function ProjectPage() {
 
           <div className="flex justify-center gap-4 md:gap-6">
             {[
-              { hex: '#0b3628', label: 'Vert profond' },
+              { hex: '#0d3b2a', label: 'Vert profond' },
               { hex: '#629784', label: 'Vert sauge' },
-              { hex: '#eed347', label: 'Jaune' },
+              { hex: '#f0d94a', label: 'Jaune' },
               { hex: '#e6f9d4', label: 'Vert clair' },
             ].map((c) => (
               <div key={c.hex} className="flex flex-col items-center gap-2">

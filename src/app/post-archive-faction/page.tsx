@@ -52,11 +52,25 @@ export default function ProjectPage() {
           </h1>
 
           <h2 className="text-base md:text-lg text-gray-400 uppercase tracking-wide">
-            Futurist Garment System
+            Musée digital — Projet personnel
           </h2>
-          <p className="text-sm md:text-base max-w-2xl text-gray-300 leading-relaxed">
-            PAF is an experimental design project exploring hybrid aesthetics, functional layering, and the abstraction of technical garment language. The UI concepts take inspiration from utilitarian grids, modularity, and the future of digital fashion storytelling.
-          </p>
+          <div className="max-w-2xl space-y-6 text-sm md:text-base text-gray-300 leading-relaxed">
+            <p>
+              Post Archive Faction est l&apos;une de mes marques favorites : une photographie
+              forte, un travail de layering singulier, et un fondateur lui-même issu du
+              UX/UI, qui transpose cette sensibilité dans le vêtement. J&apos;ai voulu lui
+              rendre hommage à travers un projet personnel, aussi pensé comme un terrain
+              d&apos;entraînement pour l&apos;UI et le motion.
+            </p>
+            <p>
+              Le concept : un musée digital où l&apos;on navigue entre les pièces comme dans
+              une galerie, une colonne d&apos;œuvres en aperçu à gauche, une scène immersive à
+              droite qui change à chaque sélection. L&apos;ambiance du site (matières, lenteur,
+              textures sculpturales) cherche à retrouver l&apos;énergie des vêtements
+              eux-mêmes, complétée par une page éditoriale qui raconte l&apos;histoire de la
+              marque.
+            </p>
+          </div>
 
           <div className="flex flex-wrap gap-6 text-xs md:text-sm uppercase tracking-widest text-gray-500 pt-8">
             <span>2025</span>

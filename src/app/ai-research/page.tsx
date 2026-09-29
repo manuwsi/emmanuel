@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from 'react';
 import { motion } from 'framer-motion';
+import Image from 'next/image';
 import Link from 'next/link';
 import '../../styles/globals.css';
 
@@ -15,6 +16,45 @@ export default function ProjectPage() {
     window.addEventListener('mousemove', moveCursor);
     return () => window.removeEventListener('mousemove', moveCursor);
   }, []);
+
+  const pieces = [
+    {
+      type: 'video',
+      src: '/f1-aesthetic.mp4',
+      title: 'F1 Aesthetic',
+      caption: 'Une monoplace vue à travers un prisme thermique et radiographique, entre transparence et chaleur pure.',
+    },
+    {
+      type: 'video',
+      src: '/ai-underwater.mp4',
+      title: 'Liquid Figure',
+      caption: 'Une silhouette prise dans une matière liquide, quelque part entre le métal et l’eau.',
+    },
+    {
+      type: 'video',
+      src: '/ai-crowd-yellow.mp4',
+      title: 'Crowd Study — Yellow',
+      caption: 'Une foule figée dans un aplat de couleur, à mi-chemin entre la peinture et le glitch.',
+    },
+    {
+      type: 'video',
+      src: '/ai-crowd-negative.mp4',
+      title: 'Crowd Study — Negative',
+      caption: 'La même idée de foule, inversée, presque spectrale.',
+    },
+    {
+      type: 'video',
+      src: '/ai-double-exposure.mp4',
+      title: 'Double Exposure',
+      caption: 'Un portrait fondu dans le tissu urbain d’une ville la nuit.',
+    },
+    {
+      type: 'image',
+      src: '/ai-red-figure.png',
+      title: 'Material Study',
+      caption: 'Une étude de matière : laque rouge, courbes et lumière.',
+    },
+  ];
 
   return (
     <main className="w-screen min-h-screen bg-[#0a0a0a] text-white font-sans overflow-hidden relative flex flex-col">
@@ -46,23 +86,19 @@ export default function ProjectPage() {
           className="space-y-6 text-left"
         >
           <h1 className="text-4xl md:text-6xl font-ivy font-light tracking-tight text-white drop-shadow-md">
-            F1 Aesthetic
+            AI Visual Research
           </h1>
 
           <h2 className="text-base md:text-lg text-gray-400 uppercase tracking-wide">
-            Recherche visuelle, IA &amp; 3D
+            Exploration visuelle, IA &amp; 3D
           </h2>
 
           <div className="max-w-2xl space-y-6 text-sm md:text-base text-gray-300 leading-relaxed">
             <p>
-              Une étude visuelle de la Formule 1 vue à travers le prisme du design : comment
-              représenter autrement la chaleur, la tension et la structure d&apos;une monoplace,
-              par le contraste, l&apos;effet thermique et un traitement cinématographique.
-            </p>
-            <p>
-              Un travail de recherche mêlant IA, 3D et post-production, pensé non pas pour le
-              réalisme mais pour la perception : révéler une mécanique habituellement cachée,
-              entre transparence, rayons X et chaleur pure.
+              Un espace de recherche personnelle où je teste ce que l&apos;IA et la 3D peuvent
+              apporter à l&apos;image au-delà du réalisme : matière, couleur, distorsion,
+              composition. Chaque pièce part d&apos;une question simple, comment représenter
+              autrement la chaleur, la foule, la matière, le mouvement.
             </p>
           </div>
 
@@ -73,23 +109,43 @@ export default function ProjectPage() {
           </div>
         </motion.div>
 
-        {/* VIDEO */}
-        <motion.div
-          initial={{ opacity: 0 }}
-          whileInView={{ opacity: 1 }}
-          transition={{ duration: 0.6 }}
-          viewport={{ once: true }}
-          className="w-full flex justify-center"
-        >
-          <video
-            src="/f1-aesthetic.mp4"
-            autoPlay
-            muted
-            loop
-            playsInline
-            className="w-full max-w-4xl h-[45vh] md:h-[70vh] object-cover"
-          />
-        </motion.div>
+        {/* PIECES */}
+        {pieces.map((piece, index) => (
+          <motion.div
+            key={index}
+            initial={{ opacity: 0 }}
+            whileInView={{ opacity: 1 }}
+            transition={{ duration: 0.5, delay: 0.1 * index }}
+            viewport={{ once: true }}
+            className="flex flex-col items-center space-y-4"
+          >
+            <div className="w-full flex justify-center">
+              {piece.type === 'video' ? (
+                <video
+                  src={piece.src}
+                  autoPlay
+                  muted
+                  loop
+                  playsInline
+                  className="w-full max-w-4xl h-[35vh] md:h-[60vh] object-cover"
+                />
+              ) : (
+                <div className="relative w-full max-w-2xl h-[45vh] md:h-[65vh]">
+                  <Image
+                    src={piece.src}
+                    alt={piece.title}
+                    fill
+                    className="object-contain"
+                  />
+                </div>
+              )}
+            </div>
+            <div className="text-center max-w-md space-y-1">
+              <h3 className="text-xs uppercase tracking-widest text-neutral-400">{piece.title}</h3>
+              <p className="text-xs text-gray-500 leading-relaxed">{piece.caption}</p>
+            </div>
+          </motion.div>
+        ))}
 
         {/* TOOLS SECTION */}
         <motion.div
@@ -101,7 +157,7 @@ export default function ProjectPage() {
         >
           <h3 className="text-sm uppercase tracking-widest text-neutral-500 mb-4">Outils</h3>
           <p className="text-sm md:text-base text-gray-300">
-            Blender — Midjourney — Runway — After Effects
+            Midjourney — Runway — Kling — Reve — Blender — After Effects
           </p>
         </motion.div>
 

@@ -178,15 +178,25 @@ export default function Page() {
         </p>
       </Chapter>
       <div className="max-w-4xl mx-auto space-y-3">
-        <span className="block text-[0.65rem] uppercase tracking-widest text-neutral-500">V1 — Agriprev</span>
+        <span className="block text-[0.65rem] uppercase tracking-widest text-neutral-500">{t('Wireframe V1 — Agriprev', 'Wireframe V1 — Agriprev')}</span>
         <div className="grid grid-cols-[3.4fr_1fr] gap-4 md:gap-8 items-end">
           <Media src="/serena-wf-v1-desktop.png" alt={t('Serena — wireframe V1 desktop', 'Serena — V1 desktop wireframe')} width={702} height={426} />
           <Media src="/serena-wf-v1-mobile.png" alt={t('Serena — wireframe V1 mobile', 'Serena — V1 mobile wireframe')} width={205} height={425} />
         </div>
       </div>
       <div className="max-w-3xl mx-auto space-y-3 pt-6">
-        <span className="block text-[0.65rem] uppercase tracking-widest text-neutral-500">V2</span>
+        <span className="block text-[0.65rem] uppercase tracking-widest text-neutral-500">{t('Wireframe V2', 'Wireframe V2')}</span>
         <Media src="/serena-wf-v2-desktop.png" alt={t('Serena — wireframe V2', 'Serena — V2 wireframe')} width={704} height={427} />
+      </div>
+      <div className="max-w-4xl mx-auto space-y-3 pt-6">
+        <span className="block text-[0.65rem] uppercase tracking-widest text-neutral-500">{t('Maquette V1', 'Mockup V1')}</span>
+        <Media src="/serena-mockup-v1.png" alt={t('Serena — première maquette', 'Serena — first mockup')} width={1017} height={620} />
+        <p className="text-xs text-gray-400 leading-relaxed max-w-2xl pt-2">
+          {t(
+            'Première mise en couleur : la barre latérale entièrement vert foncé rendait l’interface lourde. La version finale l’allège et réserve le vert aux accents, pour un outil qui rassure plutôt qu’il ne pèse.',
+            'First colour pass: the fully dark-green sidebar made the interface feel heavy. The final version lightens it and keeps green for accents, so the tool reassures rather than weighs down.'
+          )}
+        </p>
       </div>
 
       <Chapter title={t('Version finale — desktop', 'Final version — desktop')}>

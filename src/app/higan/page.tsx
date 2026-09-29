@@ -16,7 +16,7 @@ export default function Page() {
         year: '2026',
         context: t('Projet personnel — court-métrage « From the Other Shore »', 'Personal project — short film “From the Other Shore”'),
         role: t('Design du flacon, 3D, direction artistique', 'Bottle design, 3D, art direction'),
-        tools: 'Blender, Midjourney, Kling',
+        tools: 'Blender, Midjourney, Kling, Reve, Figma',
       }}
       intro={t(
         <>
@@ -50,11 +50,29 @@ export default function Page() {
         <Media src="/higan/silhouette.jpg" alt={t('HIGAN — visuel de campagne', 'HIGAN — campaign visual')} {...P} priority />
       </Row>
 
+      <Chapter title={t('L’autre rive', 'The other shore')}>
+        <p>
+          {t(
+            'Le court-métrage « From the Other Shore » pose le décor : un monde lointain, des côtes noires bordées d’un fleuve de lys rouges, que l’on traverse pour passer de l’autre côté.',
+            'The short film “From the Other Shore” sets the scene: a distant world, black coastlines edged with a river of red lilies, to be crossed to reach the other side.'
+          )}
+        </p>
+      </Chapter>
+      <Media src="/higan/planet.jpg" alt={t('From the Other Shore — la planète', 'From the Other Shore — the planet')} {...W} />
+      <Row cols={2}>
+        <Media src="/higan/shore-1.jpg" alt={t('From the Other Shore — la côte', 'From the Other Shore — the coast')} width={1456} height={816} />
+        <Media src="/higan/shore-river.jpg" alt={t('From the Other Shore — le fleuve rouge', 'From the Other Shore — the red river')} width={1456} height={816} />
+      </Row>
+      <Row cols={2}>
+        <Media src="/higan/shore-light.jpg" alt={t('From the Other Shore — la côte dans la brume', 'From the Other Shore — the coast in the mist')} {...W} />
+        <Media src="/higan/shore-road.jpg" alt={t('From the Other Shore — le chemin', 'From the Other Shore — the path')} width={1456} height={816} />
+      </Row>
+
       <Chapter title={t('La métamorphose', 'The metamorphosis')}>
         <p>
           {t(
-            'Les visuels viennent de « From the Other Shore », le court-métrage sur lequel je travaille : la fleur perd son rouge, se referme, puis se change en créature.',
-            'The visuals come from “From the Other Shore”, the short film I am working on: the flower loses its red, closes up, then turns into a creature.'
+            'Au cœur du film, la fleur perd son rouge, se referme, puis se change en créature.',
+            'At the heart of the film, the flower loses its red, closes up, then turns into a creature.'
           )}
         </p>
       </Chapter>
@@ -86,8 +104,8 @@ export default function Page() {
       <Chapter title={t('L’univers', 'The world')}>
         <p>
           {t(
-            'Une campagne autour du flacon et un événement fictif, « From the Other Shore », jusqu’à une pièce textile brodée du lys araignée.',
-            'A campaign around the bottle and a fictional event, “From the Other Shore”, down to a textile piece embroidered with the spider lily.'
+            'Une campagne autour du flacon, un événement fictif, un format ampoule, jusqu’à un t-shirt brodé du lys araignée et son éditorial.',
+            'A campaign around the bottle, a fictional event, an ampoule format, down to a t-shirt embroidered with the spider lily and its editorial.'
           )}
         </p>
       </Chapter>
@@ -96,7 +114,14 @@ export default function Page() {
         <Media src="/higan/lycoris.jpg" alt={t('HIGAN — le flacon et le lys araignée', 'HIGAN — the bottle and the spider lily')} {...P} />
       </Row>
       <Media src="/higan/poster.jpg" alt={t('HIGAN — affiche « From the Other Shore »', 'HIGAN — “From the Other Shore” poster')} width={2000} height={1256} />
-      <Media src="/higan/tshirt.jpg" alt={t('HIGAN — t-shirt brodé', 'HIGAN — embroidered t-shirt')} {...P} className="max-w-xl mx-auto" />
+      <Row cols={2} align="center">
+        <Media src="/higan/ampoule.jpg" alt={t('HIGAN — format ampoule 20 ml', 'HIGAN — 20 ml ampoule')} {...P} />
+        <Media src="/higan/tshirt.jpg" alt={t('HIGAN — t-shirt brodé', 'HIGAN — embroidered t-shirt')} {...P} />
+      </Row>
+      <Row cols={2}>
+        <Media src="/higan/shoot-1.jpg" alt={t('HIGAN — éditorial', 'HIGAN — editorial')} {...P} />
+        <Media src="/higan/shoot-2.jpg" alt={t('HIGAN — éditorial', 'HIGAN — editorial')} {...P} />
+      </Row>
     </ProjectPage>
   );
 }

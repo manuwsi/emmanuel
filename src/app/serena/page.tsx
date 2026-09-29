@@ -53,29 +53,29 @@ export default function ProjectPage() {
           </h1>
 
           <h2 className="text-base md:text-lg text-gray-400 uppercase tracking-wide">
-            Concept, Design &amp; Wireframing — Projet école
+            Un assistant IA pour l&apos;administratif agricole — Projet école
           </h2>
 
           <div className="max-w-2xl space-y-6 text-sm md:text-base text-gray-300 leading-relaxed">
             <p>
               1,5 suicides par jour en France dans le secteur agricole. Les agriculteurs
-              consacrent aujourd&apos;hui jusqu&apos;à 1h par jour, et une journée entière de
-              leur week-end, à gérer des tâches administratives — une charge mentale qui
+              passent aujourd&apos;hui jusqu&apos;à 1h par jour, et une journée entière de leur
+              week-end, à gérer des tâches administratives, une charge mentale qui
               s&apos;ajoute à un métier déjà exigeant.
             </p>
             <p>
-              Serena est pensé comme le premier assistant IA dédié à la gestion de
-              l&apos;ensemble des tâches administratives de l&apos;agriculteur : automatisé,
-              disponible, transparent sur l&apos;usage des données, et personnalisé selon les
-              besoins de chaque exploitation.
+              Serena répond à ce constat avec un assistant pensé pour prendre en charge
+              l&apos;ensemble de ces démarches : automatisé, disponible, transparent sur
+              l&apos;usage des données, et personnalisé selon les besoins de chaque
+              exploitation.
             </p>
             <p>
-              Projet mené en équipe : des interviews terrain avec des agriculteurs ont nourri
-              la compréhension du besoin réel, en parallèle d&apos;une analyse de marché
+              Le projet a été mené en équipe. Des interviews terrain avec des agriculteurs ont
+              nourri la compréhension du besoin réel, aux côtés d&apos;une analyse de marché
               (140 000 clients ISAGRI, 51,6% du territoire national occupé par
-              l&apos;activité agricole). J&apos;ai porté le concept produit et le design — du
-              wireframing des propositions initiales jusqu&apos;aux maquettes finales, desktop
-              et mobile.
+              l&apos;activité agricole). J&apos;ai porté le concept produit et le design, du
+              wireframing des premières pistes jusqu&apos;aux maquettes finales, desktop et
+              mobile.
             </p>
           </div>
 

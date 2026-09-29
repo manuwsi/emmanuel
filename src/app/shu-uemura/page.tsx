@@ -49,31 +49,30 @@ export default function ProjectPage() {
           className="space-y-6 text-left"
         >
           <h1 className="text-4xl md:text-6xl font-ivy font-light tracking-tight text-white drop-shadow-md">
-            Shu Uemura — AI Beauty Tutor
+            Shu Uemura AI Tutor
           </h1>
 
           <h2 className="text-base md:text-lg text-gray-400 uppercase tracking-wide">
-            UI Design × Client Iteration
+            UI Design for a personalized beauty assistant
           </h2>
 
           <div className="max-w-2xl space-y-6 text-sm md:text-base text-gray-300 leading-relaxed">
             <p>
-              Shu Uemura souhaitait une application IA capable de guider ses clientes dans le
-              choix et l&apos;application de leurs produits — une sorte de coach beauté
-              personnel, accessible directement depuis mobile.
+              Shu Uemura voulait un assistant capable de guider ses clientes dans le choix et
+              l&apos;application de leurs produits, comme un coach beauté personnel accessible
+              depuis mobile.
             </p>
             <p>
-              J&apos;ai conçu les maquettes UI de bout en bout, en collaboration directe et
-              itérative avec le client. Le projet a nécessité au moins 3 itérations
-              successives, chacune intégrant des retours précis : mise en avant du
-              savoir-faire de la marque, personnalisation réelle selon les visages, direction
-              artistique des décors — jusqu&apos;au choix des fonds, les mannequins IA posant
-              devant du béton façon Tokyo pour ancrer l&apos;univers visuel de la marque.
+              J&apos;ai conçu les maquettes de bout en bout, en échange direct avec le client
+              sur trois itérations. Chacune a affiné un point précis : mieux mettre en avant
+              le savoir-faire de la marque, rendre la personnalisation réellement fidèle au
+              visage de chaque cliente, et jusqu&apos;au choix des décors, avec des mannequins
+              IA posés devant du béton façon Tokyo pour ancrer l&apos;univers visuel.
             </p>
           </div>
 
           <div className="flex flex-wrap gap-6 text-xs md:text-sm uppercase tracking-widest text-gray-500 pt-8">
-            <span>2024 — 2025</span>
+            <span>2024</span>
             <span>UI Design</span>
             <span>OKCC</span>
           </div>
@@ -88,7 +87,7 @@ export default function ProjectPage() {
           className="grid grid-cols-1 md:grid-cols-4 gap-8 max-w-5xl"
         >
           {[
-            { n: '01', t: 'Sélection du tutor', d: 'La cliente choisit son coach virtuel — Yoko, Ren, Haruto — chacun avec sa propre identité.' },
+            { n: '01', t: 'Sélection du tutor', d: 'La cliente choisit son coach virtuel parmi Yoko, Ren ou Haruto, chacun avec sa propre identité.' },
             { n: '02', t: 'Chat conversationnel', d: 'Un échange guidé pour cerner les besoins et attentes de la cliente.' },
             { n: '03', t: 'Analyse faciale', d: 'Reconnaissance des traits du visage avec repères visuels pas-à-pas, pour une application réellement adaptée.' },
             { n: '04', t: 'Prise de rendez-vous', d: 'Passage naturel de l’app vers une expérience en point de vente.' },
@@ -132,10 +131,9 @@ export default function ProjectPage() {
         >
           <h3 className="text-sm uppercase tracking-widest text-neutral-500">Un temps fort</h3>
           <p className="text-sm md:text-base text-gray-300 leading-relaxed">
-            En complément des maquettes, une vidéo générée par IA a été produite pour
-            présenter le concept directement au CEO de Shu Uemura — un format qui a permis de
-            faire ressentir l&apos;expérience avant même le développement, et qui a été très
-            bien accueilli. Le projet a été livré.
+            En complément des maquettes, j&apos;ai produit une vidéo générée par IA pour
+            présenter le concept directement au CEO de Shu Uemura, avant même le
+            développement. Le concept a été très bien reçu, et le projet livré.
           </p>
         </motion.div>
 

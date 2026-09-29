@@ -63,6 +63,57 @@ export default function Page() {
         <Media src="/hennessy5.png" alt={t('Hennessy — validation de la création', 'Hennessy — approving the creation')} width={1366} height={1024} />
       </Row>
       <Media src="/hennessy6.png" alt={t('Hennessy — écran de remerciement', 'Hennessy — thank-you screen')} width={1366} height={1024} />
+
+      <Chapter title={t('Explorer le choix de couleur', 'Exploring colour selection')}>
+        <p>
+          {t(
+            'Le choix des couleurs est le cœur de l’expérience : c’est lui qui rend chaque œuvre unique. J’ai exploré plusieurs mécaniques avant d’arriver au parcours final en deux temps, couleur dominante puis secondaire.',
+            'Choosing colours is the heart of the experience: it is what makes each artwork unique. I explored several mechanics before landing on the final two-step flow, dominant colour then secondary.'
+          )}
+        </p>
+      </Chapter>
+      <Row cols={2}>
+        {[
+          {
+            n: 1,
+            src: '/hen-explo-1-palettes.png',
+            fr: 'Palettes prédéfinies : rapide, mais le visiteur ne compose pas vraiment son œuvre.',
+            en: 'Preset palettes: quick, but visitors don’t really compose their artwork.',
+          },
+          {
+            n: 2,
+            src: '/hen-explo-2-list.png',
+            fr: 'Liste nommée : claire, mais longue à parcourir et la couleur passe après le texte.',
+            en: 'Named list: clear, but long to scan, and the colour comes after the text.',
+          },
+          {
+            n: 3,
+            src: '/hen-explo-3-grid.png',
+            fr: 'Grille de nuanciers : la couleur devient l’élément principal, tout est visible d’un coup.',
+            en: 'Swatch grid: colour becomes the main element, everything is visible at once.',
+          },
+          {
+            n: 4,
+            src: '/hen-explo-4-carousel.png',
+            fr: 'Carrousel : plus compact, mais il cache une partie des choix.',
+            en: 'Carousel: more compact, but it hides part of the choice.',
+          },
+        ].map((v) => (
+          <figure key={v.n} className="space-y-3">
+            <Media src={v.src} alt={t(`Hennessy — exploration ${v.n}`, `Hennessy — exploration ${v.n}`)} width={1366} height={1024} />
+            <figcaption className="text-xs text-gray-400 leading-relaxed">
+              <span className="text-neutral-400 tabular-nums">0{v.n} — </span>
+              {t(v.fr, v.en)}
+            </figcaption>
+          </figure>
+        ))}
+      </Row>
+      <p className="max-w-2xl text-sm text-gray-300 leading-relaxed">
+        {t(
+          'La version finale garde la lisibilité de la grille, mais remplace les aplats par des touches de peinture, plus proches de l’univers de Florian Zumbrunn, et sépare le choix en deux étapes pour que chaque décision reste simple.',
+          'The final version keeps the grid’s readability but swaps flat swatches for paint strokes, closer to Florian Zumbrunn’s world, and splits the choice into two steps so each decision stays simple.'
+        )}
+      </p>
     </ProjectPage>
   );
 }

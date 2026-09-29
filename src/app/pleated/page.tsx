@@ -52,10 +52,13 @@ export default function ProjectPage() {
           </h1>
 
           <h2 className="text-base md:text-lg text-gray-400 uppercase tracking-wide">
-            Furniture Collection Inspired by Issey Miyake
+            Mobilier inspiré du plissé d&apos;Issey Miyake — Projet personnel
           </h2>
           <p className="text-sm md:text-base max-w-2xl text-gray-300 leading-relaxed">
-            Pleated Assortment is a 2024 experimental project where a furniture collection was generated based on the garment design philosophy of Issey Miyake. It served as a playground to explore UI concepts for a modern e-commerce experience.
+            Un projet d&apos;exploration : transposer le plissé signature d&apos;Issey Miyake,
+            que j&apos;admire dans son travail sur le vêtement, à une collection de mobilier.
+            Une fois les pièces générées, j&apos;ai construit autour une interface
+            e-commerce pour les présenter et m&apos;entraîner à l&apos;UI.
           </p>
 
           <div className="flex flex-wrap gap-6 text-xs md:text-sm uppercase tracking-widest text-gray-500 pt-8">

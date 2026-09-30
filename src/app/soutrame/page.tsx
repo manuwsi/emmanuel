@@ -13,7 +13,11 @@ import { useLang, useT } from '@/components/i18n';
  * Mood first, information second.
  */
 
-const photos = ['/soutrame/front.jpg', '/soutrame/down.jpg', '/soutrame/side.jpg'];
+const pieces = [
+  { name: { fr: 'Veste', en: 'Jacket' }, views: ['/soutrame/veste-front.jpg', '/soutrame/veste-side.jpg'] },
+  { name: { fr: 'Pantalon', en: 'Trousers' }, views: ['/soutrame/pantalon-front.jpg', '/soutrame/pantalon-down.jpg'] },
+  { name: { fr: 'Ensemble', en: 'Full set' }, views: ['/soutrame/look-front.jpg', '/soutrame/look-side.jpg'] },
+];
 
 const sans = { fontFamily: '"Instrument Sans Variable", "Helvetica Neue", Helvetica, Arial, sans-serif' };
 
@@ -64,11 +68,11 @@ function Topbar() {
           onClick={() => setOpen((v) => !v)}
           className="h-9 w-9 rounded-full bg-neutral-100 grid place-items-center transition-colors hover:bg-neutral-200"
         >
-          <Chimera className="h-4 w-4" />
+          <Chimera className="h-5 w-5" />
         </button>
         <Link
           href="/"
-          className="h-9 rounded-full bg-neutral-100 px-4 grid place-items-center text-[0.78rem] text-neutral-900 transition-colors hover:bg-neutral-200"
+          className="hidden sm:grid h-9 rounded-full bg-neutral-100 px-4 place-items-center text-[0.78rem] text-neutral-900 transition-colors hover:bg-neutral-200"
         >
           {t('Travaux', 'Work')}
         </Link>
@@ -112,79 +116,49 @@ function Topbar() {
 function Card({ index }: { index: number }) {
   const t = useT();
   const [hover, setHover] = useState(false);
+  const piece = pieces[index];
+  const name = t(piece.name.fr, piece.name.en);
   return (
     <motion.article
       initial={{ opacity: 0 }}
       whileInView={{ opacity: 1 }}
       viewport={{ once: true, margin: '0px 0px -6% 0px' }}
-      transition={{ duration: 0.9, ease: 'easeOut', delay: (index % 4) * 0.08 }}
+      transition={{ duration: 0.9, ease: 'easeOut', delay: index * 0.08 }}
       onPointerEnter={(e) => e.pointerType === 'mouse' && setHover(true)}
       onPointerLeave={() => setHover(false)}
       className="min-w-0"
     >
-      <div className="relative aspect-[9/16] w-full overflow-hidden bg-neutral-100">
-        <Image
-          src={photos[index]}
-          alt={t('Soutrame — ensemble, drop 01', 'Soutrame — set, drop 01')}
-          fill
-          sizes="(min-width: 768px) 25vw, 50vw"
-          className="object-cover transition-opacity duration-500"
-          style={{ opacity: hover ? 0 : 1 }}
-          priority
-        />
-        <Image
-          src={photos[(index + 1) % photos.length]}
-          alt=""
-          aria-hidden
-          fill
-          sizes="(min-width: 768px) 25vw, 50vw"
-          className="object-cover transition-opacity duration-500"
-          style={{ opacity: hover ? 1 : 0 }}
-        />
+      <div className="relative aspect-[3/4] w-full overflow-hidden bg-neutral-100">
+        {piece.views.map((src, v) => (
+          <Image
+            key={src}
+            src={src}
+            alt={v === 0 ? `Soutrame — ${name}, drop 01` : ''}
+            aria-hidden={v !== 0}
+            fill
+            sizes="(min-width: 640px) 33vw, 100vw"
+            className="object-cover transition-opacity duration-500"
+            style={{ opacity: (hover ? 1 : 0) === v ? 1 : 0 }}
+            priority={v === 0}
+          />
+        ))}
       </div>
-      <div className="mt-2 text-[0.72rem] leading-snug text-neutral-900" style={sans}>
-        <p>{t('Ensemble (Drop 01)', 'Set (Drop 01)')}</p>
-        <p className="text-neutral-500">{t('Bientôt', 'Soon')}</p>
+      <div className="mt-2 flex justify-between gap-4 text-[0.72rem] leading-snug text-neutral-900" style={sans}>
+        <p>{name}</p>
+        <p className="text-neutral-500">{t('Drop 01 — bientôt', 'Drop 01 — soon')}</p>
       </div>
     </motion.article>
   );
 }
 
-function Density({ value, onChange }: { value: number; onChange: (n: number) => void }) {
-  return (
-    <div
-      className="fixed bottom-4 md:bottom-8 left-4 md:left-12 z-40 flex items-center gap-3 rounded-full bg-white/60 backdrop-blur-xl pl-4 pr-4 h-9 text-[0.72rem] text-neutral-700"
-      style={sans}
-    >
-      <input
-        type="range"
-        min={1}
-        max={4}
-        step={1}
-        value={value}
-        onChange={(e) => onChange(Number(e.target.value))}
-        aria-label="Colonnes"
-        className="h-px w-20 md:w-28 cursor-pointer appearance-none bg-neutral-400 accent-black [&::-webkit-slider-thumb]:h-3.5 [&::-webkit-slider-thumb]:w-3.5 [&::-webkit-slider-thumb]:appearance-none [&::-webkit-slider-thumb]:rounded-full [&::-webkit-slider-thumb]:bg-white [&::-webkit-slider-thumb]:ring-1 [&::-webkit-slider-thumb]:ring-neutral-400 [&::-moz-range-thumb]:h-3.5 [&::-moz-range-thumb]:w-3.5 [&::-moz-range-thumb]:rounded-full [&::-moz-range-thumb]:border [&::-moz-range-thumb]:border-neutral-400 [&::-moz-range-thumb]:bg-white"
-      />
-      <span className="tabular-nums w-2 text-right">{value}</span>
-    </div>
-  );
-}
-
 export default function Page() {
   const t = useT();
-  const [cols, setCols] = useState(4);
-
-  useEffect(() => {
-    if (window.matchMedia('(max-width: 767px)').matches) setCols(2);
-  }, []);
-
   return (
     <main className="block overflow-x-clip snap-none min-h-screen bg-white text-black [@media(pointer:fine)]:cursor-none">
       <Topbar />
       <section className="px-4 md:px-12 pt-28 md:pt-36 pb-28">
-        <div className="grid gap-x-4 gap-y-10 md:gap-x-6 md:gap-y-14" style={{ gridTemplateColumns: `repeat(${cols}, minmax(0, 1fr))` }}>
-          {[0, 1, 2].map((i) => (
+        <div className="grid grid-cols-1 sm:grid-cols-3 gap-x-4 gap-y-10 md:gap-x-6">
+          {pieces.map((_, i) => (
             <Card key={i} index={i} />
           ))}
         </div>
@@ -195,7 +169,6 @@ export default function Page() {
           </Link>
         </div>
       </section>
-      <Density value={cols} onChange={setCols} />
     </main>
   );
 }

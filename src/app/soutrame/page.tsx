@@ -4,6 +4,7 @@ import { useEffect, useRef, useState } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { AnimatePresence, motion } from 'framer-motion';
+import '@fontsource-variable/instrument-sans';
 import { useLang, useT } from '@/components/i18n';
 
 /**
@@ -12,9 +13,9 @@ import { useLang, useT } from '@/components/i18n';
  * Mood first, information second.
  */
 
-const photos = ['/soutrame/cut-front.webp', '/soutrame/cut-down.webp', '/soutrame/cut-side.webp'];
+const photos = ['/soutrame/front.jpg', '/soutrame/down.jpg', '/soutrame/side.jpg'];
 
-const sans = { fontFamily: '"General Sans", "Helvetica Neue", Helvetica, Arial, sans-serif' };
+const sans = { fontFamily: '"Instrument Sans Variable", "Helvetica Neue", Helvetica, Arial, sans-serif' };
 
 function Pill({ children, className = '', ...props }: React.ComponentProps<'button'>) {
   return (
@@ -95,7 +96,7 @@ function Topbar() {
         </AnimatePresence>
       </div>
 
-      <span className="justify-self-center text-[0.95rem] md:text-[1.35rem] font-semibold uppercase tracking-tight text-black">
+      <span className="justify-self-center text-[0.9rem] md:text-[1.25rem] font-semibold uppercase tracking-[0.18em] text-black pl-[0.18em]">
         Soutrame
       </span>
 
@@ -121,13 +122,13 @@ function Card({ index }: { index: number }) {
       onPointerLeave={() => setHover(false)}
       className="min-w-0"
     >
-      <div className="relative aspect-[2/3] w-full">
+      <div className="relative aspect-[9/16] w-full overflow-hidden bg-neutral-100">
         <Image
           src={photos[index]}
           alt={t('Soutrame — ensemble, drop 01', 'Soutrame — set, drop 01')}
           fill
           sizes="(min-width: 768px) 25vw, 50vw"
-          className="object-contain transition-opacity duration-500"
+          className="object-cover transition-opacity duration-500"
           style={{ opacity: hover ? 0 : 1 }}
           priority
         />
@@ -137,7 +138,7 @@ function Card({ index }: { index: number }) {
           aria-hidden
           fill
           sizes="(min-width: 768px) 25vw, 50vw"
-          className="object-contain transition-opacity duration-500"
+          className="object-cover transition-opacity duration-500"
           style={{ opacity: hover ? 1 : 0 }}
         />
       </div>

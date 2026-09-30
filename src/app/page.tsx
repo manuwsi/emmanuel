@@ -126,8 +126,26 @@ function Intro() {
   );
 }
 
-function GroupDivider() {
+function GroupDivider({ group }: { group: 'explorations' | 'brand' }) {
   const t = useT();
+  const copy =
+    group === 'explorations'
+      ? {
+          kicker: t('Au-delà du produit', 'Beyond product'),
+          title: t('Explorations visuelles', 'Visual explorations'),
+          text: t(
+            'Projets personnels et projets de studio où j’explore l’image : direction artistique, motion, édition et IA générative.',
+            'Personal and studio projects where I explore imagery: art direction, motion, editorial and generative AI.'
+          ),
+        }
+      : {
+          kicker: t('Hors commande', 'Beyond commissions'),
+          title: t('Ma marque', 'My own brand'),
+          text: t(
+            'Soutrame, une marque de vêtements que je conçois et développe moi-même, de l’identité aux pièces.',
+            'Soutrame, a clothing brand I design and build myself, from identity to garments.'
+          ),
+        };
   return (
     <motion.section
       className="w-[78vw] md:w-[30vw] flex-shrink-0 flex flex-col justify-center gap-5 md:gap-6 border-l border-neutral-800 pl-6 md:pl-10"
@@ -135,16 +153,9 @@ function GroupDivider() {
       whileInView={{ opacity: 1 }}
       transition={{ duration: 1 }}
     >
-      <span className="text-[0.7rem] uppercase tracking-widest text-neutral-400">{t('Au-delà du produit', 'Beyond product')}</span>
-      <h2 className="text-[9vw] md:text-[3.2vw] leading-[1.05] font-ivy font-light tracking-tight">
-        {t('Explorations visuelles', 'Visual explorations')}
-      </h2>
-      <p className="text-sm text-gray-300 leading-relaxed max-w-sm">
-        {t(
-          'Projets personnels et projets de studio où j’explore l’image : direction artistique, motion, édition et IA générative.',
-          'Personal and studio projects where I explore imagery: art direction, motion, editorial and generative AI.'
-        )}
-      </p>
+      <span className="text-[0.7rem] uppercase tracking-widest text-neutral-400">{copy.kicker}</span>
+      <h2 className="text-[9vw] md:text-[3.2vw] leading-[1.05] font-ivy font-light tracking-tight">{copy.title}</h2>
+      <p className="text-sm text-gray-300 leading-relaxed max-w-sm">{copy.text}</p>
     </motion.section>
   );
 }
@@ -237,9 +248,9 @@ export default function Home() {
         </div>
         {projects.map((project, i) => (
           <Fragment key={project.link}>
-          {project.group === 'explorations' && projects[i - 1]?.group === 'product' && (
+          {project.group !== 'product' && projects[i - 1] && projects[i - 1].group !== project.group && (
             <div className="snap-center flex-shrink-0">
-              <GroupDivider />
+              <GroupDivider group={project.group as 'explorations' | 'brand'} />
             </div>
           )}
           <div
@@ -266,7 +277,9 @@ export default function Home() {
               {'  ·  '}
               {projects[active]?.group === 'product'
                 ? 'Product design'
-                : t('Explorations visuelles', 'Visual explorations')}
+                : projects[active]?.group === 'brand'
+                  ? t('Ma marque', 'My own brand')
+                  : t('Explorations visuelles', 'Visual explorations')}
             </span>
           </span>
           <span>© {new Date().getFullYear()} Emmanuel Ijjou</span>

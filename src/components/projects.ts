@@ -5,7 +5,7 @@ export type Project = {
   link: string;
   /** Cover already contains text (logo, tagline): blur it more so it doesn't clash with the card title */
   softCover?: boolean;
-  group: 'product' | 'explorations';
+  group: 'product' | 'explorations' | 'brand';
 };
 
 const same = (s: string) => ({ fr: s, en: s });
@@ -13,7 +13,7 @@ const same = (s: string) => ({ fr: s, en: s });
 /**
  * Single source of truth for project order.
  * Used by the home carousel and by the "Next project" link on each case study.
- * Product design case studies first, then visual explorations (OKCC AI projects last).
+ * Product design case studies first, then visual explorations (OKCC AI projects), then the personal brand.
  */
 export const projects: Project[] = [
   {
@@ -79,6 +79,13 @@ export const projects: Project[] = [
     image: '/f1-cover.png',
     link: '/ai-research',
     group: 'explorations',
+  },
+  {
+    title: same('Soutrame'),
+    subtitle: { fr: '2026 — Marque de vêtements, drop 01', en: '2026 — Clothing brand, drop 01' },
+    image: '/soutrame/front.jpg',
+    link: '/soutrame',
+    group: 'brand',
   },
 ];
 

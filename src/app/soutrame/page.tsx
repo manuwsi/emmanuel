@@ -12,7 +12,7 @@ import { useLang, useT } from '@/components/i18n';
  * Mood first, information second.
  */
 
-const photos = ['/soutrame/front.jpg', '/soutrame/down.jpg', '/soutrame/side.jpg'];
+const photos = ['/soutrame/cut-front.webp', '/soutrame/cut-down.webp', '/soutrame/cut-side.webp'];
 
 const sans = { fontFamily: '"General Sans", "Helvetica Neue", Helvetica, Arial, sans-serif' };
 
@@ -108,81 +108,41 @@ function Topbar() {
   );
 }
 
-function Hero() {
-  const t = useT();
-  return (
-    <section className="relative h-[100svh] w-full overflow-hidden" style={sans}>
-      {/* fog */}
-      <div aria-hidden className="absolute inset-0 grid place-items-center">
-        <motion.span
-          className="block h-[46vmax] w-[46vmax] rounded-full bg-neutral-400/50 blur-[90px]"
-          animate={{ scale: [1, 1.08, 1], opacity: [0.75, 1, 0.75] }}
-          transition={{ duration: 9, repeat: Infinity, ease: 'easeInOut' }}
-        />
-      </div>
-      <span aria-hidden className="absolute inset-x-0 bottom-0 h-1/3 bg-gradient-to-t from-white to-transparent" />
-      <motion.div
-        className="absolute inset-0 grid place-items-center"
-        initial={{ opacity: 0, filter: 'blur(14px)' }}
-        animate={{ opacity: 1, filter: 'blur(0px)' }}
-        transition={{ duration: 1.6, ease: 'easeOut' }}
-      >
-        <Chimera className="w-36 md:w-56 h-auto" />
-      </motion.div>
-      <div className="absolute inset-x-4 md:inset-x-12 bottom-16 md:bottom-24 flex items-end justify-between text-[0.72rem] text-neutral-700">
-        <span>Drop 01</span>
-        <span>{t('Bientôt', 'Soon')}</span>
-      </div>
-    </section>
-  );
-}
-
 function Card({ index }: { index: number }) {
   const t = useT();
   const [hover, setHover] = useState(false);
-  const isEmblem = index === 3;
   return (
     <motion.article
-      initial={{ opacity: 0, y: 18 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true, margin: '0px 0px -8% 0px' }}
-      transition={{ duration: 0.8, ease: 'easeOut', delay: (index % 4) * 0.06 }}
+      initial={{ opacity: 0 }}
+      whileInView={{ opacity: 1 }}
+      viewport={{ once: true, margin: '0px 0px -6% 0px' }}
+      transition={{ duration: 0.9, ease: 'easeOut', delay: (index % 4) * 0.08 }}
       onPointerEnter={(e) => e.pointerType === 'mouse' && setHover(true)}
       onPointerLeave={() => setHover(false)}
       className="min-w-0"
     >
-      <div className="relative aspect-[9/16] w-full overflow-hidden bg-neutral-100">
-        {isEmblem ? (
-          <>
-            <span aria-hidden className="absolute left-1/2 top-1/2 h-[70%] w-[90%] -translate-x-1/2 -translate-y-1/2 rounded-full bg-neutral-400/60 blur-3xl" />
-            <div className="absolute inset-0 grid place-items-center">
-              <Chimera className="w-1/2 h-auto transition-transform duration-700 ease-out" style={{ transform: hover ? 'scale(1.06)' : 'scale(1)' }} />
-            </div>
-          </>
-        ) : (
-          <>
-            <Image
-              src={photos[index]}
-              alt={t('Soutrame — ensemble, drop 01', 'Soutrame — set, drop 01')}
-              fill
-              sizes="(min-width: 768px) 25vw, 50vw"
-              className="object-cover"
-              priority={index < 2}
-            />
-            <Image
-              src={photos[(index + 1) % photos.length]}
-              alt=""
-              aria-hidden
-              fill
-              sizes="(min-width: 768px) 25vw, 50vw"
-              className="object-cover transition-opacity duration-500"
-              style={{ opacity: hover ? 1 : 0 }}
-            />
-          </>
-        )}
+      <div className="relative aspect-[2/3] w-full">
+        <Image
+          src={photos[index]}
+          alt={t('Soutrame — ensemble, drop 01', 'Soutrame — set, drop 01')}
+          fill
+          sizes="(min-width: 768px) 25vw, 50vw"
+          className="object-contain transition-opacity duration-500"
+          style={{ opacity: hover ? 0 : 1 }}
+          priority
+        />
+        <Image
+          src={photos[(index + 1) % photos.length]}
+          alt=""
+          aria-hidden
+          fill
+          sizes="(min-width: 768px) 25vw, 50vw"
+          className="object-contain transition-opacity duration-500"
+          style={{ opacity: hover ? 1 : 0 }}
+        />
       </div>
-      <div className="mt-3 text-[0.72rem] leading-snug text-neutral-900" style={sans}>
-        <p>{isEmblem ? t('La chimère', 'The chimera') : t('Ensemble (Drop 01)', 'Set (Drop 01)')}</p>
+      <div className="mt-2 text-[0.72rem] leading-snug text-neutral-900" style={sans}>
+        <p>{t('Ensemble (Drop 01)', 'Set (Drop 01)')}</p>
         <p className="text-neutral-500">{t('Bientôt', 'Soon')}</p>
       </div>
     </motion.article>
@@ -221,10 +181,9 @@ export default function Page() {
   return (
     <main className="block overflow-x-clip snap-none min-h-screen bg-white text-black [@media(pointer:fine)]:cursor-none">
       <Topbar />
-      <Hero />
-      <section className="px-4 md:px-12 pb-28">
+      <section className="px-4 md:px-12 pt-28 md:pt-36 pb-28">
         <div className="grid gap-x-4 gap-y-10 md:gap-x-6 md:gap-y-14" style={{ gridTemplateColumns: `repeat(${cols}, minmax(0, 1fr))` }}>
-          {[0, 1, 2, 3].map((i) => (
+          {[0, 1, 2].map((i) => (
             <Card key={i} index={i} />
           ))}
         </div>

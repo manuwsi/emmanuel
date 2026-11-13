@@ -193,18 +193,20 @@ function BuyButton({ full = false }: { full?: boolean }) {
 
 /** Image woven in, strip by strip. */
 function Weave({ src, alt, strips = 12, priority = false, sizes }: { src: string; alt: string; strips?: number; priority?: boolean; sizes: string }) {
+  const stripH = 100 / strips + 0.2; // % of the container; the small overlap hides seams between strips
   return (
     <div className="absolute inset-0">
       {Array.from({ length: strips }).map((_, i) => (
         <motion.div
           key={i}
           className="absolute inset-x-0 overflow-hidden"
-          style={{ top: `${(i * 100) / strips}%`, height: `${100 / strips + 0.2}%`, transformOrigin: i % 2 ? 'right' : 'left' }}
+          style={{ top: `${(i * 100) / strips}%`, height: `${stripH}%`, transformOrigin: i % 2 ? 'right' : 'left' }}
           initial={{ scaleX: 0 }}
           animate={{ scaleX: 1 }}
           transition={{ duration: 0.9, ease: EASE, delay: i * 0.045 }}
         >
-          <div className="absolute inset-x-0" style={{ top: `-${i * 100}%`, height: `${strips * 100}%` }}>
+          {/* sized and offset in container units, so the woven image lines up pixel-for-pixel with the one underneath */}
+          <div className="absolute inset-x-0" style={{ top: `-${((i * 100) / strips / stripH) * 100}%`, height: `${(100 / stripH) * 100}%` }}>
             <Image src={src} alt={i === 0 ? alt : ''} fill priority={priority} sizes={sizes} className="object-cover" />
           </div>
         </motion.div>
@@ -359,17 +361,17 @@ function CycleInterlude() {
       )}
       <div className="relative flex min-h-[90svh] flex-col items-center justify-center px-5 py-28 md:px-8">
         <div className="flex w-full flex-col items-center gap-2 md:flex-row md:justify-center md:gap-[4vw]">
-          <motion.p style={{ x: wide ? xLeft : 0, ...DISPLAY }} className="whitespace-nowrap text-[15vw] uppercase leading-none md:text-[8.5vw]">
+          <motion.p style={{ x: wide ? xLeft : 0, ...DISPLAY }} className="whitespace-nowrap text-[12vw] uppercase leading-none md:text-[5.2vw]">
             Soutrame
           </motion.p>
           <motion.span style={{ scaleX: line }} aria-hidden className="hidden h-px w-[6vw] origin-center bg-white/50 md:block" />
-          <motion.p style={{ x: wide ? xRight : 0, ...DISPLAY }} className="whitespace-nowrap text-[15vw] uppercase leading-none md:text-[8.5vw]">
+          <motion.p style={{ x: wide ? xRight : 0, ...DISPLAY }} className="whitespace-nowrap text-[12vw] uppercase leading-none md:text-[5.2vw]">
             Cycle
           </motion.p>
         </div>
         <Reveal className="mt-14 text-center">
           <p className="text-[13px] text-white/50">{t('Annonce de la première collection', 'Announcing the first collection')}</p>
-          <p className="mt-3 text-[26px] uppercase leading-none md:text-[32px]">
+          <p className="mt-3 text-[20px] uppercase leading-none md:text-[24px]">
             <span style={DISPLAY}>Cycle</span> <span className="font-light">01</span>
           </p>
         </Reveal>
@@ -416,16 +418,16 @@ function Hero({ ready, onOpen }: { ready: boolean; onOpen: (p: Piece) => void })
 
   return (
     <section ref={ref} className="relative z-[1] px-5 pb-16 pt-20 md:h-[100svh] md:min-h-[700px] md:px-8 md:pb-8 md:pt-20">
-      <div className="grid h-full grid-cols-1 gap-y-10 md:grid-cols-12 md:gap-x-8">
+      <div className="grid h-full grid-cols-1 gap-y-10 md:grid-cols-12 md:gap-x-10">
         {/* the cycle */}
-        <div className="relative md:col-span-7 md:h-full">
-          <motion.div style={{ y: yImg }} className="relative h-full">
+        <div className="relative md:col-span-6 md:col-start-1 md:flex md:h-full md:items-center">
+          <motion.div style={{ y: yImg }} className="relative w-full md:w-[min(100%,calc((100svh-9rem)*0.8))]">
             <button
               onClick={() => setI((v) => (v + 1) % LOOKBOOK.length)}
               onMouseEnter={() => setPaused(true)}
               onMouseLeave={() => setPaused(false)}
               aria-label={t('Image suivante', 'Next image')}
-              className="relative block aspect-[4/5] w-full overflow-hidden bg-[#141414] md:aspect-auto md:h-full"
+              className="relative block aspect-[4/5] w-full overflow-hidden bg-[#141414]"
             >
               <Image src={LOOKBOOK[prev].src} alt="" fill sizes="(min-width:768px) 58vw, 100vw" className="object-cover" />
               {ready ? (
@@ -448,7 +450,7 @@ function Hero({ ready, onOpen }: { ready: boolean; onOpen: (p: Piece) => void })
         </div>
 
         {/* the collection */}
-        <div className="relative flex flex-col justify-end md:col-span-5 md:pb-2">
+        <div className="relative flex flex-col justify-center md:col-span-5 md:col-start-8">
           <motion.p initial={{ opacity: 0 }} animate={{ opacity: ready ? 1 : 0 }} transition={{ duration: 1, delay: 0.3 }} className="text-[13px] text-white/50">
             {t('Cycle 01 — première collection', 'Cycle 01 — first collection')}
           </motion.p>
@@ -456,28 +458,28 @@ function Hero({ ready, onOpen }: { ready: boolean; onOpen: (p: Piece) => void })
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: ready ? 1 : 0, y: ready ? 0 : 20 }}
             transition={{ duration: 1.2, ease: EASE, delay: 0.4 }}
-            className="mt-5 text-[56px] uppercase leading-[0.9] md:text-[min(6.6vw,104px)]"
+            className="mt-4 text-[42px] uppercase leading-[0.92] md:text-[min(4.4vw,68px)]"
             style={DISPLAY}
           >
             Chimera
             <br />
             School
           </motion.h1>
-          <motion.p initial={{ opacity: 0 }} animate={{ opacity: ready ? 1 : 0 }} transition={{ duration: 1, delay: 0.6 }} className="mt-6 max-w-[400px] text-[15px] leading-relaxed text-white/65">
+          <motion.p initial={{ opacity: 0 }} animate={{ opacity: ready ? 1 : 0 }} transition={{ duration: 1, delay: 0.6 }} className="mt-5 max-w-[380px] text-[14px] leading-relaxed text-white/65">
             {t(
               'Une veste et un pantalon. Un uniforme revisité, entre vêtement technique, mesh et broderie.',
               'One jacket, one pair of trousers. A reworked uniform, between technical wear, mesh and embroidery.'
             )}
           </motion.p>
 
-          <motion.div initial={{ opacity: 0 }} animate={{ opacity: ready ? 1 : 0 }} transition={{ duration: 1, delay: 0.75 }} className="mt-10 border-t border-white/10">
+          <motion.div initial={{ opacity: 0 }} animate={{ opacity: ready ? 1 : 0 }} transition={{ duration: 1, delay: 0.75 }} className="mt-8 border-t border-white/10">
             {PIECES.map((p) => (
-              <button key={p.id} onClick={() => onOpen(p)} className="group flex w-full items-center gap-5 border-b border-white/10 py-4 text-left">
-                <div className="relative aspect-[4/5] w-14 shrink-0 overflow-hidden bg-[#141414]">
+              <button key={p.id} onClick={() => onOpen(p)} className="group flex w-full items-center gap-4 border-b border-white/10 py-3 text-left">
+                <div className="relative aspect-[4/5] w-11 shrink-0 overflow-hidden bg-[#141414]">
                   <Image src={p.image} alt="" fill sizes="56px" className="object-cover transition-transform duration-700 group-hover:scale-110" />
                 </div>
                 <div className="flex-1">
-                  <span className="block text-[15px] text-white/90">{p.name}</span>
+                  <span className="block text-[14px] text-white/90">{p.name}</span>
                   <span className="mt-0.5 block text-[13px] text-white/45">{p.price ?? DROP.price ?? t('Prix à venir', 'Price soon')}</span>
                 </div>
                 <span className="text-[13px] text-white/40 transition-all duration-500 group-hover:translate-x-1 group-hover:text-white">{t('Voir', 'View')} →</span>
@@ -501,16 +503,16 @@ function Collection({ onOpen }: { onOpen: (p: Piece) => void }) {
   const { lang } = useLang();
   return (
     <section id="collection" className="relative z-[1] px-5 pb-28 pt-24 md:px-8 md:pb-40 md:pt-40">
-      <Reveal className="flex flex-wrap items-end justify-between gap-6">
-        <h2 className="text-[40px] uppercase leading-[0.95] md:text-[72px]" style={DISPLAY}>
+      <Reveal className="mx-auto flex max-w-[1080px] flex-wrap items-end justify-between gap-6">
+        <h2 className="text-[30px] uppercase leading-[0.95] md:text-[44px]" style={DISPLAY}>
           {t('La collection', 'The collection')}
         </h2>
         <p className="text-[13px] text-white/50">{t('Deux pièces — Cycle 01', 'Two pieces — Cycle 01')}</p>
       </Reveal>
 
-      <div className="mt-12 grid grid-cols-1 gap-y-16 md:mt-16 md:grid-cols-2 md:gap-x-8">
+      <div className="mx-auto mt-12 grid max-w-[1080px] grid-cols-1 gap-y-16 md:mt-16 md:grid-cols-2 md:gap-x-12">
         {PIECES.map((p, i) => (
-          <Reveal key={p.id} delay={i * 0.1} className={i === 1 ? 'md:mt-40' : ''}>
+          <Reveal key={p.id} delay={i * 0.1} className={i === 1 ? 'md:mt-28' : ''}>
             <article
               className="group cursor-pointer"
               onClick={() => onOpen(p)}
@@ -540,10 +542,10 @@ function Collection({ onOpen }: { onOpen: (p: Piece) => void }) {
                 </Glass>
               </div>
               <div className="mt-5 flex items-baseline justify-between gap-4">
-                <h3 className="text-[17px] md:text-[19px]">{p.name}</h3>
-                <span className="shrink-0 text-[14px] text-white/55">{p.price ?? DROP.price ?? t('Prix à venir', 'Price soon')}</span>
+                <h3 className="text-[15px] md:text-[16px]">{p.name}</h3>
+                <span className="shrink-0 text-[13px] text-white/55">{p.price ?? DROP.price ?? t('Prix à venir', 'Price soon')}</span>
               </div>
-              <p className="mt-2 text-[14px] leading-relaxed text-white/50">{(lang === 'fr' ? p.details.fr : p.details.en).slice(0, 2).join(' · ')}</p>
+              <p className="mt-2 text-[13px] leading-relaxed text-white/50">{(lang === 'fr' ? p.details.fr : p.details.en).slice(0, 2).join(' · ')}</p>
             </article>
           </Reveal>
         ))}
@@ -636,7 +638,7 @@ function ProductSheet({ piece, onClose }: { piece: Piece | null; onClose: () => 
                   {t('Fermer', 'Close')} ✕
                 </button>
               </div>
-              <h3 className="mt-8 text-[30px] uppercase leading-[1] md:text-[40px]" style={DISPLAY}>
+              <h3 className="mt-6 text-[24px] uppercase leading-[1.05] md:text-[30px]" style={DISPLAY}>
                 {piece.name}
               </h3>
               <p className="mt-4 text-[15px] text-white/70">{piece.price ?? DROP.price ?? t('Prix annoncé bientôt', 'Price announced soon')}</p>
@@ -731,13 +733,13 @@ function Lookbook() {
 
       <div className="relative">
         <Reveal>
-          <h2 className="text-[40px] uppercase leading-[0.95] md:text-[72px]" style={DISPLAY}>
+          <h2 className="text-[30px] uppercase leading-[0.95] md:text-[44px]" style={DISPLAY}>
             Lookbook
           </h2>
         </Reveal>
 
         <div className="mt-12 grid grid-cols-1 gap-y-6 md:mt-16 md:grid-cols-12 md:gap-x-8">
-          <div className="relative md:col-span-6 md:col-start-4">
+          <div className="relative md:col-span-4 md:col-start-5">
             <div className="relative aspect-[4/5] w-full overflow-hidden bg-[#141414]">
               <Image src={LOOKBOOK[(active - 1 + LOOKBOOK.length) % LOOKBOOK.length].src} alt="" fill sizes="(min-width:768px) 50vw, 100vw" className="object-cover" />
               <Weave key={shot.src} src={shot.src} alt={`Chimera School — ${shot.label[lang]}`} strips={10} sizes="(min-width:768px) 50vw, 100vw" />
@@ -781,12 +783,12 @@ function Manifesto() {
           <Mark className="mx-auto w-10 text-white/80" />
         </Reveal>
         <Reveal delay={0.1}>
-          <p className="mt-12 text-[44px] uppercase leading-[0.95] md:text-[96px]" style={DISPLAY}>
+          <p className="mt-10 text-[32px] uppercase leading-[0.95] md:text-[60px]" style={DISPLAY}>
             I can never be food.
           </p>
         </Reveal>
         <Reveal delay={0.2}>
-          <p className="mx-auto mt-12 max-w-[620px] text-[16px] leading-[1.7] text-white/65 md:text-[18px]">
+          <p className="mx-auto mt-10 max-w-[560px] text-[15px] leading-[1.75] text-white/65">
             {t(
               'SOUTRAME, c’est la trame qu’on a tous en nous : ce qui se construit à force de vécu, de doutes et de retours. CYCLE rappelle que rien n’est linéaire. On avance, on bloque, on revient. « I can never be food » n’est pas une phrase agressive, c’est une affirmation intérieure : ne pas être consommé, ne pas être formaté.',
               'SOUTRAME is the inner thread we all carry: what gets built through experience, doubt and return. CYCLE is a reminder that nothing is linear. We move forward, we stall, we come back. “I can never be food” is not an aggressive line, it is an inner statement: not to be consumed, not to be shaped by what surrounds us.'
@@ -863,7 +865,7 @@ export default function SoutramePage() {
       <footer className="relative z-[1] px-5 pb-8 md:px-8">
         <div className="flex flex-col gap-10 border-t border-white/10 pt-10 md:flex-row md:items-end md:justify-between">
           <div className="flex items-end gap-4 md:gap-8">
-            <p className="text-[18vw] uppercase leading-[0.8] md:text-[13vw]" style={DISPLAY}>
+            <p className="text-[14vw] uppercase leading-[0.8] md:text-[8vw]" style={DISPLAY}>
               Soutrame
             </p>
           </div>

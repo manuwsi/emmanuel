@@ -35,7 +35,10 @@ const DROP = {
 const SIZE_PREVIEW = ['S', 'M', 'L', 'XL'];
 
 const EASE = [0.22, 1, 0.36, 1] as const;
-const DISPLAY = { fontFamily: 'var(--font-ade), serif' };
+/** Titles: General Sans, the brand typeface, set tight and uppercase. */
+const DISPLAY = { fontFamily: 'var(--font-general-sans), Inter, sans-serif', fontWeight: 500, letterSpacing: '-0.025em' } as const;
+/** Ade Display is kept for a single, more intimate line: the mantra. */
+const MANTRA = { fontFamily: 'var(--font-ade), serif' } as const;
 
 type Shot = { src: string; label: { fr: string; en: string } };
 
@@ -372,7 +375,7 @@ function CycleInterlude() {
         <Reveal className="mt-14 text-center">
           <p className="text-[13px] text-white/50">{t('Annonce de la première collection', 'Announcing the first collection')}</p>
           <p className="mt-3 text-[20px] uppercase leading-none md:text-[24px]">
-            <span style={DISPLAY}>Cycle</span> <span className="font-light">01</span>
+            <span style={DISPLAY}>Cycle 01</span>
           </p>
         </Reveal>
       </div>
@@ -783,7 +786,7 @@ function Manifesto() {
           <Mark className="mx-auto w-10 text-white/80" />
         </Reveal>
         <Reveal delay={0.1}>
-          <p className="mt-10 text-[32px] uppercase leading-[0.95] md:text-[60px]" style={DISPLAY}>
+          <p className="mt-10 text-[32px] uppercase leading-[0.95] md:text-[60px]" style={MANTRA}>
             I can never be food.
           </p>
         </Reveal>
@@ -839,7 +842,7 @@ export default function SoutramePage() {
       <header className="fixed inset-x-0 top-0 z-40 flex items-center justify-between bg-gradient-to-b from-[#0b0b0b] to-transparent px-5 pb-6 pt-5 md:px-8">
         <a href="#" className="flex items-center gap-3">
           <Mark className="w-7 shrink-0" />
-          <span className="text-[15px] uppercase leading-none tracking-[0.04em]" style={DISPLAY}>
+          <span className="text-[13px] font-medium uppercase leading-none tracking-[0.08em]">
             Soutrame.Cycle
           </span>
         </a>

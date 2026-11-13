@@ -21,8 +21,9 @@
 import Image from 'next/image';
 import Link from 'next/link';
 import { useCallback, useEffect, useRef, useState } from 'react';
-import { AnimatePresence, motion, useScroll, useTransform } from 'framer-motion';
+import { AnimatePresence, motion, useScroll, useTransform, type MotionValue } from 'framer-motion';
 import { useLang, useT } from '@/components/i18n';
+import { CHIMERA_A, CHIMERA_B } from './chimeras';
 
 const DROP = {
   price: null as string | null,
@@ -221,6 +222,127 @@ function Reveal({ children, delay = 0, className = '' }: { children: React.React
   );
 }
 
+
+/* ───────────────────────── universe ─────────────────────────
+ * Elements taken from the SOUTRAME.CYCLE Figma file:
+ *  - the two chimera silhouettes (2K26 page), vectorised;
+ *  - the scattered dots from the "SOUTRAME CYCLE" posters;
+ *  - the guépard + swallows disc (Instagram page), used as the turning "cycle".
+ * Drop high-res exports in /public/soutrame and set them here to enable them.
+ */
+const UNIVERSE = {
+  landscape: null as string | null, // e.g. '/soutrame/landscape.jpg' — misty plain from the "Cycle 01" announcement
+  swallow: null as string | null, // e.g. '/soutrame/swallow.png' — transparent PNG of the swallows
+};
+
+function Chimera({ variant = 'A', className = '', flip = false }: { variant?: 'A' | 'B'; className?: string; flip?: boolean }) {
+  const c = variant === 'A' ? CHIMERA_A : CHIMERA_B;
+  return (
+    <svg viewBox={c.viewBox} fill="currentColor" className={className} style={flip ? { transform: 'scaleX(-1)' } : undefined} aria-hidden>
+      <path fillRule="evenodd" d={c.d} />
+    </svg>
+  );
+}
+
+/** Scattered dots, as on the SOUTRAME CYCLE posters. Each layer drifts at its own speed. */
+const DOTS: { x: number; y: number; s: number; depth: number }[] = [
+  { x: 8, y: 18, s: 10, depth: 0.6 },
+  { x: 22, y: 72, s: 8, depth: 1 },
+  { x: 41, y: 9, s: 12, depth: 0.4 },
+  { x: 57, y: 84, s: 9, depth: 0.8 },
+  { x: 71, y: 22, s: 11, depth: 1.2 },
+  { x: 86, y: 63, s: 10, depth: 0.5 },
+  { x: 93, y: 12, s: 7, depth: 0.9 },
+  { x: 34, y: 46, s: 6, depth: 1.4 },
+];
+
+function Dots({ progress, className = '' }: { progress: MotionValue<number>; className?: string }) {
+  return (
+    <div aria-hidden className={`pointer-events-none absolute inset-0 ${className}`}>
+      {DOTS.map((d, i) => (
+        <Dot key={i} d={d} progress={progress} />
+      ))}
+    </div>
+  );
+}
+
+function Dot({ d, progress }: { d: (typeof DOTS)[number]; progress: MotionValue<number> }) {
+  const y = useTransform(progress, [0, 1], [`${d.depth * 60}px`, `${d.depth * -60}px`]);
+  return (
+    <motion.span
+      style={{ left: `${d.x}%`, top: `${d.y}%`, width: d.s, height: d.s, y }}
+      className="absolute rounded-full bg-[#ecebe6]"
+    />
+  );
+}
+
+/** The guépard + swallows disc. It turns with the scroll: the cycle, literally. */
+function Disc({ progress, className = '' }: { progress: MotionValue<number>; className?: string }) {
+  const rotate = useTransform(progress, [0, 1], [-40, 220]);
+  return (
+    <motion.div style={{ rotate }} className={`relative aspect-square ${className}`}>
+      <Image src="/soutrame/disc.png" alt="SOUTRAME — disque guépard et hirondelles" fill sizes="(min-width:768px) 340px, 60vw" className="object-contain drop-shadow-[0_40px_80px_rgba(0,0,0,0.6)]" />
+    </motion.div>
+  );
+}
+
+function CycleInterlude() {
+  const t = useT();
+  const ref = useRef<HTMLElement>(null);
+  const { scrollYProgress } = useScroll({ target: ref, offset: ['start end', 'end start'] });
+  const xLeft = useTransform(scrollYProgress, [0, 1], ['-8%', '6%']);
+  const xRight = useTransform(scrollYProgress, [0, 1], ['8%', '-6%']);
+  const bgScale = useTransform(scrollYProgress, [0, 1], [1.15, 1]);
+  const chimY = useTransform(scrollYProgress, [0, 1], ['30%', '-20%']);
+
+  return (
+    <section ref={ref} className="relative overflow-hidden border-y border-white/[0.08]">
+      {/* atmosphere: the misty plain if provided, otherwise a fog made of light */}
+      <motion.div style={{ scale: bgScale }} aria-hidden className="absolute inset-0">
+        {UNIVERSE.landscape ? (
+          <Image src={UNIVERSE.landscape} alt="" fill sizes="100vw" className="object-cover opacity-60 grayscale" />
+        ) : (
+          <div className="absolute inset-0 bg-[radial-gradient(ellipse_80%_55%_at_50%_70%,rgba(236,235,230,0.16),transparent_70%),linear-gradient(to_bottom,#0b0b0b,#141414_55%,#0b0b0b)]" />
+        )}
+      </motion.div>
+      <div aria-hidden className="absolute inset-0 bg-gradient-to-b from-[#0b0b0b] via-transparent to-[#0b0b0b]" />
+
+      <Dots progress={scrollYProgress} className="opacity-80" />
+
+      {/* chimeras rising from the fog */}
+      <motion.div style={{ y: chimY }} aria-hidden className="pointer-events-none absolute bottom-0 left-[6%] hidden w-[16vw] max-w-[240px] text-white/[0.06] md:block">
+        <Chimera variant="B" />
+      </motion.div>
+      <motion.div style={{ y: chimY }} aria-hidden className="pointer-events-none absolute bottom-0 right-[6%] hidden w-[14vw] max-w-[220px] text-white/[0.06] md:block">
+        <Chimera variant="A" flip />
+      </motion.div>
+
+      <div className="relative flex min-h-[100svh] flex-col items-center justify-center px-5 py-28 md:px-8">
+        <div className="relative flex w-full flex-col items-center justify-center gap-6 md:flex-row md:gap-0">
+          <motion.p style={{ x: xLeft, ...DISPLAY }} className="whitespace-nowrap text-[15vw] uppercase leading-none md:absolute md:right-1/2 md:mr-[13vw] md:text-[6vw]">
+            Soutrame
+          </motion.p>
+          <Disc progress={scrollYProgress} className="z-10 w-[62vw] max-w-[340px] md:w-[22vw]" />
+          <motion.p style={{ x: xRight, ...DISPLAY }} className="whitespace-nowrap text-[15vw] uppercase leading-none md:absolute md:left-1/2 md:ml-[13vw] md:text-[6vw]">
+            Cycle
+          </motion.p>
+        </div>
+        {UNIVERSE.swallow && (
+          <motion.div style={{ x: xRight }} aria-hidden className="pointer-events-none absolute left-[55%] top-[22%] w-[18vw] max-w-[260px]">
+            <Image src={UNIVERSE.swallow} alt="" width={600} height={800} className="h-auto w-full" />
+          </motion.div>
+        )}
+        <Reveal className="mt-16 text-center">
+          <p className="text-[13px] text-white/50">{t('Annonce de la première collection', 'Announcing the first collection')}</p>
+          <p className="mt-3 text-[28px] uppercase leading-none md:text-[36px]">
+            <span style={DISPLAY}>Cycle</span> <span className="font-light">01</span>
+          </p>
+        </Reveal>
+      </div>
+    </section>
+  );
+}
+
 /* ───────────────────────── intro ───────────────────────── */
 
 function Intro({ onDone }: { onDone: () => void }) {
@@ -291,7 +413,16 @@ function Hero({ ready, onOpen }: { ready: boolean; onOpen: (p: Piece) => void })
         </div>
 
         {/* the collection */}
-        <div className="flex flex-col justify-end md:col-span-5 md:pb-2">
+        <div className="relative flex flex-col justify-end md:col-span-5 md:pb-2">
+          <motion.div
+            aria-hidden
+            initial={{ opacity: 0, y: 30 }}
+            animate={{ opacity: ready ? 1 : 0, y: ready ? 0 : 30 }}
+            transition={{ duration: 1.6, ease: EASE, delay: 0.5 }}
+            className="pointer-events-none absolute right-0 top-[8%] w-[46%] max-w-[300px] text-white/[0.07]"
+          >
+            <Chimera variant="A" />
+          </motion.div>
           <motion.p initial={{ opacity: 0 }} animate={{ opacity: ready ? 1 : 0 }} transition={{ duration: 1, delay: 0.3 }} className="text-[13px] text-white/50">
             {t('Cycle 01 — première collection', 'Cycle 01 — first collection')}
           </motion.p>
@@ -378,7 +509,8 @@ function Collection({ onOpen }: { onOpen: (p: Piece) => void }) {
                     </div>
                   ))}
                 </div>
-                <Glass className="absolute bottom-4 left-4 px-4 py-2.5 opacity-0 transition-opacity duration-500 group-hover:opacity-100 max-md:opacity-100">
+                <Glass className="absolute bottom-4 left-4 flex items-center gap-3 px-4 py-2.5">
+                  <Chimera variant={i === 0 ? 'A' : 'B'} className="relative h-5 w-auto text-white" />
                   <span className="relative text-[13px] text-white">{t('Voir la pièce', 'View piece')} →</span>
                 </Glass>
               </div>
@@ -619,7 +751,13 @@ function Manifesto() {
   const t = useT();
   return (
     <section id="manifesto" className="relative px-5 pb-32 pt-24 md:px-8 md:pb-48 md:pt-32">
-      <div className="mx-auto max-w-[980px] text-center">
+      <div aria-hidden className="pointer-events-none absolute inset-y-0 left-0 hidden w-[22vw] items-center md:flex">
+        <Chimera variant="B" className="w-full text-white/[0.05]" />
+      </div>
+      <div aria-hidden className="pointer-events-none absolute inset-y-0 right-0 hidden w-[22vw] items-center md:flex">
+        <Chimera variant="B" flip className="w-full text-white/[0.05]" />
+      </div>
+      <div className="relative mx-auto max-w-[980px] text-center">
         <Reveal>
           <Mark className="mx-auto w-10 text-white/80" />
         </Reveal>
@@ -698,14 +836,18 @@ export default function SoutramePage() {
 
       <Hero ready={ready} onOpen={setOpenPiece} />
       <Collection onOpen={setOpenPiece} />
+      <CycleInterlude />
       <Lookbook />
       <Manifesto />
 
       <footer className="relative px-5 pb-8 md:px-8">
         <div className="flex flex-col gap-10 border-t border-white/10 pt-10 md:flex-row md:items-end md:justify-between">
-          <p className="text-[18vw] uppercase leading-[0.8] md:text-[13vw]" style={DISPLAY}>
-            Soutrame
-          </p>
+          <div className="flex items-end gap-4 md:gap-8">
+            <p className="text-[18vw] uppercase leading-[0.8] md:text-[13vw]" style={DISPLAY}>
+              Soutrame
+            </p>
+            <Chimera variant="A" className="mb-[1vw] hidden w-[6vw] text-white/80 md:block" />
+          </div>
           <div className="flex flex-col gap-2 text-[13px] text-white/55 md:items-end">
             <a href={DROP.instagram} target="_blank" rel="noopener noreferrer" className="transition hover:text-white">
               Instagram ↗

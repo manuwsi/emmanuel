@@ -21,9 +21,8 @@
 import Image from 'next/image';
 import Link from 'next/link';
 import { useCallback, useEffect, useRef, useState } from 'react';
-import { AnimatePresence, motion, useScroll, useTransform, type MotionValue } from 'framer-motion';
+import { AnimatePresence, motion, useScroll, useTransform } from 'framer-motion';
 import { useLang, useT } from '@/components/i18n';
-import { CHIMERA_A, CHIMERA_B } from './chimeras';
 
 const DROP = {
   price: null as string | null,
@@ -224,117 +223,153 @@ function Reveal({ children, delay = 0, className = '' }: { children: React.React
 
 
 /* ───────────────────────── universe ─────────────────────────
- * Elements taken from the SOUTRAME.CYCLE Figma file:
- *  - the two chimera silhouettes (2K26 page), vectorised;
- *  - the scattered dots from the "SOUTRAME CYCLE" posters;
- *  - the guépard + swallows disc (Instagram page), used as the turning "cycle".
- * Drop high-res exports in /public/soutrame and set them here to enable them.
+ * Snow: the scattered dots of the SOUTRAME CYCLE posters, set in motion.
+ * Silence, cold, too-large spaces: atmosphere without explanation.
+ * Drawn on a single canvas behind the content; depth = size, speed and blur.
  */
 const UNIVERSE = {
   landscape: null as string | null, // e.g. '/soutrame/landscape.jpg' — misty plain from the "Cycle 01" announcement
-  swallow: null as string | null, // e.g. '/soutrame/swallow.png' — transparent PNG of the swallows
 };
 
-function Chimera({ variant = 'A', className = '', flip = false }: { variant?: 'A' | 'B'; className?: string; flip?: boolean }) {
-  const c = variant === 'A' ? CHIMERA_A : CHIMERA_B;
-  return (
-    <svg viewBox={c.viewBox} fill="currentColor" className={className} style={flip ? { transform: 'scaleX(-1)' } : undefined} aria-hidden>
-      <path fillRule="evenodd" d={c.d} />
-    </svg>
-  );
+function Snow() {
+  const ref = useRef<HTMLCanvasElement>(null);
+
+  useEffect(() => {
+    const canvas = ref.current;
+    if (!canvas) return;
+    const ctx = canvas.getContext('2d');
+    if (!ctx) return;
+    const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+    type Flake = { x: number; y: number; r: number; z: number; sway: number; phase: number };
+    let w = 0;
+    let h = 0;
+    let flakes: Flake[] = [];
+    let wind = 0;
+    let targetWind = 0;
+    let raf = 0;
+    const dpr = Math.min(window.devicePixelRatio || 1, 2);
+
+    const make = (y?: number): Flake => {
+      const z = Math.random(); // 0 = far, 1 = near
+      return {
+        x: Math.random() * w,
+        y: y ?? Math.random() * h,
+        r: 0.5 + z * z * 2.6,
+        z,
+        sway: 0.2 + Math.random() * 0.6,
+        phase: Math.random() * Math.PI * 2,
+      };
+    };
+
+    const resize = () => {
+      w = window.innerWidth;
+      h = window.innerHeight;
+      canvas.width = w * dpr;
+      canvas.height = h * dpr;
+      canvas.style.width = `${w}px`;
+      canvas.style.height = `${h}px`;
+      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+      const count = Math.round(Math.min(110, (w * h) / 14000));
+      flakes = Array.from({ length: count }, () => make());
+    };
+
+    const onMove = (e: PointerEvent) => {
+      targetWind = (e.clientX / w - 0.5) * 0.9;
+    };
+
+    const draw = (time: number) => {
+      wind += (targetWind - wind) * 0.02;
+      ctx.clearRect(0, 0, w, h);
+      for (const f of flakes) {
+        const speed = 0.12 + f.z * 0.55;
+        f.y += speed;
+        f.x += Math.sin(time * 0.0004 * f.sway + f.phase) * 0.18 + wind * (0.3 + f.z);
+        if (f.y - f.r > h) Object.assign(f, make(-f.r * 2));
+        if (f.x < -10) f.x = w + 10;
+        if (f.x > w + 10) f.x = -10;
+        ctx.globalAlpha = 0.18 + f.z * 0.5;
+        ctx.shadowBlur = f.z > 0.8 ? 6 : 0;
+        ctx.shadowColor = 'rgba(236,235,230,0.6)';
+        ctx.beginPath();
+        ctx.arc(f.x, f.y, f.r, 0, Math.PI * 2);
+        ctx.fillStyle = '#ecebe6';
+        ctx.fill();
+      }
+      raf = requestAnimationFrame(draw);
+    };
+
+    const onVisibility = () => {
+      cancelAnimationFrame(raf);
+      if (!document.hidden && !reduce) raf = requestAnimationFrame(draw);
+    };
+
+    resize();
+    if (reduce) {
+      // a still, quiet snowfield
+      for (const f of flakes) {
+        ctx.globalAlpha = 0.18 + f.z * 0.4;
+        ctx.beginPath();
+        ctx.arc(f.x, f.y, f.r, 0, Math.PI * 2);
+        ctx.fillStyle = '#ecebe6';
+        ctx.fill();
+      }
+    } else {
+      raf = requestAnimationFrame(draw);
+    }
+    window.addEventListener('resize', resize);
+    window.addEventListener('pointermove', onMove);
+    document.addEventListener('visibilitychange', onVisibility);
+    return () => {
+      cancelAnimationFrame(raf);
+      window.removeEventListener('resize', resize);
+      window.removeEventListener('pointermove', onMove);
+      document.removeEventListener('visibilitychange', onVisibility);
+    };
+  }, []);
+
+  return <canvas ref={ref} aria-hidden className="pointer-events-none fixed inset-0 z-0" />;
 }
 
-/** Scattered dots, as on the SOUTRAME CYCLE posters. Each layer drifts at its own speed. */
-const DOTS: { x: number; y: number; s: number; depth: number }[] = [
-  { x: 8, y: 18, s: 10, depth: 0.6 },
-  { x: 22, y: 72, s: 8, depth: 1 },
-  { x: 41, y: 9, s: 12, depth: 0.4 },
-  { x: 57, y: 84, s: 9, depth: 0.8 },
-  { x: 71, y: 22, s: 11, depth: 1.2 },
-  { x: 86, y: 63, s: 10, depth: 0.5 },
-  { x: 93, y: 12, s: 7, depth: 0.9 },
-  { x: 34, y: 46, s: 6, depth: 1.4 },
-];
-
-function Dots({ progress, className = '' }: { progress: MotionValue<number>; className?: string }) {
-  return (
-    <div aria-hidden className={`pointer-events-none absolute inset-0 ${className}`}>
-      {DOTS.map((d, i) => (
-        <Dot key={i} d={d} progress={progress} />
-      ))}
-    </div>
-  );
-}
-
-function Dot({ d, progress }: { d: (typeof DOTS)[number]; progress: MotionValue<number> }) {
-  const y = useTransform(progress, [0, 1], [`${d.depth * 60}px`, `${d.depth * -60}px`]);
-  return (
-    <motion.span
-      style={{ left: `${d.x}%`, top: `${d.y}%`, width: d.s, height: d.s, y }}
-      className="absolute rounded-full bg-[#ecebe6]"
-    />
-  );
-}
-
-/** The guépard + swallows disc. It turns with the scroll: the cycle, literally. */
-function Disc({ progress, className = '' }: { progress: MotionValue<number>; className?: string }) {
-  const rotate = useTransform(progress, [0, 1], [-40, 220]);
-  return (
-    <motion.div style={{ rotate }} className={`relative aspect-square ${className}`}>
-      <Image src="/soutrame/disc.png" alt="SOUTRAME — disque guépard et hirondelles" fill sizes="(min-width:768px) 340px, 60vw" className="object-contain drop-shadow-[0_40px_80px_rgba(0,0,0,0.6)]" />
-    </motion.div>
-  );
-}
-
+/** "SOUTRAME — CYCLE": the two words drift toward each other as you scroll, in the snow. */
 function CycleInterlude() {
   const t = useT();
   const ref = useRef<HTMLElement>(null);
   const { scrollYProgress } = useScroll({ target: ref, offset: ['start end', 'end start'] });
-  const xLeft = useTransform(scrollYProgress, [0, 1], ['-8%', '6%']);
-  const xRight = useTransform(scrollYProgress, [0, 1], ['8%', '-6%']);
-  const bgScale = useTransform(scrollYProgress, [0, 1], [1.15, 1]);
-  const chimY = useTransform(scrollYProgress, [0, 1], ['30%', '-20%']);
+  const xLeft = useTransform(scrollYProgress, [0, 0.5, 1], ['-14vw', '0vw', '4vw']);
+  const xRight = useTransform(scrollYProgress, [0, 0.5, 1], ['14vw', '0vw', '-4vw']);
+  const line = useTransform(scrollYProgress, [0.2, 0.5], [0, 1]);
+  // the words only drift on wide screens; on mobile they are stacked
+  const [wide, setWide] = useState(false);
+  useEffect(() => {
+    const mq = window.matchMedia('(min-width: 768px)');
+    const update = () => setWide(mq.matches);
+    update();
+    mq.addEventListener('change', update);
+    return () => mq.removeEventListener('change', update);
+  }, []);
 
   return (
-    <section ref={ref} className="relative overflow-hidden border-y border-white/[0.08]">
-      {/* atmosphere: the misty plain if provided, otherwise a fog made of light */}
-      <motion.div style={{ scale: bgScale }} aria-hidden className="absolute inset-0">
-        {UNIVERSE.landscape ? (
-          <Image src={UNIVERSE.landscape} alt="" fill sizes="100vw" className="object-cover opacity-60 grayscale" />
-        ) : (
-          <div className="absolute inset-0 bg-[radial-gradient(ellipse_80%_55%_at_50%_70%,rgba(236,235,230,0.16),transparent_70%),linear-gradient(to_bottom,#0b0b0b,#141414_55%,#0b0b0b)]" />
-        )}
-      </motion.div>
-      <div aria-hidden className="absolute inset-0 bg-gradient-to-b from-[#0b0b0b] via-transparent to-[#0b0b0b]" />
-
-      <Dots progress={scrollYProgress} className="opacity-80" />
-
-      {/* chimeras rising from the fog */}
-      <motion.div style={{ y: chimY }} aria-hidden className="pointer-events-none absolute bottom-0 left-[6%] hidden w-[16vw] max-w-[240px] text-white/[0.06] md:block">
-        <Chimera variant="B" />
-      </motion.div>
-      <motion.div style={{ y: chimY }} aria-hidden className="pointer-events-none absolute bottom-0 right-[6%] hidden w-[14vw] max-w-[220px] text-white/[0.06] md:block">
-        <Chimera variant="A" flip />
-      </motion.div>
-
-      <div className="relative flex min-h-[100svh] flex-col items-center justify-center px-5 py-28 md:px-8">
-        <div className="relative flex w-full flex-col items-center justify-center gap-6 md:flex-row md:gap-0">
-          <motion.p style={{ x: xLeft, ...DISPLAY }} className="whitespace-nowrap text-[15vw] uppercase leading-none md:absolute md:right-1/2 md:mr-[13vw] md:text-[6vw]">
+    <section ref={ref} className="relative z-[1] overflow-hidden">
+      {UNIVERSE.landscape && (
+        <div aria-hidden className="absolute inset-0">
+          <Image src={UNIVERSE.landscape} alt="" fill sizes="100vw" className="object-cover opacity-40 grayscale" />
+          <div className="absolute inset-0 bg-gradient-to-b from-[#0b0b0b] via-transparent to-[#0b0b0b]" />
+        </div>
+      )}
+      <div className="relative flex min-h-[90svh] flex-col items-center justify-center px-5 py-28 md:px-8">
+        <div className="flex w-full flex-col items-center gap-2 md:flex-row md:justify-center md:gap-[4vw]">
+          <motion.p style={{ x: wide ? xLeft : 0, ...DISPLAY }} className="whitespace-nowrap text-[15vw] uppercase leading-none md:text-[8.5vw]">
             Soutrame
           </motion.p>
-          <Disc progress={scrollYProgress} className="z-10 w-[62vw] max-w-[340px] md:w-[22vw]" />
-          <motion.p style={{ x: xRight, ...DISPLAY }} className="whitespace-nowrap text-[15vw] uppercase leading-none md:absolute md:left-1/2 md:ml-[13vw] md:text-[6vw]">
+          <motion.span style={{ scaleX: line }} aria-hidden className="hidden h-px w-[6vw] origin-center bg-white/50 md:block" />
+          <motion.p style={{ x: wide ? xRight : 0, ...DISPLAY }} className="whitespace-nowrap text-[15vw] uppercase leading-none md:text-[8.5vw]">
             Cycle
           </motion.p>
         </div>
-        {UNIVERSE.swallow && (
-          <motion.div style={{ x: xRight }} aria-hidden className="pointer-events-none absolute left-[55%] top-[22%] w-[18vw] max-w-[260px]">
-            <Image src={UNIVERSE.swallow} alt="" width={600} height={800} className="h-auto w-full" />
-          </motion.div>
-        )}
-        <Reveal className="mt-16 text-center">
+        <Reveal className="mt-14 text-center">
           <p className="text-[13px] text-white/50">{t('Annonce de la première collection', 'Announcing the first collection')}</p>
-          <p className="mt-3 text-[28px] uppercase leading-none md:text-[36px]">
+          <p className="mt-3 text-[26px] uppercase leading-none md:text-[32px]">
             <span style={DISPLAY}>Cycle</span> <span className="font-light">01</span>
           </p>
         </Reveal>
@@ -380,7 +415,7 @@ function Hero({ ready, onOpen }: { ready: boolean; onOpen: (p: Piece) => void })
   const yImg = useTransform(scrollYProgress, [0, 1], ['0%', '10%']);
 
   return (
-    <section ref={ref} className="relative px-5 pb-16 pt-20 md:h-[100svh] md:min-h-[700px] md:px-8 md:pb-8 md:pt-20">
+    <section ref={ref} className="relative z-[1] px-5 pb-16 pt-20 md:h-[100svh] md:min-h-[700px] md:px-8 md:pb-8 md:pt-20">
       <div className="grid h-full grid-cols-1 gap-y-10 md:grid-cols-12 md:gap-x-8">
         {/* the cycle */}
         <div className="relative md:col-span-7 md:h-full">
@@ -414,15 +449,6 @@ function Hero({ ready, onOpen }: { ready: boolean; onOpen: (p: Piece) => void })
 
         {/* the collection */}
         <div className="relative flex flex-col justify-end md:col-span-5 md:pb-2">
-          <motion.div
-            aria-hidden
-            initial={{ opacity: 0, y: 30 }}
-            animate={{ opacity: ready ? 1 : 0, y: ready ? 0 : 30 }}
-            transition={{ duration: 1.6, ease: EASE, delay: 0.5 }}
-            className="pointer-events-none absolute right-0 top-[8%] w-[46%] max-w-[300px] text-white/[0.07]"
-          >
-            <Chimera variant="A" />
-          </motion.div>
           <motion.p initial={{ opacity: 0 }} animate={{ opacity: ready ? 1 : 0 }} transition={{ duration: 1, delay: 0.3 }} className="text-[13px] text-white/50">
             {t('Cycle 01 — première collection', 'Cycle 01 — first collection')}
           </motion.p>
@@ -474,7 +500,7 @@ function Collection({ onOpen }: { onOpen: (p: Piece) => void }) {
   const t = useT();
   const { lang } = useLang();
   return (
-    <section id="collection" className="relative px-5 pb-28 pt-24 md:px-8 md:pb-40 md:pt-40">
+    <section id="collection" className="relative z-[1] px-5 pb-28 pt-24 md:px-8 md:pb-40 md:pt-40">
       <Reveal className="flex flex-wrap items-end justify-between gap-6">
         <h2 className="text-[40px] uppercase leading-[0.95] md:text-[72px]" style={DISPLAY}>
           {t('La collection', 'The collection')}
@@ -509,8 +535,7 @@ function Collection({ onOpen }: { onOpen: (p: Piece) => void }) {
                     </div>
                   ))}
                 </div>
-                <Glass className="absolute bottom-4 left-4 flex items-center gap-3 px-4 py-2.5">
-                  <Chimera variant={i === 0 ? 'A' : 'B'} className="relative h-5 w-auto text-white" />
+                <Glass className="absolute bottom-4 left-4 px-4 py-2.5">
                   <span className="relative text-[13px] text-white">{t('Voir la pièce', 'View piece')} →</span>
                 </Glass>
               </div>
@@ -695,7 +720,7 @@ function Lookbook() {
   const shot = LOOKBOOK[active];
 
   return (
-    <section id="lookbook" className="relative overflow-hidden px-5 pb-28 pt-24 md:px-8 md:pb-40 md:pt-32">
+    <section id="lookbook" className="relative z-[1] overflow-hidden px-5 pb-28 pt-24 md:px-8 md:pb-40 md:pt-32">
       {/* soft light that follows the selected shot */}
       <AnimatePresence mode="sync">
         <motion.div key={shot.src + '-bg'} aria-hidden className="absolute inset-0 scale-125 blur-[120px] saturate-[0.4]" initial={{ opacity: 0 }} animate={{ opacity: 0.28 }} exit={{ opacity: 0 }} transition={{ duration: 1.2 }}>
@@ -750,13 +775,7 @@ function Lookbook() {
 function Manifesto() {
   const t = useT();
   return (
-    <section id="manifesto" className="relative px-5 pb-32 pt-24 md:px-8 md:pb-48 md:pt-32">
-      <div aria-hidden className="pointer-events-none absolute inset-y-0 left-0 hidden w-[22vw] items-center md:flex">
-        <Chimera variant="B" className="w-full text-white/[0.05]" />
-      </div>
-      <div aria-hidden className="pointer-events-none absolute inset-y-0 right-0 hidden w-[22vw] items-center md:flex">
-        <Chimera variant="B" flip className="w-full text-white/[0.05]" />
-      </div>
+    <section id="manifesto" className="relative z-[1] px-5 pb-32 pt-24 md:px-8 md:pb-48 md:pt-32">
       <div className="relative mx-auto max-w-[980px] text-center">
         <Reveal>
           <Mark className="mx-auto w-10 text-white/80" />
@@ -813,6 +832,7 @@ export default function SoutramePage() {
   return (
     <div className="relative min-h-screen bg-[#0b0b0b] text-[#ecebe6] antialiased selection:bg-[#ecebe6] selection:text-[#0b0b0b]" style={{ fontFamily: 'var(--font-general-sans), Inter, sans-serif' }}>
       <AnimatePresence>{!ready && <Intro onDone={finishIntro} />}</AnimatePresence>
+      <Snow />
 
       <header className="fixed inset-x-0 top-0 z-40 flex items-center justify-between bg-gradient-to-b from-[#0b0b0b] to-transparent px-5 pb-6 pt-5 md:px-8">
         <a href="#" className="flex items-center gap-3">
@@ -840,13 +860,12 @@ export default function SoutramePage() {
       <Lookbook />
       <Manifesto />
 
-      <footer className="relative px-5 pb-8 md:px-8">
+      <footer className="relative z-[1] px-5 pb-8 md:px-8">
         <div className="flex flex-col gap-10 border-t border-white/10 pt-10 md:flex-row md:items-end md:justify-between">
           <div className="flex items-end gap-4 md:gap-8">
             <p className="text-[18vw] uppercase leading-[0.8] md:text-[13vw]" style={DISPLAY}>
               Soutrame
             </p>
-            <Chimera variant="A" className="mb-[1vw] hidden w-[6vw] text-white/80 md:block" />
           </div>
           <div className="flex flex-col gap-2 text-[13px] text-white/55 md:items-end">
             <a href={DROP.instagram} target="_blank" rel="noopener noreferrer" className="transition hover:text-white">

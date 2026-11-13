@@ -3,13 +3,13 @@
 /**
  * SOUTRAME.CYCLE — brand shop (Cycle 01 · Chimera School)
  *
- * Design system, derived from the brand concept:
- *  - TRAME (the inner thread): a visible 12-column hairline grid runs behind the whole page,
- *    every block snaps to it, and images are revealed strip by strip, like a weave.
- *  - CYCLE (nothing is linear, it comes back): the hero shows the lookbook as an endless loop
- *    with a counter that restarts; sections are indexed like phases.
- *  - "Technical and augmented": square, hairline UI, bracketed mono labels, frosted glass only
- *    where it echoes the nylon's sheen (over imagery).
+ * Direction: the garment comes first. Large photography, a calm layout, and a single
+ * signature taken from the brand concept:
+ *  - TRAME (the inner thread): images are woven in strip by strip, on the hero, the
+ *    product cards, the lookbook and the product sheet. Buttons fill the same way.
+ *  - CYCLE (nothing is linear, it comes back): the hero shows the lookbook as an endless loop.
+ * Type: Ade Display (titles, uppercase) for the brand voice, General Sans for everything else.
+ * Frosted glass only appears over photography, as an echo of the nylon's sheen.
  *
  * To open sales, fill in DROP below:
  *  - price: e.g. '240 €' for the set (or a price per piece in PIECES)
@@ -21,15 +21,7 @@
 import Image from 'next/image';
 import Link from 'next/link';
 import { useCallback, useEffect, useRef, useState } from 'react';
-import {
-  AnimatePresence,
-  motion,
-  useMotionValue,
-  useScroll,
-  useSpring,
-  useTransform,
-  type MotionValue,
-} from 'framer-motion';
+import { AnimatePresence, motion, useScroll, useTransform } from 'framer-motion';
 import { useLang, useT } from '@/components/i18n';
 
 const DROP = {
@@ -43,7 +35,7 @@ const DROP = {
 const SIZE_PREVIEW = ['S', 'M', 'L', 'XL'];
 
 const EASE = [0.22, 1, 0.36, 1] as const;
-const MONO = 'ui-monospace, "SF Mono", "JetBrains Mono", Menlo, monospace';
+const DISPLAY = { fontFamily: 'var(--font-ade), serif' };
 
 type Shot = { src: string; label: { fr: string; en: string } };
 
@@ -57,13 +49,14 @@ const LOOKBOOK: Shot[] = [
   { src: '/soutrame/back.jpg', label: { fr: 'Dos', en: 'Back' } },
   { src: '/soutrame/detail-jacket.jpg', label: { fr: 'Détail veste', en: 'Jacket detail' } },
   { src: '/soutrame/detail-waist.jpg', label: { fr: 'Détail taille', en: 'Waist detail' } },
-  { src: '/soutrame/detail-hem.jpg', label: { fr: 'Ourlet & cordons', en: 'Hem & drawcords' } },
+  { src: '/soutrame/detail-hem.jpg', label: { fr: 'Ourlet et cordons', en: 'Hem and drawcords' } },
 ];
 
 const PIECES = [
   {
     id: '01',
     name: 'Chimera School Track Jacket',
+    short: { fr: 'Veste', en: 'Jacket' },
     image: '/soutrame/front.jpg',
     hover: '/soutrame/detail-jacket.jpg',
     gallery: ['/soutrame/front.jpg', '/soutrame/hood-pull.jpg', '/soutrame/detail-jacket.jpg', '/soutrame/hood-profile.jpg', '/soutrame/back-34.jpg'],
@@ -88,6 +81,7 @@ const PIECES = [
   {
     id: '02',
     name: 'Chimera School Zip-off Pant',
+    short: { fr: 'Pantalon', en: 'Trousers' },
     image: '/soutrame/back.jpg',
     hover: '/soutrame/detail-waist.jpg',
     gallery: ['/soutrame/back.jpg', '/soutrame/side.jpg', '/soutrame/detail-waist.jpg', '/soutrame/detail-hem.jpg', '/soutrame/sitting.jpg'],
@@ -118,21 +112,16 @@ type Piece = (typeof PIECES)[number];
 const SATELLITES = [58, -58, 102, -102, 152, -152];
 
 /** The SOUTRAME mark, rebuilt on a strict geometry. `assemble` animates the satellites in. */
-function Mark({ className = '', assemble = false, delay = 0 }: { className?: string; assemble?: boolean; delay?: number }) {
+function Mark({ className = '', assemble = false }: { className?: string; assemble?: boolean }) {
   return (
     <svg viewBox="-71.78 -46.68 143.55 113.12" fill="currentColor" className={className} aria-label="SOUTRAME" role="img">
-      <motion.circle cx="0" cy="0" r="30" initial={assemble ? { scale: 0 } : false} animate={{ scale: 1 }} transition={{ duration: 0.9, ease: EASE, delay }} />
+      <motion.circle cx="0" cy="0" r="30" initial={assemble ? { scale: 0 } : false} animate={{ scale: 1 }} transition={{ duration: 0.9, ease: EASE }} />
       {SATELLITES.map((deg, i) => {
         const t = (deg * Math.PI) / 180;
         const x = 56 * Math.sin(t);
         const y = -56 * Math.cos(t);
         return (
-          <motion.g
-            key={deg}
-            initial={assemble ? { opacity: 0, x: x * 0.6, y: y * 0.6 } : false}
-            animate={{ opacity: 1, x: 0, y: 0 }}
-            transition={{ duration: 1.1, ease: EASE, delay: delay + 0.25 + i * 0.06 }}
-          >
+          <motion.g key={deg} initial={assemble ? { opacity: 0, x: x * 0.6, y: y * 0.6 } : false} animate={{ opacity: 1, x: 0, y: 0 }} transition={{ duration: 1.1, ease: EASE, delay: 0.25 + i * 0.06 }}>
             <rect x="-4.5" y="-56" width="9" height="56" transform={`rotate(${deg})`} />
             <circle cx={x.toFixed(2)} cy={y.toFixed(2)} r="17" />
           </motion.g>
@@ -142,76 +131,25 @@ function Mark({ className = '', assemble = false, delay = 0 }: { className?: str
   );
 }
 
-/** Bracketed technical label. */
-function Tag({ children, className = '' }: { children: React.ReactNode; className?: string }) {
-  return (
-    <span className={`text-[10.5px] uppercase tracking-[0.14em] ${className}`} style={{ fontFamily: MONO }}>
-      {children}
-    </span>
-  );
-}
-
-/** The trame: hairline 12-column grid behind the whole page (4 columns on mobile). */
-function Trame() {
-  return (
-    <div aria-hidden className="pointer-events-none fixed inset-0 z-0 px-5 md:px-8">
-      <div className="grid h-full grid-cols-4 border-r border-white/[0.045] md:grid-cols-12">
-        {Array.from({ length: 12 }).map((_, i) => (
-          <div key={i} className={`border-l border-white/[0.045] ${i > 3 ? 'hidden md:block' : ''}`} />
-        ))}
-      </div>
-    </div>
-  );
-}
-
-function Grain() {
-  return (
-    <div
-      aria-hidden
-      className="pointer-events-none fixed inset-0 z-[80] opacity-[0.06] mix-blend-overlay"
-      style={{
-        backgroundImage:
-          "url(\"data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='160' height='160'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>\")",
-      }}
-    />
-  );
-}
-
-/** Frosted panel — only used over imagery, as an echo of the nylon's sheen. */
+/** Frosted panel — only over photography, as an echo of the nylon's sheen. */
 function Glass({ children, className = '' }: { children: React.ReactNode; className?: string }) {
   const positioned = /(^|\s)(absolute|fixed|sticky)(\s|$)/.test(className);
   return (
-    <div className={`${positioned ? '' : 'relative '}border border-white/[0.14] bg-[#141414]/40 backdrop-blur-2xl backdrop-saturate-[1.4] ${className}`}>
-      <div aria-hidden className="pointer-events-none absolute inset-0 bg-[linear-gradient(115deg,rgba(255,255,255,0.10)_0%,rgba(255,255,255,0)_38%,rgba(255,255,255,0)_70%,rgba(255,255,255,0.05)_100%)]" />
+    <div className={`${positioned ? '' : 'relative '}border border-white/[0.16] bg-[#151515]/35 backdrop-blur-2xl backdrop-saturate-[1.4] ${className}`}>
+      <div aria-hidden className="pointer-events-none absolute inset-0 bg-[linear-gradient(115deg,rgba(255,255,255,0.12)_0%,rgba(255,255,255,0)_40%)]" />
       {children}
     </div>
   );
 }
 
-/** Square, hairline button. On hover, horizontal threads weave in from alternating sides. */
-function Btn({
-  children,
-  href,
-  onClick,
-  disabled = false,
-  full = false,
-  external = false,
-}: {
-  children: React.ReactNode;
-  href?: string;
-  onClick?: () => void;
-  disabled?: boolean;
-  full?: boolean;
-  external?: boolean;
-}) {
-  const cls = `group relative inline-flex h-12 items-center justify-between gap-6 overflow-hidden border px-4 text-left ${full ? 'w-full' : 'w-full sm:w-auto sm:min-w-[300px]'} ${
-    disabled ? 'cursor-not-allowed border-white/15 text-white/45' : 'border-[#ecebe6]/70 text-[#ecebe6]'
+/** Square button. On hover, the fill is woven in, thread by thread. */
+function Btn({ children, href, disabled = false, full = false, external = false }: { children: React.ReactNode; href?: string; disabled?: boolean; full?: boolean; external?: boolean }) {
+  const cls = `group relative inline-flex h-[52px] items-center justify-between gap-8 overflow-hidden border px-5 text-[13px] ${full ? 'w-full' : 'w-full sm:w-auto sm:min-w-[280px]'} ${
+    disabled ? 'cursor-not-allowed border-white/15 text-white/45' : 'border-[#ecebe6] text-[#ecebe6]'
   }`;
   const inner = (
     <>
-      {disabled ? (
-        <span aria-hidden className="absolute inset-0 opacity-[0.35]" style={{ backgroundImage: 'repeating-linear-gradient(135deg, rgba(255,255,255,0.10) 0 1px, transparent 1px 7px)' }} />
-      ) : (
+      {!disabled && (
         <span aria-hidden className="absolute inset-0 flex flex-col">
           {Array.from({ length: 6 }).map((_, i) => (
             <span
@@ -222,12 +160,8 @@ function Btn({
           ))}
         </span>
       )}
-      <span className="relative transition-colors duration-300 group-hover:text-[#0b0b0b]">
-        <Tag>{children}</Tag>
-      </span>
-      <span className="relative transition-colors duration-300 group-hover:text-[#0b0b0b]">
-        <Tag>{disabled ? '[ — ]' : '[ → ]'}</Tag>
-      </span>
+      <span className="relative transition-colors duration-300 group-hover:text-[#0b0b0b]">{children}</span>
+      <span className="relative transition-colors duration-300 group-hover:text-[#0b0b0b]">{disabled ? '' : '→'}</span>
     </>
   );
   if (disabled)
@@ -236,16 +170,10 @@ function Btn({
         {inner}
       </span>
     );
-  if (href)
-    return (
-      <a href={href} className={cls} {...(external ? { target: '_blank', rel: 'noopener noreferrer' } : {})}>
-        {inner}
-      </a>
-    );
   return (
-    <button onClick={onClick} className={cls}>
+    <a href={href} className={cls} {...(external ? { target: '_blank', rel: 'noopener noreferrer' } : {})}>
       {inner}
-    </button>
+    </a>
   );
 }
 
@@ -258,23 +186,12 @@ function BuyButton({ full = false }: { full?: boolean }) {
     </Btn>
   ) : (
     <Btn disabled full={full}>
-      {t('Bientôt disponible — Cycle 01', 'Coming soon — Cycle 01')}
+      {t('Bientôt disponible', 'Coming soon')}
     </Btn>
   );
 }
 
-/** Index line opening each section, aligned on the trame. */
-function SectionHead({ index, label, right }: { index: string; label: string; right?: React.ReactNode }) {
-  return (
-    <div className="grid grid-cols-4 items-center border-b border-white/[0.08] pb-4 text-white/55 md:grid-cols-12">
-      <Tag className="col-span-1">[{index}]</Tag>
-      <Tag className="col-span-2 md:col-span-5">{label}</Tag>
-      <div className="col-span-1 text-right md:col-span-6">{right}</div>
-    </div>
-  );
-}
-
-/** Image revealed strip by strip — the weave. */
+/** Image woven in, strip by strip. */
 function Weave({ src, alt, strips = 12, priority = false, sizes }: { src: string; alt: string; strips?: number; priority?: boolean; sizes: string }) {
   return (
     <div className="absolute inset-0">
@@ -304,58 +221,30 @@ function Reveal({ children, delay = 0, className = '' }: { children: React.React
   );
 }
 
-function ScrollWords({ text, className = '' }: { text: string; className?: string }) {
-  const ref = useRef<HTMLParagraphElement>(null);
-  const { scrollYProgress } = useScroll({ target: ref, offset: ['start 85%', 'end 45%'] });
-  const words = text.split(' ');
-  return (
-    <p ref={ref} className={className}>
-      {words.map((w, i) => (
-        <Word key={i} progress={scrollYProgress} range={[i / words.length, (i + 1) / words.length]}>
-          {w}
-        </Word>
-      ))}
-    </p>
-  );
-}
-
-function Word({ children, progress, range }: { children: string; progress: MotionValue<number>; range: [number, number] }) {
-  const opacity = useTransform(progress, range, [0.12, 1]);
-  return (
-    <motion.span style={{ opacity }} className="inline-block whitespace-pre">
-      {children}{' '}
-    </motion.span>
-  );
-}
-
 /* ───────────────────────── intro ───────────────────────── */
 
 function Intro({ onDone }: { onDone: () => void }) {
   useEffect(() => {
     const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-    const id = setTimeout(onDone, reduce ? 0 : 1900);
+    const id = setTimeout(onDone, reduce ? 0 : 1600);
     return () => clearTimeout(id);
   }, [onDone]);
   return (
-    <motion.div className="fixed inset-0 z-[90] flex flex-col items-center justify-center bg-[#0b0b0b] text-[#ecebe6]" exit={{ clipPath: 'inset(0 0 100% 0)' }} transition={{ duration: 1, ease: EASE }}>
+    <motion.div className="fixed inset-0 z-[90] flex items-center justify-center bg-[#0b0b0b] text-[#ecebe6]" exit={{ clipPath: 'inset(0 0 100% 0)' }} transition={{ duration: 1, ease: EASE }}>
       <Mark assemble className="w-16 md:w-20" />
-      <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.9, duration: 0.6 }} className="mt-8 text-white/60">
-        <Tag>SOUTRAME.CYCLE — Cycle 01</Tag>
-      </motion.div>
     </motion.div>
   );
 }
 
-/* ───────────────────────── hero: the cycle ───────────────────────── */
+/* ───────────────────────── hero ───────────────────────── */
 
-const CYCLE_MS = 4200;
+const CYCLE_MS = 4500;
 
-function Hero({ ready }: { ready: boolean }) {
+function Hero({ ready, onOpen }: { ready: boolean; onOpen: (p: Piece) => void }) {
   const t = useT();
   const { lang } = useLang();
   const [i, setI] = useState(0);
   const [paused, setPaused] = useState(false);
-  const next = (i + 1) % LOOKBOOK.length;
   const prev = (i - 1 + LOOKBOOK.length) % LOOKBOOK.length;
 
   useEffect(() => {
@@ -364,138 +253,85 @@ function Hero({ ready }: { ready: boolean }) {
     return () => clearTimeout(id);
   }, [i, paused, ready]);
 
-  // scroll + pointer parallax on the viewer
   const ref = useRef<HTMLElement>(null);
   const { scrollYProgress } = useScroll({ target: ref, offset: ['start start', 'end start'] });
-  const yViewer = useTransform(scrollYProgress, [0, 1], ['0%', '12%']);
-  const fade = useTransform(scrollYProgress, [0, 0.6], [1, 0]);
-  const mx = useMotionValue(0);
-  const my = useMotionValue(0);
-  const rx = useSpring(useTransform(my, (v) => v * -4), { stiffness: 80, damping: 20 });
-  const ry = useSpring(useTransform(mx, (v) => v * 5), { stiffness: 80, damping: 20 });
-
-  const meta: [string, string][] = [
-    [t('Collection', 'Collection'), 'Cycle 01'],
-    [t('Nom', 'Name'), 'Chimera School'],
-    [t('Pièces', 'Pieces'), '02'],
-    [t('Lieu', 'Place'), 'Paris — 2026'],
-    [t('Statut', 'Status'), DROP.checkoutUrl ? t('Précommande ouverte', 'Pre-order open') : t('Bientôt', 'Soon')],
-  ];
+  const yImg = useTransform(scrollYProgress, [0, 1], ['0%', '10%']);
 
   return (
-    <section
-      ref={ref}
-      onPointerMove={(e) => {
-        const r = e.currentTarget.getBoundingClientRect();
-        mx.set((e.clientX - r.left) / r.width - 0.5);
-        my.set((e.clientY - r.top) / r.height - 0.5);
-      }}
-      className="relative z-10 px-5 pb-10 pt-24 md:h-[100svh] md:min-h-[680px] md:px-8 md:pb-8"
-    >
-      <div className="grid h-full grid-cols-4 gap-y-10 md:grid-cols-12 md:gap-y-0">
-        {/* left — title & index */}
-        <motion.div style={{ opacity: fade }} className="order-2 col-span-4 flex flex-col justify-end md:order-1 md:col-span-4 md:pr-8">
-          <Tag className="text-white/50">
-            {t('Première collection', 'First collection')} — Cycle 01
-          </Tag>
-          <h1 className="mt-4 text-[56px] font-medium leading-[0.88] tracking-[-0.04em] md:text-[min(7.2vw,108px)]">
-            Chimera
-            <br />
-            School
-          </h1>
-          <nav className="mt-8 border-t border-white/[0.1]">
-            {[
-              { href: '#collection', n: '01', label: t('Collection', 'Collection') },
-              { href: '#lookbook', n: '02', label: 'Lookbook' },
-              { href: '#manifesto', n: '03', label: t('Manifeste', 'Manifesto') },
-            ].map((l) => (
-              <a key={l.href} href={l.href} className="group flex items-center justify-between border-b border-white/[0.1] py-3">
-                <span className="flex items-center gap-4">
-                  <Tag className="text-white/40">{l.n}</Tag>
-                  <span className="text-[15px] text-white/80 transition-transform duration-500 group-hover:translate-x-1.5 group-hover:text-white">{l.label}</span>
-                </span>
-                <Tag className="text-white/30 transition-colors group-hover:text-white">→</Tag>
-              </a>
-            ))}
-          </nav>
-          <div className="mt-6">
-            <BuyButton />
-          </div>
-        </motion.div>
-
-        {/* center — the cycle */}
-        <div className="order-1 col-span-4 flex items-center justify-center md:order-2 md:col-span-4">
-          <motion.div style={{ y: yViewer, rotateX: rx, rotateY: ry, transformPerspective: 1200 }} className="relative w-full md:w-[min(100%,calc((100svh-10rem)*0.8))]">
+    <section ref={ref} className="relative px-5 pb-16 pt-20 md:h-[100svh] md:min-h-[700px] md:px-8 md:pb-8 md:pt-20">
+      <div className="grid h-full grid-cols-1 gap-y-10 md:grid-cols-12 md:gap-x-8">
+        {/* the cycle */}
+        <div className="relative md:col-span-7 md:h-full">
+          <motion.div style={{ y: yImg }} className="relative h-full">
             <button
-              onClick={() => setI(next)}
+              onClick={() => setI((v) => (v + 1) % LOOKBOOK.length)}
               onMouseEnter={() => setPaused(true)}
               onMouseLeave={() => setPaused(false)}
-              aria-label={t('Image suivante du cycle', 'Next image in the cycle')}
-              className="relative block aspect-[4/5] w-full overflow-hidden bg-[#141414]"
+              aria-label={t('Image suivante', 'Next image')}
+              className="relative block aspect-[4/5] w-full overflow-hidden bg-[#141414] md:aspect-auto md:h-full"
             >
-              {/* the previous image stays underneath while the next one is woven in */}
-              <Image src={LOOKBOOK[prev].src} alt="" fill sizes="(min-width:768px) 34vw, 92vw" className="object-cover" />
+              <Image src={LOOKBOOK[prev].src} alt="" fill sizes="(min-width:768px) 58vw, 100vw" className="object-cover" />
               {ready ? (
-                <Weave key={LOOKBOOK[i].src} src={LOOKBOOK[i].src} alt={`Chimera School — ${LOOKBOOK[i].label[lang]}`} priority={i === 0} sizes="(min-width:768px) 34vw, 92vw" />
+                <Weave key={LOOKBOOK[i].src} src={LOOKBOOK[i].src} alt={`Chimera School — ${LOOKBOOK[i].label[lang]}`} priority={i === 0} sizes="(min-width:768px) 58vw, 100vw" />
               ) : (
-                <Image src={LOOKBOOK[0].src} alt="Chimera School" fill priority sizes="(min-width:768px) 34vw, 92vw" className="object-cover" />
+                <Image src={LOOKBOOK[0].src} alt="Chimera School" fill priority sizes="(min-width:768px) 58vw, 100vw" className="object-cover" />
               )}
-              {['left-2 top-2 border-l border-t', 'right-2 top-2 border-r border-t', 'bottom-2 left-2 border-b border-l', 'bottom-2 right-2 border-b border-r'].map((c) => (
-                <span key={c} aria-hidden className={`absolute h-3 w-3 border-black/40 ${c}`} />
-              ))}
             </button>
-            <div className="mt-3 flex items-center gap-3 text-white/60">
-              <Tag className="tabular-nums">{String(i + 1).padStart(2, '0')}</Tag>
-              <div className="relative h-px flex-1 bg-white/15">
-                <motion.div
-                  key={`${i}-${paused}-${ready}`}
-                  className="absolute inset-y-0 left-0 bg-white/80"
-                  initial={{ width: '0%' }}
-                  animate={{ width: paused || !ready ? '0%' : '100%' }}
-                  transition={{ duration: CYCLE_MS / 1000, ease: 'linear' }}
-                />
-              </div>
-              <Tag className="tabular-nums">{String(LOOKBOOK.length).padStart(2, '0')}</Tag>
-            </div>
-            <div className="mt-1.5 flex justify-between text-white/40">
-              <Tag>{LOOKBOOK[i].label[lang]}</Tag>
-              <Tag>{t('Cycle sans fin', 'Endless cycle')}</Tag>
+            {/* cycle progress, kept as a single hairline */}
+            <div className="absolute inset-x-0 bottom-0 h-px bg-white/20">
+              <motion.div
+                key={`${i}-${paused}-${ready}`}
+                className="h-full bg-white"
+                initial={{ width: '0%' }}
+                animate={{ width: paused || !ready ? '0%' : '100%' }}
+                transition={{ duration: CYCLE_MS / 1000, ease: 'linear' }}
+              />
             </div>
           </motion.div>
         </div>
 
-        {/* right — specs & next */}
-        <motion.div style={{ opacity: fade }} className="order-3 col-span-4 flex flex-col justify-between md:col-span-3 md:col-start-10">
-          <dl className="border-t border-white/[0.1]">
-            {meta.map(([k, v]) => (
-              <div key={k} className="grid grid-cols-2 border-b border-white/[0.1] py-2.5">
-                <dt>
-                  <Tag className="text-white/40">{k}</Tag>
-                </dt>
-                <dd className="text-right">
-                  <Tag className="text-white/80">{v}</Tag>
-                </dd>
-              </div>
-            ))}
-          </dl>
+        {/* the collection */}
+        <div className="flex flex-col justify-end md:col-span-5 md:pb-2">
+          <motion.p initial={{ opacity: 0 }} animate={{ opacity: ready ? 1 : 0 }} transition={{ duration: 1, delay: 0.3 }} className="text-[13px] text-white/50">
+            {t('Cycle 01 — première collection', 'Cycle 01 — first collection')}
+          </motion.p>
+          <motion.h1
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: ready ? 1 : 0, y: ready ? 0 : 20 }}
+            transition={{ duration: 1.2, ease: EASE, delay: 0.4 }}
+            className="mt-5 text-[56px] uppercase leading-[0.9] md:text-[min(6.6vw,104px)]"
+            style={DISPLAY}
+          >
+            Chimera
+            <br />
+            School
+          </motion.h1>
+          <motion.p initial={{ opacity: 0 }} animate={{ opacity: ready ? 1 : 0 }} transition={{ duration: 1, delay: 0.6 }} className="mt-6 max-w-[400px] text-[15px] leading-relaxed text-white/65">
+            {t(
+              'Une veste et un pantalon. Un uniforme revisité, entre vêtement technique, mesh et broderie.',
+              'One jacket, one pair of trousers. A reworked uniform, between technical wear, mesh and embroidery.'
+            )}
+          </motion.p>
 
-          <div className="mt-10 hidden md:block">
-            <Tag className="text-white/40">{t('Suivant dans le cycle', 'Next in the cycle')}</Tag>
-            <button onClick={() => setI(next)} className="group mt-3 flex w-full items-end gap-4 text-left">
-              <div className="relative aspect-[4/5] w-[38%] overflow-hidden bg-[#141414]">
-                <AnimatePresence mode="wait">
-                  <motion.div key={LOOKBOOK[next].src} className="absolute inset-0" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} transition={{ duration: 0.5 }}>
-                    <Image src={LOOKBOOK[next].src} alt="" fill sizes="12vw" className="object-cover transition-transform duration-700 group-hover:scale-105" />
-                  </motion.div>
-                </AnimatePresence>
-              </div>
-              <div className="pb-1">
-                <Tag className="block tabular-nums text-white/40">{String(next + 1).padStart(2, '0')}</Tag>
-                <span className="mt-1 block text-[14px] text-white/80">{LOOKBOOK[next].label[lang]}</span>
-              </div>
-            </button>
-          </div>
-        </motion.div>
+          <motion.div initial={{ opacity: 0 }} animate={{ opacity: ready ? 1 : 0 }} transition={{ duration: 1, delay: 0.75 }} className="mt-10 border-t border-white/10">
+            {PIECES.map((p) => (
+              <button key={p.id} onClick={() => onOpen(p)} className="group flex w-full items-center gap-5 border-b border-white/10 py-4 text-left">
+                <div className="relative aspect-[4/5] w-14 shrink-0 overflow-hidden bg-[#141414]">
+                  <Image src={p.image} alt="" fill sizes="56px" className="object-cover transition-transform duration-700 group-hover:scale-110" />
+                </div>
+                <div className="flex-1">
+                  <span className="block text-[15px] text-white/90">{p.name}</span>
+                  <span className="mt-0.5 block text-[13px] text-white/45">{p.price ?? DROP.price ?? t('Prix à venir', 'Price soon')}</span>
+                </div>
+                <span className="text-[13px] text-white/40 transition-all duration-500 group-hover:translate-x-1 group-hover:text-white">{t('Voir', 'View')} →</span>
+              </button>
+            ))}
+          </motion.div>
+
+          <motion.div initial={{ opacity: 0 }} animate={{ opacity: ready ? 1 : 0 }} transition={{ duration: 1, delay: 0.9 }} className="mt-6">
+            <BuyButton />
+          </motion.div>
+        </div>
       </div>
     </section>
   );
@@ -507,28 +343,19 @@ function Collection({ onOpen }: { onOpen: (p: Piece) => void }) {
   const t = useT();
   const { lang } = useLang();
   return (
-    <section id="collection" className="relative z-10 px-5 pb-28 pt-24 md:px-8 md:pb-40 md:pt-36">
-      <SectionHead index="01" label={t('Collection — Cycle 01', 'Collection — Cycle 01')} right={<Tag className="text-white/40">02 {t('pièces', 'pieces')}</Tag>} />
+    <section id="collection" className="relative px-5 pb-28 pt-24 md:px-8 md:pb-40 md:pt-40">
+      <Reveal className="flex flex-wrap items-end justify-between gap-6">
+        <h2 className="text-[40px] uppercase leading-[0.95] md:text-[72px]" style={DISPLAY}>
+          {t('La collection', 'The collection')}
+        </h2>
+        <p className="text-[13px] text-white/50">{t('Deux pièces — Cycle 01', 'Two pieces — Cycle 01')}</p>
+      </Reveal>
 
-      <div className="mt-12 grid grid-cols-4 gap-y-8 md:mt-16 md:grid-cols-12">
-        <Reveal className="col-span-4 md:col-span-8">
-          <h2 className="text-[52px] font-medium leading-[0.9] tracking-[-0.04em] md:text-[min(9vw,132px)]">Chimera School</h2>
-        </Reveal>
-        <Reveal delay={0.1} className="col-span-4 self-end md:col-span-3 md:col-start-10">
-          <p className="text-[14px] leading-relaxed text-white/60">
-            {t(
-              'Une veste et un pantalon. Peu de pièces, mais pensées : un uniforme revisité, entre vêtement technique, mesh et broderie.',
-              'One jacket, one pair of trousers. Few pieces, carefully considered: a reworked uniform, between technical wear, mesh and embroidery.'
-            )}
-          </p>
-        </Reveal>
-      </div>
-
-      <div className="mt-14 grid grid-cols-4 gap-y-14 md:mt-20 md:grid-cols-12">
+      <div className="mt-12 grid grid-cols-1 gap-y-16 md:mt-16 md:grid-cols-2 md:gap-x-8">
         {PIECES.map((p, i) => (
-          <Reveal key={p.id} delay={i * 0.1} className={`col-span-4 md:col-span-6 ${i === 1 ? 'md:mt-40' : ''}`}>
+          <Reveal key={p.id} delay={i * 0.1} className={i === 1 ? 'md:mt-40' : ''}>
             <article
-              className={`group cursor-pointer ${i === 0 ? 'md:pr-4' : 'md:pl-4'}`}
+              className="group cursor-pointer"
               onClick={() => onOpen(p)}
               role="button"
               tabIndex={0}
@@ -536,7 +363,7 @@ function Collection({ onOpen }: { onOpen: (p: Piece) => void }) {
               aria-label={`${p.name} — ${t('voir la pièce', 'view piece')}`}
             >
               <div className="relative aspect-[4/5] overflow-hidden bg-[#141414]">
-                <Image src={p.image} alt={p.name} fill sizes="(min-width:768px) 48vw, 100vw" className="object-cover transition duration-[1400ms] ease-[cubic-bezier(.22,1,.36,1)] group-hover:scale-[1.035]" />
+                <Image src={p.image} alt={p.name} fill sizes="(min-width:768px) 48vw, 100vw" className="object-cover transition duration-[1400ms] ease-[cubic-bezier(.22,1,.36,1)] group-hover:scale-[1.03]" />
                 {/* on hover, the detail shot is woven in */}
                 <div className="absolute inset-0 flex flex-col">
                   {Array.from({ length: 10 }).map((_, k) => (
@@ -551,22 +378,15 @@ function Collection({ onOpen }: { onOpen: (p: Piece) => void }) {
                     </div>
                   ))}
                 </div>
-                <Glass className="absolute bottom-3 left-3 right-3 px-4 py-3 md:bottom-4 md:left-4 md:right-auto md:w-[min(360px,80%)]">
-                  <div className="relative flex items-center justify-between gap-4">
-                    <Tag className="text-white/60">{p.id} / 02</Tag>
-                    <Tag className="text-white/90">{t('Voir la pièce', 'View piece')} →</Tag>
-                  </div>
+                <Glass className="absolute bottom-4 left-4 px-4 py-2.5 opacity-0 transition-opacity duration-500 group-hover:opacity-100 max-md:opacity-100">
+                  <span className="relative text-[13px] text-white">{t('Voir la pièce', 'View piece')} →</span>
                 </Glass>
               </div>
-              <div className="mt-4 grid grid-cols-6 gap-x-4 border-t border-white/[0.1] pt-4">
-                <h3 className="col-span-4 text-[17px] font-medium md:text-[19px]">{p.name}</h3>
-                <Tag className="col-span-2 self-center text-right text-white/60">{p.price ?? DROP.price ?? t('Prix à venir', 'Price soon')}</Tag>
-                <ul className="col-span-6 mt-3 space-y-1 text-[13px] leading-relaxed text-white/50">
-                  {(lang === 'fr' ? p.details.fr : p.details.en).slice(0, 3).map((d) => (
-                    <li key={d}>— {d}</li>
-                  ))}
-                </ul>
+              <div className="mt-5 flex items-baseline justify-between gap-4">
+                <h3 className="text-[17px] md:text-[19px]">{p.name}</h3>
+                <span className="shrink-0 text-[14px] text-white/55">{p.price ?? DROP.price ?? t('Prix à venir', 'Price soon')}</span>
               </div>
+              <p className="mt-2 text-[14px] leading-relaxed text-white/50">{(lang === 'fr' ? p.details.fr : p.details.en).slice(0, 2).join(' · ')}</p>
             </article>
           </Reveal>
         ))}
@@ -581,13 +401,15 @@ function Accordion({ title, children, defaultOpen = false }: { title: string; ch
   const [open, setOpen] = useState(defaultOpen);
   return (
     <div className="border-t border-white/10">
-      <button onClick={() => setOpen((o) => !o)} className="flex w-full items-center justify-between py-4 text-left text-white/80">
-        <Tag>{title}</Tag>
-        <Tag className="text-white/50">{open ? '[ – ]' : '[ + ]'}</Tag>
+      <button onClick={() => setOpen((o) => !o)} className="flex w-full items-center justify-between py-4 text-left text-[14px] text-white/85">
+        {title}
+        <motion.span animate={{ rotate: open ? 45 : 0 }} transition={{ duration: 0.4, ease: EASE }} className="text-[18px] font-light leading-none text-white/60">
+          +
+        </motion.span>
       </button>
       <div className={`grid transition-[grid-template-rows] duration-700 ease-[cubic-bezier(.22,1,.36,1)] ${open ? 'grid-rows-[1fr]' : 'grid-rows-[0fr]'}`}>
         <div className="overflow-hidden">
-          <div className="pb-5 text-[13px] leading-relaxed text-white/60">{children}</div>
+          <div className="pb-5 text-[14px] leading-relaxed text-white/60">{children}</div>
         </div>
       </div>
     </div>
@@ -632,7 +454,7 @@ function ProductSheet({ piece, onClose }: { piece: Piece | null; onClose: () => 
             role="dialog"
             aria-modal="true"
             aria-label={piece.name}
-            className="absolute inset-y-0 right-0 flex w-full max-w-[1120px] flex-col overflow-y-auto border-l border-white/10 bg-[#101010]/75 backdrop-blur-3xl md:flex-row md:overflow-hidden"
+            className="absolute inset-y-0 right-0 flex w-full max-w-[1120px] flex-col overflow-y-auto border-l border-white/10 bg-[#101010]/80 backdrop-blur-3xl md:flex-row md:overflow-hidden"
             initial={{ clipPath: 'inset(0 0 0 100%)' }}
             animate={{ clipPath: 'inset(0 0 0 0%)' }}
             exit={{ clipPath: 'inset(0 0 0 100%)' }}
@@ -646,24 +468,21 @@ function ProductSheet({ piece, onClose }: { piece: Piece | null; onClose: () => 
                 <Weave key={piece.gallery[img]} src={piece.gallery[img]} alt={`${piece.name} — ${img + 1}`} strips={10} sizes="(min-width:768px) 650px, 100vw" />
                 <button aria-label={t('Image précédente', 'Previous image')} onClick={() => setImg((i) => (i - 1 + piece.gallery.length) % piece.gallery.length)} className="absolute inset-y-0 left-0 w-1/3 cursor-w-resize" />
                 <button aria-label={t('Image suivante', 'Next image')} onClick={() => setImg((i) => (i + 1) % piece.gallery.length)} className="absolute inset-y-0 right-0 w-2/3 cursor-e-resize" />
-                <Glass className="absolute bottom-4 left-4 px-3 py-2">
-                  <Tag className="relative tabular-nums text-white/85">
-                    {String(img + 1).padStart(2, '0')} / {String(piece.gallery.length).padStart(2, '0')}
-                  </Tag>
-                </Glass>
               </div>
             </div>
 
             {/* info */}
             <div className="relative flex flex-col p-6 md:w-[42%] md:overflow-y-auto md:p-10">
               <div className="flex items-start justify-between gap-6">
-                <Tag className="text-white/45">Cycle 01 — {piece.id} / 02</Tag>
-                <button onClick={onClose} className="-mr-2 -mt-2 px-2 py-2 text-white/60 transition hover:text-white">
-                  <Tag>[ {t('Fermer', 'Close')} ✕ ]</Tag>
+                <span className="text-[13px] text-white/50">Cycle 01 — Chimera School</span>
+                <button onClick={onClose} className="-mr-2 -mt-1 px-2 py-1 text-[13px] text-white/60 transition hover:text-white">
+                  {t('Fermer', 'Close')} ✕
                 </button>
               </div>
-              <h3 className="mt-8 text-[30px] font-medium leading-[1.02] tracking-[-0.02em] md:text-[40px]">{piece.name}</h3>
-              <Tag className="mt-4 text-white/65">{piece.price ?? DROP.price ?? t('Prix annoncé bientôt', 'Price announced soon')}</Tag>
+              <h3 className="mt-8 text-[30px] uppercase leading-[1] md:text-[40px]" style={DISPLAY}>
+                {piece.name}
+              </h3>
+              <p className="mt-4 text-[15px] text-white/70">{piece.price ?? DROP.price ?? t('Prix annoncé bientôt', 'Price announced soon')}</p>
 
               <div className="mt-8 grid grid-cols-5 gap-1.5">
                 {piece.gallery.map((g, i) => (
@@ -671,29 +490,30 @@ function ProductSheet({ piece, onClose }: { piece: Piece | null; onClose: () => 
                     key={g}
                     onClick={() => setImg(i)}
                     aria-label={`${t('Image', 'Image')} ${i + 1}`}
-                    className={`relative aspect-[4/5] overflow-hidden transition duration-500 ${i === img ? 'opacity-100 outline outline-1 outline-offset-2 outline-white/70' : 'opacity-35 hover:opacity-80'}`}
+                    className={`relative aspect-[4/5] overflow-hidden transition duration-500 ${i === img ? 'opacity-100' : 'opacity-35 hover:opacity-80'}`}
                   >
                     <Image src={g} alt="" fill sizes="80px" className="object-cover" />
+                    {i === img && <motion.span layoutId="sheet-thumb" className="absolute inset-x-0 bottom-0 h-0.5 bg-white" />}
                   </button>
                 ))}
               </div>
 
               <div className="mt-8">
-                <div className="flex items-center justify-between">
-                  <Tag className="text-white/80">{t('Taille', 'Size')}</Tag>
-                  {!sizesLive && <Tag className="text-white/40">{t('Ouverture prochaine', 'Opening soon')}</Tag>}
+                <div className="flex items-center justify-between text-[13px]">
+                  <span className="text-white/85">{t('Taille', 'Size')}</span>
+                  {!sizesLive && <span className="text-white/40">{t('Ouverture prochaine', 'Opening soon')}</span>}
                 </div>
-                <div className="mt-3 grid grid-cols-4 border-l border-t border-white/15">
+                <div className="mt-3 grid grid-cols-4 gap-1.5">
                   {sizes.map((s) => (
                     <button
                       key={s}
                       disabled={!sizesLive}
                       onClick={() => setSize(s)}
-                      className={`h-12 border-b border-r border-white/15 transition duration-300 ${
-                        size === s ? 'bg-[#ecebe6] text-[#0b0b0b]' : sizesLive ? 'hover:bg-white/[0.06]' : 'cursor-not-allowed text-white/30'
+                      className={`h-12 border text-[13px] transition duration-300 ${
+                        size === s ? 'border-[#ecebe6] bg-[#ecebe6] text-[#0b0b0b]' : sizesLive ? 'border-white/20 hover:border-white/60' : 'cursor-not-allowed border-white/10 text-white/30'
                       }`}
                     >
-                      <Tag>{s}</Tag>
+                      {s}
                     </button>
                   ))}
                 </div>
@@ -707,14 +527,14 @@ function ProductSheet({ piece, onClose }: { piece: Piece | null; onClose: () => 
                 <Accordion title={t('Description', 'Description')} defaultOpen>
                   <ul className="space-y-1.5">
                     {(lang === 'fr' ? piece.details.fr : piece.details.en).map((d) => (
-                      <li key={d}>— {d}</li>
+                      <li key={d}>{d}</li>
                     ))}
                   </ul>
                 </Accordion>
-                <Accordion title={t('Matière & entretien', 'Material & care')}>
+                <Accordion title={t('Matière et entretien', 'Material and care')}>
                   {t('Composition et conseils d’entretien communiqués à l’ouverture des précommandes.', 'Composition and care instructions shared when pre-orders open.')}
                 </Accordion>
-                <Accordion title={t('Précommande & livraison', 'Pre-order & shipping')}>
+                <Accordion title={t('Précommande et livraison', 'Pre-order and shipping')}>
                   {t(
                     'Pièces produites en petite série. Les délais de fabrication et de livraison seront précisés à l’ouverture des précommandes.',
                     'Pieces made in a small run. Production and shipping times will be shared when pre-orders open.'
@@ -723,9 +543,8 @@ function ProductSheet({ piece, onClose }: { piece: Piece | null; onClose: () => 
                 <div className="border-t border-white/10" />
               </div>
 
-              <div className="mt-auto flex items-center justify-between pt-10 text-white/30">
-                <Tag>I can never be food.</Tag>
-                <Mark className="w-6" />
+              <div className="mt-auto flex justify-end pt-10 text-white/25">
+                <Mark className="w-7" />
               </div>
             </div>
           </motion.div>
@@ -743,81 +562,51 @@ function Lookbook() {
   const [active, setActive] = useState(0);
   const shot = LOOKBOOK[active];
 
-  useEffect(() => {
-    const onKey = (e: KeyboardEvent) => {
-      if (e.key === 'ArrowDown' || e.key === 'ArrowRight') setActive((a) => (a + 1) % LOOKBOOK.length);
-      if (e.key === 'ArrowUp' || e.key === 'ArrowLeft') setActive((a) => (a - 1 + LOOKBOOK.length) % LOOKBOOK.length);
-    };
-    const el = document.getElementById('lookbook');
-    const io = new IntersectionObserver(([en]) => {
-      if (en.isIntersecting) window.addEventListener('keydown', onKey);
-      else window.removeEventListener('keydown', onKey);
-    });
-    if (el) io.observe(el);
-    return () => {
-      io.disconnect();
-      window.removeEventListener('keydown', onKey);
-    };
-  }, []);
-
   return (
-    <section id="lookbook" className="relative z-10 overflow-hidden px-5 pb-24 pt-24 md:px-8 md:pb-32 md:pt-32">
-      {/* ambient light follows the selected shot */}
+    <section id="lookbook" className="relative overflow-hidden px-5 pb-28 pt-24 md:px-8 md:pb-40 md:pt-32">
+      {/* soft light that follows the selected shot */}
       <AnimatePresence mode="sync">
-        <motion.div key={shot.src + '-bg'} aria-hidden className="absolute inset-0 scale-125 blur-[110px] saturate-[0.4]" initial={{ opacity: 0 }} animate={{ opacity: 0.35 }} exit={{ opacity: 0 }} transition={{ duration: 1.2 }}>
+        <motion.div key={shot.src + '-bg'} aria-hidden className="absolute inset-0 scale-125 blur-[120px] saturate-[0.4]" initial={{ opacity: 0 }} animate={{ opacity: 0.28 }} exit={{ opacity: 0 }} transition={{ duration: 1.2 }}>
           <Image src={shot.src} alt="" fill sizes="30vw" className="object-cover" />
         </motion.div>
       </AnimatePresence>
       <div aria-hidden className="absolute inset-0 bg-gradient-to-b from-[#0b0b0b] via-[#0b0b0b]/30 to-[#0b0b0b]" />
 
       <div className="relative">
-        <SectionHead index="02" label="Lookbook — Cycle 01" right={<Tag className="hidden text-white/35 md:inline">{t('Survoler · ← →', 'Hover · ← →')}</Tag>} />
+        <Reveal>
+          <h2 className="text-[40px] uppercase leading-[0.95] md:text-[72px]" style={DISPLAY}>
+            Lookbook
+          </h2>
+        </Reveal>
 
-        <div className="mt-10 grid grid-cols-4 gap-y-8 md:mt-14 md:grid-cols-12">
-          {/* thumbnails — two columns on the trame */}
-          <div className="order-2 col-span-4 grid grid-cols-5 gap-2 md:order-1 md:col-span-2 md:grid-cols-2 md:content-start md:gap-3">
+        <div className="mt-12 grid grid-cols-1 gap-y-6 md:mt-16 md:grid-cols-12 md:gap-x-8">
+          <div className="relative md:col-span-6 md:col-start-4">
+            <div className="relative aspect-[4/5] w-full overflow-hidden bg-[#141414]">
+              <Image src={LOOKBOOK[(active - 1 + LOOKBOOK.length) % LOOKBOOK.length].src} alt="" fill sizes="(min-width:768px) 50vw, 100vw" className="object-cover" />
+              <Weave key={shot.src} src={shot.src} alt={`Chimera School — ${shot.label[lang]}`} strips={10} sizes="(min-width:768px) 50vw, 100vw" />
+            </div>
+            <AnimatePresence mode="wait">
+              <motion.p key={shot.src} className="mt-4 text-[14px] text-white/60" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} transition={{ duration: 0.4 }}>
+                {shot.label[lang]}
+              </motion.p>
+            </AnimatePresence>
+          </div>
+
+          <div className="flex gap-2 overflow-x-auto pb-1 md:col-span-12 md:mt-6 md:justify-center md:gap-3 [scrollbar-width:none]">
             {LOOKBOOK.map((s, i) => (
               <button
                 key={s.src}
                 onClick={() => setActive(i)}
                 onMouseEnter={() => setActive(i)}
                 aria-label={s.label[lang]}
-                className={`relative aspect-[4/5] overflow-hidden transition duration-500 ${i === active ? 'opacity-100 outline outline-1 outline-offset-2 outline-white/70' : 'opacity-30 hover:opacity-80'}`}
+                className={`relative aspect-[4/5] w-16 shrink-0 overflow-hidden transition duration-500 md:w-20 ${i === active ? 'opacity-100' : 'opacity-35 hover:opacity-80'}`}
               >
-                <Image src={s.src} alt="" fill sizes="10vw" className="object-cover" />
+                <Image src={s.src} alt="" fill sizes="80px" className="object-cover" />
+                {i === active && <motion.span layoutId="lb-thumb" className="absolute inset-x-0 bottom-0 h-0.5 bg-white" />}
               </button>
             ))}
           </div>
-
-          {/* scene */}
-          <div className="order-1 col-span-4 md:order-2 md:col-span-5 md:col-start-5">
-            <div className="relative aspect-[4/5] w-full overflow-hidden bg-[#141414]">
-              <Image src={LOOKBOOK[(active - 1 + LOOKBOOK.length) % LOOKBOOK.length].src} alt="" fill sizes="(min-width:768px) 42vw, 92vw" className="object-cover" />
-              <Weave key={shot.src} src={shot.src} alt={`Chimera School — ${shot.label[lang]}`} strips={10} sizes="(min-width:768px) 42vw, 92vw" />
-            </div>
-          </div>
-
-          {/* caption */}
-          <div className="order-3 col-span-4 flex flex-col justify-end md:col-span-3 md:col-start-10">
-            <Tag className="tabular-nums text-white/40">
-              {String(active + 1).padStart(2, '0')} / {String(LOOKBOOK.length).padStart(2, '0')}
-            </Tag>
-            <AnimatePresence mode="wait">
-              <motion.p
-                key={shot.src}
-                className="mt-3 text-[28px] font-medium leading-tight tracking-[-0.02em] md:text-[36px]"
-                initial={{ opacity: 0, y: 10 }}
-                animate={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0, y: -10 }}
-                transition={{ duration: 0.45, ease: EASE }}
-              >
-                {shot.label[lang]}
-              </motion.p>
-            </AnimatePresence>
-            <div className="mt-6 border-t border-white/[0.1] pt-3">
-              <Tag className="text-white/40">Chimera School — Paris, 2026</Tag>
-            </div>
-          </div>
+          <p className="text-center text-[13px] text-white/35 md:col-span-12">{t('Survoler les images pour parcourir', 'Hover the images to browse')}</p>
         </div>
       </div>
     </section>
@@ -829,29 +618,23 @@ function Lookbook() {
 function Manifesto() {
   const t = useT();
   return (
-    <section id="manifesto" className="relative z-10 px-5 pb-32 pt-24 md:px-8 md:pb-48 md:pt-32">
-      <SectionHead index="03" label={t('Manifeste', 'Manifesto')} right={<Mark className="ml-auto w-5 text-white/40" />} />
-      <ScrollWords text="I can never be food." className="mt-14 text-[56px] font-medium leading-[0.92] tracking-[-0.04em] md:mt-20 md:text-[min(12vw,176px)]" />
-      <div className="mt-16 grid grid-cols-4 gap-y-10 md:mt-24 md:grid-cols-12">
-        <div className="col-span-4 md:col-span-6">
-          <ScrollWords
-            className="text-[19px] leading-[1.5] md:text-[24px]"
-            text={t(
-              'SOUTRAME fait référence à la trame qu’on a tous en nous : ce qui se construit à force de vécu, de doutes, de retours. CYCLE rappelle que rien n’est linéaire : on avance, on bloque, on revient.',
-              'SOUTRAME refers to the inner thread we all carry: what gets built through experience, doubt and return. CYCLE is a reminder that nothing is linear: we move forward, we stall, we come back.'
+    <section id="manifesto" className="relative px-5 pb-32 pt-24 md:px-8 md:pb-48 md:pt-32">
+      <div className="mx-auto max-w-[980px] text-center">
+        <Reveal>
+          <Mark className="mx-auto w-10 text-white/80" />
+        </Reveal>
+        <Reveal delay={0.1}>
+          <p className="mt-12 text-[44px] uppercase leading-[0.95] md:text-[96px]" style={DISPLAY}>
+            I can never be food.
+          </p>
+        </Reveal>
+        <Reveal delay={0.2}>
+          <p className="mx-auto mt-12 max-w-[620px] text-[16px] leading-[1.7] text-white/65 md:text-[18px]">
+            {t(
+              'SOUTRAME, c’est la trame qu’on a tous en nous : ce qui se construit à force de vécu, de doutes et de retours. CYCLE rappelle que rien n’est linéaire. On avance, on bloque, on revient. « I can never be food » n’est pas une phrase agressive, c’est une affirmation intérieure : ne pas être consommé, ne pas être formaté.',
+              'SOUTRAME is the inner thread we all carry: what gets built through experience, doubt and return. CYCLE is a reminder that nothing is linear. We move forward, we stall, we come back. “I can never be food” is not an aggressive line, it is an inner statement: not to be consumed, not to be shaped by what surrounds us.'
             )}
-          />
-        </div>
-        <Reveal className="col-span-4 md:col-span-3 md:col-start-10" delay={0.1}>
-          <div className="border-t border-white/[0.12] pt-4">
-            <Tag className="text-white/40">« I can never be food »</Tag>
-            <p className="mt-4 text-[14px] leading-relaxed text-white/60">
-              {t(
-                'Ce n’est pas une phrase agressive. C’est une affirmation intérieure : ne pas être consommé, ne pas être vidé, ne pas être formaté. Même quand c’est difficile, quelque chose refuse de disparaître.',
-                'Not an aggressive line, but an inner statement: not to be consumed, not to be emptied, not to be shaped by what surrounds us. Even when it is hard, something refuses to disappear.'
-              )}
-            </p>
-          </div>
+          </p>
         </Reveal>
       </div>
     </section>
@@ -863,8 +646,6 @@ function Manifesto() {
 export default function SoutramePage() {
   const t = useT();
   const { lang, setLang } = useLang();
-  const { scrollYProgress } = useScroll();
-  const bar = useSpring(scrollYProgress, { stiffness: 120, damping: 30 });
   const [openPiece, setOpenPiece] = useState<Piece | null>(null);
   const closeSheet = useCallback(() => setOpenPiece(null), []);
   const [ready, setReady] = useState(false);
@@ -894,48 +675,43 @@ export default function SoutramePage() {
   return (
     <div className="relative min-h-screen bg-[#0b0b0b] text-[#ecebe6] antialiased selection:bg-[#ecebe6] selection:text-[#0b0b0b]" style={{ fontFamily: 'var(--font-general-sans), Inter, sans-serif' }}>
       <AnimatePresence>{!ready && <Intro onDone={finishIntro} />}</AnimatePresence>
-      <Trame />
-      <Grain />
 
-      <motion.div style={{ scaleX: bar }} className="fixed inset-x-0 top-0 z-50 h-px origin-left bg-[#ecebe6]/70" />
-
-      {/* header, aligned on the trame */}
-      <header className="fixed inset-x-0 top-0 z-40 bg-gradient-to-b from-[#0b0b0b] via-[#0b0b0b]/70 to-transparent px-5 pb-8 pt-5 md:px-8">
-        <div className="grid grid-cols-4 items-start md:grid-cols-12">
-          <a href="#" className="col-span-2 flex items-center gap-3 md:col-span-3">
-            <Mark className="w-7 shrink-0" />
-            <span className="text-[13px] font-medium tracking-[0.02em]">SOUTRAME.CYCLE</span>
+      <header className="fixed inset-x-0 top-0 z-40 flex items-center justify-between bg-gradient-to-b from-[#0b0b0b] to-transparent px-5 pb-6 pt-5 md:px-8">
+        <a href="#" className="flex items-center gap-3">
+          <Mark className="w-7 shrink-0" />
+          <span className="text-[15px] uppercase leading-none tracking-[0.04em]" style={DISPLAY}>
+            Soutrame.Cycle
+          </span>
+        </a>
+        <nav className="flex items-center gap-6 text-[13px] text-white/70">
+          <a href="#collection" className="hidden transition hover:text-white sm:inline">
+            {t('Collection', 'Collection')}
           </a>
-          <Tag className="hidden pt-1 text-white/45 md:col-span-3 md:col-start-5 md:block">Cycle 01 — Chimera School</Tag>
-          <nav className="col-span-2 flex justify-end gap-5 pt-1 text-white/70 md:col-span-3 md:col-start-10">
-            <button onClick={() => setLang(lang === 'fr' ? 'en' : 'fr')} className="transition hover:text-white" aria-label={t('Switch to English', 'Passer en français')}>
-              <Tag>[ {lang === 'fr' ? 'EN' : 'FR'} ]</Tag>
-            </button>
-            <a href="#collection" className="transition hover:text-white">
-              <Tag>[ {t('Boutique', 'Shop')} ]</Tag>
-            </a>
-          </nav>
-        </div>
+          <a href="#lookbook" className="hidden transition hover:text-white sm:inline">
+            Lookbook
+          </a>
+          <button onClick={() => setLang(lang === 'fr' ? 'en' : 'fr')} className="transition hover:text-white" aria-label={t('Switch to English', 'Passer en français')}>
+            {lang === 'fr' ? 'EN' : 'FR'}
+          </button>
+        </nav>
       </header>
 
-      <Hero ready={ready} />
+      <Hero ready={ready} onOpen={setOpenPiece} />
       <Collection onOpen={setOpenPiece} />
       <Lookbook />
       <Manifesto />
 
-      <footer className="relative z-10 px-5 pb-8 md:px-8">
-        <div className="grid grid-cols-4 items-end gap-y-8 border-t border-white/[0.1] pt-10 md:grid-cols-12">
-          <div className="col-span-4 md:col-span-8">
-            <Mark className="mb-6 w-14 text-white/90" />
-            <p className="text-[17vw] font-medium leading-[0.78] tracking-[-0.055em] md:text-[11.5vw]">SOUTRAME</p>
-          </div>
-          <div className="col-span-4 flex flex-col gap-2 text-white/55 md:col-span-3 md:col-start-10 md:items-end">
-            <Tag>{t('Peu de pièces, mais pensées.', 'Few pieces, carefully considered.')}</Tag>
+      <footer className="relative px-5 pb-8 md:px-8">
+        <div className="flex flex-col gap-10 border-t border-white/10 pt-10 md:flex-row md:items-end md:justify-between">
+          <p className="text-[18vw] uppercase leading-[0.8] md:text-[13vw]" style={DISPLAY}>
+            Soutrame
+          </p>
+          <div className="flex flex-col gap-2 text-[13px] text-white/55 md:items-end">
             <a href={DROP.instagram} target="_blank" rel="noopener noreferrer" className="transition hover:text-white">
-              <Tag>[ Instagram ↗ ]</Tag>
+              Instagram ↗
             </a>
             <Link href="/" className="transition hover:text-white">
-              <Tag>[ {t('Designé par Emmanuel Ijjou', 'Designed by Emmanuel Ijjou')} ]</Tag>
+              {t('Designé par Emmanuel Ijjou', 'Designed by Emmanuel Ijjou')}
             </Link>
           </div>
         </div>

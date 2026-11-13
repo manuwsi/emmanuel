@@ -12,6 +12,12 @@ const generalSans = localFont({
   display: 'swap',
 });
 
+const ade = localFont({
+  src: [{ path: '../../fonts/Ade-Display.otf', weight: '400', style: 'normal' }],
+  variable: '--font-ade',
+  display: 'swap',
+});
+
 const description =
   'SOUTRAME.CYCLE — Cycle 01, Chimera School. A clothing brand built around the inner thread we all carry.';
 
@@ -34,5 +40,5 @@ export const metadata: Metadata = {
 };
 
 export default function Layout({ children }: { children: React.ReactNode }) {
-  return <div className={generalSans.variable}>{children}</div>;
+  return <div className={`${generalSans.variable} ${ade.variable}`}>{children}</div>;
 }

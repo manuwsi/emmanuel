@@ -35,7 +35,7 @@ const DROP = {
   instagram: 'https://www.instagram.com/manu.wsi/',
 };
 
-const INTRO_VIDEO = null as string | null; // e.g. '/soutrame/intro.mp4'
+const INTRO_VIDEO = '/soutrame/intro.mp4' as string | null; // set to null to open straight on the campaign
 
 /** Shown greyed-out in the size picker until DROP.sizes is filled in. */
 const SIZE_PREVIEW = ['S', 'M', 'L', 'XL'];
@@ -577,7 +577,7 @@ function Campaign({ ready }: { ready: boolean }) {
   const y = useTransform(scrollYProgress, [0, 1], ['0%', '10%']);
 
   return (
-    <section ref={ref} className="relative z-[1] h-[100svh] min-h-[560px] overflow-hidden" onMouseEnter={() => setPaused(true)} onMouseLeave={() => setPaused(false)}>
+    <section id="campaign" ref={ref} className="relative z-[1] h-[100svh] min-h-[560px] overflow-hidden" onMouseEnter={() => setPaused(true)} onMouseLeave={() => setPaused(false)}>
       <motion.div style={{ y }} className="absolute inset-0 grid grid-cols-1 gap-1 md:grid-cols-3">
         {PANELS.map((set, k) => {
           // panel k moves on every third tick, offset by k
@@ -618,10 +618,21 @@ function Campaign({ ready }: { ready: boolean }) {
 }
 
 function IntroFilm() {
+  const t = useT();
   if (!INTRO_VIDEO) return null;
   return (
     <section className="relative z-[1] h-[100svh] overflow-hidden bg-black">
-      <video src={INTRO_VIDEO} autoPlay muted loop playsInline className="h-full w-full object-cover grayscale" />
+      <video src={INTRO_VIDEO} poster="/soutrame/intro-poster.jpg" autoPlay muted loop playsInline preload="auto" className="h-full w-full object-cover" />
+      <div className="pointer-events-none absolute inset-x-0 top-1/2 flex -translate-y-1/2 items-start justify-between px-2 text-[14px] font-semibold leading-[1.15] text-white mix-blend-difference md:px-3 md:text-[15px]">
+        <p>
+          Cycle 01
+          <br />
+          Chimera School
+        </p>
+        <a href="#campaign" className="pointer-events-auto text-right hover:underline">
+          {t('Entrer', 'Enter')} ↓
+        </a>
+      </div>
     </section>
   );
 }
@@ -1001,36 +1012,29 @@ function Universe() {
           </motion.p>
         </div>
       </div>
-      {/* the capsule, stated like a garment label: no pitch, just what it is */}
-      <div className={`${TXT} relative grid grid-cols-1 gap-y-10 px-2 pb-28 md:grid-cols-4 md:gap-x-3 md:px-3 md:pb-40`}>
+      {/* the capsule, as a short collection note in the shop's own small voice */}
+      <div className="relative grid grid-cols-1 gap-y-8 px-2 pb-28 md:grid-cols-4 md:gap-x-3 md:px-3 md:pb-40">
         <Reveal>
-          {/* the chimera embroidered on the jacket: the emblem of Cycle 01, kept small */}
-          {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img src="/soutrame/chimera.svg" alt="Chimera School" className="h-14 w-auto md:h-16" />
+          <p className="text-[14px] font-semibold leading-[1.15] md:text-[15px]">
+            Cycle 01
+            <br />
+            Chimera School
+          </p>
         </Reveal>
         <Reveal delay={0.1} className="md:col-span-2">
-          <dl>
-            {(
-              [
-                ['Capsule', 'Capsule', 'Chimera School — Cycle 01', 'Chimera School — Cycle 01'],
-                ['Pièces', 'Pieces', 'Track Jacket, Zip-off Pant', 'Track Jacket, Zip-off Pant'],
-                ['Coloris', 'Colour', 'Ivoire / gris', 'Ivory / grey'],
-                ['Détails', 'Details', 'Brandebourg tressé, mesh, jambes amovibles', 'Braided frog closure, mesh, zip-off legs'],
-                ['Broderies', 'Embroidery', 'Chimère, poitrine — cerf, poche arrière', 'Chimera, chest — deer, back pocket'],
-                ['Édition', 'Edition', 'Petite série, produite à la commande', 'Small run, made to order'],
-                ['Design', 'Design', 'Emmanuel Ijjou, Paris', 'Emmanuel Ijjou, Paris'],
-              ] as const
-            ).map(([kf, ke, vf, ve]) => (
-              <div key={ke} className="grid grid-cols-[110px_1fr] border-t border-white/15 py-2 md:grid-cols-[160px_1fr]">
-                <dt className="text-white/45">{t(kf, ke)}</dt>
-                <dd>{t(vf, ve)}</dd>
-              </div>
-            ))}
-            <div className="border-t border-white/15" />
-          </dl>
+          <p className={`${TXT} max-w-[440px] text-white/80`}>
+            {t(
+              'Première capsule de SOUTRAME. Un ensemble en deux pièces : une veste de survêtement courte à capuche, fermée au col par un brandebourg tressé, et un pantalon large dont les jambes se détachent. Nylon ivoire, empiècements en mesh gris. Chimère brodée sur la poitrine, cerf sur la poche arrière.',
+              'SOUTRAME’s first capsule. A two-piece set: a cropped hooded track jacket, closed at the collar by a braided frog, and wide trousers with zip-off legs. Ivory nylon, grey mesh panels. Chimera embroidered on the chest, deer on the back pocket.'
+            )}
+          </p>
+          <p className={`${TXT} mt-4 max-w-[440px] text-white/50`}>{t('Dessinée à Paris. Petite série, produite à la commande.', 'Designed in Paris. Small run, made to order.')}</p>
         </Reveal>
-        <Reveal delay={0.2} className="md:text-right">
-          <p className="text-[18px] uppercase leading-none md:text-[20px]" style={MANTRA}>
+        <Reveal delay={0.2} className="flex items-start justify-between md:flex-col md:items-end md:gap-6">
+          {/* the chimera embroidered on the jacket, kept small */}
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img src="/soutrame/chimera.svg" alt="" className="h-12 w-auto md:h-14" />
+          <p className="text-[15px] uppercase leading-none text-white/60 md:text-[16px]" style={MANTRA}>
             I can never be food.
           </p>
         </Reveal>

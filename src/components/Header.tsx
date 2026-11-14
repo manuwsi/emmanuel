@@ -49,6 +49,9 @@ export default function Header({ active, crumb }: { active?: 'work' | 'about'; c
         <Link href="/about" className={link(active === 'about')}>
           {t('À propos', 'About')}
         </Link>
+        <Link href="/soutrame" className={`${link(false)} hidden sm:inline`}>
+          Soutrame ↗
+        </Link>
         <a href="mailto:emmanuelijjou@gmail.com" className={link(false)}>
           Contact
         </a>

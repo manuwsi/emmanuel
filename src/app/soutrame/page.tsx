@@ -1032,8 +1032,8 @@ function Universe() {
         <Reveal delay={0.1} className="md:col-span-2">
           <p className="max-w-[440px] text-[14px] leading-[1.5] text-white/80 md:text-[13px] md:leading-[1.35]">
             {t(
-              'Première capsule de SOUTRAME. Un ensemble en deux pièces : une veste de survêtement courte à capuche, fermée au col par un brandebourg tressé, et un pantalon large dont les jambes se détachent. Nylon ivoire, empiècements en mesh gris. Chimère brodée sur la poitrine, cerf sur la poche arrière.',
-              'SOUTRAME’s first capsule. A two-piece set: a cropped hooded track jacket, closed at the collar by a braided frog, and wide trousers with zip-off legs. Ivory nylon, grey mesh panels. Chimera embroidered on the chest, deer on the back pocket.'
+              'Première capsule de SOUTRAME. Un ensemble en deux pièces : une veste de survêtement courte à capuche, fermée au col par un brandebourg tressé, et un pantalon large dont les jambes se détachent. Nylon ivoire, empiècements en mesh gris.',
+              'SOUTRAME’s first capsule. A two-piece set: a cropped hooded track jacket, closed at the collar by a braided frog, and wide trousers with zip-off legs. Ivory nylon, grey mesh panels.'
             )}
           </p>
           <p className="mt-4 max-w-[440px] text-[14px] leading-[1.5] text-white/50 md:text-[13px] md:leading-[1.35]">{t('Dessinée à Paris. Petite série, produite à la commande.', 'Designed in Paris. Small run, made to order.')}</p>

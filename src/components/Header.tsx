@@ -39,17 +39,17 @@ export default function Header({ active, crumb }: { active?: 'work' | 'about'; c
       </div>
 
       <Link href="/" className={`${corner} bottom-0 left-0 pb-1`} aria-label={t('Accueil', 'Home')}>
-        <span className="block text-[17px] font-bold uppercase leading-none tracking-[-0.045em] sm:text-[20px] md:text-[24px]">Emmanuel Ijjou</span>
+        <span className="block text-[15px] font-bold uppercase leading-none tracking-[-0.045em] min-[380px]:text-[17px] sm:text-[20px] md:text-[24px]">Emmanuel Ijjou</span>
       </Link>
 
-      <nav className={`${corner} bottom-0 right-0 flex gap-4 pb-1.5`}>
-        <Link href="/" className={link(active === 'work')}>
+      <nav className={`${corner} bottom-0 right-0 flex gap-3 pb-1.5 sm:gap-4`}>
+        <Link href="/" className={`${link(active === 'work')} hidden sm:inline`}>
           {t('Travaux', 'Work')}
         </Link>
         <Link href="/about" className={link(active === 'about')}>
           {t('À propos', 'About')}
         </Link>
-        <Link href="/soutrame" className={`${link(false)} hidden sm:inline`}>
+        <Link href="/soutrame" className={link(false)}>
           Soutrame ↗
         </Link>
         <a href="mailto:emmanuelijjou@gmail.com" className={link(false)}>

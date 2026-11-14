@@ -26,6 +26,7 @@ import Link from 'next/link';
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { AnimatePresence, motion, useInView, useScroll, useTransform } from 'framer-motion';
 import { useLang, useT } from '@/components/i18n';
+import ArrowOut from '@/components/ArrowOut';
 
 const DROP = {
   price: null as string | null,
@@ -520,7 +521,8 @@ function Chrome({ filter, setFilter, count }: { filter: Category | 'all'; setFil
         </nav>
         <div className={`${TXT} mt-auto flex flex-col gap-1 text-black/55`}>
           <a href={DROP.instagram} target="_blank" rel="noopener noreferrer" className="hover:text-black">
-            Instagram ↗
+            Instagram
+            <ArrowOut />
           </a>
           <Link href="/" className="hover:text-black">
             {t('Designé par Emmanuel Ijjou', 'Designed by Emmanuel Ijjou')}
@@ -1041,7 +1043,8 @@ function Info() {
         <div className="flex flex-col">
           <p>Contact</p>
           <a href={DROP.instagram} target="_blank" rel="noopener noreferrer" className="text-black/55 hover:text-black">
-            Instagram ↗
+            Instagram
+            <ArrowOut />
           </a>
         </div>
         <div className="flex flex-col">

@@ -1,6 +1,7 @@
 'use client';
 
 import Link from 'next/link';
+import ArrowOut from './ArrowOut';
 import { useLang, useT } from './i18n';
 
 /**
@@ -50,7 +51,8 @@ export default function Header({ active, crumb }: { active?: 'work' | 'about'; c
           {t('À propos', 'About')}
         </Link>
         <Link href="/soutrame" className={link(false)}>
-          Soutrame ↗
+          Soutrame
+          <ArrowOut />
         </Link>
         <a href="mailto:emmanuelijjou@gmail.com" className={link(false)}>
           Contact

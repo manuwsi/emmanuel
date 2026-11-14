@@ -1,23 +1,4 @@
 import type { Metadata } from 'next';
-import localFont from 'next/font/local';
-
-const generalSans = localFont({
-  src: [
-    { path: '../../fonts/GeneralSans-Light.otf', weight: '300', style: 'normal' },
-    { path: '../../fonts/GeneralSans-Regular.otf', weight: '400', style: 'normal' },
-    { path: '../../fonts/GeneralSans-Medium.otf', weight: '500', style: 'normal' },
-    { path: '../../fonts/GeneralSans-Semibold.otf', weight: '600', style: 'normal' },
-  ],
-  variable: '--font-general-sans',
-  display: 'swap',
-});
-
-const ade = localFont({
-  src: [{ path: '../../fonts/Ade-Display.otf', weight: '400', style: 'normal' }],
-  variable: '--font-ade',
-  display: 'swap',
-});
-
 const description =
   'SOUTRAME.CYCLE — Cycle 01, Chimera School. A clothing brand built around the inner thread we all carry.';
 
@@ -40,5 +21,5 @@ export const metadata: Metadata = {
 };
 
 export default function Layout({ children }: { children: React.ReactNode }) {
-  return <div className={`${generalSans.variable} ${ade.variable}`}>{children}</div>;
+  return children;
 }

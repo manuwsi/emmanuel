@@ -3,47 +3,53 @@
 import Link from 'next/link';
 import { useLang, useT } from './i18n';
 
-/** Shared site header: identity, navigation, FR/EN switch. */
-export default function Header({ active }: { active?: 'work' | 'about' }) {
+/**
+ * Shared site chrome, in the corners of the screen:
+ * breadcrumb top-left, language top-right, text logo bottom-left, navigation bottom-right.
+ * mix-blend-difference keeps it legible over white pages and over images alike.
+ */
+export default function Header({ active, crumb }: { active?: 'work' | 'about'; crumb?: string }) {
   const { lang, setLang } = useLang();
   const t = useT();
-
-  const linkClass = (isActive: boolean) =>
-    isActive
-      ? 'line-through pointer-events-none'
-      : 'hover:underline transition-all duration-300';
+  const corner = 'fixed z-50 text-white mix-blend-difference text-[13px] leading-[1.35] px-2 md:px-3';
+  const link = (on: boolean) => (on ? 'underline underline-offset-2' : 'hover:underline underline-offset-2');
+  const here = crumb ?? (active === 'about' ? t('À propos', 'About') : t('Travaux', 'Work'));
 
   return (
-    <header className="fixed top-0 z-50 w-full px-4 md:px-10 py-4 flex flex-col md:flex-row md:justify-between items-center gap-2 md:gap-0 text-[0.65rem] md:text-sm uppercase tracking-wider mix-blend-difference">
-      <span className="text-center">Emmanuel — Paris, France</span>
-      <nav className="flex items-center space-x-5 md:space-x-8">
-        <Link href="/" className={linkClass(active === 'work')}>
-          [{t('Travaux', 'Work')}]
+    <>
+      <div className={`${corner} left-0 top-0 py-1.5`}>
+        <Link href="/" className="hover:underline underline-offset-2">
+          Emmanuel Ijjou
+        </Link>{' '}
+        → {here}
+      </div>
+
+      <div className={`${corner} right-0 top-0 py-1.5`} role="group" aria-label={t('Langue', 'Language')}>
+        {(['fr', 'en'] as const).map((l, i) => (
+          <span key={l}>
+            {i > 0 && <span className="opacity-50"> / </span>}
+            <button type="button" onClick={() => setLang(l)} aria-pressed={lang === l} className={`uppercase ${lang === l ? '' : 'opacity-50 hover:opacity-100'}`}>
+              {l}
+            </button>
+          </span>
+        ))}
+      </div>
+
+      <Link href="/" className={`${corner} bottom-0 left-0 pb-1`} aria-label={t('Accueil', 'Home')}>
+        <span className="block text-[17px] font-bold uppercase leading-none tracking-[-0.045em] sm:text-[20px] md:text-[24px]">Emmanuel Ijjou</span>
+      </Link>
+
+      <nav className={`${corner} bottom-0 right-0 flex gap-4 pb-1.5`}>
+        <Link href="/" className={link(active === 'work')}>
+          {t('Travaux', 'Work')}
         </Link>
-        <Link href="/about" className={linkClass(active === 'about')}>
-          [{t('À propos', 'About')}]
+        <Link href="/about" className={link(active === 'about')}>
+          {t('À propos', 'About')}
         </Link>
-        <a href="mailto:emmanuelijjou@gmail.com" className={linkClass(false)}>
-          [Contact]
+        <a href="mailto:emmanuelijjou@gmail.com" className={link(false)}>
+          Contact
         </a>
-        <span className="flex items-center gap-1 pl-1" role="group" aria-label={t('Langue', 'Language')}>
-          {(['fr', 'en'] as const).map((l, i) => (
-            <span key={l} className="flex items-center gap-1">
-              {i > 0 && <span className="text-neutral-400">/</span>}
-              <button
-                type="button"
-                onClick={() => setLang(l)}
-                aria-pressed={lang === l}
-                className={`uppercase py-2 px-1 -my-2 transition-colors ${
-                  lang === l ? 'text-white' : 'text-neutral-400 hover:text-white'
-                }`}
-              >
-                {l}
-              </button>
-            </span>
-          ))}
-        </span>
       </nav>
-    </header>
+    </>
   );
 }

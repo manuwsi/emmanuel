@@ -150,7 +150,7 @@ export default function Page() {
         </p>
       </Chapter>
       <div className="max-w-3xl mx-auto space-y-3">
-        <span className="block text-[0.65rem] uppercase tracking-widest text-neutral-400">{t('Premier jet', 'First draft')}</span>
+        <span className="block text-[13px] text-black/45">{t('Premier jet', 'First draft')}</span>
         <Row cols={3} mobileCols={2}>
           <Media src="/shu-draft-login.png" alt={t('Shu Uemura — premier jet, connexion', 'Shu Uemura — first draft, login')} width={390} height={844} />
           <Media src="/shu-draft-requests.png" alt={t('Shu Uemura — premier jet, galerie de demandes', 'Shu Uemura — first draft, request gallery')} width={390} height={844} />
@@ -158,7 +158,7 @@ export default function Page() {
         </Row>
       </div>
       <div className="max-w-3xl mx-auto space-y-3 pt-6">
-        <span className="block text-[0.65rem] uppercase tracking-widest text-neutral-400">V1</span>
+        <span className="block text-[13px] text-black/45">V1</span>
         <Row cols={3} mobileCols={2}>
           <Media src="/shu-v1-cover.png" alt={t('Shu Uemura — V1, accueil', 'Shu Uemura — V1, welcome')} width={390} height={844} />
           <Media src="/shu-v1-mentor.png" alt={t('Shu Uemura — V1, choix du mentor', 'Shu Uemura — V1, mentor choice')} width={390} height={844} />
@@ -184,8 +184,8 @@ export default function Page() {
         ].map((f) => (
           <figure key={f.n} className="space-y-3">
             <Media src={`/shu-sb-${f.n}.jpg`} alt={t(`Storyboard — ${f.fr}`, `Storyboard — ${f.en}`)} width={540} height={292} />
-            <figcaption className="text-xs text-gray-400">
-              <span className="text-neutral-400 tabular-nums">0{f.n} — </span>
+            <figcaption className="text-xs text-black/50">
+              <span className="text-black/45 tabular-nums">0{f.n} — </span>
               {t(f.fr, f.en)}
             </figcaption>
           </figure>

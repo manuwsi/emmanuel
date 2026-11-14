@@ -38,10 +38,10 @@ export function ProjectPage({
   ];
 
   return (
-    <main className="w-full min-h-screen bg-[#0a0a0a] text-white font-sans overflow-x-hidden relative flex flex-col">
-      <Header />
+    <main className="w-full min-h-screen bg-white text-[#0a0a0a] font-sans overflow-x-hidden relative flex flex-col [scroll-snap-type:none]">
+      <Header crumb={title} />
 
-      <div className="pt-32 md:pt-40 px-6 md:px-10 w-full max-w-6xl mx-auto flex-grow">
+      <div className="pt-28 md:pt-36 px-2 md:px-3 w-full max-w-[1400px] mx-auto flex-grow">
         {/* TITLE */}
         <motion.div
           initial={{ opacity: 0, y: 40 }}
@@ -49,10 +49,10 @@ export function ProjectPage({
           transition={{ duration: 1 }}
           className="space-y-4"
         >
-          <h1 className="text-5xl md:text-8xl font-ivy font-light tracking-tight text-white">
+          <h1 className="text-[13vw] md:text-[7vw] font-medium leading-[0.9] tracking-[-0.045em]">
             {title}
           </h1>
-          <h2 className="text-sm md:text-base text-gray-400 uppercase tracking-widest">
+          <h2 className="text-[13px] leading-[1.35] text-black/50">
             {subtitle}
           </h2>
         </motion.div>
@@ -62,17 +62,17 @@ export function ProjectPage({
           initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 1, delay: 0.2 }}
-          className="mt-14 md:mt-20 grid grid-cols-1 md:grid-cols-12 gap-10 md:gap-8 border-t border-neutral-800 pt-10"
+          className="mt-14 md:mt-20 grid grid-cols-1 md:grid-cols-12 gap-10 md:gap-8 border-t border-black/15 pt-6"
         >
           <dl className="md:col-span-4 grid grid-cols-2 md:grid-cols-1 gap-6 content-start">
             {metaRows.map((m) => (
               <div key={m.label} className="space-y-1">
-                <dt className="text-[0.65rem] uppercase tracking-widest text-neutral-400">{m.label}</dt>
-                <dd className="text-sm text-gray-200">{m.value}</dd>
+                <dt className="text-[13px] text-black/45">{m.label}</dt>
+                <dd className="text-[13px] leading-[1.35]">{m.value}</dd>
               </div>
             ))}
           </dl>
-          <div className="md:col-span-8 space-y-6 text-sm md:text-base text-gray-300 leading-relaxed max-w-2xl">
+          <div className="md:col-span-8 space-y-5 text-[15px] md:text-[17px] leading-[1.5] max-w-2xl">
             {intro}
           </div>
         </motion.div>
@@ -86,17 +86,17 @@ export function ProjectPage({
           whileInView={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6 }}
           viewport={{ once: true }}
-          className="mt-40 border-t border-neutral-800 pt-12 flex flex-col items-center gap-6"
+          className="mt-40 border-t-[3px] border-[#0a0a0a] pt-2 flex flex-col items-start gap-6"
         >
-          <span className="text-[0.65rem] uppercase tracking-widest text-neutral-400">{t('Projet suivant', 'Next project')}</span>
+          <span className="text-[13px] text-black/45">{t('Projet suivant', 'Next project')}</span>
           <Link href={next.href} className="group">
-            <span className="text-3xl md:text-5xl font-ivy font-light tracking-tight text-neutral-300 group-hover:text-white transition">
+            <span className="text-[9vw] md:text-[5vw] font-medium leading-[0.95] tracking-[-0.04em] group-hover:opacity-50 transition">
               {next.title} →
             </span>
           </Link>
         </motion.div>
 
-        <footer className="mt-24 mb-10 text-center text-xs tracking-widest text-neutral-400">
+        <footer className="mt-24 mb-12 text-[13px] text-black/40">
           © {new Date().getFullYear()} Emmanuel
         </footer>
       </div>
@@ -222,11 +222,11 @@ export function Chapter({ title, children }: { title: string; children?: ReactNo
       viewport={{ once: true }}
       className="pt-20 pb-6 md:pt-28 md:pb-10 grid grid-cols-1 md:grid-cols-12 gap-6"
     >
-      <h3 className="md:col-span-4 text-[0.65rem] md:text-xs uppercase tracking-widest text-neutral-400">
+      <h3 className="md:col-span-4 text-[13px] text-black/45">
         {title}
       </h3>
       {children && (
-        <div className="md:col-span-8 text-sm md:text-base text-gray-300 leading-relaxed max-w-2xl space-y-4">
+        <div className="md:col-span-8 text-[15px] md:text-[17px] leading-[1.5] max-w-2xl space-y-4">
           {children}
         </div>
       )}

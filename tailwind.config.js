@@ -4,7 +4,8 @@ module.exports = {
     theme: {
       extend: {
         fontFamily: {
-          ivy: ['ivyora-display', 'serif'], // IvyOra Display 
+          sans: ['var(--font-general-sans)', 'Inter', 'sans-serif'],
+          display: ['var(--font-general-sans)', 'Inter', 'sans-serif'], 
         },
       },
     },

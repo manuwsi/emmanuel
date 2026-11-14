@@ -101,14 +101,14 @@ export default function Page() {
         ].map((v) => (
           <figure key={v.n} className="space-y-3">
             <Media src={v.src} alt={t(`Hennessy — exploration ${v.n}`, `Hennessy — exploration ${v.n}`)} width={1366} height={1024} />
-            <figcaption className="text-xs text-gray-400 leading-relaxed">
-              <span className="text-neutral-400 tabular-nums">0{v.n} — </span>
+            <figcaption className="text-xs text-black/50 leading-relaxed">
+              <span className="text-black/45 tabular-nums">0{v.n} — </span>
               {t(v.fr, v.en)}
             </figcaption>
           </figure>
         ))}
       </Row>
-      <p className="max-w-2xl text-sm text-gray-300 leading-relaxed">
+      <p className="max-w-2xl text-sm text-black/70 leading-relaxed">
         {t(
           'La version finale garde la lisibilité de la grille, mais remplace les aplats par des touches de peinture, plus proches de l’univers de Florian Zumbrunn, et sépare le choix en deux étapes pour que chaque décision reste simple.',
           'The final version keeps the grid’s readability but swaps flat swatches for paint strokes, closer to Florian Zumbrunn’s world, and splits the choice into two steps so each decision stays simple.'

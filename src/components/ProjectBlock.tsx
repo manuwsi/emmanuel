@@ -40,7 +40,7 @@ export default function ProjectBlock({ title, image, date, tags, index }: Projec
         transition={{ duration: 0.6, delay: 0.1 }}
         viewport={{ once: true }}
       >
-        <h2 className="text-4xl md:text-6xl font-ivy font-light leading-tight mb-4 tracking-tight">{title}</h2>
+        <h2 className="text-4xl md:text-6xl font-medium tracking-[-0.03em] leading-tight mb-4 tracking-tight">{title}</h2>
         <p className="uppercase text-sm opacity-60 mb-1">{date}</p>
         <p className="text-base opacity-80 mb-4">{tags}</p>
         <a href="#" className="inline-flex items-center gap-2 text-white text-sm uppercase tracking-widest hover:opacity-70 transition">

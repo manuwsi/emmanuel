@@ -23,9 +23,9 @@ function Section({ title, children }: { title: string; children: ReactNode }) {
       whileInView={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.8 }}
       viewport={{ once: true }}
-      className="grid grid-cols-1 md:grid-cols-12 gap-6 md:gap-8 border-t border-neutral-800 pt-10"
+      className="grid grid-cols-1 md:grid-cols-12 gap-6 md:gap-8 border-t border-black/15 pt-10"
     >
-      <h2 className="md:col-span-4 text-[0.65rem] md:text-xs uppercase tracking-widest text-neutral-400">{title}</h2>
+      <h2 className="md:col-span-4 text-[13px] text-black/45">{title}</h2>
       <div className="md:col-span-8">{children}</div>
     </motion.section>
   );
@@ -80,7 +80,7 @@ export default function AboutPage() {
   ];
 
   return (
-    <main className="w-full min-h-screen bg-[#0a0a0a] text-white font-sans overflow-x-hidden relative flex flex-col">
+    <main className="w-full min-h-screen bg-white text-[#0a0a0a] font-sans overflow-x-hidden relative flex flex-col [scroll-snap-type:none]">
       <Header active="about" />
 
       <div className="pt-32 md:pt-40 px-6 md:px-10 w-full max-w-6xl mx-auto flex-grow">
@@ -91,17 +91,17 @@ export default function AboutPage() {
           transition={{ duration: 1 }}
           className="space-y-8 md:space-y-10"
         >
-          <span className="block text-[0.7rem] uppercase tracking-widest text-neutral-400">
+          <span className="block text-[13px] text-black/45">
             {t('À propos', 'About')}
           </span>
-          <h1 className="text-4xl md:text-7xl font-ivy font-light tracking-tight leading-[1.05] max-w-4xl">
+          <h1 className="text-4xl md:text-7xl font-medium tracking-[-0.03em] tracking-tight leading-[1.05] max-w-4xl">
             {t(
               'Product Designer à Paris, de la recherche utilisateur à l’interface.',
               'Product Designer in Paris, from user research to interface.'
             )}
           </h1>
           <div className="grid grid-cols-1 md:grid-cols-12 gap-6 md:gap-8">
-            <div className="md:col-start-5 md:col-span-8 space-y-5 text-sm md:text-base text-gray-300 leading-relaxed max-w-2xl">
+            <div className="md:col-start-5 md:col-span-8 space-y-5 text-sm md:text-base text-black/70 leading-relaxed max-w-2xl">
               {t(
                 <>
                   <p>
@@ -134,7 +134,7 @@ export default function AboutPage() {
                   href="/CV_Emmanuel_Ijjou.pdf"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="border border-white bg-white text-black px-6 py-3 text-xs uppercase tracking-widest hover:bg-transparent hover:text-white transition-colors duration-300"
+                  className="border border-[#0a0a0a] bg-[#0a0a0a] text-white px-5 py-3 text-[13px] hover:bg-transparent hover:text-[#0a0a0a] transition-colors duration-300"
                 >
                   {t('Télécharger le CV', 'Download CV')}
                 </a>
@@ -142,13 +142,13 @@ export default function AboutPage() {
                   href="https://www.linkedin.com/in/emmanuel-ijjou-00a7a9213/"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="border border-white px-6 py-3 text-xs uppercase tracking-widest hover:bg-white hover:text-black transition-colors duration-300"
+                  className="border border-[#0a0a0a] px-5 py-3 text-[13px] hover:bg-[#0a0a0a] hover:text-white transition-colors duration-300"
                 >
                   LinkedIn
                 </a>
                 <a
                   href="mailto:emmanuelijjou@gmail.com"
-                  className="border border-white px-6 py-3 text-xs uppercase tracking-widest hover:bg-white hover:text-black transition-colors duration-300"
+                  className="border border-[#0a0a0a] px-5 py-3 text-[13px] hover:bg-[#0a0a0a] hover:text-white transition-colors duration-300"
                 >
                   {t('E-mail', 'Email')}
                 </a>
@@ -162,7 +162,7 @@ export default function AboutPage() {
           <Section title={t('Clients', 'Clients')}>
             <ul className="grid grid-cols-2 md:grid-cols-4 gap-x-6 gap-y-5">
               {clients.map((c) => (
-                <li key={c} className="text-lg md:text-xl font-ivy font-light text-gray-200">
+                <li key={c} className="text-lg md:text-xl font-medium tracking-[-0.03em] text-black/80">
                   {c}
                 </li>
               ))}
@@ -171,8 +171,8 @@ export default function AboutPage() {
 
           {/* AWARD */}
           <Section title={t('Distinction', 'Award')}>
-            <p className="text-lg md:text-2xl font-ivy font-light text-white">Lovie Award — Best Experience Art Direction</p>
-            <p className="mt-2 text-sm text-gray-400">
+            <p className="text-lg md:text-2xl font-medium tracking-[-0.03em]">Lovie Award — Best Experience Art Direction</p>
+            <p className="mt-2 text-sm text-black/50">
               {t('Hennessy X.O Second Skin, avec OKCC — VivaTech 2025', 'Hennessy X.O Second Skin, with OKCC — VivaTech 2025')}
             </p>
           </Section>
@@ -183,14 +183,14 @@ export default function AboutPage() {
               {experience.map((e) => (
                 <div key={e.where} className="space-y-4">
                   <div className="flex flex-col md:flex-row md:items-baseline md:justify-between gap-1">
-                    <h3 className="text-base md:text-lg text-white">
-                      {e.role} <span className="text-gray-400">· {e.where}</span>
+                    <h3 className="text-base md:text-lg">
+                      {e.role} <span className="text-black/50">· {e.where}</span>
                     </h3>
-                    <span className="text-xs tracking-widest uppercase text-neutral-400 tabular-nums">{e.date}</span>
+                    <span className="text-xs tracking-widest uppercase text-black/45 tabular-nums">{e.date}</span>
                   </div>
-                  <ul className="space-y-2 text-sm text-gray-300 leading-relaxed">
+                  <ul className="space-y-2 text-sm text-black/70 leading-relaxed">
                     {e.items.map((it) => (
-                      <li key={it} className="pl-4 relative before:content-['—'] before:absolute before:left-0 before:text-neutral-500">
+                      <li key={it} className="pl-4 relative before:content-['—'] before:absolute before:left-0 before:text-black/40">
                         <span className="pl-2 block">{it}</span>
                       </li>
                     ))}
@@ -202,9 +202,9 @@ export default function AboutPage() {
 
           {/* EDUCATION */}
           <Section title={t('Formation', 'Education')}>
-            <ul className="space-y-3 text-sm md:text-base text-gray-200">
-              <li>Master Digital Design <span className="text-gray-400">· ESD — École Supérieure du Digital, Paris</span></li>
-              <li>Bachelor Création Digitale <span className="text-gray-400">· ESD — École Supérieure du Digital, Paris</span></li>
+            <ul className="space-y-3 text-sm md:text-base text-black/80">
+              <li>Master Digital Design <span className="text-black/50">· ESD — École Supérieure du Digital, Paris</span></li>
+              <li>Bachelor Création Digitale <span className="text-black/50">· ESD — École Supérieure du Digital, Paris</span></li>
             </ul>
           </Section>
 
@@ -213,8 +213,8 @@ export default function AboutPage() {
             <dl className="grid grid-cols-1 md:grid-cols-2 gap-6">
               {skills.map((s) => (
                 <div key={s.k} className="space-y-1">
-                  <dt className="text-[0.65rem] uppercase tracking-widest text-neutral-400">{s.k}</dt>
-                  <dd className="text-sm text-gray-200 leading-relaxed">{s.v}</dd>
+                  <dt className="text-[13px] text-black/45">{s.k}</dt>
+                  <dd className="text-sm text-black/80 leading-relaxed">{s.v}</dd>
                 </div>
               ))}
             </dl>
@@ -222,13 +222,13 @@ export default function AboutPage() {
 
           {/* LANGUAGES */}
           <Section title={t('Langues', 'Languages')}>
-            <p className="text-sm md:text-base text-gray-200">
+            <p className="text-sm md:text-base text-black/80">
               {t('Français (natif) · Anglais (bilingue)', 'French (native) · English (fluent)')}
             </p>
           </Section>
         </div>
 
-        <footer className="mt-32 mb-10 text-center text-xs tracking-widest text-neutral-400">
+        <footer className="mt-32 mb-10 text-center text-xs tracking-widest text-black/45">
           © {new Date().getFullYear()} Emmanuel Ijjou
         </footer>
       </div>

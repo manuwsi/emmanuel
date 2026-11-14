@@ -1,7 +1,26 @@
 import type { Metadata } from 'next';
+import localFont from 'next/font/local';
 import '../styles/globals.css';
 import Cursor from '@/components/Cursor';
 import { LangProvider } from '@/components/i18n';
+
+const generalSans = localFont({
+  src: [
+    { path: '../fonts/GeneralSans-Light.otf', weight: '300', style: 'normal' },
+    { path: '../fonts/GeneralSans-Regular.otf', weight: '400', style: 'normal' },
+    { path: '../fonts/GeneralSans-Medium.otf', weight: '500', style: 'normal' },
+    { path: '../fonts/GeneralSans-Semibold.otf', weight: '600', style: 'normal' },
+    { path: '../fonts/GeneralSans-Bold.otf', weight: '700', style: 'normal' },
+  ],
+  variable: '--font-general-sans',
+  display: 'swap',
+});
+
+const ade = localFont({
+  src: [{ path: '../fonts/Ade-Display.otf', weight: '400', style: 'normal' }],
+  variable: '--font-ade',
+  display: 'swap',
+});
 
 const description =
   'Portfolio d’Emmanuel Ijjou, Product Designer à Paris : recherche utilisateur, UX et UI pour le luxe, la beauté et la tech.';
@@ -36,13 +55,9 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="fr">
-      <head>
-        {/* IvyOra */}
-        <link rel="stylesheet" href="https://use.typekit.net/cgb0rtc.css" />
-      </head>
+    <html lang="fr" className={`${generalSans.variable} ${ade.variable}`}>
       <body
-        className="bg-[#0a0a0a] text-white font-sans"
+        className="bg-white text-[#0a0a0a] font-sans antialiased"
         suppressHydrationWarning={true}
       >
         <LangProvider>

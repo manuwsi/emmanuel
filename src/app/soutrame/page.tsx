@@ -3,16 +3,17 @@
 /**
  * SOUTRAME.CYCLE — brand shop (Cycle 01 · Chimera School)
  *
- * Direction: a real shop, quiet and image-led. The page takes the exact tone of the studio
- * backdrop (#e2e1de), so the photographs melt into it and the garment is the only thing that
- * stands out. Type stays small; the hierarchy comes from the images and the grid.
- *  - TRAME (the inner thread): images are woven in strip by strip (campaign, product hover,
- *    product sheet, lookbook). Buttons fill the same way.
- *  - CYCLE (nothing is linear, it comes back): the campaign panels loop through the shoot.
- *  - Snow: the scattered dots of the CYCLE posters, drifting behind everything.
+ * Direction: a white shop page, the codes of the best independent fashion shops.
+ *  - Text logo fixed bottom-left, Menu / Bag fixed bottom-right, breadcrumb top-left.
+ *  - Each piece is a full-width row of photographs you scroll sideways, with a thin caption under it.
+ *  - Type is small and in sentence case; the photographs carry the hierarchy.
+ * What stays SOUTRAME:
+ *  - TRAME (the inner thread): images are woven in strip by strip; buttons fill the same way.
+ *  - CYCLE: the campaign panels loop through the shoot.
+ *  - The universe (snow, mantra, the mark) lives in its own black chapter.
  *
  * To open sales, fill in DROP below:
- *  - price: e.g. '240 €' (or a price per piece in PIECES)
+ *  - price: e.g. '280 €' (or a price per piece in PIECES)
  *  - sizes: e.g. ['S', 'M', 'L']
  *  - checkoutUrl: the Stripe Payment Link (https://buy.stripe.com/...)
  * While checkoutUrl is null, every buy button reads "Coming soon" and is disabled.
@@ -23,7 +24,7 @@
 import Image from 'next/image';
 import Link from 'next/link';
 import { useCallback, useEffect, useRef, useState } from 'react';
-import { AnimatePresence, motion, useScroll, useTransform } from 'framer-motion';
+import { AnimatePresence, motion, useInView, useScroll, useTransform } from 'framer-motion';
 import { useLang, useT } from '@/components/i18n';
 
 const DROP = {
@@ -38,15 +39,17 @@ const INTRO_VIDEO = null as string | null; // e.g. '/soutrame/intro.mp4'
 /** Shown greyed-out in the size picker until DROP.sizes is filled in. */
 const SIZE_PREVIEW = ['S', 'M', 'L', 'XL'];
 
-const BG = '#e2e1de'; // the studio backdrop, measured on the retouched shots
-const INK = '#121212';
+const BG = '#ffffff';
+const INK = '#0a0a0a';
+const PHOTO = '#e2e1de'; // the studio backdrop of the retouched shots
 const EASE = [0.22, 1, 0.36, 1] as const;
-/** Titles: General Sans, the brand typeface, set tight and uppercase. */
-const DISPLAY = { fontFamily: 'var(--font-general-sans), Inter, sans-serif', fontWeight: 500, letterSpacing: '-0.025em' } as const;
+/** The text logo: General Sans Bold, set tight. */
+const WORDMARK = { fontFamily: 'var(--font-general-sans), Inter, sans-serif', fontWeight: 700, letterSpacing: '-0.045em' } as const;
+const DISPLAY = { fontFamily: 'var(--font-general-sans), Inter, sans-serif', fontWeight: 500, letterSpacing: '-0.03em' } as const;
 /** Ade Display is kept for a single, more intimate line: the mantra. */
 const MANTRA = { fontFamily: 'var(--font-ade), serif' } as const;
-/** Small uppercase label, the shop's working voice. */
-const LABEL = 'text-[11px] uppercase tracking-[0.08em]';
+/** The shop's working voice: small, regular, sentence case. */
+const TXT = 'text-[13px] leading-[1.35] tracking-[0.005em]';
 
 const img = (n: string) => `/soutrame/${n}.jpg`;
 
@@ -159,10 +162,10 @@ const priceOf = (p: Piece) => p.price ?? DROP.price;
 
 const SATELLITES = [58, -58, 102, -102, 152, -152];
 
-/** The SOUTRAME mark, rebuilt on a strict geometry. `assemble` animates the satellites in. */
+/** The SOUTRAME mark (the cluster), kept as the brand symbol. `assemble` animates the satellites in. */
 function Mark({ className = '', assemble = false }: { className?: string; assemble?: boolean }) {
   return (
-    <svg viewBox="-71.78 -46.68 143.55 113.12" fill="currentColor" className={className} aria-label="SOUTRAME" role="img">
+    <svg viewBox="-71.78 -46.68 143.55 113.12" fill="currentColor" className={className} aria-hidden>
       <motion.circle cx="0" cy="0" r="30" initial={assemble ? { scale: 0 } : false} animate={{ scale: 1 }} transition={{ duration: 0.9, ease: EASE }} />
       {SATELLITES.map((deg, i) => {
         const t = (deg * Math.PI) / 180;
@@ -171,7 +174,7 @@ function Mark({ className = '', assemble = false }: { className?: string; assemb
         return (
           <motion.g key={deg} initial={assemble ? { opacity: 0, x: Math.round(x * 6) / 10, y: Math.round(y * 6) / 10 } : false} animate={{ opacity: 1, x: 0, y: 0 }} transition={{ duration: 1.1, ease: EASE, delay: 0.25 + i * 0.06 }}>
             <rect x="-4.5" y="-56" width="9" height="56" transform={`rotate(${deg})`} />
-            <circle cx={x.toFixed(2)} cy={y.toFixed(2)} r="17" />
+            <circle cx={x} cy={y} r="17" />
           </motion.g>
         );
       })}
@@ -181,8 +184,8 @@ function Mark({ className = '', assemble = false }: { className?: string; assemb
 
 /** Square button. On hover, the fill is woven in, thread by thread. */
 function Btn({ children, href, disabled = false, full = false, external = false, onClick }: { children: React.ReactNode; href?: string; disabled?: boolean; full?: boolean; external?: boolean; onClick?: () => void }) {
-  const cls = `group relative inline-flex h-[50px] items-center justify-between gap-8 overflow-hidden border px-5 ${LABEL} ${full ? 'w-full' : 'w-full sm:w-auto sm:min-w-[260px]'} ${
-    disabled ? 'cursor-not-allowed border-black/15 text-black/40' : 'border-[#121212] text-[#121212]'
+  const cls = `group relative inline-flex h-[48px] items-center justify-between gap-8 overflow-hidden border px-4 ${TXT} ${full ? 'w-full' : 'w-full sm:w-auto sm:min-w-[260px]'} ${
+    disabled ? 'cursor-not-allowed border-black/15 text-black/40' : 'border-[#0a0a0a] text-[#0a0a0a]'
   }`;
   const inner = (
     <>
@@ -191,14 +194,14 @@ function Btn({ children, href, disabled = false, full = false, external = false,
           {Array.from({ length: 6 }).map((_, i) => (
             <span
               key={i}
-              className={`block flex-1 scale-x-0 bg-[#121212] transition-transform duration-500 ease-[cubic-bezier(.22,1,.36,1)] group-hover:scale-x-100 ${i % 2 ? 'origin-right' : 'origin-left'}`}
+              className={`block flex-1 scale-x-0 bg-[#0a0a0a] transition-transform duration-500 ease-[cubic-bezier(.22,1,.36,1)] group-hover:scale-x-100 ${i % 2 ? 'origin-right' : 'origin-left'}`}
               style={{ transitionDelay: `${i * 35}ms` }}
             />
           ))}
         </span>
       )}
-      <span className="relative transition-colors duration-300 group-hover:text-[#e2e1de]">{children}</span>
-      <span className="relative transition-colors duration-300 group-hover:text-[#e2e1de]">{disabled ? '' : '→'}</span>
+      <span className="relative transition-colors duration-300 group-hover:text-white">{children}</span>
+      <span className="relative transition-colors duration-300 group-hover:text-white">{disabled ? '' : '→'}</span>
     </>
   );
   if (disabled)
@@ -234,18 +237,21 @@ function BuyButton({ full = false, price }: { full?: boolean; price?: string | n
   );
 }
 
-/** Image woven in, strip by strip. */
-function Weave({ src, alt, strips = 12, priority = false, sizes, delay = 0 }: { src: string; alt: string; strips?: number; priority?: boolean; sizes: string; delay?: number }) {
+/** Image woven in, strip by strip. `inView` delays the weave until the image enters the screen. */
+function Weave({ src, alt, strips = 12, priority = false, sizes, delay = 0, inView = false }: { src: string; alt: string; strips?: number; priority?: boolean; sizes: string; delay?: number; inView?: boolean }) {
   const stripH = 100 / strips + 0.2; // % of the container; the small overlap hides seams between strips
+  const host = useRef<HTMLDivElement>(null);
+  const seen = useInView(host, { once: true, margin: '0px 0px -15% 0px' });
+  const go = !inView || seen; // one observer for the whole image, so every strip weaves together
   return (
-    <div className="absolute inset-0">
+    <div ref={host} className="absolute inset-0">
       {Array.from({ length: strips }).map((_, i) => (
         <motion.div
           key={i}
           className="absolute inset-x-0 overflow-hidden"
           style={{ top: `${(i * 100) / strips}%`, height: `${stripH}%`, transformOrigin: i % 2 ? 'right' : 'left' }}
           initial={{ scaleX: 0 }}
-          animate={{ scaleX: 1 }}
+          animate={{ scaleX: go ? 1 : 0 }}
           transition={{ duration: 0.9, ease: EASE, delay: delay + i * 0.045 }}
         >
           {/* sized and offset in container units, so the woven image lines up pixel-for-pixel with the one underneath */}
@@ -258,28 +264,9 @@ function Weave({ src, alt, strips = 12, priority = false, sizes, delay = 0 }: { 
   );
 }
 
-/** Hover reveal: a second image woven over the first, used on product cards. */
-function HoverWeave({ src, sizes, strips = 10 }: { src: string; sizes: string; strips?: number }) {
-  return (
-    <div className="absolute inset-0 flex flex-col">
-      {Array.from({ length: strips }).map((_, k) => (
-        <div
-          key={k}
-          className={`relative flex-1 scale-x-0 overflow-hidden transition-transform duration-700 ease-[cubic-bezier(.22,1,.36,1)] group-hover:scale-x-100 ${k % 2 ? 'origin-right' : 'origin-left'}`}
-          style={{ transitionDelay: `${k * 30}ms` }}
-        >
-          <div className="absolute inset-x-0" style={{ top: `-${k * 100}%`, height: `${strips * 100}%` }}>
-            <Image src={src} alt="" fill sizes={sizes} className="object-cover" />
-          </div>
-        </div>
-      ))}
-    </div>
-  );
-}
-
 function Reveal({ children, delay = 0, className = '' }: { children: React.ReactNode; delay?: number; className?: string }) {
   return (
-    <motion.div className={className} initial={{ opacity: 0, y: 24 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true, margin: '-10% 0px' }} transition={{ duration: 1, ease: EASE, delay }}>
+    <motion.div className={className} initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true, margin: '-10% 0px' }} transition={{ duration: 1.1, ease: EASE, delay }}>
       {children}
     </motion.div>
   );
@@ -287,14 +274,15 @@ function Reveal({ children, delay = 0, className = '' }: { children: React.React
 
 /* ───────────────────────── universe ─────────────────────────
  * Snow: the scattered dots of the SOUTRAME CYCLE posters, set in motion.
- * On the pale backdrop they read as white flakes with a faint shadow, never as decoration.
+ * It lives inside the black chapter only, sized to it, and sleeps when off screen.
  */
 function Snow() {
   const ref = useRef<HTMLCanvasElement>(null);
 
   useEffect(() => {
     const canvas = ref.current;
-    if (!canvas) return;
+    const host = canvas?.parentElement;
+    if (!canvas || !host) return;
     const ctx = canvas.getContext('2d');
     if (!ctx) return;
     const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
@@ -306,73 +294,80 @@ function Snow() {
     let wind = 0;
     let targetWind = 0;
     let raf = 0;
+    let visible = false;
     const dpr = Math.min(window.devicePixelRatio || 1, 2);
 
     const make = (y?: number): Flake => {
-      const z = Math.random(); // 0 = far, 1 = near
-      return { x: Math.random() * w, y: y ?? Math.random() * h, r: 0.6 + z * z * 2.6, z, sway: 0.2 + Math.random() * 0.6, phase: Math.random() * Math.PI * 2 };
+      const z = Math.random();
+      return { x: Math.random() * w, y: y ?? Math.random() * h, r: 0.5 + z * z * 2.2, z, sway: 0.2 + Math.random() * 0.6, phase: Math.random() * Math.PI * 2 };
     };
 
     const resize = () => {
-      w = window.innerWidth;
-      h = window.innerHeight;
+      w = host.clientWidth;
+      h = host.clientHeight;
       canvas.width = w * dpr;
       canvas.height = h * dpr;
       canvas.style.width = `${w}px`;
       canvas.style.height = `${h}px`;
       ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
-      const count = Math.round(Math.min(100, (w * h) / 15000));
+      const count = Math.round(Math.min(160, (w * h) / 9000));
       flakes = Array.from({ length: count }, () => make());
+      if (reduce) paintAll();
     };
 
-    const paint = (f: Flake, alpha: number) => {
-      ctx.globalAlpha = alpha;
-      ctx.shadowBlur = 4;
-      ctx.shadowColor = 'rgba(0,0,0,0.18)';
-      ctx.beginPath();
-      ctx.arc(f.x, f.y, f.r, 0, Math.PI * 2);
-      ctx.fillStyle = '#ffffff';
-      ctx.fill();
+    const paintAll = () => {
+      ctx.clearRect(0, 0, w, h);
+      for (const f of flakes) {
+        ctx.globalAlpha = 0.35 + f.z * 0.6;
+        ctx.beginPath();
+        ctx.arc(f.x, f.y, f.r, 0, Math.PI * 2);
+        ctx.fillStyle = '#ffffff';
+        ctx.fill();
+      }
     };
 
     const onMove = (e: PointerEvent) => {
-      targetWind = (e.clientX / w - 0.5) * 0.9;
+      targetWind = (e.clientX / window.innerWidth - 0.5) * 0.9;
     };
 
     const draw = (time: number) => {
       wind += (targetWind - wind) * 0.02;
-      ctx.clearRect(0, 0, w, h);
       for (const f of flakes) {
         f.y += 0.12 + f.z * 0.55;
         f.x += Math.sin(time * 0.0004 * f.sway + f.phase) * 0.18 + wind * (0.3 + f.z);
         if (f.y - f.r > h) Object.assign(f, make(-f.r * 2));
         if (f.x < -10) f.x = w + 10;
         if (f.x > w + 10) f.x = -10;
-        paint(f, 0.45 + f.z * 0.5);
       }
+      paintAll();
       raf = requestAnimationFrame(draw);
     };
 
-    const onVisibility = () => {
+    const start = () => {
       cancelAnimationFrame(raf);
-      if (!document.hidden && !reduce) raf = requestAnimationFrame(draw);
+      if (visible && !document.hidden && !reduce) raf = requestAnimationFrame(draw);
     };
 
+    const io = new IntersectionObserver(([e]) => {
+      visible = e.isIntersecting;
+      start();
+    });
+    const ro = new ResizeObserver(resize);
     resize();
-    if (reduce) flakes.forEach((f) => paint(f, 0.45 + f.z * 0.4));
-    else raf = requestAnimationFrame(draw);
-    window.addEventListener('resize', resize);
+    io.observe(host);
+    ro.observe(host);
     window.addEventListener('pointermove', onMove);
-    document.addEventListener('visibilitychange', onVisibility);
+    document.addEventListener('visibilitychange', start);
     return () => {
       cancelAnimationFrame(raf);
-      window.removeEventListener('resize', resize);
+      io.disconnect();
+      ro.disconnect();
       window.removeEventListener('pointermove', onMove);
-      document.removeEventListener('visibilitychange', onVisibility);
+      document.removeEventListener('visibilitychange', start);
     };
   }, []);
 
-  return <canvas ref={ref} aria-hidden className="pointer-events-none fixed inset-0 z-0" />;
+  return <canvas ref={ref} aria-hidden className="pointer-events-none absolute inset-0" />;
 }
 
 /* ───────────────────────── intro ───────────────────────── */
@@ -384,9 +379,163 @@ function Intro({ onDone }: { onDone: () => void }) {
     return () => clearTimeout(id);
   }, [onDone]);
   return (
-    <motion.div className="fixed inset-0 z-[90] flex items-center justify-center" style={{ background: BG, color: INK }} exit={{ clipPath: 'inset(0 0 100% 0)' }} transition={{ duration: 1, ease: EASE }}>
-      <Mark assemble className="w-14 md:w-16" />
+    <motion.div className="fixed inset-0 z-[90] flex flex-col items-center justify-center gap-5" style={{ background: BG, color: INK }} exit={{ clipPath: 'inset(0 0 100% 0)' }} transition={{ duration: 1, ease: EASE }}>
+      <Mark assemble className="w-12 md:w-14" />
+      <motion.span initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.6, duration: 0.6 }} className="text-[18px] uppercase leading-none" style={WORDMARK}>
+        Soutrame
+      </motion.span>
     </motion.div>
+  );
+}
+
+/* ───────────────────────── chrome: breadcrumb, text logo, menu, bag ───────────────────────── */
+
+function Drawer({ open, onClose, side, label, children }: { open: boolean; onClose: () => void; side: 'left' | 'right'; label: string; children: React.ReactNode }) {
+  const t = useT();
+  useEffect(() => {
+    if (!open) return;
+    const onKey = (e: KeyboardEvent) => e.key === 'Escape' && onClose();
+    window.addEventListener('keydown', onKey);
+    return () => window.removeEventListener('keydown', onKey);
+  }, [open, onClose]);
+  return (
+    <AnimatePresence>
+      {open && (
+        <>
+          <motion.div className="fixed inset-0 z-[80] bg-black/20" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} onClick={onClose} />
+          <motion.aside
+            role="dialog"
+            aria-label={label}
+            className={`fixed inset-y-0 z-[81] flex w-full flex-col bg-white p-5 sm:w-[420px] ${side === 'left' ? 'left-0' : 'right-0'}`}
+            initial={{ x: side === 'left' ? '-100%' : '100%' }}
+            animate={{ x: 0 }}
+            exit={{ x: side === 'left' ? '-100%' : '100%' }}
+            transition={{ duration: 0.7, ease: EASE }}
+          >
+            <div className={`${TXT} flex items-center justify-between`}>
+              <span>{label}</span>
+              <button onClick={onClose} className="text-black/50 transition hover:text-black">
+                {t('Fermer', 'Close')}
+              </button>
+            </div>
+            {children}
+          </motion.aside>
+        </>
+      )}
+    </AnimatePresence>
+  );
+}
+
+function Chrome({ filter, setFilter, count }: { filter: Category | 'all'; setFilter: (f: Category | 'all') => void; count: number }) {
+  const t = useT();
+  const { lang, setLang } = useLang();
+  const [menu, setMenu] = useState(false);
+  const [bag, setBag] = useState(false);
+  const [filters, setFilters] = useState(false);
+  const closeMenu = useCallback(() => setMenu(false), []);
+  const closeBag = useCallback(() => setBag(false), []);
+  const go = (id: string) => {
+    setMenu(false);
+    setTimeout(() => document.getElementById(id)?.scrollIntoView({ behavior: 'smooth' }), 350);
+  };
+  const current = FILTERS.find((f) => f.id === filter)!;
+
+  return (
+    <>
+      {/* top-left: breadcrumb, count, filter */}
+      <div className={`${TXT} fixed left-0 top-0 z-40 flex items-start gap-3 px-2 py-1.5 mix-blend-difference text-white md:px-3`}>
+        <a href="#shop" className="hover:underline">
+          Shop → {lang === 'fr' ? current.fr : current.en}
+        </a>
+        <span className="tabular-nums opacity-60">{count}</span>
+        <div className="relative">
+          <button onClick={() => setFilters((v) => !v)} className="hover:underline" aria-expanded={filters}>
+            {t('Filtrer', 'Filter')}
+          </button>
+          <AnimatePresence>
+            {filters && (
+              <motion.ul initial={{ opacity: 0, y: -4 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -4 }} transition={{ duration: 0.3 }} className="absolute left-0 top-6 flex flex-col gap-1">
+                {FILTERS.map((f) => (
+                  <li key={f.id}>
+                    <button
+                      onClick={() => {
+                        setFilter(f.id);
+                        setFilters(false);
+                        document.getElementById('shop')?.scrollIntoView({ behavior: 'smooth' });
+                      }}
+                      className={`whitespace-nowrap ${filter === f.id ? 'underline' : 'opacity-60 hover:opacity-100'}`}
+                    >
+                      {lang === 'fr' ? f.fr : f.en}
+                    </button>
+                  </li>
+                ))}
+              </motion.ul>
+            )}
+          </AnimatePresence>
+        </div>
+      </div>
+
+      {/* top-right: language */}
+      <button onClick={() => setLang(lang === 'fr' ? 'en' : 'fr')} className={`${TXT} fixed right-0 top-0 z-40 px-2 py-1.5 text-white mix-blend-difference hover:underline md:px-3`} aria-label={t('Switch to English', 'Passer en français')}>
+        {lang === 'fr' ? 'EN' : 'FR'}
+      </button>
+
+      {/* bottom-left: the text logo */}
+      <a href="#" className="fixed bottom-0 left-0 z-40 px-2 pb-1 text-white mix-blend-difference md:px-3" aria-label="SOUTRAME — haut de page">
+        <span className="block text-[22px] uppercase leading-none md:text-[26px]" style={WORDMARK}>
+          Soutrame
+        </span>
+      </a>
+
+      {/* bottom-right: menu, bag */}
+      <div className={`${TXT} fixed bottom-0 right-0 z-40 flex gap-4 px-2 pb-1.5 text-white mix-blend-difference md:px-3`}>
+        <button onClick={() => setMenu(true)} className="hover:underline">
+          Menu
+        </button>
+        <button onClick={() => setBag(true)} className="hover:underline">
+          {t('Panier', 'Bag')} (0)
+        </button>
+      </div>
+
+      <Drawer open={menu} onClose={closeMenu} side="left" label="Menu">
+        <nav className="mt-16 flex flex-col gap-1">
+          {[
+            ['shop', 'Shop', 'Shop'],
+            ['lookbook', 'Lookbook', 'Lookbook'],
+            ['cycle', 'Cycle', 'Cycle'],
+            ['info', 'Informations', 'Information'],
+          ].map(([id, fr, en]) => (
+            <button key={id} onClick={() => go(id)} className="text-left text-[34px] leading-[1.05] transition hover:opacity-50" style={DISPLAY}>
+              {lang === 'fr' ? fr : en}
+            </button>
+          ))}
+        </nav>
+        <div className={`${TXT} mt-auto flex flex-col gap-1 text-black/55`}>
+          <a href={DROP.instagram} target="_blank" rel="noopener noreferrer" className="hover:text-black">
+            Instagram ↗
+          </a>
+          <Link href="/" className="hover:text-black">
+            {t('Designé par Emmanuel Ijjou', 'Designed by Emmanuel Ijjou')}
+          </Link>
+        </div>
+      </Drawer>
+
+      <Drawer open={bag} onClose={closeBag} side="right" label={t('Panier', 'Bag')}>
+        <div className="flex flex-1 flex-col items-start justify-center gap-4">
+          <p className="text-[22px] leading-tight" style={DISPLAY}>
+            {t('Ton panier est vide.', 'Your bag is empty.')}
+          </p>
+          <p className={`${TXT} max-w-[300px] text-black/55`}>
+            {t('Les précommandes du Cycle 01 ouvrent bientôt. Le drop sera annoncé sur Instagram.', 'Pre-orders for Cycle 01 open soon. The drop will be announced on Instagram.')}
+          </p>
+          <div className="mt-2 w-full">
+            <Btn href={DROP.instagram} external full>
+              {t('Être prévenu', 'Get notified')}
+            </Btn>
+          </div>
+        </div>
+      </Drawer>
+    </>
   );
 }
 
@@ -415,21 +564,21 @@ function Campaign({ ready }: { ready: boolean }) {
 
   const ref = useRef<HTMLElement>(null);
   const { scrollYProgress } = useScroll({ target: ref, offset: ['start start', 'end start'] });
-  const y = useTransform(scrollYProgress, [0, 1], ['0%', '8%']);
+  const y = useTransform(scrollYProgress, [0, 1], ['0%', '10%']);
 
   return (
-    <section ref={ref} className="relative z-[1] h-[88svh] min-h-[560px] overflow-hidden md:h-[100svh]" onMouseEnter={() => setPaused(true)} onMouseLeave={() => setPaused(false)}>
-      <motion.div style={{ y }} className="absolute inset-0 grid grid-cols-1 md:grid-cols-3">
+    <section ref={ref} className="relative z-[1] h-[100svh] min-h-[560px] overflow-hidden" onMouseEnter={() => setPaused(true)} onMouseLeave={() => setPaused(false)}>
+      <motion.div style={{ y }} className="absolute inset-0 grid grid-cols-1 gap-1 md:grid-cols-3">
         {PANELS.map((set, k) => {
           // panel k moves on every third tick, offset by k
           const step = Math.floor((tick + (2 - k)) / 3);
           const cur = set[step % set.length];
           const prev = set[(step - 1 + set.length) % set.length];
           return (
-            <div key={k} className={`relative h-full overflow-hidden ${k > 0 ? 'hidden md:block' : ''}`}>
+            <div key={k} className={`relative h-full overflow-hidden ${k > 0 ? 'hidden md:block' : ''}`} style={{ background: PHOTO }}>
               {step > 0 && <Image src={prev} alt="" fill sizes="(min-width:768px) 34vw, 100vw" className="object-cover" />}
               {ready ? (
-                <Weave key={cur} src={cur} alt={`Chimera School — Cycle 01`} priority={step === 0} sizes="(min-width:768px) 34vw, 100vw" delay={step === 0 ? k * 0.15 : 0} />
+                <Weave key={cur} src={cur} alt="Chimera School — Cycle 01" priority={step === 0} sizes="(min-width:768px) 34vw, 100vw" delay={step === 0 ? k * 0.15 : 0} />
               ) : (
                 <Image src={cur} alt="Chimera School" fill priority sizes="(min-width:768px) 34vw, 100vw" className="object-cover" />
               )}
@@ -438,21 +587,21 @@ function Campaign({ ready }: { ready: boolean }) {
         })}
       </motion.div>
 
-      <motion.div
-        initial={{ opacity: 0 }}
-        animate={{ opacity: ready ? 1 : 0 }}
-        transition={{ duration: 1, delay: 0.8 }}
-        className="absolute inset-x-0 bottom-0 flex flex-col items-start gap-5 px-5 pb-6 md:flex-row md:items-end md:justify-between md:gap-6 md:px-8 md:pb-8"
-      >
-        <div>
-          <p className={`${LABEL} text-black/55`}>{t('Cycle 01 — première collection', 'Cycle 01 — first collection')}</p>
-          <h1 className="mt-2 text-[34px] uppercase leading-[0.92] md:text-[min(4vw,58px)]" style={DISPLAY}>
-            Chimera School
-          </h1>
-        </div>
-        <a href="#shop" className={`${LABEL} shrink-0 border-b border-black/40 pb-1 transition hover:border-black`}>
-          {t('Voir la collection', 'Shop the collection')}
-        </a>
+      {/* labels, mid-height, like a campaign page */}
+      <motion.div initial={{ opacity: 0 }} animate={{ opacity: ready ? 1 : 0 }} transition={{ duration: 1, delay: 0.8 }} className="pointer-events-none absolute inset-x-0 top-1/2 flex -translate-y-1/2 items-start justify-between px-2 text-[14px] font-semibold leading-[1.15] md:px-3 md:text-[15px]">
+        <h1>
+          Cycle 01
+          <br />
+          Chimera School
+        </h1>
+        <nav className="pointer-events-auto text-right">
+          <a href="#lookbook" className="block hover:underline">
+            {t('Collection', 'Collection')}
+          </a>
+          <a href="#shop" className="block hover:underline">
+            Shop
+          </a>
+        </nav>
       </motion.div>
     </section>
   );
@@ -467,102 +616,124 @@ function IntroFilm() {
   );
 }
 
-/* ───────────────────────── shop ───────────────────────── */
+/* ───────────────────────── shop ─────────────────────────
+ * One piece per row: its photographs side by side, scrolled sideways, then a thin caption.
+ */
 
-function ProductCard({ p, onOpen, priority = false }: { p: Piece; onOpen: (p: Piece) => void; priority?: boolean }) {
+function ProductRow({ p, index, onOpen }: { p: Piece; index: number; onOpen: (p: Piece) => void }) {
   const t = useT();
   const { lang } = useLang();
-  const sizes = '(min-width:768px) 25vw, 50vw';
+  const track = useRef<HTMLDivElement>(null);
+  const [at, setAt] = useState(0);
+  const [progress, setProgress] = useState(0);
+
+  useEffect(() => {
+    const el = track.current;
+    if (!el) return;
+    const onScroll = () => {
+      const max = el.scrollWidth - el.clientWidth;
+      setProgress(max > 0 ? el.scrollLeft / max : 0);
+      const first = el.firstElementChild as HTMLElement | null;
+      const step = first ? first.offsetWidth + 4 : 1;
+      setAt(Math.min(p.gallery.length - 1, Math.round(el.scrollLeft / step)));
+    };
+    el.addEventListener('scroll', onScroll, { passive: true });
+    return () => el.removeEventListener('scroll', onScroll);
+  }, [p.gallery.length]);
+
+  const goTo = (i: number) => {
+    const el = track.current;
+    const child = el?.children[i] as HTMLElement | undefined;
+    if (el && child) el.scrollTo({ left: child.offsetLeft - el.offsetLeft, behavior: 'smooth' });
+  };
+
   return (
-    <article
-      className="group cursor-pointer"
-      onClick={() => onOpen(p)}
-      role="button"
-      tabIndex={0}
-      onKeyDown={(e) => (e.key === 'Enter' || e.key === ' ') && onOpen(p)}
-      aria-label={`${p.name} — ${t('voir la pièce', 'view piece')}`}
-    >
-      <div className="relative aspect-[4/5] overflow-hidden">
-        <Image src={p.image} alt={p.name} fill priority={priority} sizes={sizes} className="object-cover" />
-        <HoverWeave src={p.hover} sizes={sizes} />
-        <span className={`${LABEL} absolute left-3 top-3 text-black/55`}>{t('Précommande', 'Pre-order')}</span>
+    <article className="relative">
+      <div ref={track} className="flex snap-x snap-mandatory gap-1 overflow-x-auto [scrollbar-width:none] [&::-webkit-scrollbar]:hidden" data-lenis-prevent-wheel>
+        {p.gallery.map((g, i) => (
+          <button
+            key={g}
+            onClick={() => onOpen(p)}
+            aria-label={`${p.name} — ${t('voir la pièce', 'view piece')}`}
+            className="relative aspect-[4/5] h-auto w-[86vw] shrink-0 snap-start overflow-hidden md:h-[82svh] md:w-auto"
+            style={{ background: PHOTO }}
+          >
+            {i === 0 ? (
+              <Weave src={g} alt={p.name} inView priority={index === 0} sizes="(min-width:768px) 66svh, 86vw" />
+            ) : (
+              <Image src={g} alt={`${p.name} — ${i + 1}`} fill sizes="(min-width:768px) 66svh, 86vw" className="object-cover transition-transform duration-[1.4s] ease-[cubic-bezier(.22,1,.36,1)] hover:scale-[1.02]" />
+            )}
+          </button>
+        ))}
       </div>
-      <div className="mt-3 flex items-start justify-between gap-3">
+
+      {/* progress rule, like a scrollbar drawn in ink */}
+      <div className="relative h-[3px] w-full bg-black/10">
+        <div className="absolute inset-y-0 left-0 bg-[#0a0a0a] transition-[width] duration-200" style={{ width: `${Math.max(12, progress * 100)}%` }} />
+      </div>
+
+      <div className={`${TXT} grid grid-cols-2 gap-x-4 px-2 pb-1 pt-1.5 md:grid-cols-4 md:px-3`}>
         <div>
-          <h3 className={`${LABEL} text-[#121212]`}>{p.name}</h3>
-          <p className={`${LABEL} mt-1 text-black/45`}>{p.colour[lang]}</p>
+          <button onClick={() => onOpen(p)} className="text-left hover:underline">
+            {p.name}
+          </button>
+          <p className="text-black/50">{priceOf(p) ?? t('Prix à venir', 'Price soon')}</p>
         </div>
-        <span className={`${LABEL} shrink-0 text-black/60`}>{priceOf(p) ?? t('Prix à venir', 'Price soon')}</span>
+        <div className="hidden md:block">
+          <p className="text-black/50">{p.colour[lang]}</p>
+        </div>
+        <div className="text-right md:text-left">
+          <div className="flex justify-end gap-2 tabular-nums md:justify-start">
+            {p.gallery.map((_, i) => (
+              <button key={i} onClick={() => goTo(i)} className={i === at ? 'text-black' : 'text-black/30 hover:text-black/70'} aria-label={`${t('Image', 'Image')} ${i + 1}`}>
+                {i}
+              </button>
+            ))}
+          </div>
+        </div>
+        <div className="col-span-2 mt-1 md:col-span-1 md:mt-0 md:text-right">
+          <button onClick={() => onOpen(p)} className="hover:underline">
+            {t('Voir la pièce', 'View piece')} →
+          </button>
+        </div>
       </div>
     </article>
   );
 }
 
-function Shop({ onOpen }: { onOpen: (p: Piece) => void }) {
-  const t = useT();
-  const { lang } = useLang();
-  const [filter, setFilter] = useState<Category | 'all'>('all');
+function Shop({ filter, onOpen }: { filter: Category | 'all'; onOpen: (p: Piece) => void }) {
   const shown = PIECES.filter((p) => filter === 'all' || p.category === filter);
-
   return (
-    <section id="shop" className="relative z-[1] scroll-mt-14 px-5 pb-24 pt-16 md:px-8 md:pb-36 md:pt-20">
-      <div className="flex flex-wrap items-baseline justify-between gap-x-10 gap-y-4 border-b border-black/10 pb-4">
-        <h2 className={`${LABEL} text-[#121212]`}>Shop — Cycle 01</h2>
-        <nav className="flex flex-wrap gap-x-5 gap-y-2" aria-label={t('Filtrer', 'Filter')}>
-          {FILTERS.map((f) => (
-            <button key={f.id} onClick={() => setFilter(f.id)} className={`${LABEL} transition ${filter === f.id ? 'text-[#121212] underline underline-offset-4' : 'text-black/45 hover:text-black'}`}>
-              {lang === 'fr' ? f.fr : f.en}
-            </button>
-          ))}
-        </nav>
-        <span className={`${LABEL} text-black/45`}>
-          {shown.length} {t(shown.length > 1 ? 'pièces' : 'pièce', shown.length > 1 ? 'pieces' : 'piece')}
-        </span>
-      </div>
-
-      <motion.div layout className="mt-6 grid grid-cols-2 gap-x-3 gap-y-10 md:grid-cols-4 md:gap-x-4">
-        <AnimatePresence mode="popLayout">
-          {shown.map((p, i) => (
-            <motion.div key={p.id} layout initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} transition={{ duration: 0.5, ease: EASE }}>
-              <ProductCard p={p} onOpen={onOpen} priority={i < 2} />
-            </motion.div>
-          ))}
-          {filter === 'all' && (
-            <motion.figure key="editorial" layout initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="relative col-span-2 md:col-span-1">
-              <div className="relative aspect-[4/5] overflow-hidden">
-                <Image src={img('look-seated')} alt="Chimera School — Cycle 01" fill sizes="(min-width:768px) 25vw, 100vw" className="object-cover" />
-              </div>
-              <figcaption className={`${LABEL} mt-3 text-black/45`}>
-                <a href="#lookbook" className="transition hover:text-black">
-                  {t('Voir le lookbook', 'See the lookbook')} →
-                </a>
-              </figcaption>
-            </motion.figure>
-          )}
-        </AnimatePresence>
-      </motion.div>
+    <section id="shop" className="relative z-[1] scroll-mt-0 pb-24 pt-1 md:pb-32">
+      <AnimatePresence mode="popLayout">
+        {shown.map((p, i) => (
+          <motion.div key={p.id} layout initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} transition={{ duration: 0.6, ease: EASE }} className="mb-16 md:mb-24">
+            <ProductRow p={p} index={i} onOpen={onOpen} />
+          </motion.div>
+        ))}
+      </AnimatePresence>
     </section>
   );
 }
 
 /* ───────────────────────── product sheet ─────────────────────────
  * A full product page in an overlay: the images stacked on the left, the buying
- * information pinned on the right, like a shop's product page.
+ * information pinned on the right.
  */
 
 function Accordion({ title, children, defaultOpen = false }: { title: string; children: React.ReactNode; defaultOpen?: boolean }) {
   const [open, setOpen] = useState(defaultOpen);
   return (
-    <div className="border-t border-black/10">
-      <button onClick={() => setOpen((o) => !o)} className={`${LABEL} flex w-full items-center justify-between py-4 text-left text-[#121212]`}>
+    <div className="border-t border-black/15">
+      <button onClick={() => setOpen((o) => !o)} className={`${TXT} flex w-full items-center justify-between py-3 text-left`}>
         {title}
-        <motion.span animate={{ rotate: open ? 45 : 0 }} transition={{ duration: 0.4, ease: EASE }} className="text-[16px] font-light leading-none text-black/50">
+        <motion.span animate={{ rotate: open ? 45 : 0 }} transition={{ duration: 0.4, ease: EASE }} className="text-[15px] font-light leading-none">
           +
         </motion.span>
       </button>
       <div className={`grid transition-[grid-template-rows] duration-700 ease-[cubic-bezier(.22,1,.36,1)] ${open ? 'grid-rows-[1fr]' : 'grid-rows-[0fr]'}`}>
         <div className="overflow-hidden">
-          <div className="pb-5 text-[13px] leading-relaxed text-black/60">{children}</div>
+          <div className={`${TXT} pb-4 text-black/60`}>{children}</div>
         </div>
       </div>
     </div>
@@ -612,26 +783,25 @@ function ProductSheet({ piece, onClose, onOpen }: { piece: Piece | null; onClose
           transition={{ duration: 0.9, ease: EASE }}
           data-lenis-prevent
         >
-          <div className="sticky top-0 z-10 flex items-center justify-between px-5 py-4 md:px-8" style={{ background: `${BG}d9`, backdropFilter: 'blur(14px)' }}>
-            <button onClick={onClose} className={`${LABEL} text-black/60 transition hover:text-black`}>
-              ← {t('Retour au shop', 'Back to shop')}
+          <div className={`${TXT} sticky top-0 z-10 flex items-center justify-between bg-white/85 px-2 py-1.5 backdrop-blur-md md:px-3`}>
+            <button onClick={onClose} className="hover:underline">
+              Shop → {piece.name}
             </button>
-            <Mark className="w-6" />
-            <button onClick={onClose} className={`${LABEL} text-black/60 transition hover:text-black`} aria-label={t('Fermer', 'Close')}>
-              {t('Fermer', 'Close')} ✕
+            <button onClick={onClose} className="hover:underline" aria-label={t('Fermer', 'Close')}>
+              {t('Fermer', 'Close')}
             </button>
           </div>
 
-          <div key={piece.id} className="grid grid-cols-1 gap-x-8 px-5 pb-20 md:grid-cols-12 md:px-8">
-            {/* images: first one woven in, the rest stacked two by two */}
-            <div className="md:col-span-7">
-              <div className="-mx-5 flex snap-x snap-mandatory gap-2 overflow-x-auto px-5 [scrollbar-width:none] md:mx-0 md:grid md:grid-cols-2 md:gap-2 md:overflow-visible md:px-0">
+          <div key={piece.id} className="grid grid-cols-1 md:grid-cols-12">
+            {/* images: first one woven in, the rest two by two */}
+            <div className="md:col-span-8">
+              <div className="flex snap-x snap-mandatory gap-1 overflow-x-auto [scrollbar-width:none] md:grid md:grid-cols-2 md:overflow-visible">
                 {piece.gallery.map((g, i) => (
-                  <div key={g} className={`relative aspect-[4/5] w-[85vw] shrink-0 snap-center overflow-hidden md:w-auto ${i === 0 ? 'md:col-span-2' : ''}`}>
+                  <div key={g} className={`relative aspect-[4/5] w-[86vw] shrink-0 snap-start overflow-hidden md:w-auto ${i === 0 ? 'md:col-span-2' : ''}`} style={{ background: PHOTO }}>
                     {i === 0 ? (
-                      <Weave src={g} alt={`${piece.name} — 1`} strips={12} priority sizes="(min-width:768px) 58vw, 85vw" delay={0.35} />
+                      <Weave src={g} alt={`${piece.name} — 1`} strips={12} priority sizes="(min-width:768px) 66vw, 86vw" delay={0.35} />
                     ) : (
-                      <Image src={g} alt={`${piece.name} — ${i + 1}`} fill sizes="(min-width:768px) 29vw, 85vw" className="object-cover" />
+                      <Image src={g} alt={`${piece.name} — ${i + 1}`} fill sizes="(min-width:768px) 33vw, 86vw" className="object-cover" />
                     )}
                   </div>
                 ))}
@@ -639,30 +809,29 @@ function ProductSheet({ piece, onClose, onOpen }: { piece: Piece | null; onClose
             </div>
 
             {/* buying information, pinned while the images scroll */}
-            <div className="md:col-span-4 md:col-start-9">
-              <div className="pt-8 md:sticky md:top-[72px] md:pt-10">
-                <p className={`${LABEL} text-black/45`}>Cycle 01 — Chimera School</p>
-                <h3 className="mt-4 text-[26px] uppercase leading-[1] md:text-[30px]" style={DISPLAY}>
+            <div className="px-2 md:col-span-4 md:px-6">
+              <div className="pb-16 pt-6 md:sticky md:top-10 md:pt-4">
+                <h3 className="text-[22px] leading-[1.05] md:text-[26px]" style={DISPLAY}>
                   {piece.name}
                 </h3>
-                <div className={`${LABEL} mt-4 flex justify-between text-black/60`}>
+                <div className={`${TXT} mt-2 flex justify-between text-black/55`}>
                   <span>{piece.colour[lang]}</span>
                   <span>{priceOf(piece) ?? t('Prix annoncé bientôt', 'Price announced soon')}</span>
                 </div>
 
                 <div className="mt-8">
-                  <div className={`${LABEL} flex items-center justify-between`}>
+                  <div className={`${TXT} flex items-center justify-between`}>
                     <span>{t('Taille', 'Size')}</span>
                     {!sizesLive && <span className="text-black/40">{t('Ouverture prochaine', 'Opening soon')}</span>}
                   </div>
-                  <div className="mt-3 grid grid-cols-4 gap-1.5">
+                  <div className="mt-2 grid grid-cols-4 gap-1">
                     {sizes.map((s) => (
                       <button
                         key={s}
                         disabled={!sizesLive}
                         onClick={() => setSize(s)}
-                        className={`h-11 border text-[12px] transition duration-300 ${
-                          size === s ? 'border-[#121212] bg-[#121212] text-[#e2e1de]' : sizesLive ? 'border-black/20 hover:border-black/60' : 'cursor-not-allowed border-black/10 text-black/30'
+                        className={`h-10 border text-[12px] transition duration-300 ${
+                          size === s ? 'border-[#0a0a0a] bg-[#0a0a0a] text-white' : sizesLive ? 'border-black/20 hover:border-black/60' : 'cursor-not-allowed border-black/10 text-black/30'
                         }`}
                       >
                         {s}
@@ -671,16 +840,16 @@ function ProductSheet({ piece, onClose, onOpen }: { piece: Piece | null; onClose
                   </div>
                 </div>
 
-                <div className="mt-4">
+                <div className="mt-3">
                   <BuyButton full price={priceOf(piece)} />
                 </div>
-                <p className="mt-3 text-[12px] leading-relaxed text-black/45">
+                <p className={`${TXT} mt-2 text-black/45`}>
                   {t('Petite série, produite à la commande. Annonce du drop sur Instagram.', 'Small run, made to order. The drop is announced on Instagram.')}
                 </p>
 
                 <div className="mt-8">
                   <Accordion title={t('Description', 'Description')} defaultOpen>
-                    <ul className="space-y-1.5">
+                    <ul className="space-y-1">
                       {(lang === 'fr' ? piece.details.fr : piece.details.en).map((d) => (
                         <li key={d}>{d}</li>
                       ))}
@@ -698,67 +867,30 @@ function ProductSheet({ piece, onClose, onOpen }: { piece: Piece | null; onClose
                       'Pieces made in a small run. Production and shipping times will be shared when pre-orders open.'
                     )}
                   </Accordion>
-                  <div className="border-t border-black/10" />
+                  <div className="border-t border-black/15" />
                 </div>
               </div>
             </div>
           </div>
 
           {/* complete the look */}
-          <div className="border-t border-black/10 px-5 pb-16 pt-8 md:px-8">
-            <p className={`${LABEL} text-[#121212]`}>{t('Compléter la silhouette', 'Complete the look')}</p>
-            <div className="mt-5 grid grid-cols-2 gap-x-3 md:grid-cols-4 md:gap-x-4">
+          <div className="px-2 pb-16 pt-10 md:px-3">
+            <p className={`${TXT} mb-2`}>{t('Compléter la silhouette', 'Complete the look')}</p>
+            <div className="grid grid-cols-2 gap-1 md:grid-cols-4">
               {others.map((p) => (
-                <ProductCard key={p.id} p={p} onOpen={onOpen} />
+                <button key={p.id} onClick={() => onOpen(p)} className="group text-left">
+                  <div className="relative aspect-[4/5] overflow-hidden" style={{ background: PHOTO }}>
+                    <Image src={p.image} alt={p.name} fill sizes="(min-width:768px) 25vw, 50vw" className="object-cover transition-transform duration-[1.4s] ease-[cubic-bezier(.22,1,.36,1)] group-hover:scale-[1.03]" />
+                  </div>
+                  <p className={`${TXT} mt-1.5`}>{p.name}</p>
+                  <p className={`${TXT} text-black/50`}>{priceOf(p) ?? t('Prix à venir', 'Price soon')}</p>
+                </button>
               ))}
             </div>
           </div>
         </motion.div>
       )}
     </AnimatePresence>
-  );
-}
-
-/* ───────────────────────── cycle interlude ───────────────────────── */
-
-/** "SOUTRAME — CYCLE": the two words drift toward each other as you scroll, in the snow. */
-function CycleInterlude() {
-  const t = useT();
-  const ref = useRef<HTMLElement>(null);
-  const { scrollYProgress } = useScroll({ target: ref, offset: ['start end', 'end start'] });
-  const xLeft = useTransform(scrollYProgress, [0, 0.5, 1], ['-14vw', '0vw', '4vw']);
-  const xRight = useTransform(scrollYProgress, [0, 0.5, 1], ['14vw', '0vw', '-4vw']);
-  const line = useTransform(scrollYProgress, [0.2, 0.5], [0, 1]);
-  // the words only drift on wide screens; on mobile they are stacked
-  const [wide, setWide] = useState(false);
-  useEffect(() => {
-    const mq = window.matchMedia('(min-width: 768px)');
-    const update = () => setWide(mq.matches);
-    update();
-    mq.addEventListener('change', update);
-    return () => mq.removeEventListener('change', update);
-  }, []);
-
-  return (
-    <section id="cycle" ref={ref} className="relative z-[1] overflow-hidden">
-      <div className="relative flex min-h-[80svh] flex-col items-center justify-center px-5 py-28 md:px-8">
-        <div className="flex w-full flex-col items-center gap-2 md:flex-row md:justify-center md:gap-[4vw]">
-          <motion.p style={{ x: wide ? xLeft : 0, ...DISPLAY }} className="whitespace-nowrap text-[12vw] uppercase leading-none md:text-[5.2vw]">
-            Soutrame
-          </motion.p>
-          <motion.span style={{ scaleX: line }} aria-hidden className="hidden h-px w-[6vw] origin-center bg-black/40 md:block" />
-          <motion.p style={{ x: wide ? xRight : 0, ...DISPLAY }} className="whitespace-nowrap text-[12vw] uppercase leading-none md:text-[5.2vw]">
-            Cycle
-          </motion.p>
-        </div>
-        <Reveal className="mt-14 text-center">
-          <p className={`${LABEL} text-black/50`}>{t('Annonce de la première collection', 'Announcing the first collection')}</p>
-          <p className="mt-3 text-[20px] uppercase leading-none md:text-[24px]" style={DISPLAY}>
-            Cycle 01
-          </p>
-        </Reveal>
-      </div>
-    </section>
   );
 }
 
@@ -771,53 +903,75 @@ function Lookbook() {
   const shot = LOOKBOOK[active];
 
   return (
-    <section id="lookbook" className="relative z-[1] scroll-mt-14 px-5 pb-28 pt-10 md:px-8 md:pb-36">
-      <div className="flex items-baseline justify-between border-b border-black/10 pb-4">
-        <h2 className={`${LABEL} text-[#121212]`}>Lookbook — Cycle 01</h2>
-        <span className={`${LABEL} text-black/45`}>
-          {String(active + 1).padStart(2, '0')} / {String(LOOKBOOK.length).padStart(2, '0')}
-        </span>
-      </div>
-
-      <div className="mt-8 grid grid-cols-1 gap-y-6 md:grid-cols-12 md:gap-x-8">
-        <div className="relative md:col-span-4 md:col-start-5">
-          <button onClick={() => setActive((a) => (a + 1) % LOOKBOOK.length)} aria-label={t('Image suivante', 'Next image')} className="relative block aspect-[4/5] w-full cursor-e-resize overflow-hidden">
-            <Image src={LOOKBOOK[(active - 1 + LOOKBOOK.length) % LOOKBOOK.length].src} alt="" fill sizes="(min-width:768px) 34vw, 100vw" className="object-cover" />
-            <Weave key={shot.src} src={shot.src} alt={`Chimera School — ${shot.label[lang]}`} strips={10} sizes="(min-width:768px) 34vw, 100vw" />
+    <section id="lookbook" className="relative z-[1] pb-28 pt-8 md:pb-36">
+      <p className={`${TXT} px-2 pb-2 md:px-3`}>
+        Lookbook → Cycle 01 <span className="ml-2 tabular-nums text-black/45">{String(active + 1).padStart(2, '0')} / {String(LOOKBOOK.length).padStart(2, '0')}</span>
+      </p>
+      <div className="grid grid-cols-1 gap-1 md:grid-cols-12">
+        <div className="relative md:col-span-6">
+          <button onClick={() => setActive((a) => (a + 1) % LOOKBOOK.length)} aria-label={t('Image suivante', 'Next image')} className="relative block aspect-[4/5] w-full cursor-e-resize overflow-hidden" style={{ background: PHOTO }}>
+            <Image src={LOOKBOOK[(active - 1 + LOOKBOOK.length) % LOOKBOOK.length].src} alt="" fill sizes="(min-width:768px) 50vw, 100vw" className="object-cover" />
+            <Weave key={shot.src} src={shot.src} alt={`Chimera School — ${shot.label[lang]}`} strips={10} sizes="(min-width:768px) 50vw, 100vw" />
           </button>
-          <AnimatePresence mode="wait">
-            <motion.p key={shot.src} className={`${LABEL} mt-3 text-black/55`} initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} transition={{ duration: 0.4 }}>
-              {shot.label[lang]}
-            </motion.p>
-          </AnimatePresence>
         </div>
-
-        <div className="flex gap-2 overflow-x-auto pb-1 md:col-span-12 md:mt-4 md:justify-center md:gap-2.5 [scrollbar-width:none]">
+        <div className="grid grid-cols-5 content-start gap-1 md:col-span-6">
           {LOOKBOOK.map((s, i) => (
             <button
               key={s.src}
               onClick={() => setActive(i)}
               onMouseEnter={() => setActive(i)}
               aria-label={s.label[lang]}
-              className={`relative aspect-[4/5] w-14 shrink-0 overflow-hidden transition duration-500 md:w-[72px] ${i === active ? 'opacity-100' : 'opacity-40 hover:opacity-80'}`}
+              className={`relative aspect-[4/5] overflow-hidden transition-opacity duration-500 ${i === active ? 'opacity-100' : 'opacity-50 hover:opacity-90'}`}
+              style={{ background: PHOTO }}
             >
-              <Image src={s.src} alt="" fill sizes="80px" className="object-cover" />
-              {i === active && <motion.span layoutId="lb-thumb" className="absolute inset-x-0 bottom-0 h-0.5 bg-[#121212]" />}
+              <Image src={s.src} alt="" fill sizes="10vw" className="object-cover" />
             </button>
           ))}
+          <AnimatePresence mode="wait">
+            <motion.p key={shot.src} className={`${TXT} col-span-5 px-2 pt-1 text-black/55 md:px-1`} initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} transition={{ duration: 0.4 }}>
+              {shot.label[lang]}
+            </motion.p>
+          </AnimatePresence>
         </div>
       </div>
     </section>
   );
 }
 
-/* ───────────────────────── manifesto ───────────────────────── */
+/* ───────────────────────── the universe: one black chapter ───────────────────────── */
 
-function Manifesto() {
+function Universe() {
   const t = useT();
+  const ref = useRef<HTMLElement>(null);
+  const { scrollYProgress } = useScroll({ target: ref, offset: ['start end', 'end start'] });
+  const xLeft = useTransform(scrollYProgress, [0, 0.4, 1], ['-14vw', '0vw', '3vw']);
+  const xRight = useTransform(scrollYProgress, [0, 0.4, 1], ['14vw', '0vw', '-3vw']);
+  const line = useTransform(scrollYProgress, [0.15, 0.4], [0, 1]);
+  // the words only drift on wide screens; on mobile they are stacked
+  const [wide, setWide] = useState(false);
+  useEffect(() => {
+    const mq = window.matchMedia('(min-width: 768px)');
+    const update = () => setWide(mq.matches);
+    update();
+    mq.addEventListener('change', update);
+    return () => mq.removeEventListener('change', update);
+  }, []);
+
   return (
-    <section id="manifesto" className="relative z-[1] scroll-mt-14 px-5 pb-28 pt-16 md:px-8 md:pb-40 md:pt-24">
-      <div className="relative mx-auto max-w-[920px] text-center">
+    <section id="cycle" ref={ref} className="relative z-[1] overflow-hidden bg-[#0a0a0a] text-white">
+      <Snow />
+      <div className="relative flex min-h-[70svh] flex-col items-center justify-center px-4 py-28">
+        <div className="flex w-full flex-col items-center gap-2 md:flex-row md:justify-center md:gap-[4vw]">
+          <motion.p style={{ x: wide ? xLeft : 0, ...DISPLAY }} className="whitespace-nowrap text-[12vw] uppercase leading-none md:text-[5.2vw]">
+            Soutrame
+          </motion.p>
+          <motion.span style={{ scaleX: line }} aria-hidden className="hidden h-px w-[6vw] origin-center bg-white/50 md:block" />
+          <motion.p style={{ x: wide ? xRight : 0, ...DISPLAY }} className="whitespace-nowrap text-[12vw] uppercase leading-none md:text-[5.2vw]">
+            Cycle
+          </motion.p>
+        </div>
+      </div>
+      <div className="relative mx-auto max-w-[920px] px-4 pb-32 text-center md:pb-44">
         <Reveal>
           <Mark className="mx-auto w-9" />
         </Reveal>
@@ -827,7 +981,7 @@ function Manifesto() {
           </p>
         </Reveal>
         <Reveal delay={0.2}>
-          <p className="mx-auto mt-10 max-w-[540px] text-[14px] leading-[1.75] text-black/60">
+          <p className="mx-auto mt-10 max-w-[540px] text-[14px] leading-[1.7] text-white/60">
             {t(
               'SOUTRAME, c’est la trame qu’on a tous en nous : ce qui se construit à force de vécu, de doutes et de retours. CYCLE rappelle que rien n’est linéaire. On avance, on bloque, on revient. « I can never be food » n’est pas une phrase agressive, c’est une affirmation intérieure : ne pas être consommé, ne pas être formaté.',
               'SOUTRAME is the inner thread we all carry: what gets built through experience, doubt and return. CYCLE is a reminder that nothing is linear. We move forward, we stall, we come back. “I can never be food” is not an aggressive line, it is an inner statement: not to be consumed, not to be shaped by what surrounds us.'
@@ -839,46 +993,40 @@ function Manifesto() {
   );
 }
 
-/* ───────────────────────── footer ───────────────────────── */
+/* ───────────────────────── information ───────────────────────── */
 
-function Footer() {
+function Info() {
   const t = useT();
-  const col = 'flex flex-col gap-2';
-  const soon = `${LABEL} text-black/35`;
+  const soon = 'text-black/35';
   return (
-    <footer className="relative z-[1] px-5 pb-6 md:px-8">
-      <div className="grid grid-cols-2 gap-y-10 border-t border-black/10 pt-8 md:grid-cols-4">
-        <div className={col}>
-          <p className={`${LABEL} text-[#121212]`}>Shop</p>
-          <a href="#shop" className={`${LABEL} text-black/55 transition hover:text-black`}>Cycle 01</a>
-          <a href="#lookbook" className={`${LABEL} text-black/55 transition hover:text-black`}>Lookbook</a>
-        </div>
-        <div className={col}>
-          <p className={`${LABEL} text-[#121212]`}>{t('Informations', 'Information')}</p>
+    <footer id="info" className={`${TXT} relative z-[1] px-2 pb-16 pt-10 md:px-3 md:pb-20`}>
+      <div className="grid grid-cols-2 gap-y-8 md:grid-cols-4">
+        <div className="flex flex-col">
+          <p>{t('Informations', 'Information')}</p>
           <span className={soon}>{t('Livraison', 'Shipping')}</span>
-          <span className={soon}>{t('Retours', 'Returns')}</span>
-          <span className={soon}>{t('CGV et mentions légales', 'Terms and legal notice')}</span>
-          <span className={`${LABEL} text-black/35`}>{t('— à l’ouverture des ventes', '— when sales open')}</span>
+          <span className={soon}>{t('Retours et échanges', 'Returns & exchanges')}</span>
+          <span className={soon}>{t('Conditions générales de vente', 'Terms of sale')}</span>
+          <span className={soon}>{t('Mentions légales', 'Legal notice')}</span>
         </div>
-        <div className={col}>
-          <p className={`${LABEL} text-[#121212]`}>{t('Suivre', 'Follow')}</p>
-          <a href={DROP.instagram} target="_blank" rel="noopener noreferrer" className={`${LABEL} text-black/55 transition hover:text-black`}>
+        <div className="flex flex-col">
+          <p>Contact</p>
+          <a href={DROP.instagram} target="_blank" rel="noopener noreferrer" className="text-black/55 hover:text-black">
             Instagram ↗
           </a>
         </div>
-        <div className={col}>
-          <p className={`${LABEL} text-[#121212]`}>Studio</p>
-          <Link href="/" className={`${LABEL} text-black/55 transition hover:text-black`}>
+        <div className="flex flex-col">
+          <p>Cycle 01</p>
+          <span className="text-black/55">Chimera School</span>
+          <span className="text-black/55">{t('Précommandes bientôt', 'Pre-orders soon')}</span>
+        </div>
+        <div className="flex flex-col">
+          <p>Studio</p>
+          <Link href="/" className="text-black/55 hover:text-black">
             {t('Designé par Emmanuel Ijjou', 'Designed by Emmanuel Ijjou')}
           </Link>
         </div>
       </div>
-      <div className="mt-16 flex items-end justify-between gap-6">
-        <p className="text-[15vw] uppercase leading-[0.78] md:text-[10.5vw]" style={DISPLAY}>
-          Soutrame
-        </p>
-        <Mark className="mb-1 w-8 shrink-0 md:w-12" />
-      </div>
+      <p className={`mt-10 ${soon}`}>{t('Les pages d’information seront publiées à l’ouverture des ventes.', 'Information pages will be published when sales open.')}</p>
     </footer>
   );
 }
@@ -886,29 +1034,12 @@ function Footer() {
 /* ───────────────────────── page ───────────────────────── */
 
 export default function SoutramePage() {
-  const t = useT();
-  const { lang, setLang } = useLang();
   const [openPiece, setOpenPiece] = useState<Piece | null>(null);
   const closeSheet = useCallback(() => setOpenPiece(null), []);
   const [ready, setReady] = useState(false);
   const finishIntro = useCallback(() => setReady(true), []);
-  const [scrolled, setScrolled] = useState(false);
-
-  // the shop owns the whole canvas: body takes the backdrop tone (no dark edge on overscroll)
-  useEffect(() => {
-    const prev = document.body.style.background;
-    document.body.style.background = BG;
-    return () => {
-      document.body.style.background = prev;
-    };
-  }, []);
-
-  useEffect(() => {
-    const onScroll = () => setScrolled(window.scrollY > 40);
-    onScroll();
-    window.addEventListener('scroll', onScroll, { passive: true });
-    return () => window.removeEventListener('scroll', onScroll);
-  }, []);
+  const [filter, setFilter] = useState<Category | 'all'>('all');
+  const count = PIECES.filter((p) => filter === 'all' || p.category === filter).length;
 
   // smooth scrolling (Lenis is already a dependency of the site)
   useEffect(() => {
@@ -917,7 +1048,7 @@ export default function SoutramePage() {
     let cancelled = false;
     import('@studio-freight/lenis').then(({ default: Lenis }) => {
       if (cancelled || window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
-      lenis = new Lenis({ duration: 1.15, smoothWheel: true });
+      lenis = new Lenis({ duration: 1.2, smoothWheel: true });
       const loop = (time: number) => {
         lenis?.raf(time);
         raf = requestAnimationFrame(loop);
@@ -931,43 +1062,17 @@ export default function SoutramePage() {
     };
   }, []);
 
-  const navLink = `${LABEL} text-black/60 transition hover:text-black`;
-
   return (
-    <div className="relative min-h-screen antialiased selection:bg-[#121212] selection:text-[#e2e1de]" style={{ background: BG, color: INK, fontFamily: 'var(--font-general-sans), Inter, sans-serif' }}>
+    <div className="relative min-h-screen antialiased selection:bg-[#0a0a0a] selection:text-white" style={{ background: BG, color: INK, fontFamily: 'var(--font-general-sans), Inter, sans-serif' }}>
       <AnimatePresence>{!ready && <Intro onDone={finishIntro} />}</AnimatePresence>
-      <Snow />
-
-      <header
-        className="fixed inset-x-0 top-0 z-40 grid grid-cols-3 items-center px-5 py-4 transition-[background-color,backdrop-filter] duration-500 md:px-8"
-        style={{ background: scrolled ? `${BG}cc` : 'transparent', backdropFilter: scrolled ? 'blur(14px)' : 'none' }}
-      >
-        <nav className="flex items-center gap-5">
-          <a href="#shop" className={navLink}>Shop</a>
-          <a href="#lookbook" className={`${navLink} hidden sm:inline`}>Lookbook</a>
-          <a href="#manifesto" className={`${navLink} hidden md:inline`}>Cycle</a>
-        </nav>
-        <a href="#" className="flex items-center justify-center gap-2.5" aria-label="SOUTRAME.CYCLE">
-          <Mark className="w-6 shrink-0" />
-          <span className="hidden text-[12px] font-medium uppercase leading-none tracking-[0.08em] sm:inline">Soutrame.Cycle</span>
-        </a>
-        <nav className="flex items-center justify-end gap-5">
-          <a href={DROP.instagram} target="_blank" rel="noopener noreferrer" className={`${navLink} hidden sm:inline`}>
-            Instagram
-          </a>
-          <button onClick={() => setLang(lang === 'fr' ? 'en' : 'fr')} className={navLink} aria-label={t('Switch to English', 'Passer en français')}>
-            {lang === 'fr' ? 'EN' : 'FR'}
-          </button>
-        </nav>
-      </header>
+      <Chrome filter={filter} setFilter={setFilter} count={count} />
 
       <IntroFilm />
       <Campaign ready={ready} />
-      <Shop onOpen={setOpenPiece} />
-      <CycleInterlude />
+      <Shop filter={filter} onOpen={setOpenPiece} />
       <Lookbook />
-      <Manifesto />
-      <Footer />
+      <Universe />
+      <Info />
 
       <ProductSheet piece={openPiece} onClose={closeSheet} onOpen={setOpenPiece} />
     </div>

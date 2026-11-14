@@ -1,6 +1,5 @@
 'use client';
 
-import { Fragment } from 'react';
 import { motion } from 'framer-motion';
 import Image from 'next/image';
 import Link from 'next/link';
@@ -12,52 +11,41 @@ import '../styles/globals.css';
 const EASE = [0.22, 1, 0.36, 1] as const;
 const TXT = 'text-[13px] leading-[1.35]';
 
-/** One project: a full-width image, then a thin caption — like a piece in a collection. */
-function ProjectRow({ project, index }: { project: Project; index: number }) {
+/** One project: a card in a regular grid — every cover in the same 4:3 frame, then a thin caption. */
+function ProjectCard({ project, index }: { project: Project; index: number }) {
   const t = useT();
   const title = t(project.title.fr, project.title.en);
   return (
-    <motion.article initial={{ opacity: 0 }} whileInView={{ opacity: 1 }} viewport={{ once: true, margin: '-10% 0px' }} transition={{ duration: 1.1, ease: EASE }}>
+    <motion.article initial={{ opacity: 0, y: 16 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true, margin: '-8% 0px' }} transition={{ duration: 1, ease: EASE, delay: (index % 2) * 0.08 }}>
       <Link href={project.link} className="group block" aria-label={t(`Voir le projet ${title}`, `View project ${title}`)}>
-        {/* a cover is only shown full-bleed when its resolution allows it; smaller ones sit at their real size on a neutral ground */}
-        {project.size[0] >= 1400 ? (
-          <div className="relative aspect-[4/5] w-full overflow-hidden bg-neutral-100 md:aspect-auto md:h-[86svh]">
-            <Image
-              src={project.image}
-              alt={title}
-              fill
-              priority={index < 1}
-              sizes="100vw"
-              className="object-cover transition-transform duration-[1.6s] ease-[cubic-bezier(.22,1,.36,1)] group-hover:scale-[1.025]"
-            />
-          </div>
-        ) : (
-          <div className="relative flex aspect-[4/5] w-full items-center justify-center overflow-hidden bg-[#f1f0ed] md:aspect-auto md:h-[86svh]">
-            <div
-              className="relative transition-transform duration-[1.6s] ease-[cubic-bezier(.22,1,.36,1)] group-hover:scale-[1.02]"
-              style={{ height: `min(${project.size[1]}px, 84%)`, maxWidth: `min(${project.size[0]}px, 90%)`, aspectRatio: `${project.size[0]} / ${project.size[1]}` }}
-            >
-              <Image src={project.image} alt={title} fill priority={index < 1} sizes={`${project.size[0]}px`} className="object-contain" />
-            </div>
-          </div>
-        )}
-        <div className="h-[3px] w-full bg-black/10">
-          <div className="h-full w-[12%] bg-[#0a0a0a] transition-[width] duration-700 ease-[cubic-bezier(.22,1,.36,1)] group-hover:w-full" />
+        <div className="relative aspect-[4/3] w-full overflow-hidden bg-neutral-100">
+          <Image
+            src={project.image}
+            alt={title}
+            fill
+            priority={index < 2}
+            sizes="(min-width:768px) 50vw, 100vw"
+            className="object-cover transition-transform duration-[1.4s] ease-[cubic-bezier(.22,1,.36,1)] group-hover:scale-[1.03]"
+          />
         </div>
-        <div className={`${TXT} grid grid-cols-2 gap-x-4 px-2 pt-1.5 md:grid-cols-4 md:px-3`}>
-          <span className="font-medium">{title}</span>
-          <span className="text-right text-black/50 md:text-left">{t(project.subtitle.fr, project.subtitle.en)}</span>
-          <span className="hidden tabular-nums text-black/50 md:block">{String(index + 1).padStart(2, '0')}</span>
-          <span className="col-span-2 group-hover:underline md:col-span-1 md:text-right">{t('Voir le projet', 'View project')} →</span>
+        <div className="h-[2px] w-full bg-black/10">
+          <div className="h-full w-0 bg-[#0a0a0a] transition-[width] duration-700 ease-[cubic-bezier(.22,1,.36,1)] group-hover:w-full" />
+        </div>
+        <div className={`${TXT} flex items-start justify-between gap-4 px-2 pt-1.5 md:px-0`}>
+          <div>
+            <p className="font-medium">{title}</p>
+            <p className="text-black/50">{t(project.subtitle.fr, project.subtitle.en)}</p>
+          </div>
+          <span className="shrink-0 tabular-nums text-black/40 group-hover:text-black">{String(index + 1).padStart(2, '0')}</span>
         </div>
       </Link>
     </motion.article>
   );
 }
 
-function GroupLabel({ children, count }: { children: React.ReactNode; count: number }) {
+function GroupLabel({ children, count, first = false }: { children: React.ReactNode; count: number; first?: boolean }) {
   return (
-    <p className={`${TXT} px-2 pb-1.5 pt-24 md:px-3 md:pt-32`}>
+    <p className={`${TXT} px-2 pb-1.5 md:px-0 ${first ? 'pt-6' : 'pt-24 md:pt-32'}`}>
       {children} <span className="ml-2 tabular-nums text-black/45">{count}</span>
     </p>
   );
@@ -103,18 +91,25 @@ export default function Home() {
         </motion.div>
       </section>
 
-      <div id="work">
-        {projects.map((project, i) => (
-          <Fragment key={project.link}>
-            {i === 0 && <GroupLabel count={product}>Product design</GroupLabel>}
-            {project.group === 'explorations' && projects[i - 1]?.group === 'product' && (
-              <GroupLabel count={explorations}>{t('Explorations visuelles — direction artistique, 3D, marque', 'Visual explorations — art direction, 3D, brand')}</GroupLabel>
-            )}
-            <div className={i > 0 && projects[i - 1]?.group === project.group ? 'mt-16 md:mt-24' : ''}>
-              <ProjectRow project={project} index={i} />
-            </div>
-          </Fragment>
-        ))}
+      <div id="work" className="px-0 md:px-3">
+        <GroupLabel first count={product}>
+          Product design
+        </GroupLabel>
+        <div className="grid grid-cols-1 gap-x-3 gap-y-12 md:grid-cols-2 md:gap-y-16">
+          {projects
+            .filter((p) => p.group === 'product')
+            .map((project, i) => (
+              <ProjectCard key={project.link} project={project} index={i} />
+            ))}
+        </div>
+        <GroupLabel count={explorations}>{t('Explorations visuelles — direction artistique, 3D, marque', 'Visual explorations — art direction, 3D, brand')}</GroupLabel>
+        <div className="grid grid-cols-1 gap-x-3 gap-y-12 md:grid-cols-2 md:gap-y-16">
+          {projects
+            .filter((p) => p.group === 'explorations')
+            .map((project, i) => (
+              <ProjectCard key={project.link} project={project} index={product + i} />
+            ))}
+        </div>
       </div>
 
       <footer className={`${TXT} mt-32 grid grid-cols-2 gap-y-6 px-2 pb-10 md:grid-cols-4 md:px-3`}>

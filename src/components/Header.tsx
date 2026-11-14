@@ -17,6 +17,9 @@ export default function Header({ active, crumb }: { active?: 'work' | 'about'; c
 
   return (
     <>
+      {/* two thin white bars frame the page, so the corners stay legible over any cover */}
+      <div aria-hidden className="fixed inset-x-0 top-0 z-40 h-[30px] bg-white" />
+      <div aria-hidden className="fixed inset-x-0 bottom-0 z-40 h-[30px] bg-white md:h-[34px]" />
       <div className={`${corner} left-0 top-0 py-1.5`}>
         <Link href="/" className="hover:underline underline-offset-2">
           Emmanuel Ijjou

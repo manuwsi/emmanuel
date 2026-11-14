@@ -21,8 +21,8 @@ export const projects: Project[] = [
   {
     title: same('Serena'),
     subtitle: { fr: '2025 — Recherche, wireframes & UI', en: '2025 — Research, wireframes & UI' },
-    image: '/serena-cover.png',
-    size: [653, 366],
+    image: '/serena-cover-hd.jpg',
+    size: [2000, 1500],
     link: '/serena',
     group: 'product',
     softCover: true,
@@ -30,8 +30,8 @@ export const projects: Project[] = [
   {
     title: same('Shu Uemura AI:tutor'),
     subtitle: { fr: '2025 — UI Design, coach beauté IA', en: '2025 — UI design, AI beauty tutor' },
-    image: '/shu-flow-01-cover.png',
-    size: [390, 844],
+    image: '/shu-cover-hd.jpg',
+    size: [2000, 1500],
     link: '/shu-uemura',
     group: 'product',
   },

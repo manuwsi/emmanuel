@@ -11,7 +11,7 @@ import { useLang, useT } from './i18n';
 export default function Header({ active, crumb }: { active?: 'work' | 'about'; crumb?: string }) {
   const { lang, setLang } = useLang();
   const t = useT();
-  const corner = 'fixed z-50 text-white mix-blend-difference text-[13px] leading-[1.35] px-2 md:px-3';
+  const corner = 'fixed z-50 text-[#0a0a0a] text-[13px] leading-[1.35] px-2 md:px-3';
   const link = (on: boolean) => (on ? 'underline underline-offset-2' : 'hover:underline underline-offset-2');
   const here = crumb ?? (active === 'about' ? t('À propos', 'About') : t('Travaux', 'Work'));
 

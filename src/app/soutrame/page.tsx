@@ -621,7 +621,7 @@ function IntroFilm() {
   const t = useT();
   if (!INTRO_VIDEO) return null;
   return (
-    <section className="relative z-[1] h-[82svh] overflow-hidden bg-black md:h-[100svh]">
+    <section className="relative z-[1] h-[74svh] overflow-hidden bg-black md:h-[100svh]">
       {/* shown as a projection at its own size, never stretched: the film stays sharp */}
       <div className="absolute inset-0 flex items-center justify-center">
         <video src={INTRO_VIDEO} poster="/soutrame/intro-poster.jpg" autoPlay muted loop playsInline preload="auto" className="aspect-[832/464] w-full max-w-[880px] md:w-[58vw]" />
@@ -1004,7 +1004,7 @@ function Universe() {
   return (
     <section id="cycle" ref={ref} className="relative z-[1] overflow-hidden bg-[#0a0a0a] text-white">
       <Snow />
-      <div className="relative flex min-h-[70svh] flex-col items-center justify-center px-4 py-28">
+      <div className="relative flex min-h-[46svh] flex-col items-center justify-center px-4 py-20 md:min-h-[70svh] md:py-28">
         <div className="flex w-full flex-col items-center gap-2 md:flex-row md:justify-center md:gap-[4vw]">
           <motion.p style={{ x: wide ? xLeft : 0, ...DISPLAY }} className="whitespace-nowrap text-[12vw] uppercase leading-none md:text-[5.2vw]">
             Soutrame
@@ -1016,28 +1016,38 @@ function Universe() {
         </div>
       </div>
       {/* the capsule, as a short collection note in the shop's own small voice */}
-      <div className="relative grid grid-cols-1 gap-y-8 px-2 pb-28 md:grid-cols-4 md:gap-x-3 md:px-3 md:pb-40">
+      <div className="relative grid grid-cols-1 gap-y-7 px-2 pb-24 md:grid-cols-4 md:gap-x-3 md:gap-y-8 md:px-3 md:pb-40">
+        {/* phone: the embroidered chimera opens the note */}
+        <Reveal className="md:hidden">
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img src="/soutrame/chimera.svg" alt="" className="h-14 w-auto" />
+        </Reveal>
         <Reveal>
-          <p className="text-[14px] font-semibold leading-[1.15] md:text-[15px]">
+          <p className="text-[15px] font-semibold leading-[1.15]">
             Cycle 01
             <br />
             Chimera School
           </p>
         </Reveal>
         <Reveal delay={0.1} className="md:col-span-2">
-          <p className={`${TXT} max-w-[440px] text-white/80`}>
+          <p className="max-w-[440px] text-[14px] leading-[1.5] text-white/80 md:text-[13px] md:leading-[1.35]">
             {t(
-              'Première capsule de SOUTRAME. Un ensemble en deux pièces : une veste de survêtement courte à capuche, fermée au col par un brandebourg tressé, et un pantalon large dont les jambes se détachent. Nylon ivoire, empiècements en mesh gris. Chimère brodée sur la poitrine, cerf sur la poche arrière.',
+              'Première capsule de SOUTRAME. Un ensemble en deux pièces : une veste de survêtement courte à capuche, fermée au col par un brandebourg tressé, et un pantalon large dont les jambes se détachent. Nylon ivoire, empiècements en mesh gris. Chimère brodée sur la poitrine, cerf sur la poche arrière.',
               'SOUTRAME’s first capsule. A two-piece set: a cropped hooded track jacket, closed at the collar by a braided frog, and wide trousers with zip-off legs. Ivory nylon, grey mesh panels. Chimera embroidered on the chest, deer on the back pocket.'
             )}
           </p>
-          <p className={`${TXT} mt-4 max-w-[440px] text-white/50`}>{t('Dessinée à Paris. Petite série, produite à la commande.', 'Designed in Paris. Small run, made to order.')}</p>
+          <p className="mt-4 max-w-[440px] text-[14px] leading-[1.5] text-white/50 md:text-[13px] md:leading-[1.35]">{t('Dessinée à Paris. Petite série, produite à la commande.', 'Designed in Paris. Small run, made to order.')}</p>
         </Reveal>
-        <Reveal delay={0.2} className="flex items-start justify-between md:flex-col md:items-end md:gap-6">
+        <Reveal delay={0.2} className="hidden md:flex md:flex-col md:items-end md:gap-6">
           {/* the chimera embroidered on the jacket, kept small */}
           {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img src="/soutrame/chimera.svg" alt="" className="h-12 w-auto md:h-14" />
-          <p className="text-[15px] uppercase leading-none text-white/60 md:text-[16px]" style={MANTRA}>
+          <img src="/soutrame/chimera.svg" alt="" className="h-14 w-auto" />
+          <p className="text-[16px] uppercase leading-none text-white/60" style={MANTRA}>
+            I can never be food.
+          </p>
+        </Reveal>
+        <Reveal delay={0.2} className="border-t border-white/15 pt-5 md:hidden">
+          <p className="text-[20px] uppercase leading-none text-white/70" style={MANTRA}>
             I can never be food.
           </p>
         </Reveal>

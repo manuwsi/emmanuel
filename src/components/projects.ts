@@ -7,6 +7,8 @@ export type Project = {
   softCover?: boolean;
   /** Intrinsic size of the cover, so it is never shown larger than it really is. */
   size: [number, number];
+  /** Optional second image revealed on hover (e.g. the interface behind a brand cover). */
+  hover?: string;
   group: 'product' | 'explorations';
 };
 
@@ -23,6 +25,7 @@ export const projects: Project[] = [
     subtitle: { fr: '2025 — Recherche, wireframes & UI', en: '2025 — Research, wireframes & UI' },
     image: '/serena-cover-hd.jpg',
     size: [2000, 1500],
+    hover: '/serena-hover.jpg',
     link: '/serena',
     group: 'product',
     softCover: true,
@@ -32,6 +35,7 @@ export const projects: Project[] = [
     subtitle: { fr: '2025 — UI Design, coach beauté IA', en: '2025 — UI design, AI beauty tutor' },
     image: '/shu-cover-hd.jpg',
     size: [2000, 1500],
+    hover: '/shu-hover.jpg',
     link: '/shu-uemura',
     group: 'product',
   },

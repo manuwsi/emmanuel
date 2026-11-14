@@ -27,6 +27,15 @@ function ProjectCard({ project, index }: { project: Project; index: number }) {
             sizes="(min-width:768px) 50vw, 100vw"
             className="object-cover transition-transform duration-[1.4s] ease-[cubic-bezier(.22,1,.36,1)] group-hover:scale-[1.03]"
           />
+          {project.hover && (
+            <Image
+              src={project.hover}
+              alt=""
+              fill
+              sizes="(min-width:768px) 50vw, 100vw"
+              className="object-cover opacity-0 transition-opacity duration-700 ease-out group-hover:opacity-100"
+            />
+          )}
         </div>
         <div className="h-[2px] w-full bg-black/10">
           <div className="h-full w-0 bg-[#0a0a0a] transition-[width] duration-700 ease-[cubic-bezier(.22,1,.36,1)] group-hover:w-full" />
@@ -68,7 +77,7 @@ export default function Home() {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 1.2, ease: EASE }}
         >
-          {t('Emmanuel Ijjou, Product Designer.', 'Emmanuel Ijjou, Product Designer.')}
+          {t('Product Designer à Paris.', 'Product Designer in Paris.')}
         </motion.h1>
         <motion.div
           className={`${TXT} mt-8 grid grid-cols-1 gap-4 md:grid-cols-4`}
@@ -78,8 +87,8 @@ export default function Home() {
         >
           <p className="md:col-span-2 md:max-w-[480px]">
             {t(
-              'Basé à Paris. Je conçois des applications web et mobile, de l’entretien utilisateur à l’écran final : Serena, un assistant administratif pour les agriculteurs, et Shu Uemura AI:tutor, un coach maquillage par IA.',
-              'Based in Paris. I design web and mobile apps, from user interviews to the final screen: Serena, an admin assistant for farmers, and Shu Uemura AI:tutor, an AI make-up coach.'
+              'Je conçois des applications web et mobile, de l’entretien utilisateur à l’écran final : Serena, un assistant administratif pour les agriculteurs, et Shu Uemura AI:tutor, un coach maquillage par IA.',
+              'I design web and mobile apps, from user interviews to the final screen: Serena, an admin assistant for farmers, and Shu Uemura AI:tutor, an AI make-up coach.'
             )}
           </p>
           <p className="text-black/50 md:col-span-1">

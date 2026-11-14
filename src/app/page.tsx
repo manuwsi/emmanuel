@@ -118,6 +118,30 @@ export default function Home() {
             .map((project, i) => (
               <ProjectCard key={project.link} project={project} index={product + i} />
             ))}
+          {/* an odd number of projects leaves one slot: it becomes the contact card, in the same frame */}
+          {explorations % 2 === 1 && (
+            <motion.div initial={{ opacity: 0, y: 16 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true, margin: '-8% 0px' }} transition={{ duration: 1, ease: EASE, delay: 0.08 }}>
+              <a href="mailto:emmanuelijjou@gmail.com" className="group block">
+                <div className="relative flex aspect-[4/3] w-full flex-col justify-between bg-[#0a0a0a] p-5 text-white md:p-8">
+                  <p className={TXT + ' text-white/55'}>{t('Disponible — CDI, Paris ou remote', 'Available — full-time, Paris or remote')}</p>
+                  <p className="text-[9vw] font-medium leading-[0.95] tracking-[-0.04em] md:text-[3.6vw]">
+                    {t('Un poste, un projet ?', 'A role, a project?')}
+                    <br />
+                    <span className="text-white/55 transition-colors duration-500 group-hover:text-white">{t('Écrivez-moi', 'Write to me')} →</span>
+                  </p>
+                </div>
+                <div className="h-[2px] w-full bg-black/10">
+                  <div className="h-full w-0 bg-[#0a0a0a] transition-[width] duration-700 ease-[cubic-bezier(.22,1,.36,1)] group-hover:w-full" />
+                </div>
+                <div className={`${TXT} flex items-start justify-between gap-4 px-2 pt-1.5 md:px-0`}>
+                  <div>
+                    <p className="font-medium">Contact</p>
+                    <p className="text-black/50">emmanuelijjou@gmail.com</p>
+                  </div>
+                </div>
+              </a>
+            </motion.div>
+          )}
         </div>
       </div>
 

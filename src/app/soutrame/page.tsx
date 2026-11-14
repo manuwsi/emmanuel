@@ -872,44 +872,94 @@ function ProductSheet({ piece, onClose, onOpen }: { piece: Piece | null; onClose
   );
 }
 
-/* ───────────────────────── lookbook ───────────────────────── */
+/* ───────────────────────── lookbook ─────────────────────────
+ * The campaign as one strip, edge to edge: drag it, scroll it sideways, or use the numbers.
+ * A rule in ink shows how far along you are.
+ */
 
 function Lookbook() {
   const t = useT();
   const { lang } = useLang();
-  const [active, setActive] = useState(0);
-  const shot = LOOKBOOK[active];
+  const track = useRef<HTMLDivElement>(null);
+  const [at, setAt] = useState(0);
+  const [progress, setProgress] = useState(0);
+  const drag = useRef<{ x: number; left: number; moved: boolean } | null>(null);
+
+  useEffect(() => {
+    const el = track.current;
+    if (!el) return;
+    const onScroll = () => {
+      const max = el.scrollWidth - el.clientWidth;
+      setProgress(max > 0 ? el.scrollLeft / max : 0);
+      const first = el.firstElementChild as HTMLElement | null;
+      const step = first ? first.offsetWidth + 4 : 1;
+      setAt(Math.min(LOOKBOOK.length - 1, Math.round(el.scrollLeft / step)));
+    };
+    onScroll();
+    el.addEventListener('scroll', onScroll, { passive: true });
+    return () => el.removeEventListener('scroll', onScroll);
+  }, []);
+
+  const goTo = (i: number) => {
+    const el = track.current;
+    const child = el?.children[i] as HTMLElement | undefined;
+    if (el && child) el.scrollTo({ left: child.offsetLeft, behavior: 'smooth' });
+  };
+
+  // drag to scroll with a mouse; touch keeps its native swipe
+  const onDown = (e: React.PointerEvent) => {
+    if (e.pointerType !== 'mouse' || !track.current) return;
+    drag.current = { x: e.clientX, left: track.current.scrollLeft, moved: false };
+  };
+  const onMove = (e: React.PointerEvent) => {
+    const d = drag.current;
+    if (!d || !track.current) return;
+    const dx = e.clientX - d.x;
+    if (Math.abs(dx) > 4) d.moved = true;
+    track.current.scrollLeft = d.left - dx;
+  };
+  const onUp = () => {
+    drag.current = null;
+  };
 
   return (
-    <section id="lookbook" className="relative z-[1] pb-28 pt-8 md:pb-36">
+    <section id="lookbook" className="relative z-[1] scroll-mt-8 pb-28 pt-8 md:pb-36">
       <p className={`${TXT} px-2 pb-2 md:px-3`}>
-        Lookbook → {t('la campagne', 'the campaign')} <span className="ml-2 tabular-nums text-black/45">{String(active + 1).padStart(2, '0')} / {String(LOOKBOOK.length).padStart(2, '0')}</span>
+        Lookbook → {t('la campagne', 'the campaign')} <span className="ml-2 text-black/45">{t('Faire glisser', 'Drag')} →</span>
       </p>
-      <div className="grid grid-cols-1 gap-1 md:grid-cols-12">
-        <div className="relative md:col-span-6">
-          <button onClick={() => setActive((a) => (a + 1) % LOOKBOOK.length)} aria-label={t('Image suivante', 'Next image')} className="relative block aspect-[4/5] w-full cursor-e-resize overflow-hidden" style={{ background: PHOTO }}>
-            <Image src={LOOKBOOK[(active - 1 + LOOKBOOK.length) % LOOKBOOK.length].src} alt="" fill sizes="(min-width:768px) 50vw, 100vw" className="object-cover" />
-            <Weave key={shot.src} src={shot.src} alt={`Chimera School — ${shot.label[lang]}`} strips={10} sizes="(min-width:768px) 50vw, 100vw" />
-          </button>
-        </div>
-        <div className="grid grid-cols-5 content-start gap-1 md:col-span-6">
-          {LOOKBOOK.map((s, i) => (
-            <button
-              key={s.src}
-              onClick={() => setActive(i)}
-              onMouseEnter={() => setActive(i)}
-              aria-label={s.label[lang]}
-              className={`relative aspect-[4/5] overflow-hidden transition-opacity duration-500 ${i === active ? 'opacity-100' : 'opacity-50 hover:opacity-90'}`}
-              style={{ background: PHOTO }}
-            >
-              <Image src={s.src} alt="" fill sizes="10vw" className="object-cover" />
+      <div
+        ref={track}
+        onPointerDown={onDown}
+        onPointerMove={onMove}
+        onPointerUp={onUp}
+        onPointerLeave={onUp}
+        className="flex cursor-grab select-none gap-1 overflow-x-auto active:cursor-grabbing [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
+      >
+        {LOOKBOOK.map((s, i) => (
+          <div key={s.src} className="relative aspect-[4/5] w-[82vw] shrink-0 overflow-hidden md:h-[78svh] md:w-auto" style={{ background: PHOTO }}>
+            {i < 3 ? (
+              <Weave src={s.src} alt={`Chimera School — ${s.label[lang]}`} inView strips={10} sizes="(min-width:768px) 62svh, 82vw" delay={i * 0.12} />
+            ) : (
+              <Image src={s.src} alt={`Chimera School — ${s.label[lang]}`} fill sizes="(min-width:768px) 62svh, 82vw" className="object-cover" draggable={false} />
+            )}
+          </div>
+        ))}
+      </div>
+      <div className="relative h-[3px] w-full bg-black/10">
+        <div className="absolute inset-y-0 left-0 bg-[#0a0a0a] transition-[width] duration-200" style={{ width: `${12 + progress * 88}%` }} />
+      </div>
+      <div className={`${TXT} flex items-start justify-between gap-4 px-2 pt-1.5 md:px-3`}>
+        <AnimatePresence mode="wait">
+          <motion.span key={at} initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} transition={{ duration: 0.25 }}>
+            {LOOKBOOK[at].label[lang]}
+          </motion.span>
+        </AnimatePresence>
+        <div className="flex gap-2 tabular-nums">
+          {LOOKBOOK.map((_, i) => (
+            <button key={i} onClick={() => goTo(i)} className={i === at ? 'text-black' : 'text-black/30 hover:text-black/70'} aria-label={`${t('Image', 'Image')} ${i + 1}`}>
+              {i}
             </button>
           ))}
-          <AnimatePresence mode="wait">
-            <motion.p key={shot.src} className={`${TXT} col-span-5 px-2 pt-1 text-black/55 md:px-1`} initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} transition={{ duration: 0.4 }}>
-              {shot.label[lang]}
-            </motion.p>
-          </AnimatePresence>
         </div>
       </div>
     </section>
@@ -951,7 +1001,9 @@ function Universe() {
       </div>
       <div className="relative mx-auto max-w-[920px] px-4 pb-32 text-center md:pb-44">
         <Reveal>
-          <Mark className="mx-auto w-9" />
+          {/* the chimera embroidered on the jacket: the emblem of Cycle 01, kept small */}
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img src="/soutrame/chimera.svg" alt="Chimera School" className="mx-auto h-16 w-auto md:h-20" />
         </Reveal>
         <Reveal delay={0.1}>
           <p className="mt-10 text-[30px] uppercase leading-[0.95] md:text-[54px]" style={MANTRA}>

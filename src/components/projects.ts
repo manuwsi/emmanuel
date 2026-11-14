@@ -55,7 +55,7 @@ export const projects: Project[] = [
   {
     title: same('SOUTRAME.CYCLE'),
     subtitle: { fr: '2026 — Création de marque, collection & site e-commerce', en: '2026 — Brand creation, collection & e-commerce site' },
-    image: '/soutrame/front.jpg',
+    image: '/soutrame/jacket-front.jpg',
     link: '/soutrame',
     group: 'explorations',
   },

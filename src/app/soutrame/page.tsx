@@ -621,9 +621,12 @@ function IntroFilm() {
   const t = useT();
   if (!INTRO_VIDEO) return null;
   return (
-    <section className="relative z-[1] h-[100svh] overflow-hidden bg-black">
-      <video src={INTRO_VIDEO} poster="/soutrame/intro-poster.jpg" autoPlay muted loop playsInline preload="auto" className="h-full w-full object-cover" />
-      <div className="pointer-events-none absolute inset-x-0 top-1/2 flex -translate-y-1/2 items-start justify-between px-2 text-[14px] font-semibold leading-[1.15] text-white mix-blend-difference md:px-3 md:text-[15px]">
+    <section className="relative z-[1] h-[82svh] overflow-hidden bg-black md:h-[100svh]">
+      {/* shown as a projection at its own size, never stretched: the film stays sharp */}
+      <div className="absolute inset-0 flex items-center justify-center">
+        <video src={INTRO_VIDEO} poster="/soutrame/intro-poster.jpg" autoPlay muted loop playsInline preload="auto" className="aspect-[832/464] w-full max-w-[880px] md:w-[58vw]" />
+      </div>
+      <div className="pointer-events-none absolute inset-x-0 top-[calc(50%+28vw+12px)] flex items-start justify-between px-2 text-[14px] font-semibold leading-[1.15] text-white mix-blend-difference md:top-1/2 md:-translate-y-1/2 md:px-3 md:text-[15px]">
         <p>
           Cycle 01
           <br />

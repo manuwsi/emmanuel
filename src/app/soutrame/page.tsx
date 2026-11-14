@@ -1001,44 +1001,36 @@ function Universe() {
           </motion.p>
         </div>
       </div>
-      <div className="relative mx-auto max-w-[920px] px-4 pb-32 text-center md:pb-44">
+      {/* the capsule, stated like a garment label: no pitch, just what it is */}
+      <div className={`${TXT} relative grid grid-cols-1 gap-y-10 px-2 pb-28 md:grid-cols-4 md:gap-x-3 md:px-3 md:pb-40`}>
         <Reveal>
           {/* the chimera embroidered on the jacket: the emblem of Cycle 01, kept small */}
           {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img src="/soutrame/chimera.svg" alt="Chimera School" className="mx-auto h-16 w-auto md:h-20" />
+          <img src="/soutrame/chimera.svg" alt="Chimera School" className="h-14 w-auto md:h-16" />
         </Reveal>
-        <Reveal delay={0.1}>
-          <p className={`${TXT} mt-8 text-white/55`}>{t('Cycle 01 — capsule designer', 'Cycle 01 — designer capsule')}</p>
-          <h2 className="mt-3 text-[34px] uppercase leading-[0.95] md:text-[56px]" style={DISPLAY}>
-            Chimera School
-          </h2>
-        </Reveal>
-        <Reveal delay={0.2}>
-          <p className="mx-auto mt-8 max-w-[560px] text-[14px] leading-[1.7] text-white/70">
-            {t(
-              'Chimera School est la première capsule de SOUTRAME : un ensemble, une veste et un pantalon, pensé comme un uniforme. Une chimère est faite de plusieurs animaux ; l’ensemble est fait de plusieurs vestiaires. La coupe d’un survêtement, un brandebourg tressé au col, du mesh technique, et un pantalon dont les jambes se détachent pour devenir un short.',
-              'Chimera School is SOUTRAME’s first capsule: one set, a jacket and trousers, designed as a uniform. A chimera is made of several animals; the set is made of several wardrobes. A tracksuit cut, a braided frog closure at the collar, technical mesh, and trousers whose legs zip off into shorts.'
-            )}
-          </p>
-        </Reveal>
-        <Reveal delay={0.3}>
-          <dl className={`${TXT} mx-auto mt-12 grid max-w-[760px] grid-cols-1 gap-y-6 border-t border-white/15 pt-5 text-left md:grid-cols-3 md:gap-x-8`}>
-            <div>
-              <dt className="text-white/45">{t('Deux pièces', 'Two pieces')}</dt>
-              <dd className="mt-1">{t('Track Jacket et Zip-off Pant, à porter ensemble ou séparément', 'Track Jacket and Zip-off Pant, worn together or apart')}</dd>
-            </div>
-            <div>
-              <dt className="text-white/45">{t('Broderies', 'Embroidery')}</dt>
-              <dd className="mt-1">{t('La chimère sur la poitrine, le cerf sur la poche arrière', 'The chimera on the chest, the deer on the back pocket')}</dd>
-            </div>
-            <div>
-              <dt className="text-white/45">{t('Petite série', 'Small run')}</dt>
-              <dd className="mt-1">{t('Dessinée à Paris, produite à la commande', 'Designed in Paris, made to order')}</dd>
-            </div>
+        <Reveal delay={0.1} className="md:col-span-2">
+          <dl>
+            {(
+              [
+                ['Capsule', 'Capsule', 'Chimera School — Cycle 01', 'Chimera School — Cycle 01'],
+                ['Pièces', 'Pieces', 'Track Jacket, Zip-off Pant', 'Track Jacket, Zip-off Pant'],
+                ['Coloris', 'Colour', 'Ivoire / gris', 'Ivory / grey'],
+                ['Détails', 'Details', 'Brandebourg tressé, mesh, jambes amovibles', 'Braided frog closure, mesh, zip-off legs'],
+                ['Broderies', 'Embroidery', 'Chimère, poitrine — cerf, poche arrière', 'Chimera, chest — deer, back pocket'],
+                ['Édition', 'Edition', 'Petite série, produite à la commande', 'Small run, made to order'],
+                ['Design', 'Design', 'Emmanuel Ijjou, Paris', 'Emmanuel Ijjou, Paris'],
+              ] as const
+            ).map(([kf, ke, vf, ve]) => (
+              <div key={ke} className="grid grid-cols-[110px_1fr] border-t border-white/15 py-2 md:grid-cols-[160px_1fr]">
+                <dt className="text-white/45">{t(kf, ke)}</dt>
+                <dd>{t(vf, ve)}</dd>
+              </div>
+            ))}
+            <div className="border-t border-white/15" />
           </dl>
         </Reveal>
-        <Reveal delay={0.4}>
-          <p className="mt-16 text-[18px] uppercase leading-none text-white/55 md:text-[22px]" style={MANTRA}>
+        <Reveal delay={0.2} className="md:text-right">
+          <p className="text-[18px] uppercase leading-none md:text-[20px]" style={MANTRA}>
             I can never be food.
           </p>
         </Reveal>

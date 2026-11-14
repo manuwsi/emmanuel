@@ -584,11 +584,11 @@ function Campaign({ ready }: { ready: boolean }) {
           const prev = set[(step - 1 + set.length) % set.length];
           return (
             <div key={k} className={`relative h-full overflow-hidden ${k > 0 ? 'hidden md:block' : ''}`} style={{ background: PHOTO }}>
-              {step > 0 && <Image src={prev} alt="" fill sizes="(min-width:768px) 34vw, 100vw" className="object-cover" />}
+              {step > 0 && <Image src={prev} alt="" fill sizes="(min-width:768px) 70vw, 200vw" className="object-cover" />}
               {ready ? (
-                <Weave key={cur} src={cur} alt="Chimera School — Cycle 01" priority={step === 0} sizes="(min-width:768px) 34vw, 100vw" delay={step === 0 ? k * 0.15 : 0} />
+                <Weave key={cur} src={cur} alt="Chimera School — Cycle 01" priority={step === 0} sizes="(min-width:768px) 70vw, 200vw" delay={step === 0 ? k * 0.15 : 0} />
               ) : (
-                <Image src={cur} alt="Chimera School" fill priority sizes="(min-width:768px) 34vw, 100vw" className="object-cover" />
+                <Image src={cur} alt="Chimera School" fill priority sizes="(min-width:768px) 70vw, 200vw" className="object-cover" />
               )}
             </div>
           );
@@ -938,9 +938,9 @@ function Lookbook() {
         {LOOKBOOK.map((s, i) => (
           <div key={s.src} className="relative aspect-[4/5] w-[82vw] shrink-0 overflow-hidden md:h-[78svh] md:w-auto" style={{ background: PHOTO }}>
             {i < 3 ? (
-              <Weave src={s.src} alt={`Chimera School — ${s.label[lang]}`} inView strips={10} sizes="(min-width:768px) 62svh, 82vw" delay={i * 0.12} />
+              <Weave src={s.src} alt={`Chimera School — ${s.label[lang]}`} inView strips={10} sizes="(min-width:768px) 50vw, 82vw" delay={i * 0.12} />
             ) : (
-              <Image src={s.src} alt={`Chimera School — ${s.label[lang]}`} fill sizes="(min-width:768px) 62svh, 82vw" className="object-cover" draggable={false} />
+              <Image src={s.src} alt={`Chimera School — ${s.label[lang]}`} fill sizes="(min-width:768px) 50vw, 82vw" className="object-cover" draggable={false} />
             )}
           </div>
         ))}

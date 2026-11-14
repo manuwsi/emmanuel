@@ -96,8 +96,8 @@ export default function AboutPage() {
           </span>
           <h1 className="text-4xl md:text-7xl font-medium tracking-[-0.03em] tracking-tight leading-[1.05] max-w-4xl">
             {t(
-              'Product Designer à Paris, de la recherche utilisateur à l’interface.',
-              'Product Designer in Paris, from user research to interface.'
+              'J’ai commencé par l’image. Aujourd’hui, je conçois des produits.',
+              'I started with images. Now I design products.'
             )}
           </h1>
           <div className="grid grid-cols-1 md:grid-cols-12 gap-6 md:gap-8">
@@ -105,28 +105,41 @@ export default function AboutPage() {
               {t(
                 <>
                   <p>
-                    Je conçois des interfaces et des expériences digitales, de la compréhension du
-                    besoin jusqu&apos;aux maquettes finales. J&apos;ai passé un an chez OKCC, studio
-                    créatif au service du luxe et de la beauté, sur des projets pour Shu Uemura,
-                    Hennessy, Louis Vuitton ou L&apos;Oréal.
+                    Pendant un an chez OKCC, studio créatif pour le luxe et la beauté, j&apos;ai dessiné
+                    les écrans d&apos;un coach beauté IA pour Shu Uemura, fait la direction artistique 3D
+                    de l&apos;expérience Hennessy X.O à VivaTech (Lovie Award), et monté un process
+                    d&apos;images produit générées par IA pour Louis Vuitton.
                   </p>
                   <p>
-                    Ma particularité : je maîtrise l&apos;IA générative comme un outil de production
-                    à part entière, pour prototyper, tester des directions visuelles et produire des
-                    images au niveau d&apos;exigence des marques de luxe.
+                    Sur Serena, une app pour les agriculteurs, j&apos;ai fait l&apos;inverse : partir du
+                    terrain. Questionnaire, entretiens, deux versions de wireframes avant la moindre UI.
+                    C&apos;est là que j&apos;ai su que je voulais faire du produit.
+                  </p>
+                  <p>
+                    À côté, je construis Soutrame, ma marque de vêtements. J&apos;ai dessiné le premier
+                    ensemble, suivi la fabrication avec l&apos;usine, organisé le shooting et conçu le site.
+                  </p>
+                  <p>
+                    Je cherche un poste de Product Designer, à Paris ou en remote.
                   </p>
                 </>,
                 <>
                   <p>
-                    I design interfaces and digital experiences, from understanding the need to the
-                    final screens. I spent a year at OKCC, a creative studio working for luxury and
-                    beauty brands, on projects for Shu Uemura, Hennessy, Louis Vuitton and L&apos;Oréal.
+                    For a year at OKCC, a creative studio for luxury and beauty, I designed the screens of
+                    an AI beauty coach for Shu Uemura, led the 3D art direction of the Hennessy X.O
+                    experience at VivaTech (Lovie Award), and set up an AI product-image process for
+                    Louis Vuitton.
                   </p>
                   <p>
-                    What sets me apart: I use generative AI as a real production tool, to prototype,
-                    explore visual directions and produce imagery that meets luxury brands&apos;
-                    standards.
+                    On Serena, an app for farmers, I worked the other way round: starting from the field.
+                    A survey, interviews, two rounds of wireframes before any UI. That is where I knew I
+                    wanted to do product.
                   </p>
+                  <p>
+                    On the side, I am building Soutrame, my clothing label. I designed the first set,
+                    followed production with the factory, ran the shoot and designed the site.
+                  </p>
+                  <p>I am looking for a Product Designer role, in Paris or remote.</p>
                 </>
               )}
               <div className="flex flex-wrap gap-3 pt-4">

@@ -5,6 +5,8 @@ export type Project = {
   link: string;
   /** Cover already contains text (logo, tagline): blur it more so it doesn't clash with the card title */
   softCover?: boolean;
+  /** Intrinsic size of the cover, so it is never shown larger than it really is. */
+  size: [number, number];
   group: 'product' | 'explorations';
 };
 
@@ -20,6 +22,7 @@ export const projects: Project[] = [
     title: same('Serena'),
     subtitle: { fr: '2025 — Recherche, wireframes & UI', en: '2025 — Research, wireframes & UI' },
     image: '/serena-cover.png',
+    size: [653, 366],
     link: '/serena',
     group: 'product',
     softCover: true,
@@ -28,6 +31,7 @@ export const projects: Project[] = [
     title: same('Shu Uemura AI:tutor'),
     subtitle: { fr: '2025 — UI Design, coach beauté IA', en: '2025 — UI design, AI beauty tutor' },
     image: '/shu-flow-01-cover.png',
+    size: [390, 844],
     link: '/shu-uemura',
     group: 'product',
   },
@@ -35,6 +39,7 @@ export const projects: Project[] = [
     title: same('Hennessy X.O Second Skin'),
     subtitle: { fr: '2025 — UI Design, 3D', en: '2025 — UI design, 3D' },
     image: '/hennessy.png',
+    size: [3000, 1688],
     link: '/hennessy',
     group: 'product',
   },
@@ -42,6 +47,7 @@ export const projects: Project[] = [
     title: same('Z_Lab'),
     subtitle: { fr: '2025 — Refonte de site, UI/UX', en: '2025 — Website redesign, UI/UX' },
     image: '/1.png',
+    size: [1080, 1080],
     link: '/z_lab',
     group: 'product',
   },
@@ -49,6 +55,7 @@ export const projects: Project[] = [
     title: same('HIGAN'),
     subtitle: { fr: '2026 — Design de flacon, 3D & direction artistique', en: '2026 — Bottle design, 3D & art direction' },
     image: '/higan/silhouette.jpg',
+    size: [1797, 2248],
     link: '/higan',
     group: 'explorations',
   },
@@ -56,6 +63,7 @@ export const projects: Project[] = [
     title: same('SOUTRAME.CYCLE'),
     subtitle: { fr: '2026 — Création de marque, collection & site e-commerce', en: '2026 — Brand creation, collection & e-commerce site' },
     image: '/soutrame/jacket-front.jpg',
+    size: [1600, 2000],
     link: '/soutrame',
     group: 'explorations',
   },
@@ -63,6 +71,7 @@ export const projects: Project[] = [
     title: same('Post Archive Faction'),
     subtitle: { fr: '2025 — Direction créative, UI & motion', en: '2025 — Creative direction, UI & motion' },
     image: '/PAF1.png',
+    size: [1440, 1024],
     link: '/post-archive-faction',
     group: 'explorations',
   },
@@ -70,6 +79,7 @@ export const projects: Project[] = [
     title: same('Aether'),
     subtitle: { fr: '2024 — Design system, jeu de tarot', en: '2024 — Design system, tarot deck' },
     image: '/AETHERCOVER.png',
+    size: [1445, 1024],
     link: '/aether',
     group: 'explorations',
   },
@@ -77,6 +87,7 @@ export const projects: Project[] = [
     title: same('SPECTRE'),
     subtitle: { fr: '2025 — Design éditorial, direction artistique IA', en: '2025 — Editorial design, AI art direction' },
     image: '/spectre1.png',
+    size: [1080, 1350],
     link: '/spectre',
     group: 'explorations',
   },
@@ -84,6 +95,7 @@ export const projects: Project[] = [
     title: { fr: 'Recherche visuelle IA', en: 'AI Visual Research' },
     subtitle: { fr: '2025 — Motion, direction artistique IA', en: '2025 — Motion, AI art direction' },
     image: '/f1-cover.png',
+    size: [1800, 1008],
     link: '/ai-research',
     group: 'explorations',
   },

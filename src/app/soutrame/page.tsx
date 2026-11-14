@@ -13,7 +13,7 @@
  *  - The universe (snow, mantra, the mark) lives in its own black chapter.
  *
  * To open sales, fill in DROP below:
- *  - price: e.g. '280 €' (or a price per piece in PIECES)
+ *  - price: a default price; each piece in PIECES carries its own (provisional: 170 / 140 / 280 €)
  *  - sizes: e.g. ['S', 'M', 'L']
  *  - checkoutUrl: the Stripe Payment Link (https://buy.stripe.com/...)
  * While checkoutUrl is null, every buy button reads "Coming soon" and is disabled.
@@ -79,7 +79,7 @@ const PIECES = [
     image: img('jacket-front'),
     hover: img('jacket-back'),
     gallery: ['jacket-front', 'jacket-34', 'jacket-side', 'jacket-back', 'jacket-detail-hood', 'jacket-detail-front', 'jacket-detail-sleeve', 'jacket-detail-back', 'jacket-flat'].map(img),
-    price: null as string | null,
+    price: '170 €' as string | null,
     details: {
       fr: [
         'Veste de survêtement courte à capuche',
@@ -105,7 +105,7 @@ const PIECES = [
     image: img('pant-front'),
     hover: img('pant-flat'),
     gallery: ['pant-front', 'pant-side', 'pant-back', 'pant-long-back', 'pant-detail-pocket', 'pant-detail-side', 'pant-flat', 'pant-flat-shorts'].map(img),
-    price: null as string | null,
+    price: '140 €' as string | null,
     details: {
       fr: [
         'Pantalon large, jambes zippées : se porte en short',
@@ -127,11 +127,11 @@ const PIECES = [
     id: 'set',
     category: 'sets' as Category,
     name: 'Chimera School Set',
-    colour: { fr: 'Veste + pantalon', en: 'Jacket + pant' },
+    colour: { fr: 'Veste + pantalon, 30 € d’économie', en: 'Jacket + pant, save €30' },
     image: img('jacket-34'),
     hover: img('look-set-shorts'),
     gallery: ['jacket-34', 'look-hood', 'jacket-front', 'look-set-shorts', 'look-seated', 'pant-long-back'].map(img),
-    price: null as string | null,
+    price: '280 €' as string | null,
     details: {
       fr: [
         'L’ensemble complet : Track Jacket et Zip-off Pant',
@@ -439,6 +439,8 @@ function Chrome({ filter, setFilter, count }: { filter: Category | 'all'; setFil
     setTimeout(() => document.getElementById(id)?.scrollIntoView({ behavior: 'smooth' }), 350);
   };
   const current = FILTERS.find((f) => f.id === filter)!;
+  const { scrollYProgress } = useScroll();
+  const spin = useTransform(scrollYProgress, [0, 1], [0, 720]);
 
   return (
     <>
@@ -480,11 +482,14 @@ function Chrome({ filter, setFilter, count }: { filter: Category | 'all'; setFil
         {lang === 'fr' ? 'EN' : 'FR'}
       </button>
 
-      {/* bottom-left: the text logo */}
-      <a href="#" className="fixed bottom-0 left-0 z-40 px-2 pb-1 text-white mix-blend-difference md:px-3" aria-label="SOUTRAME — haut de page">
+      {/* bottom-left: the text logo, and the cluster that turns as you scroll — the cycle, always on screen */}
+      <a href="#" className="fixed bottom-0 left-0 z-40 flex items-end gap-2 px-2 pb-1 text-white mix-blend-difference md:px-3" aria-label="SOUTRAME — haut de page">
         <span className="block text-[22px] uppercase leading-none md:text-[26px]" style={WORDMARK}>
           Soutrame
         </span>
+        <motion.span style={{ rotate: spin }} className="mb-[3px] block w-[17px] md:w-[20px]">
+          <Mark className="w-full" />
+        </motion.span>
       </a>
 
       {/* bottom-right: menu, bag */}

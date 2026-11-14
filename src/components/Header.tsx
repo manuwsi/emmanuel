@@ -6,17 +6,19 @@ import { useLang, useT } from './i18n';
 /**
  * Shared site chrome, in the corners of the screen:
  * breadcrumb top-left, language top-right, text logo bottom-left, navigation bottom-right.
- * mix-blend-difference keeps it legible over white pages and over images alike.
+ * Solid ink on two thin white bars, like a shop: legible over any cover, and the work is framed top and bottom.
  */
 export default function Header({ active, crumb }: { active?: 'work' | 'about'; crumb?: string }) {
   const { lang, setLang } = useLang();
   const t = useT();
-  const corner = 'fixed z-50 text-white mix-blend-difference text-[13px] leading-[1.35] px-2 md:px-3';
+  const corner = 'fixed z-50 text-[#0a0a0a] text-[13px] leading-[1.35] px-2 md:px-3';
   const link = (on: boolean) => (on ? 'underline underline-offset-2' : 'hover:underline underline-offset-2');
   const here = crumb ?? (active === 'about' ? t('À propos', 'About') : t('Travaux', 'Work'));
 
   return (
     <>
+      <div aria-hidden className="fixed inset-x-0 top-0 z-40 h-[30px] bg-white" />
+      <div aria-hidden className="fixed inset-x-0 bottom-0 z-40 h-[30px] bg-white md:h-[34px]" />
       <div className={`${corner} left-0 top-0 py-1.5`}>
         <Link href="/" className="hover:underline underline-offset-2">
           Emmanuel Ijjou

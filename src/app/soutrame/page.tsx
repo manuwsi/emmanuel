@@ -75,10 +75,11 @@ const PIECES = [
     id: 'jacket',
     category: 'jackets' as Category,
     name: 'Chimera School Track Jacket',
+    kind: { fr: 'Veste', en: 'Jacket' },
     colour: { fr: 'Ivoire / gris', en: 'Ivory / grey' },
-    image: img('jacket-front'),
-    hover: img('jacket-back'),
-    gallery: ['jacket-front', 'jacket-34', 'jacket-side', 'jacket-back', 'jacket-detail-hood', 'jacket-detail-front', 'jacket-detail-sleeve', 'jacket-detail-back', 'jacket-flat'].map(img),
+    image: img('jacket-flat'),
+    hover: img('look-hood'),
+    gallery: ['jacket-flat', 'jacket-front', 'jacket-34', 'jacket-back', 'jacket-detail-hood', 'jacket-detail-front', 'jacket-detail-sleeve', 'jacket-detail-back'].map(img),
     price: '170 €' as string | null,
     details: {
       fr: [
@@ -101,10 +102,11 @@ const PIECES = [
     id: 'pant',
     category: 'pants' as Category,
     name: 'Chimera School Zip-off Pant',
+    kind: { fr: 'Pantalon / short', en: 'Trousers / shorts' },
     colour: { fr: 'Ivoire / gris', en: 'Ivory / grey' },
-    image: img('pant-front'),
-    hover: img('pant-flat'),
-    gallery: ['pant-front', 'pant-side', 'pant-back', 'pant-long-back', 'pant-detail-pocket', 'pant-detail-side', 'pant-flat', 'pant-flat-shorts'].map(img),
+    image: img('pant-flat'),
+    hover: img('pant-front'),
+    gallery: ['pant-flat', 'pant-flat-shorts', 'pant-front', 'pant-side', 'pant-back', 'pant-detail-pocket', 'pant-detail-side'].map(img),
     price: '140 €' as string | null,
     details: {
       fr: [
@@ -127,10 +129,11 @@ const PIECES = [
     id: 'set',
     category: 'sets' as Category,
     name: 'Chimera School Set',
-    colour: { fr: 'Veste + pantalon, 30 € d’économie', en: 'Jacket + pant, save €30' },
-    image: img('jacket-34'),
+    kind: { fr: 'Ensemble veste + pantalon', en: 'Jacket + trousers set' },
+    colour: { fr: '30 € d’économie', en: 'Save €30' },
+    image: img('jacket-front'),
     hover: img('look-set-shorts'),
-    gallery: ['jacket-34', 'look-hood', 'jacket-front', 'look-set-shorts', 'look-seated', 'pant-long-back'].map(img),
+    gallery: ['jacket-front', 'jacket-flat', 'pant-flat', 'look-set-shorts', 'look-hood', 'jacket-back'].map(img),
     price: '280 €' as string | null,
     details: {
       fr: [
@@ -622,101 +625,76 @@ function IntroFilm() {
 }
 
 /* ───────────────────────── shop ─────────────────────────
- * One piece per row: its photographs side by side, scrolled sideways, then a thin caption.
+ * A clear product grid: each card opens on the piece itself (flat lay), the worn look on hover,
+ * and says plainly what it is — jacket, trousers, or the full set.
  */
 
-function ProductRow({ p, index, onOpen }: { p: Piece; index: number; onOpen: (p: Piece) => void }) {
-  const t = useT();
-  const { lang } = useLang();
-  const track = useRef<HTMLDivElement>(null);
-  const [at, setAt] = useState(0);
-  const [progress, setProgress] = useState(0);
-
-  useEffect(() => {
-    const el = track.current;
-    if (!el) return;
-    const onScroll = () => {
-      const max = el.scrollWidth - el.clientWidth;
-      setProgress(max > 0 ? el.scrollLeft / max : 0);
-      const first = el.firstElementChild as HTMLElement | null;
-      const step = first ? first.offsetWidth + 4 : 1;
-      setAt(Math.min(p.gallery.length - 1, Math.round(el.scrollLeft / step)));
-    };
-    el.addEventListener('scroll', onScroll, { passive: true });
-    return () => el.removeEventListener('scroll', onScroll);
-  }, [p.gallery.length]);
-
-  const goTo = (i: number) => {
-    const el = track.current;
-    const child = el?.children[i] as HTMLElement | undefined;
-    if (el && child) el.scrollTo({ left: child.offsetLeft - el.offsetLeft, behavior: 'smooth' });
-  };
-
+function HoverWeave({ src, sizes, strips = 10 }: { src: string; sizes: string; strips?: number }) {
   return (
-    <article className="relative">
-      <div ref={track} className="flex snap-x snap-mandatory gap-1 overflow-x-auto [scrollbar-width:none] [&::-webkit-scrollbar]:hidden" data-lenis-prevent-wheel>
-        {p.gallery.map((g, i) => (
-          <button
-            key={g}
-            onClick={() => onOpen(p)}
-            aria-label={`${p.name} — ${t('voir la pièce', 'view piece')}`}
-            className="relative aspect-[4/5] h-auto w-[86vw] shrink-0 snap-start overflow-hidden md:h-[82svh] md:w-auto"
-            style={{ background: PHOTO }}
-          >
-            {i === 0 ? (
-              <Weave src={g} alt={p.name} inView priority={index === 0} sizes="(min-width:768px) 66svh, 86vw" />
-            ) : (
-              <Image src={g} alt={`${p.name} — ${i + 1}`} fill sizes="(min-width:768px) 66svh, 86vw" className="object-cover transition-transform duration-[1.4s] ease-[cubic-bezier(.22,1,.36,1)] hover:scale-[1.02]" />
-            )}
-          </button>
-        ))}
-      </div>
-
-      {/* progress rule, like a scrollbar drawn in ink */}
-      <div className="relative h-[3px] w-full bg-black/10">
-        <div className="absolute inset-y-0 left-0 bg-[#0a0a0a] transition-[width] duration-200" style={{ width: `${Math.max(12, progress * 100)}%` }} />
-      </div>
-
-      <div className={`${TXT} grid grid-cols-2 gap-x-4 px-2 pb-1 pt-1.5 md:grid-cols-4 md:px-3`}>
-        <div>
-          <button onClick={() => onOpen(p)} className="text-left hover:underline">
-            {p.name}
-          </button>
-          <p className="text-black/50">{priceOf(p) ?? t('Prix à venir', 'Price soon')}</p>
-        </div>
-        <div className="hidden md:block">
-          <p className="text-black/50">{p.colour[lang]}</p>
-        </div>
-        <div className="text-right md:text-left">
-          <div className="flex justify-end gap-2 tabular-nums md:justify-start">
-            {p.gallery.map((_, i) => (
-              <button key={i} onClick={() => goTo(i)} className={i === at ? 'text-black' : 'text-black/30 hover:text-black/70'} aria-label={`${t('Image', 'Image')} ${i + 1}`}>
-                {i}
-              </button>
-            ))}
+    <div className="absolute inset-0 flex flex-col">
+      {Array.from({ length: strips }).map((_, k) => (
+        <div
+          key={k}
+          className={`relative flex-1 scale-x-0 overflow-hidden transition-transform duration-700 ease-[cubic-bezier(.22,1,.36,1)] group-hover:scale-x-100 ${k % 2 ? 'origin-right' : 'origin-left'}`}
+          style={{ transitionDelay: `${k * 30}ms` }}
+        >
+          <div className="absolute inset-x-0" style={{ top: `-${k * 100}%`, height: `${strips * 100}%` }}>
+            <Image src={src} alt="" fill sizes={sizes} className="object-cover" />
           </div>
         </div>
-        <div className="col-span-2 mt-1 md:col-span-1 md:mt-0 md:text-right">
-          <button onClick={() => onOpen(p)} className="hover:underline">
-            {t('Voir la pièce', 'View piece')} →
-          </button>
-        </div>
+      ))}
+    </div>
+  );
+}
+
+function ProductCard({ p, index, onOpen }: { p: Piece; index: number; onOpen: (p: Piece) => void }) {
+  const t = useT();
+  const { lang } = useLang();
+  const sizes = '(min-width:768px) 33vw, 100vw';
+  return (
+    <button onClick={() => onOpen(p)} className="group block w-full text-left" aria-label={`${p.name} — ${t('voir la pièce', 'view piece')}`}>
+      <div className="relative aspect-[4/5] overflow-hidden" style={{ background: PHOTO }}>
+        <Weave src={p.image} alt={p.name} inView priority={index === 0} sizes={sizes} delay={index * 0.1} />
+        <HoverWeave src={p.hover} sizes={sizes} />
       </div>
-    </article>
+      <div className="h-[2px] w-full bg-black/10">
+        <div className="h-full w-0 bg-[#0a0a0a] transition-[width] duration-700 ease-[cubic-bezier(.22,1,.36,1)] group-hover:w-full" />
+      </div>
+      <div className={`${TXT} flex items-start justify-between gap-4 px-2 pt-1.5 md:px-0`}>
+        <div>
+          <p className="font-medium">{p.kind[lang]}</p>
+          <p className="text-black/50">
+            {p.name} — {p.colour[lang]}
+          </p>
+        </div>
+        <span className="shrink-0">{priceOf(p) ?? t('Prix à venir', 'Price soon')}</span>
+      </div>
+    </button>
   );
 }
 
 function Shop({ filter, onOpen }: { filter: Category | 'all'; onOpen: (p: Piece) => void }) {
+  const t = useT();
   const shown = PIECES.filter((p) => filter === 'all' || p.category === filter);
   return (
-    <section id="shop" className="relative z-[1] scroll-mt-0 pb-24 pt-1 md:pb-32">
-      <AnimatePresence mode="popLayout">
-        {shown.map((p, i) => (
-          <motion.div key={p.id} layout initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} transition={{ duration: 0.6, ease: EASE }} className="mb-16 md:mb-24">
-            <ProductRow p={p} index={i} onOpen={onOpen} />
-          </motion.div>
-        ))}
-      </AnimatePresence>
+    <section id="shop" className="relative z-[1] scroll-mt-8 px-0 pb-28 pt-16 md:px-3 md:pb-36 md:pt-24">
+      <div className="mb-6 px-2 md:px-0">
+        <h2 className="text-[28px] leading-none md:text-[40px]" style={DISPLAY}>
+          Shop
+        </h2>
+        <p className={`${TXT} mt-2 text-black/55`}>
+          {t('Cycle 01 — Chimera School. La veste et le pantalon se vendent séparément ou en ensemble.', 'Cycle 01 — Chimera School. The jacket and trousers are sold separately or as a set.')}
+        </p>
+      </div>
+      <motion.div layout className="grid grid-cols-1 gap-x-3 gap-y-12 md:grid-cols-3">
+        <AnimatePresence mode="popLayout">
+          {shown.map((p, i) => (
+            <motion.div key={p.id} layout initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} transition={{ duration: 0.5, ease: EASE }}>
+              <ProductCard p={p} index={i} onOpen={onOpen} />
+            </motion.div>
+          ))}
+        </AnimatePresence>
+      </motion.div>
     </section>
   );
 }
@@ -802,9 +780,9 @@ function ProductSheet({ piece, onClose, onOpen }: { piece: Piece | null; onClose
             <div className="md:col-span-8">
               <div className="flex snap-x snap-mandatory gap-1 overflow-x-auto [scrollbar-width:none] md:grid md:grid-cols-2 md:overflow-visible">
                 {piece.gallery.map((g, i) => (
-                  <div key={g} className={`relative aspect-[4/5] w-[86vw] shrink-0 snap-start overflow-hidden md:w-auto ${i === 0 ? 'md:col-span-2' : ''}`} style={{ background: PHOTO }}>
+                  <div key={g} className="relative aspect-[4/5] w-[86vw] shrink-0 snap-start overflow-hidden md:w-auto" style={{ background: PHOTO }}>
                     {i === 0 ? (
-                      <Weave src={g} alt={`${piece.name} — 1`} strips={12} priority sizes="(min-width:768px) 66vw, 86vw" delay={0.35} />
+                      <Weave src={g} alt={`${piece.name} — 1`} strips={12} priority sizes="(min-width:768px) 33vw, 86vw" delay={0.35} />
                     ) : (
                       <Image src={g} alt={`${piece.name} — ${i + 1}`} fill sizes="(min-width:768px) 33vw, 86vw" className="object-cover" />
                     )}
@@ -909,9 +887,17 @@ function Lookbook() {
 
   return (
     <section id="lookbook" className="relative z-[1] pb-28 pt-8 md:pb-36">
-      <p className={`${TXT} px-2 pb-2 md:px-3`}>
-        Lookbook → Cycle 01 <span className="ml-2 tabular-nums text-black/45">{String(active + 1).padStart(2, '0')} / {String(LOOKBOOK.length).padStart(2, '0')}</span>
-      </p>
+      <div className="mb-6 flex items-end justify-between px-2 md:px-3">
+        <div>
+          <h2 className="text-[28px] leading-none md:text-[40px]" style={DISPLAY}>
+            Lookbook
+          </h2>
+          <p className={`${TXT} mt-2 text-black/55`}>{t('La campagne Chimera School, portée.', 'The Chimera School campaign, worn.')}</p>
+        </div>
+        <span className={`${TXT} tabular-nums text-black/45`}>
+          {String(active + 1).padStart(2, '0')} / {String(LOOKBOOK.length).padStart(2, '0')}
+        </span>
+      </div>
       <div className="grid grid-cols-1 gap-1 md:grid-cols-12">
         <div className="relative md:col-span-6">
           <button onClick={() => setActive((a) => (a + 1) % LOOKBOOK.length)} aria-label={t('Image suivante', 'Next image')} className="relative block aspect-[4/5] w-full cursor-e-resize overflow-hidden" style={{ background: PHOTO }}>

@@ -47,8 +47,6 @@ const EASE = [0.22, 1, 0.36, 1] as const;
 /** The text logo: General Sans Bold, set tight. */
 const WORDMARK = { fontFamily: 'var(--font-general-sans), Inter, sans-serif', fontWeight: 700, letterSpacing: '-0.045em' } as const;
 const DISPLAY = { fontFamily: 'var(--font-general-sans), Inter, sans-serif', fontWeight: 500, letterSpacing: '-0.03em' } as const;
-/** Ade Display is kept for a single, more intimate line: the mantra. */
-const MANTRA = { fontFamily: 'var(--font-ade), serif' } as const;
 /** The shop's working voice: small, regular, sentence case. */
 const TXT = 'text-[13px] leading-[1.35] tracking-[0.005em]';
 
@@ -986,42 +984,12 @@ function Lookbook() {
 
 function Universe() {
   const t = useT();
-  const ref = useRef<HTMLElement>(null);
-  const { scrollYProgress } = useScroll({ target: ref, offset: ['start end', 'end start'] });
-  const xLeft = useTransform(scrollYProgress, [0, 0.4, 1], ['-14vw', '0vw', '3vw']);
-  const xRight = useTransform(scrollYProgress, [0, 0.4, 1], ['14vw', '0vw', '-3vw']);
-  const line = useTransform(scrollYProgress, [0.15, 0.4], [0, 1]);
-  // the words only drift on wide screens; on mobile they are stacked
-  const [wide, setWide] = useState(false);
-  useEffect(() => {
-    const mq = window.matchMedia('(min-width: 768px)');
-    const update = () => setWide(mq.matches);
-    update();
-    mq.addEventListener('change', update);
-    return () => mq.removeEventListener('change', update);
-  }, []);
-
+  const small = 'max-w-[440px] text-[14px] leading-[1.5] md:text-[13px] md:leading-[1.35]';
   return (
-    <section id="cycle" ref={ref} className="relative z-[1] overflow-hidden bg-[#0a0a0a] text-white">
+    <section id="cycle" className="relative z-[1] overflow-hidden bg-[#0a0a0a] text-white">
       <Snow />
-      <div className="relative flex min-h-[46svh] flex-col items-center justify-center px-4 py-20 md:min-h-[70svh] md:py-28">
-        <div className="flex w-full flex-col items-center gap-2 md:flex-row md:justify-center md:gap-[4vw]">
-          <motion.p style={{ x: wide ? xLeft : 0, ...DISPLAY }} className="whitespace-nowrap text-[12vw] uppercase leading-none md:text-[5.2vw]">
-            Soutrame
-          </motion.p>
-          <motion.span style={{ scaleX: line }} aria-hidden className="hidden h-px w-[6vw] origin-center bg-white/50 md:block" />
-          <motion.p style={{ x: wide ? xRight : 0, ...DISPLAY }} className="whitespace-nowrap text-[12vw] uppercase leading-none md:text-[5.2vw]">
-            Cycle
-          </motion.p>
-        </div>
-      </div>
       {/* the capsule, as a short collection note in the shop's own small voice */}
-      <div className="relative grid grid-cols-1 gap-y-7 px-2 pb-24 md:grid-cols-4 md:gap-x-3 md:gap-y-8 md:px-3 md:pb-40">
-        {/* phone: the embroidered chimera opens the note */}
-        <Reveal className="md:hidden">
-          {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img src="/soutrame/chimera.svg" alt="" className="h-14 w-auto" />
-        </Reveal>
+      <div className="relative grid grid-cols-1 gap-y-7 px-2 py-24 md:grid-cols-4 md:gap-x-3 md:px-3 md:py-44">
         <Reveal>
           <p className="text-[15px] font-semibold leading-[1.15]">
             Cycle 01
@@ -1030,26 +998,19 @@ function Universe() {
           </p>
         </Reveal>
         <Reveal delay={0.1} className="md:col-span-2">
-          <p className="max-w-[440px] text-[14px] leading-[1.5] text-white/80 md:text-[13px] md:leading-[1.35]">
+          <p className={`${small} text-white/80`}>
             {t(
-              'Première capsule de SOUTRAME. Un ensemble en deux pièces : une veste de survêtement courte à capuche, fermée au col par un brandebourg tressé, et un pantalon large dont les jambes se détachent. Nylon ivoire, empiècements en mesh gris.',
+              'Première capsule de SOUTRAME. Un ensemble en deux pièces\u00a0: une veste de survêtement courte à capuche, fermée au col par un brandebourg tressé, et un pantalon large dont les jambes se détachent. Nylon ivoire, empiècements en mesh gris.',
               'SOUTRAME’s first capsule. A two-piece set: a cropped hooded track jacket, closed at the collar by a braided frog, and wide trousers with zip-off legs. Ivory nylon, grey mesh panels.'
             )}
           </p>
-          <p className="mt-4 max-w-[440px] text-[14px] leading-[1.5] text-white/50 md:text-[13px] md:leading-[1.35]">{t('Dessinée à Paris. Petite série, produite à la commande.', 'Designed in Paris. Small run, made to order.')}</p>
+          <p className={`${small} mt-4 text-white/50`}>{t('Dessinée à Paris. Petite série, produite à la commande.', 'Designed in Paris. Small run, made to order.')}</p>
+          <p className={`${small} mt-4 text-white/50`}>I can never be food.</p>
         </Reveal>
-        <Reveal delay={0.2} className="hidden md:flex md:flex-col md:items-end md:gap-6">
-          {/* the chimera embroidered on the jacket, kept small */}
+        <Reveal delay={0.2} className="order-first md:order-none md:justify-self-end">
+          {/* the chimera embroidered on both pieces, kept small */}
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img src="/soutrame/chimera.svg" alt="" className="h-14 w-auto" />
-          <p className="text-[16px] uppercase leading-none text-white/60" style={MANTRA}>
-            I can never be food.
-          </p>
-        </Reveal>
-        <Reveal delay={0.2} className="border-t border-white/15 pt-5 md:hidden">
-          <p className="text-[20px] uppercase leading-none text-white/70" style={MANTRA}>
-            I can never be food.
-          </p>
         </Reveal>
       </div>
     </section>

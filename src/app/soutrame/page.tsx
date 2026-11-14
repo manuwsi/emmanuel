@@ -77,9 +77,9 @@ const PIECES = [
     name: 'Chimera School Track Jacket',
     kind: { fr: 'Veste', en: 'Jacket' },
     colour: { fr: 'Ivoire / gris', en: 'Ivory / grey' },
-    image: img('jacket-flat'),
-    hover: img('look-hood'),
-    gallery: ['jacket-flat', 'jacket-front', 'jacket-34', 'jacket-back', 'jacket-detail-hood', 'jacket-detail-front', 'jacket-detail-sleeve', 'jacket-detail-back'].map(img),
+    image: img('crop-jacket'),
+    hover: img('crop-jacket-back'),
+    gallery: ['crop-jacket', 'crop-jacket-back', 'jacket-front', 'jacket-34', 'jacket-detail-hood', 'jacket-detail-front', 'jacket-detail-sleeve', 'jacket-detail-back', 'jacket-flat'].map(img),
     price: '170 €' as string | null,
     details: {
       fr: [
@@ -104,9 +104,9 @@ const PIECES = [
     name: 'Chimera School Zip-off Pant',
     kind: { fr: 'Pantalon / short', en: 'Trousers / shorts' },
     colour: { fr: 'Ivoire / gris', en: 'Ivory / grey' },
-    image: img('pant-flat'),
-    hover: img('pant-front'),
-    gallery: ['pant-flat', 'pant-flat-shorts', 'pant-front', 'pant-side', 'pant-back', 'pant-detail-pocket', 'pant-detail-side'].map(img),
+    image: img('crop-pant-long'),
+    hover: img('crop-pant-shorts'),
+    gallery: ['crop-pant-long', 'crop-pant-shorts', 'pant-front', 'pant-side', 'pant-back', 'pant-detail-pocket', 'pant-detail-side', 'pant-flat'].map(img),
     price: '140 €' as string | null,
     details: {
       fr: [
@@ -129,11 +129,11 @@ const PIECES = [
     id: 'set',
     category: 'sets' as Category,
     name: 'Chimera School Set',
-    kind: { fr: 'Ensemble veste + pantalon', en: 'Jacket + trousers set' },
-    colour: { fr: '30 € d’économie', en: 'Save €30' },
+    kind: { fr: 'Ensemble', en: 'Set' },
+    colour: { fr: 'veste + pantalon, 30 € d’économie', en: 'jacket + trousers, save €30' },
     image: img('jacket-front'),
     hover: img('look-set-shorts'),
-    gallery: ['jacket-front', 'jacket-flat', 'pant-flat', 'look-set-shorts', 'look-hood', 'jacket-back'].map(img),
+    gallery: ['jacket-front', 'look-set-shorts', 'crop-jacket', 'crop-pant-long', 'look-hood', 'jacket-back'].map(img),
     price: '280 €' as string | null,
     details: {
       fr: [
@@ -662,9 +662,9 @@ function ProductCard({ p, index, onOpen }: { p: Piece; index: number; onOpen: (p
       </div>
       <div className={`${TXT} flex items-start justify-between gap-4 px-2 pt-1.5 md:px-0`}>
         <div>
-          <p className="font-medium">{p.kind[lang]}</p>
+          <p>{p.name}</p>
           <p className="text-black/50">
-            {p.name} — {p.colour[lang]}
+            {p.kind[lang]} — {p.colour[lang]}
           </p>
         </div>
         <span className="shrink-0">{priceOf(p) ?? t('Prix à venir', 'Price soon')}</span>
@@ -677,15 +677,10 @@ function Shop({ filter, onOpen }: { filter: Category | 'all'; onOpen: (p: Piece)
   const t = useT();
   const shown = PIECES.filter((p) => filter === 'all' || p.category === filter);
   return (
-    <section id="shop" className="relative z-[1] scroll-mt-8 px-0 pb-28 pt-16 md:px-3 md:pb-36 md:pt-24">
-      <div className="mb-6 px-2 md:px-0">
-        <h2 className="text-[28px] leading-none md:text-[40px]" style={DISPLAY}>
-          Shop
-        </h2>
-        <p className={`${TXT} mt-2 text-black/55`}>
-          {t('Cycle 01 — Chimera School. La veste et le pantalon se vendent séparément ou en ensemble.', 'Cycle 01 — Chimera School. The jacket and trousers are sold separately or as a set.')}
-        </p>
-      </div>
+    <section id="shop" className="relative z-[1] scroll-mt-8 px-0 pb-28 pt-10 md:px-3 md:pb-36 md:pt-16">
+      <p className={`${TXT} mb-2 px-2 md:px-0`}>
+        Shop → Cycle 01 <span className="ml-2 text-black/45">{t('Veste et pantalon, séparément ou en ensemble', 'Jacket and trousers, separately or as a set')}</span>
+      </p>
       <motion.div layout className="grid grid-cols-1 gap-x-3 gap-y-12 md:grid-cols-3">
         <AnimatePresence mode="popLayout">
           {shown.map((p, i) => (
@@ -887,17 +882,9 @@ function Lookbook() {
 
   return (
     <section id="lookbook" className="relative z-[1] pb-28 pt-8 md:pb-36">
-      <div className="mb-6 flex items-end justify-between px-2 md:px-3">
-        <div>
-          <h2 className="text-[28px] leading-none md:text-[40px]" style={DISPLAY}>
-            Lookbook
-          </h2>
-          <p className={`${TXT} mt-2 text-black/55`}>{t('La campagne Chimera School, portée.', 'The Chimera School campaign, worn.')}</p>
-        </div>
-        <span className={`${TXT} tabular-nums text-black/45`}>
-          {String(active + 1).padStart(2, '0')} / {String(LOOKBOOK.length).padStart(2, '0')}
-        </span>
-      </div>
+      <p className={`${TXT} px-2 pb-2 md:px-3`}>
+        Lookbook → {t('la campagne', 'the campaign')} <span className="ml-2 tabular-nums text-black/45">{String(active + 1).padStart(2, '0')} / {String(LOOKBOOK.length).padStart(2, '0')}</span>
+      </p>
       <div className="grid grid-cols-1 gap-1 md:grid-cols-12">
         <div className="relative md:col-span-6">
           <button onClick={() => setActive((a) => (a + 1) % LOOKBOOK.length)} aria-label={t('Image suivante', 'Next image')} className="relative block aspect-[4/5] w-full cursor-e-resize overflow-hidden" style={{ background: PHOTO }}>

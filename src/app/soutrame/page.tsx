@@ -1008,16 +1008,38 @@ function Universe() {
           <img src="/soutrame/chimera.svg" alt="Chimera School" className="mx-auto h-16 w-auto md:h-20" />
         </Reveal>
         <Reveal delay={0.1}>
-          <p className="mt-10 text-[30px] uppercase leading-[0.95] md:text-[54px]" style={MANTRA}>
-            I can never be food.
-          </p>
+          <p className={`${TXT} mt-8 text-white/55`}>{t('Cycle 01 — capsule designer', 'Cycle 01 — designer capsule')}</p>
+          <h2 className="mt-3 text-[34px] uppercase leading-[0.95] md:text-[56px]" style={DISPLAY}>
+            Chimera School
+          </h2>
         </Reveal>
         <Reveal delay={0.2}>
-          <p className="mx-auto mt-10 max-w-[540px] text-[14px] leading-[1.7] text-white/60">
+          <p className="mx-auto mt-8 max-w-[560px] text-[14px] leading-[1.7] text-white/70">
             {t(
-              'SOUTRAME, c’est la trame qu’on a tous en nous : ce qui se construit à force de vécu, de doutes et de retours. CYCLE rappelle que rien n’est linéaire. On avance, on bloque, on revient. « I can never be food » n’est pas une phrase agressive, c’est une affirmation intérieure : ne pas être consommé, ne pas être formaté.',
-              'SOUTRAME is the inner thread we all carry: what gets built through experience, doubt and return. CYCLE is a reminder that nothing is linear. We move forward, we stall, we come back. “I can never be food” is not an aggressive line, it is an inner statement: not to be consumed, not to be shaped by what surrounds us.'
+              'Chimera School est la première capsule de SOUTRAME : un ensemble, une veste et un pantalon, pensé comme un uniforme. Une chimère est faite de plusieurs animaux ; l’ensemble est fait de plusieurs vestiaires. La coupe d’un survêtement, un brandebourg tressé au col, du mesh technique, et un pantalon dont les jambes se détachent pour devenir un short.',
+              'Chimera School is SOUTRAME’s first capsule: one set, a jacket and trousers, designed as a uniform. A chimera is made of several animals; the set is made of several wardrobes. A tracksuit cut, a braided frog closure at the collar, technical mesh, and trousers whose legs zip off into shorts.'
             )}
+          </p>
+        </Reveal>
+        <Reveal delay={0.3}>
+          <dl className={`${TXT} mx-auto mt-12 grid max-w-[760px] grid-cols-1 gap-y-6 border-t border-white/15 pt-5 text-left md:grid-cols-3 md:gap-x-8`}>
+            <div>
+              <dt className="text-white/45">{t('Deux pièces', 'Two pieces')}</dt>
+              <dd className="mt-1">{t('Track Jacket et Zip-off Pant, à porter ensemble ou séparément', 'Track Jacket and Zip-off Pant, worn together or apart')}</dd>
+            </div>
+            <div>
+              <dt className="text-white/45">{t('Broderies', 'Embroidery')}</dt>
+              <dd className="mt-1">{t('La chimère sur la poitrine, le cerf sur la poche arrière', 'The chimera on the chest, the deer on the back pocket')}</dd>
+            </div>
+            <div>
+              <dt className="text-white/45">{t('Petite série', 'Small run')}</dt>
+              <dd className="mt-1">{t('Dessinée à Paris, produite à la commande', 'Designed in Paris, made to order')}</dd>
+            </div>
+          </dl>
+        </Reveal>
+        <Reveal delay={0.4}>
+          <p className="mt-16 text-[18px] uppercase leading-none text-white/55 md:text-[22px]" style={MANTRA}>
+            I can never be food.
           </p>
         </Reveal>
       </div>

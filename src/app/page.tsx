@@ -19,23 +19,7 @@ function ProjectRow({ project, index }: { project: Project; index: number }) {
   return (
     <motion.article initial={{ opacity: 0 }} whileInView={{ opacity: 1 }} viewport={{ once: true, margin: '-10% 0px' }} transition={{ duration: 1.1, ease: EASE }}>
       <Link href={project.link} className="group block" aria-label={t(`Voir le projet ${title}`, `View project ${title}`)}>
-        {project.screens ? (
-          <div className="relative flex aspect-[4/5] w-full items-center justify-center gap-[1.6vw] overflow-hidden bg-[#efeeeb] px-[4vw] md:aspect-auto md:h-[80svh]">
-            {project.screens.map((sc, k) => {
-              const phone = sc.h > sc.w;
-              return (
-                <div
-                  key={sc.src}
-                  className={`relative shrink-0 overflow-hidden shadow-[0_30px_60px_-30px_rgba(0,0,0,0.35)] transition-transform duration-[1.6s] ease-[cubic-bezier(.22,1,.36,1)] group-hover:-translate-y-2 ${phone ? 'rounded-[14px] md:rounded-[22px]' : 'rounded-[6px]'} ${k > 1 ? 'hidden md:block' : ''}`}
-                  style={{ height: phone ? 'min(58svh, 62vw)' : 'auto', width: phone ? 'auto' : 'min(52vw, 900px)', aspectRatio: `${sc.w} / ${sc.h}`, transitionDelay: `${k * 60}ms` }}
-                >
-                  <Image src={sc.src} alt={k === 0 ? title : ''} fill sizes={phone ? '22vw' : '52vw'} className="object-cover" priority={index < 1} />
-                </div>
-              );
-            })}
-          </div>
-        ) : (
-        <div className="relative aspect-[4/5] w-full overflow-hidden bg-neutral-100 md:aspect-auto md:h-[80svh]">
+        <div className="relative aspect-[4/5] w-full overflow-hidden bg-neutral-100 md:aspect-auto md:h-[86svh]">
           <Image
             src={project.image}
             alt={title}
@@ -45,7 +29,6 @@ function ProjectRow({ project, index }: { project: Project; index: number }) {
             className="object-cover transition-transform duration-[1.6s] ease-[cubic-bezier(.22,1,.36,1)] group-hover:scale-[1.025]"
           />
         </div>
-        )}
         <div className="h-[3px] w-full bg-black/10">
           <div className="h-full w-[12%] bg-[#0a0a0a] transition-[width] duration-700 ease-[cubic-bezier(.22,1,.36,1)] group-hover:w-full" />
         </div>
@@ -60,9 +43,9 @@ function ProjectRow({ project, index }: { project: Project; index: number }) {
   );
 }
 
-function GroupLabel({ children, count, first = false }: { children: React.ReactNode; count: number; first?: boolean }) {
+function GroupLabel({ children, count }: { children: React.ReactNode; count: number }) {
   return (
-    <p className={`${TXT} px-2 pb-1.5 md:px-3 ${first ? 'pt-6' : 'pt-24 md:pt-32'}`}>
+    <p className={`${TXT} px-2 pb-1.5 pt-24 md:px-3 md:pt-32`}>
       {children} <span className="ml-2 tabular-nums text-black/45">{count}</span>
     </p>
   );
@@ -78,9 +61,9 @@ export default function Home() {
       <Header active="work" />
 
       {/* statement */}
-      <section className="px-2 pb-5 pt-16 md:px-3 md:pt-20">
+      <section className="flex min-h-[78svh] flex-col justify-end px-2 pb-6 md:px-3">
         <motion.h1
-          className="text-[12vw] font-medium leading-[0.9] tracking-[-0.045em] md:text-[5.6vw]"
+          className="max-w-[14ch] text-[13vw] font-medium leading-[0.9] tracking-[-0.045em] md:text-[7.2vw]"
           initial={{ opacity: 0, y: 24 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 1.2, ease: EASE }}
@@ -88,7 +71,7 @@ export default function Home() {
           {t('Product Designer à Paris.', 'Product Designer in Paris.')}
         </motion.h1>
         <motion.div
-          className={`${TXT} mt-5 grid grid-cols-1 gap-3 md:grid-cols-4`}
+          className={`${TXT} mt-8 grid grid-cols-1 gap-4 md:grid-cols-4`}
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ duration: 1, delay: 0.4 }}
@@ -111,7 +94,7 @@ export default function Home() {
       <div id="work">
         {projects.map((project, i) => (
           <Fragment key={project.link}>
-            {i === 0 && <GroupLabel first count={product}>Product design</GroupLabel>}
+            {i === 0 && <GroupLabel count={product}>Product design</GroupLabel>}
             {project.group === 'explorations' && projects[i - 1]?.group === 'product' && (
               <GroupLabel count={explorations}>{t('Explorations visuelles — direction artistique, 3D, marque', 'Visual explorations — art direction, 3D, brand')}</GroupLabel>
             )}

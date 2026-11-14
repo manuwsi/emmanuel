@@ -5,8 +5,6 @@ export type Project = {
   link: string;
   /** Cover already contains text (logo, tagline): blur it more so it doesn't clash with the card title */
   softCover?: boolean;
-  /** Interface screens to lay out on a neutral backdrop instead of a full-bleed image (w/h = intrinsic size). */
-  screens?: { src: string; w: number; h: number }[];
   group: 'product' | 'explorations';
 };
 
@@ -25,11 +23,6 @@ export const projects: Project[] = [
     link: '/serena',
     group: 'product',
     softCover: true,
-    screens: [
-      { src: '/serena-dashboard.png', w: 1010, h: 632 },
-      { src: '/serena-mobile-tasks.png', w: 368, h: 768 },
-      { src: '/serena-mobile-scan.png', w: 375, h: 759 },
-    ],
   },
   {
     title: same('Shu Uemura AI:tutor'),
@@ -37,12 +30,6 @@ export const projects: Project[] = [
     image: '/shu-flow-01-cover.png',
     link: '/shu-uemura',
     group: 'product',
-    screens: [
-      { src: '/shu-flow-01-cover.png', w: 390, h: 844 },
-      { src: '/shu-flow-03-chat.png', w: 390, h: 844 },
-      { src: '/shu-flow-05-face-scan.png', w: 390, h: 844 },
-      { src: '/shu-flow-09-recommendations.png', w: 390, h: 844 },
-    ],
   },
   {
     title: same('Hennessy X.O Second Skin'),

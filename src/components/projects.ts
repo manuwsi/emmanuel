@@ -60,14 +60,6 @@ export const projects: Project[] = [
     group: 'explorations',
   },
   {
-    title: same('SOUTRAME.CYCLE'),
-    subtitle: { fr: '2026 — Création de marque, collection & site e-commerce', en: '2026 — Brand creation, collection & e-commerce site' },
-    image: '/soutrame/jacket-front.jpg',
-    size: [1600, 2000],
-    link: '/soutrame',
-    group: 'explorations',
-  },
-  {
     title: same('Post Archive Faction'),
     subtitle: { fr: '2025 — Direction créative, UI & motion', en: '2025 — Creative direction, UI & motion' },
     image: '/PAF1.png',

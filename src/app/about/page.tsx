@@ -96,8 +96,8 @@ export default function AboutPage() {
           </span>
           <h1 className="text-4xl md:text-7xl font-medium tracking-[-0.03em] tracking-tight leading-[1.05] max-w-4xl">
             {t(
-              'J’ai commencé par l’image. Aujourd’hui, je conçois des produits.',
-              'I started with images. Now I design products.'
+              'Product Designer à Paris, formé dans un studio au service du luxe.',
+              'Product Designer in Paris, trained in a studio working for luxury brands.'
             )}
           </h1>
           <div className="grid grid-cols-1 md:grid-cols-12 gap-6 md:gap-8">
@@ -105,41 +105,44 @@ export default function AboutPage() {
               {t(
                 <>
                   <p>
-                    Pendant un an chez OKCC, studio créatif pour le luxe et la beauté, j&apos;ai dessiné
-                    les écrans d&apos;un coach beauté IA pour Shu Uemura, fait la direction artistique 3D
-                    de l&apos;expérience Hennessy X.O à VivaTech (Lovie Award), et monté un process
+                    J&apos;ai passé un an chez OKCC, studio créatif pour le luxe et la beauté. J&apos;y ai
+                    conçu l&apos;interface de Shu Uemura AI:tutor, un coach maquillage par IA, itérée avec le
+                    client, et travaillé sur Hennessy, Louis Vuitton, L&apos;Oréal et HOKA. L&apos;expérience
+                    Hennessy X.O présentée à VivaTech a reçu un Lovie Award.
+                  </p>
+                  <p>
+                    Sur Serena, une application pour les agriculteurs, j&apos;ai mené le projet depuis le
+                    terrain : questionnaire, entretiens, deux versions de wireframes, puis l&apos;UI desktop et
+                    mobile.
+                  </p>
+                  <p>
+                    J&apos;utilise l&apos;IA générative comme outil de production : prototyper plus vite,
+                    tester des directions, produire des visuels. Chez OKCC, j&apos;ai mis en place un process
                     d&apos;images produit générées par IA pour Louis Vuitton.
                   </p>
                   <p>
-                    Sur Serena, une app pour les agriculteurs, j&apos;ai fait l&apos;inverse : partir du
-                    terrain. Questionnaire, entretiens, deux versions de wireframes avant la moindre UI.
-                    C&apos;est là que j&apos;ai su que je voulais faire du produit.
-                  </p>
-                  <p>
-                    À côté, je construis Soutrame, ma marque de vêtements. J&apos;ai dessiné le premier
-                    ensemble, suivi la fabrication avec l&apos;usine, organisé le shooting et conçu le site.
-                  </p>
-                  <p>
-                    Je cherche un poste de Product Designer, à Paris ou en remote.
+                    Je développe aussi <a href="/soutrame" className="underline underline-offset-2 hover:text-black">Soutrame</a>, une marque de vêtements que je mène seul, de la conception
+                    à la boutique en ligne.
                   </p>
                 </>,
                 <>
                   <p>
-                    For a year at OKCC, a creative studio for luxury and beauty, I designed the screens of
-                    an AI beauty coach for Shu Uemura, led the 3D art direction of the Hennessy X.O
-                    experience at VivaTech (Lovie Award), and set up an AI product-image process for
-                    Louis Vuitton.
+                    I spent a year at OKCC, a creative studio for luxury and beauty brands. There I designed
+                    the interface of Shu Uemura AI:tutor, an AI make-up coach, iterated with the client, and
+                    worked on Hennessy, Louis Vuitton, L&apos;Oréal and HOKA. The Hennessy X.O experience
+                    shown at VivaTech won a Lovie Award.
                   </p>
                   <p>
-                    On Serena, an app for farmers, I worked the other way round: starting from the field.
-                    A survey, interviews, two rounds of wireframes before any UI. That is where I knew I
-                    wanted to do product.
+                    On Serena, an app for farmers, I led the project from the field: a survey, interviews,
+                    two rounds of wireframes, then the desktop and mobile UI.
                   </p>
                   <p>
-                    On the side, I am building Soutrame, my clothing label. I designed the first set,
-                    followed production with the factory, ran the shoot and designed the site.
+                    I use generative AI as a production tool: to prototype faster, test directions and
+                    produce visuals. At OKCC I set up an AI product-image process for Louis Vuitton.
                   </p>
-                  <p>I am looking for a Product Designer role, in Paris or remote.</p>
+                  <p>
+                    I also run <a href="/soutrame" className="underline underline-offset-2 hover:text-black">Soutrame</a>, a clothing label I lead on my own, from design to the online shop.
+                  </p>
                 </>
               )}
               <div className="flex flex-wrap gap-3 pt-4">

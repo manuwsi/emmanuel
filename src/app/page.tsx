@@ -80,7 +80,7 @@ export default function Home() {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 1.2, ease: EASE }}
         >
-          {t('Je dessine des produits digitaux, et parfois des vêtements.', 'I design digital products, and sometimes clothes.')}
+          {t('Emmanuel Ijjou, Product Designer.', 'Emmanuel Ijjou, Product Designer.')}
         </motion.h1>
         <motion.div
           className={`${TXT} mt-8 grid grid-cols-1 gap-4 md:grid-cols-4`}
@@ -90,12 +90,12 @@ export default function Home() {
         >
           <p className="md:col-span-2 md:max-w-[480px]">
             {t(
-              'Emmanuel Ijjou, Product Designer à Paris. J’ai interrogé des agriculteurs pour concevoir Serena, dessiné un coach beauté IA pour Shu Uemura, et construit Soutrame, ma marque, du croquis au site.',
-              'Emmanuel Ijjou, Product Designer in Paris. I interviewed farmers to design Serena, drew an AI beauty coach for Shu Uemura, and built Soutrame, my own label, from sketch to shop.'
+              'Basé à Paris. Je conçois des applications web et mobile, de l’entretien utilisateur à l’écran final : Serena, un assistant administratif pour les agriculteurs, et Shu Uemura AI:tutor, un coach maquillage par IA.',
+              'Based in Paris. I design web and mobile apps, from user interviews to the final screen: Serena, an admin assistant for farmers, and Shu Uemura AI:tutor, an AI make-up coach.'
             )}
           </p>
           <p className="text-black/50 md:col-span-1">
-            {t('Un an chez OKCC, pour', 'A year at OKCC, for')} Hennessy, Shu Uemura, Louis Vuitton, L&apos;Oréal, YSL Beauty, HOKA.
+            {t('Un an chez OKCC, studio créatif, pour', 'One year at OKCC, creative studio, for')} Hennessy, Shu Uemura, Louis Vuitton, L&apos;Oréal, YSL Beauty, HOKA.
           </p>
           <a href="#work" className="hover:underline md:text-right">
             {t('Voir les projets', 'See the work')} ↓

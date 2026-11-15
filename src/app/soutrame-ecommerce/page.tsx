@@ -221,6 +221,8 @@ export default function Page() {
           )}
         </p>
       </Chapter>
+      <Media src="/soutrame-case/flow.jpg" alt={t('Parcours d’achat, d’Instagram à la précommande', 'Purchase journey, from Instagram to pre-order')} width={2400} height={825} />
+      <div className="pt-6" />
       <Media src="/soutrame-case/sheet.jpg" alt={t('Fiche produit', 'Product page')} width={2400} height={1500} />
       <Row cols={2}>
         <div className="space-y-2">

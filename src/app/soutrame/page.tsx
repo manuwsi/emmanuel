@@ -339,104 +339,6 @@ function Reveal({ children, delay = 0, className = '' }: { children: React.React
   );
 }
 
-/* ───────────────────────── universe ─────────────────────────
- * Snow: the scattered dots of the SOUTRAME CYCLE posters, set in motion.
- * It lives inside the black chapter only, sized to it, and sleeps when off screen.
- */
-function Snow() {
-  const ref = useRef<HTMLCanvasElement>(null);
-
-  useEffect(() => {
-    const canvas = ref.current;
-    const host = canvas?.parentElement;
-    if (!canvas || !host) return;
-    const ctx = canvas.getContext('2d');
-    if (!ctx) return;
-    const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-
-    type Flake = { x: number; y: number; r: number; z: number; sway: number; phase: number };
-    let w = 0;
-    let h = 0;
-    let flakes: Flake[] = [];
-    let wind = 0;
-    let targetWind = 0;
-    let raf = 0;
-    let visible = false;
-    const dpr = Math.min(window.devicePixelRatio || 1, 2);
-
-    const make = (y?: number): Flake => {
-      const z = Math.random();
-      return { x: Math.random() * w, y: y ?? Math.random() * h, r: 0.5 + z * z * 2.2, z, sway: 0.2 + Math.random() * 0.6, phase: Math.random() * Math.PI * 2 };
-    };
-
-    const resize = () => {
-      w = host.clientWidth;
-      h = host.clientHeight;
-      canvas.width = w * dpr;
-      canvas.height = h * dpr;
-      canvas.style.width = `${w}px`;
-      canvas.style.height = `${h}px`;
-      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
-      const count = Math.round(Math.min(160, (w * h) / 9000));
-      flakes = Array.from({ length: count }, () => make());
-      if (reduce) paintAll();
-    };
-
-    const paintAll = () => {
-      ctx.clearRect(0, 0, w, h);
-      for (const f of flakes) {
-        ctx.globalAlpha = 0.35 + f.z * 0.6;
-        ctx.beginPath();
-        ctx.arc(f.x, f.y, f.r, 0, Math.PI * 2);
-        ctx.fillStyle = '#ffffff';
-        ctx.fill();
-      }
-    };
-
-    const onMove = (e: PointerEvent) => {
-      targetWind = (e.clientX / window.innerWidth - 0.5) * 0.9;
-    };
-
-    const draw = (time: number) => {
-      wind += (targetWind - wind) * 0.02;
-      for (const f of flakes) {
-        f.y += 0.12 + f.z * 0.55;
-        f.x += Math.sin(time * 0.0004 * f.sway + f.phase) * 0.18 + wind * (0.3 + f.z);
-        if (f.y - f.r > h) Object.assign(f, make(-f.r * 2));
-        if (f.x < -10) f.x = w + 10;
-        if (f.x > w + 10) f.x = -10;
-      }
-      paintAll();
-      raf = requestAnimationFrame(draw);
-    };
-
-    const start = () => {
-      cancelAnimationFrame(raf);
-      if (visible && !document.hidden && !reduce) raf = requestAnimationFrame(draw);
-    };
-
-    const io = new IntersectionObserver(([e]) => {
-      visible = e.isIntersecting;
-      start();
-    });
-    const ro = new ResizeObserver(resize);
-    resize();
-    io.observe(host);
-    ro.observe(host);
-    window.addEventListener('pointermove', onMove);
-    document.addEventListener('visibilitychange', start);
-    return () => {
-      cancelAnimationFrame(raf);
-      io.disconnect();
-      ro.disconnect();
-      window.removeEventListener('pointermove', onMove);
-      document.removeEventListener('visibilitychange', start);
-    };
-  }, []);
-
-  return <canvas ref={ref} aria-hidden className="pointer-events-none absolute inset-0" />;
-}
-
 /* ───────────────────────── intro ───────────────────────── */
 
 function Intro({ onDone }: { onDone: () => void }) {
@@ -1077,32 +979,32 @@ function Universe() {
   const t = useT();
   const small = 'max-w-[440px] text-[14px] leading-[1.5] md:text-[13px] md:leading-[1.35]';
   return (
-    <section id="cycle" className="relative z-[1] overflow-hidden bg-[#0a0a0a] text-white">
-      <Snow />
-      {/* the capsule, as a short collection note in the shop's own small voice */}
-      <div className="relative grid grid-cols-1 gap-y-7 px-2 py-24 md:grid-cols-4 md:gap-x-3 md:px-3 md:py-44">
-        <Reveal>
-          <p className="text-[15px] font-semibold leading-[1.15]">
-            Cycle 01
-            <br />
-            Chimera School
-          </p>
-        </Reveal>
-        <Reveal delay={0.1} className="md:col-span-2">
-          <p className={`${small} text-white/80`}>
-            {t(
-              'Première capsule de SOUTRAME. Un ensemble en deux pièces\u00a0: une veste de survêtement courte à capuche, fermée au col par un brandebourg tressé, et un pantalon large dont les jambes se détachent. Nylon ivoire, empiècements en mesh gris.',
-              'SOUTRAME’s first capsule. A two-piece set: a cropped hooded track jacket, closed at the collar by a braided frog, and wide trousers with zip-off legs. Ivory nylon, grey mesh panels.'
-            )}
-          </p>
-          <p className={`${small} mt-4 text-white/50`}>{t('Dessinée à Paris. Petite série, produite à la commande.', 'Designed in Paris. Small run, made to order.')}</p>
-          <p className={`${small} mt-4 text-white/50`}>I can never be food.</p>
-        </Reveal>
-        <Reveal delay={0.2} className="order-first md:order-none md:justify-self-end">
-          {/* the chimera embroidered on both pieces, kept small */}
-          {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img src="/soutrame/chimera.svg" alt="" className="h-14 w-auto" />
-        </Reveal>
+    <section id="cycle" className="relative z-[1] bg-[#0a0a0a] text-white">
+      <div className="grid grid-cols-1 md:grid-cols-12 md:gap-x-3">
+        {/* the chimera of Cycle 01, in its own material: the one image of the universe beyond the garment */}
+        <div className="relative aspect-[2/3] w-full overflow-hidden md:col-span-5 md:aspect-auto md:min-h-[100svh]">
+          <Weave src="/soutrame/chimera-visual.jpg" alt="La chimère de Chimera School" inView strips={12} sizes="(min-width:768px) 42vw, 100vw" />
+        </div>
+        {/* the capsule, as a short collection note in the shop's own small voice */}
+        <div className="flex flex-col justify-end gap-y-7 px-2 pb-24 pt-10 md:col-span-6 md:col-start-7 md:px-3 md:pb-10 md:pt-24">
+          <Reveal>
+            <p className="text-[15px] font-semibold leading-[1.15]">
+              Cycle 01
+              <br />
+              Chimera School
+            </p>
+          </Reveal>
+          <Reveal delay={0.1}>
+            <p className={`${small} text-white/80`}>
+              {t(
+                'Première capsule de SOUTRAME. Un ensemble en deux pièces\u00a0: une veste de survêtement courte à capuche, fermée au col par un brandebourg tressé, et un pantalon large dont les jambes se détachent. Nylon ivoire, empiècements en mesh gris.',
+                'SOUTRAME’s first capsule. A two-piece set: a cropped hooded track jacket, closed at the collar by a braided frog, and wide trousers with zip-off legs. Ivory nylon, grey mesh panels.'
+              )}
+            </p>
+            <p className={`${small} mt-4 text-white/50`}>{t('Dessinée à Paris. Petite série, produite à la commande.', 'Designed in Paris. Small run, made to order.')}</p>
+            <p className={`${small} mt-4 text-white/50`}>I can never be food.</p>
+          </Reveal>
+        </div>
       </div>
     </section>
   );

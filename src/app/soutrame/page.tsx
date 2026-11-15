@@ -23,7 +23,7 @@
 
 import Image from 'next/image';
 import Link from 'next/link';
-import { useCallback, useEffect, useRef, useState } from 'react';
+import { useCallback, useEffect, useId, useRef, useState } from 'react';
 import { AnimatePresence, motion, useInView, useScroll, useTransform } from 'framer-motion';
 import { useLang, useT } from '@/components/i18n';
 import ArrowOut from '@/components/ArrowOut';
@@ -190,6 +190,7 @@ function Mark({ className = '', assemble = false }: { className?: string; assemb
  * to the next: the cycle. Geometry is untouched — only the material changes.
  */
 function SoftMark({ className = '', animate = true }: { className?: string; animate?: boolean }) {
+  const uid = useId().replace(/[^a-zA-Z0-9]/g, '');
   const [active, setActive] = useState(0);
   useEffect(() => {
     if (!animate || window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
@@ -203,39 +204,39 @@ function SoftMark({ className = '', animate = true }: { className?: string; anim
   return (
     <svg viewBox="-96 -76 192 168" className={className} aria-hidden>
       <defs>
-        <filter id="sm-goo" x="-20%" y="-20%" width="140%" height="140%">
+        <filter id={`sm-goo-${uid}`} x="-20%" y="-20%" width="140%" height="140%">
           <feGaussianBlur in="SourceGraphic" stdDeviation="3" result="b" />
           <feColorMatrix in="b" values="1 0 0 0 0  0 1 0 0 0  0 0 1 0 0  0 0 0 18 -7" />
         </filter>
-        <radialGradient id="sm-sat" cx="42%" cy="38%" r="70%">
+        <radialGradient id={`sm-sat-${uid}`} cx="42%" cy="38%" r="70%">
           <stop offset="0%" stopColor="#f4f4f3" />
           <stop offset="70%" stopColor="#e3e3e2" />
           <stop offset="100%" stopColor="#d6d6d5" />
         </radialGradient>
-        <radialGradient id="sm-core" cx="40%" cy="36%" r="75%">
+        <radialGradient id={`sm-core-${uid}`} cx="40%" cy="36%" r="75%">
           <stop offset="0%" stopColor="#f6f6f5" />
           <stop offset="65%" stopColor="#e6e6e5" />
           <stop offset="100%" stopColor="#d4d4d3" />
         </radialGradient>
-        <radialGradient id="sm-halo" cx="50%" cy="50%" r="50%">
+        <radialGradient id={`sm-halo-${uid}`} cx="50%" cy="50%" r="50%">
           <stop offset="0%" stopColor="#ffffff" stopOpacity="0.9" />
           <stop offset="100%" stopColor="#ffffff" stopOpacity="0" />
         </radialGradient>
       </defs>
 
       {/* the liquid body: everything fuses through the goo filter */}
-      <g filter="url(#sm-goo)">
-        <motion.circle cx="0" cy="0" r="30" fill="url(#sm-core)" initial={animate ? { scale: 0.4 } : false} animate={{ scale: 1 }} transition={{ duration: 1.2, ease: EASE }} />
+      <g filter={`url(#sm-goo-${uid})`}>
+        <motion.circle cx="0" cy="0" r="30" fill={`url(#sm-core-${uid})`} initial={animate ? { scale: 0.4 } : false} animate={{ scale: 1 }} transition={{ duration: 1.2, ease: EASE }} />
         {pts.map((p, i) => (
           <motion.g key={p.deg} initial={animate ? { x: -p.x * 0.85, y: -p.y * 0.85 } : false} animate={{ x: 0, y: 0 }} transition={{ duration: 1.5, ease: EASE, delay: 0.15 + i * 0.07 }}>
             <rect x="-4.5" y="-56" width="9" height="56" transform={`rotate(${p.deg})`} fill="#dcdcdb" />
-            <circle cx={p.x} cy={p.y} r="17" fill="url(#sm-sat)" />
+            <circle cx={p.x} cy={p.y} r="17" fill={`url(#sm-sat-${uid})`} />
           </motion.g>
         ))}
       </g>
 
       {/* soft light on the core */}
-      <circle cx="-7" cy="-8" r="18" fill="url(#sm-halo)" opacity="0.7" />
+      <circle cx="-7" cy="-8" r="18" fill={`url(#sm-halo-${uid})`} opacity="0.7" />
 
       {/* small dots at the heart of each satellite; one is active and travels round */}
       {pts.map((p, i) => (
@@ -594,6 +595,7 @@ function Chrome({ filter, setFilter, count }: { filter: Category | 'all'; setFil
 
       <Drawer open={bag} onClose={closeBag} side="right" label={t('Panier', 'Bag')}>
         <div className="flex flex-1 flex-col items-start justify-center gap-4">
+          <SoftMark className="-ml-2 mb-2 w-28" />
           <p className="text-[22px] leading-tight" style={DISPLAY}>
             {t('Ton panier est vide.', 'Your bag is empty.')}
           </p>
@@ -796,6 +798,30 @@ function Accordion({ title, children, defaultOpen = false }: { title: string; ch
   );
 }
 
+/** A short pause when a piece opens: the living mark, then the page reveals itself. */
+function SheetLoader() {
+  const [on, setOn] = useState(true);
+  useEffect(() => {
+    const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    const id = setTimeout(() => setOn(false), reduce ? 0 : 1100);
+    return () => clearTimeout(id);
+  }, []);
+  return (
+    <AnimatePresence>
+      {on && (
+        <motion.div
+          className="fixed inset-0 z-20 flex items-center justify-center bg-white"
+          initial={{ opacity: 1 }}
+          exit={{ opacity: 0 }}
+          transition={{ duration: 0.5, ease: 'easeOut' }}
+        >
+          <SoftMark className="w-24 md:w-28" />
+        </motion.div>
+      )}
+    </AnimatePresence>
+  );
+}
+
 function ProductSheet({ piece, onClose, onOpen }: { piece: Piece | null; onClose: () => void; onOpen: (p: Piece) => void }) {
   const t = useT();
   const { lang } = useLang();
@@ -839,6 +865,7 @@ function ProductSheet({ piece, onClose, onOpen }: { piece: Piece | null; onClose
           transition={{ duration: 0.9, ease: EASE }}
           data-lenis-prevent
         >
+          <SheetLoader key={`loader-${piece.id}`} />
           <div className={`${TXT} sticky top-0 z-10 flex items-center justify-between bg-white/85 px-2 py-1.5 backdrop-blur-md md:px-3`}>
             <button onClick={onClose} className="hover:underline">
               Shop → {piece.name}
@@ -855,7 +882,7 @@ function ProductSheet({ piece, onClose, onOpen }: { piece: Piece | null; onClose
                 {piece.gallery.map((g, i) => (
                   <div key={g} className="relative aspect-[4/5] w-[86vw] shrink-0 snap-start overflow-hidden md:w-auto" style={{ background: PHOTO }}>
                     {i === 0 ? (
-                      <Weave src={g} alt={`${piece.name} — 1`} strips={12} priority sizes="(min-width:768px) 33vw, 86vw" delay={0.35} />
+                      <Weave src={g} alt={`${piece.name} — 1`} strips={12} priority sizes="(min-width:768px) 33vw, 86vw" delay={1.2} />
                     ) : (
                       <Image src={g} alt={`${piece.name} — ${i + 1}`} fill sizes="(min-width:768px) 33vw, 86vw" className="object-cover" />
                     )}

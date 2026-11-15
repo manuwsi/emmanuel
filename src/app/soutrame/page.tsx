@@ -184,6 +184,70 @@ function Mark({ className = '', assemble = false }: { className?: string; assemb
   );
 }
 
+/**
+ * The same mark, in a soft, liquid treatment: pale grey forms that fuse into each other (a "goo" filter),
+ * diffuse gradients, and small dots at the heart of each satellite. A dark dot travels from one satellite
+ * to the next: the cycle. Geometry is untouched — only the material changes.
+ */
+function SoftMark({ className = '', animate = true }: { className?: string; animate?: boolean }) {
+  const [active, setActive] = useState(0);
+  useEffect(() => {
+    if (!animate || window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+    const id = setInterval(() => setActive((a) => (a + 1) % SATELLITES.length), 420);
+    return () => clearInterval(id);
+  }, [animate]);
+  const pts = SATELLITES.map((deg) => {
+    const t = (deg * Math.PI) / 180;
+    return { deg, x: Math.round(56 * Math.sin(t) * 100) / 100, y: Math.round(-56 * Math.cos(t) * 100) / 100 };
+  });
+  return (
+    <svg viewBox="-96 -76 192 168" className={className} aria-hidden>
+      <defs>
+        <filter id="sm-goo" x="-20%" y="-20%" width="140%" height="140%">
+          <feGaussianBlur in="SourceGraphic" stdDeviation="3" result="b" />
+          <feColorMatrix in="b" values="1 0 0 0 0  0 1 0 0 0  0 0 1 0 0  0 0 0 18 -7" />
+        </filter>
+        <radialGradient id="sm-sat" cx="42%" cy="38%" r="70%">
+          <stop offset="0%" stopColor="#f4f4f3" />
+          <stop offset="70%" stopColor="#e3e3e2" />
+          <stop offset="100%" stopColor="#d6d6d5" />
+        </radialGradient>
+        <radialGradient id="sm-core" cx="40%" cy="36%" r="75%">
+          <stop offset="0%" stopColor="#f6f6f5" />
+          <stop offset="65%" stopColor="#e6e6e5" />
+          <stop offset="100%" stopColor="#d4d4d3" />
+        </radialGradient>
+        <radialGradient id="sm-halo" cx="50%" cy="50%" r="50%">
+          <stop offset="0%" stopColor="#ffffff" stopOpacity="0.9" />
+          <stop offset="100%" stopColor="#ffffff" stopOpacity="0" />
+        </radialGradient>
+      </defs>
+
+      {/* the liquid body: everything fuses through the goo filter */}
+      <g filter="url(#sm-goo)">
+        <motion.circle cx="0" cy="0" r="30" fill="url(#sm-core)" initial={animate ? { scale: 0.4 } : false} animate={{ scale: 1 }} transition={{ duration: 1.2, ease: EASE }} />
+        {pts.map((p, i) => (
+          <motion.g key={p.deg} initial={animate ? { x: -p.x * 0.85, y: -p.y * 0.85 } : false} animate={{ x: 0, y: 0 }} transition={{ duration: 1.5, ease: EASE, delay: 0.15 + i * 0.07 }}>
+            <rect x="-4.5" y="-56" width="9" height="56" transform={`rotate(${p.deg})`} fill="#dcdcdb" />
+            <circle cx={p.x} cy={p.y} r="17" fill="url(#sm-sat)" />
+          </motion.g>
+        ))}
+      </g>
+
+      {/* soft light on the core */}
+      <circle cx="-7" cy="-8" r="18" fill="url(#sm-halo)" opacity="0.7" />
+
+      {/* small dots at the heart of each satellite; one is active and travels round */}
+      {pts.map((p, i) => (
+        <motion.g key={p.deg} initial={animate ? { opacity: 0 } : false} animate={{ opacity: 1 }} transition={{ duration: 0.6, delay: 1.1 + i * 0.05 }}>
+          <circle cx={p.x} cy={p.y} r={i === active ? 8.5 : 0} fill="#c9c9c8" style={{ transition: 'r 0.35s ease' }} />
+          <circle cx={p.x} cy={p.y} r={i === active ? 3.6 : 2.4} fill={i === active ? '#111' : '#a9a9a8'} style={{ transition: 'r 0.35s ease, fill 0.35s ease' }} />
+        </motion.g>
+      ))}
+    </svg>
+  );
+}
+
 /** Square button. On hover, the fill is woven in, thread by thread. */
 function Btn({ children, href, disabled = false, full = false, external = false, onClick }: { children: React.ReactNode; href?: string; disabled?: boolean; full?: boolean; external?: boolean; onClick?: () => void }) {
   const cls = `group relative inline-flex h-[48px] items-center justify-between gap-8 overflow-hidden border px-4 ${TXT} ${full ? 'w-full' : 'w-full sm:w-auto sm:min-w-[260px]'} ${
@@ -377,12 +441,12 @@ function Snow() {
 function Intro({ onDone }: { onDone: () => void }) {
   useEffect(() => {
     const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-    const id = setTimeout(onDone, reduce ? 0 : 1500);
+    const id = setTimeout(onDone, reduce ? 0 : 2300);
     return () => clearTimeout(id);
   }, [onDone]);
   return (
     <motion.div className="fixed inset-0 z-[90] flex flex-col items-center justify-center gap-5" style={{ background: BG, color: INK }} exit={{ clipPath: 'inset(0 0 100% 0)' }} transition={{ duration: 1, ease: EASE }}>
-      <Mark assemble className="w-12 md:w-14" />
+      <SoftMark className="w-36 md:w-44" />
       <motion.span initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.6, duration: 0.6 }} className="text-[18px] uppercase leading-none" style={WORDMARK}>
         Soutrame
       </motion.span>

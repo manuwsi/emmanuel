@@ -305,11 +305,31 @@ function BuyButton({ full = false, price }: { full?: boolean; price?: string | n
 }
 
 /** Image woven in, strip by strip. `inView` delays the weave until the image enters the screen. */
+/** True on phones: there, motion is reduced to simple fades so nothing reads as a glitch. */
+function usePhone() {
+  const [phone, setPhone] = useState(false);
+  useEffect(() => {
+    const mq = window.matchMedia('(max-width: 767px)');
+    const update = () => setPhone(mq.matches);
+    update();
+    mq.addEventListener('change', update);
+    return () => mq.removeEventListener('change', update);
+  }, []);
+  return phone;
+}
+
 function Weave({ src, alt, strips = 12, priority = false, sizes, delay = 0, inView = false }: { src: string; alt: string; strips?: number; priority?: boolean; sizes: string; delay?: number; inView?: boolean }) {
   const stripH = 100 / strips + 0.2; // % of the container; the small overlap hides seams between strips
   const host = useRef<HTMLDivElement>(null);
   const seen = useInView(host, { once: true, margin: '0px 0px -15% 0px' });
   const go = !inView || seen; // one observer for the whole image, so every strip weaves together
+  const phone = usePhone();
+  if (phone)
+    return (
+      <motion.div ref={host} className="absolute inset-0" initial={{ opacity: 0 }} animate={{ opacity: go ? 1 : 0 }} transition={{ duration: 0.7, ease: 'easeOut', delay: Math.min(delay, 0.2) }}>
+        <Image src={src} alt={alt} fill priority={priority} sizes={sizes} className="object-cover" />
+      </motion.div>
+    );
   return (
     <div ref={host} className="absolute inset-0">
       {Array.from({ length: strips }).map((_, i) => (
@@ -344,7 +364,8 @@ function Reveal({ children, delay = 0, className = '' }: { children: React.React
 function Intro({ onDone }: { onDone: () => void }) {
   useEffect(() => {
     const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-    const id = setTimeout(onDone, reduce ? 0 : 2300);
+    const phone = window.matchMedia('(max-width: 767px)').matches;
+    const id = setTimeout(onDone, reduce ? 0 : phone ? 1400 : 2300);
     return () => clearTimeout(id);
   }, [onDone]);
   return (
@@ -409,7 +430,10 @@ function Chrome({ filter, setFilter, count }: { filter: Category | 'all'; setFil
   };
   const current = FILTERS.find((f) => f.id === filter)!;
   const { scrollYProgress } = useScroll();
-  const spin = useTransform(scrollYProgress, [0, 1], [0, 720]);
+  const spinning = useTransform(scrollYProgress, [0, 1], [0, 720]);
+  const phone = usePhone();
+  const still = useTransform(scrollYProgress, () => 0);
+  const spin = phone ? still : spinning;
 
   return (
     <>
@@ -613,7 +637,7 @@ function IntroFilm() {
 
 function HoverWeave({ src, sizes, strips = 10 }: { src: string; sizes: string; strips?: number }) {
   return (
-    <div className="absolute inset-0 flex flex-col">
+    <div className="absolute inset-0 hidden flex-col md:flex">
       {Array.from({ length: strips }).map((_, k) => (
         <div
           key={k}
@@ -705,7 +729,8 @@ function SheetLoader() {
   const [on, setOn] = useState(true);
   useEffect(() => {
     const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-    const id = setTimeout(() => setOn(false), reduce ? 0 : 1100);
+    const phone = window.matchMedia('(max-width: 767px)').matches;
+    const id = setTimeout(() => setOn(false), reduce || phone ? 0 : 1100);
     return () => clearTimeout(id);
   }, []);
   return (

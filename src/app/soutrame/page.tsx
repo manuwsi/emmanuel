@@ -944,7 +944,7 @@ function Lookbook() {
       >
         {LOOKBOOK.map((s, i) => (
           <div key={s.src} className="relative aspect-[4/5] w-[82vw] shrink-0 overflow-hidden md:h-[78svh] md:w-auto" style={{ background: PHOTO }}>
-            {i < 3 ? (
+            {i === 0 ? (
               <Weave src={s.src} alt={`Chimera School — ${s.label[lang]}`} inView strips={10} sizes="(min-width:768px) 50vw, 82vw" delay={i * 0.12} />
             ) : (
               <Image src={s.src} alt={`Chimera School — ${s.label[lang]}`} fill sizes="(min-width:768px) 50vw, 82vw" className="object-cover" draggable={false} />

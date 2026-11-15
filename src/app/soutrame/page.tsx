@@ -983,7 +983,10 @@ function Universe() {
       <div className="grid grid-cols-1 md:grid-cols-12 md:gap-x-3">
         {/* the chimera of Cycle 01, in its own material: the one image of the universe beyond the garment */}
         <div className="relative aspect-[2/3] w-full overflow-hidden md:col-span-5 md:aspect-auto md:min-h-[100svh]">
-          <Weave src="/soutrame/chimera-visual.jpg" alt="La chimère de Chimera School" inView strips={12} sizes="(min-width:768px) 42vw, 100vw" />
+          {/* a quiet, slow fade: the weave stays for the photographs */}
+          <motion.div className="absolute inset-0" initial={{ opacity: 0, scale: 1.03 }} whileInView={{ opacity: 1, scale: 1 }} viewport={{ once: true, margin: '-15% 0px' }} transition={{ duration: 1.8, ease: EASE }}>
+            <Image src="/soutrame/chimera-visual.jpg" alt="La chimère de Chimera School" fill sizes="(min-width:768px) 42vw, 100vw" className="object-cover" />
+          </motion.div>
         </div>
         {/* the capsule, as a short collection note in the shop's own small voice */}
         <div className="flex flex-col justify-end gap-y-7 px-2 pb-24 pt-10 md:col-span-6 md:col-start-7 md:px-3 md:pb-10 md:pt-24">

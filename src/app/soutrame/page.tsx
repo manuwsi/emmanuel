@@ -318,18 +318,25 @@ function usePhone() {
   return phone;
 }
 
+/** Phone version of Weave: a plain fade, with its own in-view observer. */
+function PhoneFade({ src, alt, priority, sizes, delay, inView }: { src: string; alt: string; priority: boolean; sizes: string; delay: number; inView: boolean }) {
+  const el = useRef<HTMLDivElement>(null);
+  const seen = useInView(el, { once: true, margin: '0px 0px -10% 0px' });
+  const go = !inView || seen;
+  return (
+    <motion.div ref={el} className="absolute inset-0" initial={{ opacity: 0 }} animate={{ opacity: go ? 1 : 0 }} transition={{ duration: 0.7, ease: 'easeOut', delay: Math.min(delay, 0.2) }}>
+      <Image src={src} alt={alt} fill priority={priority} sizes={sizes} className="object-cover" />
+    </motion.div>
+  );
+}
+
 function Weave({ src, alt, strips = 12, priority = false, sizes, delay = 0, inView = false }: { src: string; alt: string; strips?: number; priority?: boolean; sizes: string; delay?: number; inView?: boolean }) {
   const stripH = 100 / strips + 0.2; // % of the container; the small overlap hides seams between strips
   const host = useRef<HTMLDivElement>(null);
   const seen = useInView(host, { once: true, margin: '0px 0px -15% 0px' });
   const go = !inView || seen; // one observer for the whole image, so every strip weaves together
   const phone = usePhone();
-  if (phone)
-    return (
-      <motion.div ref={host} className="absolute inset-0" initial={{ opacity: 0 }} animate={{ opacity: go ? 1 : 0 }} transition={{ duration: 0.7, ease: 'easeOut', delay: Math.min(delay, 0.2) }}>
-        <Image src={src} alt={alt} fill priority={priority} sizes={sizes} className="object-cover" />
-      </motion.div>
-    );
+  if (phone) return <PhoneFade src={src} alt={alt} priority={priority} sizes={sizes} delay={delay} inView={inView} />;
   return (
     <div ref={host} className="absolute inset-0">
       {Array.from({ length: strips }).map((_, i) => (

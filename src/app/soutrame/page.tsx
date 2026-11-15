@@ -330,13 +330,13 @@ function PhoneFade({ src, alt, priority, sizes, delay, inView }: { src: string; 
   );
 }
 
-function Weave({ src, alt, strips = 12, priority = false, sizes, delay = 0, inView = false }: { src: string; alt: string; strips?: number; priority?: boolean; sizes: string; delay?: number; inView?: boolean }) {
+function Weave({ src, alt, strips = 12, priority = false, sizes, delay = 0, inView = false, force = false }: { src: string; alt: string; strips?: number; priority?: boolean; sizes: string; delay?: number; inView?: boolean; force?: boolean }) {
   const stripH = 100 / strips + 0.2; // % of the container; the small overlap hides seams between strips
   const host = useRef<HTMLDivElement>(null);
   const seen = useInView(host, { once: true, margin: '0px 0px -15% 0px' });
   const go = !inView || seen; // one observer for the whole image, so every strip weaves together
   const phone = usePhone();
-  if (phone) return <PhoneFade src={src} alt={alt} priority={priority} sizes={sizes} delay={delay} inView={inView} />;
+  if (phone && !force) return <PhoneFade src={src} alt={alt} priority={priority} sizes={sizes} delay={delay} inView={inView} />;
   return (
     <div ref={host} className="absolute inset-0">
       {Array.from({ length: strips }).map((_, i) => (
@@ -585,19 +585,23 @@ function Campaign({ ready }: { ready: boolean }) {
           return (
             <div key={k} className={`relative h-full overflow-hidden ${k > 0 ? 'hidden md:block' : ''}`} style={{ background: PHOTO }}>
               {phone ? (
-                // phones: every image stays mounted (already loaded) and simply crossfades — no blink, no weave
-                set.map((src, n) => (
-                  <Image
-                    key={src}
-                    src={src}
-                    alt={n === 0 ? 'Chimera School — Cycle 01' : ''}
-                    fill
-                    priority={n === 0}
-                    sizes="100vw"
-                    className="object-cover transition-opacity duration-1000 ease-out"
-                    style={{ opacity: src === cur ? 1 : 0 }}
-                  />
-                ))
+                // phones: every image stays mounted (already loaded, so nothing blinks); the previous one sits underneath
+                // and the new one weaves in on top — the weave is kept here, at the top of the page only
+                <>
+                  {set.map((src, n) => (
+                    <Image
+                      key={src}
+                      src={src}
+                      alt=""
+                      fill
+                      priority={n === 0}
+                      sizes="100vw"
+                      className="object-cover"
+                      style={{ opacity: src === (step > 0 ? prev : cur) ? 1 : 0 }}
+                    />
+                  ))}
+                  {ready && <Weave key={cur} force src={cur} alt="Chimera School — Cycle 01" priority={step === 0} sizes="100vw" />}
+                </>
               ) : (
                 <>
               {step > 0 && <Image src={prev} alt="" fill sizes="(min-width:768px) 70vw, 200vw" className="object-cover" />}

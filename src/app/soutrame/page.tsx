@@ -559,6 +559,7 @@ const PANELS = [
 const STEP_MS = 1800;
 
 function Campaign({ ready }: { ready: boolean }) {
+  const phone = usePhone();
   const t = useT();
   const [tick, setTick] = useState(0);
   const [paused, setPaused] = useState(false);
@@ -575,7 +576,7 @@ function Campaign({ ready }: { ready: boolean }) {
 
   return (
     <section id="campaign" ref={ref} className="relative z-[1] h-[100svh] min-h-[560px] overflow-hidden" onMouseEnter={() => setPaused(true)} onMouseLeave={() => setPaused(false)}>
-      <motion.div style={{ y }} className="absolute inset-0 grid grid-cols-1 gap-1 md:grid-cols-3">
+      <motion.div style={{ y: phone ? 0 : y }} className="absolute inset-0 grid grid-cols-1 gap-1 md:grid-cols-3">
         {PANELS.map((set, k) => {
           // panel k moves on every third tick, offset by k
           const step = Math.floor((tick + (2 - k)) / 3);
@@ -583,11 +584,29 @@ function Campaign({ ready }: { ready: boolean }) {
           const prev = set[(step - 1 + set.length) % set.length];
           return (
             <div key={k} className={`relative h-full overflow-hidden ${k > 0 ? 'hidden md:block' : ''}`} style={{ background: PHOTO }}>
+              {phone ? (
+                // phones: every image stays mounted (already loaded) and simply crossfades — no blink, no weave
+                set.map((src, n) => (
+                  <Image
+                    key={src}
+                    src={src}
+                    alt={n === 0 ? 'Chimera School — Cycle 01' : ''}
+                    fill
+                    priority={n === 0}
+                    sizes="100vw"
+                    className="object-cover transition-opacity duration-1000 ease-out"
+                    style={{ opacity: src === cur ? 1 : 0 }}
+                  />
+                ))
+              ) : (
+                <>
               {step > 0 && <Image src={prev} alt="" fill sizes="(min-width:768px) 70vw, 200vw" className="object-cover" />}
               {ready ? (
                 <Weave key={cur} src={cur} alt="Chimera School — Cycle 01" priority={step === 0} sizes="(min-width:768px) 70vw, 200vw" delay={step === 0 ? k * 0.15 : 0} />
               ) : (
                 <Image src={cur} alt="Chimera School" fill priority sizes="(min-width:768px) 70vw, 200vw" className="object-cover" />
+              )}
+                </>
               )}
             </div>
           );

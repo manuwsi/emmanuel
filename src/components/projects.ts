@@ -40,6 +40,15 @@ export const projects: Project[] = [
     group: 'product',
   },
   {
+    title: same('Soutrame'),
+    subtitle: { fr: '2026 — E-commerce, site de marque', en: '2026 — E-commerce, brand shop' },
+    image: '/soutrame-case/cover.jpg',
+    size: [2000, 1500],
+    hover: '/soutrame-case/cover-hover.jpg',
+    link: '/soutrame-ecommerce',
+    group: 'product',
+  },
+  {
     title: same('Hennessy X.O Second Skin'),
     subtitle: { fr: '2025 — UI Design, 3D', en: '2025 — UI design, 3D' },
     image: '/hennessy.png',

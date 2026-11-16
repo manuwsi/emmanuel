@@ -31,6 +31,15 @@ export const projects: Project[] = [
     softCover: true,
   },
   {
+    title: same('Élan'),
+    subtitle: { fr: '2026 — Concept, montre connectée et iOS', en: '2026 — Concept, smartwatch and iOS' },
+    image: '/elan/cover.jpg',
+    size: [1667, 1250],
+    hover: '/elan/cover-hover.jpg',
+    link: '/elan',
+    group: 'product',
+  },
+  {
     title: same('Shu Uemura AI:tutor'),
     subtitle: { fr: '2025 — UI Design, coach beauté IA', en: '2025 — UI design, AI beauty tutor' },
     image: '/shu-cover-hd.jpg',
@@ -41,20 +50,11 @@ export const projects: Project[] = [
   },
   {
     title: same('Soutrame'),
-    subtitle: { fr: '2026 — E-commerce, site de marque', en: '2026 — E-commerce, brand shop' },
+    subtitle: { fr: '2026 — Brand Experience & E-commerce Design', en: '2026 — Brand Experience & E-commerce Design' },
     image: '/soutrame-case/cover.jpg',
     size: [2000, 1500],
     hover: '/soutrame-case/cover-hover.jpg',
     link: '/soutrame-ecommerce',
-    group: 'product',
-  },
-  {
-    title: same('Élan'),
-    subtitle: { fr: '2026 — Concept, montre connectée et iOS', en: '2026 — Concept, smartwatch and iOS' },
-    image: '/elan/cover.jpg',
-    size: [1667, 1250],
-    hover: '/elan/cover-hover.jpg',
-    link: '/elan',
     group: 'product',
   },
   {

@@ -149,13 +149,13 @@ const drawings = (t: T) => [
     where: t('Option · montre', 'Option · watch'),
     title: t('La récupération au cœur', 'Recovery by heart rate'),
     text: t(
-      'Le cœur se vide à mesure que le pouls redescend. Vide, on repart. Une réponse possible au temps de repos, à valider en entretien.',
-      'The heart empties as the pulse comes down. Empty, you go again. A possible answer to rest time, to be validated in interviews.'
+      'Le cœur se vide à mesure que le pouls redescend. Vide, on repart : la récupération s’adapte au coureur plutôt qu’au chronomètre.',
+      'The heart empties as the pulse comes down. Empty, you go again: recovery adapts to the runner rather than the stopwatch.'
     ),
   },
   {
     key: 'foulee',
-    where: t('Piste · résumé', 'Lead · summary'),
+    where: t('Résumé · iPhone', 'Summary · iPhone'),
     title: t('La foulée', 'The stride'),
     text: t(
       'L’écart entre deux appuis, déduit de l’allure et de la cadence. Il raccourcit quand la fatigue arrive.',
@@ -179,29 +179,6 @@ const phoneScreens = (t: T) => [
   { f: 'envoyee', h: 1688, name: t('Sur la montre', 'On the watch') },
   { f: 'progression', h: 1688, name: t('Progression', 'Progress') },
   { f: 'resume', h: 3120, name: t('Résumé, écran complet', 'Summary, full screen') },
-];
-
-const status = (t: T) => [
-  {
-    label: t('Fait', 'Done'),
-    items: [
-      t('Benchmark de quatre applications', 'Benchmark of four apps'),
-      t('Questionnaire lancé, premier retour', 'Survey launched, first response'),
-      t('Inventaire des états d’une séance', 'Inventory of a session’s states'),
-      t('Concept, écrans montre et iPhone', 'Concept, watch and iPhone screens'),
-      t('Direction artistique', 'Art direction'),
-    ],
-  },
-  {
-    label: t('À venir', 'Next'),
-    items: [
-      t('Cinq entretiens avec des coureurs', 'Five interviews with runners'),
-      t('Test de lisibilité en mouvement', 'Legibility test in motion'),
-      t('Test du prototype sur piste', 'Prototype test on the track'),
-      t('Itérations d’après les tests', 'Iterations from the tests'),
-      t('Déclinaison pour montre rectangulaire', 'Version for a rectangular watch'),
-    ],
-  },
 ];
 
 /** Partition des vibrations sur une répétition, puis sa récupération. */
@@ -268,7 +245,7 @@ export default function Page() {
       )}
       meta={{
         year: '2026',
-        context: t('Projet personnel, concept en cours', 'Personal project, concept in progress'),
+        context: t('Projet personnel, concept', 'Personal project, concept'),
         role: t('Recherche, concept, UX/UI, direction artistique, 3D', 'Research, concept, UX/UI, art direction, 3D'),
         tools: 'Figma, Blender, Claude',
       }}
@@ -284,10 +261,9 @@ export default function Page() {
             d&apos;œil, puis à simplifier ce qui se passe avant et après, sur le téléphone.
           </p>
           <p>
-            C&apos;est un projet en cours. Le concept, les écrans et la direction artistique sont posés ;
-            les entretiens et les tests sur le terrain viennent ensuite et feront évoluer ce qui est
-            montré ici. Les prototypes et les rendus 3D sont produits avec l&apos;IA comme outil de
-            production.
+            Le concept couvre le parcours complet : la préparation de la séance sur iPhone, seize
+            états de montre pendant la course, et le résumé. La prochaine étape est le test sur
+            piste, avec des coureurs.
           </p>
         </>,
         <>
@@ -301,9 +277,9 @@ export default function Page() {
             happens before and after, on the phone.
           </p>
           <p>
-            This is a work in progress. The concept, the screens and the art direction are in place;
-            interviews and field tests come next and will change what is shown here. Prototypes and
-            3D renders are produced using AI as a production tool.
+            The concept covers the full journey: setting up the session on iPhone, sixteen watch
+            states during the run, and the summary. The next step is testing on the track, with
+            runners.
           </p>
         </>
       )}
@@ -329,8 +305,8 @@ export default function Page() {
         </p>
         <p>
           {t(
-            'Le benchmark couvre Garmin, Apple Watch, Runna et Strava. Un questionnaire est en cours auprès de coureurs ; le premier retour va dans le même sens : deux informations regardées, la distance restante et l’allure, une programmation jugée pénible, et une frustration, le temps de repos.',
-            'The benchmark covers Garmin, Apple Watch, Runna and Strava. A survey is running with runners; the first response points the same way: two things looked at, distance left and pace, set-up felt as a chore, and one frustration, rest time.'
+            'Le benchmark couvre Garmin, Apple Watch, Runna et Strava. Côté coureurs, un premier retour de terrain oriente le projet : deux informations regardées, la distance restante et l’allure, une programmation jugée pénible, et une frustration, le temps de repos.',
+            'The benchmark covers Garmin, Apple Watch, Runna and Strava. On the runners’ side, a first piece of field feedback steers the project: two things looked at, distance left and pace, set-up felt as a chore, and one frustration, rest time.'
           )}
         </p>
       </Chapter>
@@ -378,8 +354,8 @@ export default function Page() {
       <Chapter title={t('Le principe', 'The principle')}>
         <p>
           {t(
-            'Anatomie d’un coup d’œil. Une seconde ne suffit pas pour lire un écran. Elle suffit pour en lire une couche à la fois, toujours dans le même ordre. L’interface de la montre est construite sur cette idée.',
-            'Anatomy of a glance. One second is not enough to read a screen. It is enough to read one layer at a time, always in the same order. The watch interface is built on that idea.'
+            'Anatomie d’un coup d’œil. Une seconde ne suffit pas pour lire un écran. Elle suffit pour en lire une couche à la fois, toujours dans le même ordre. L’interface de la montre vise cette lecture en trois temps.',
+            'Anatomy of a glance. One second is not enough to read a screen. It is enough to read one layer at a time, always in the same order. The watch interface is designed for that three-step read.'
           )}
         </p>
       </Chapter>
@@ -395,8 +371,8 @@ export default function Page() {
         </ol>
         <Caption>
           {t(
-            'Ces durées sont une hypothèse de conception. Un test de lisibilité en mouvement doit les mesurer.',
-            'These durations are a design hypothesis. A legibility test in motion is meant to measure them.'
+            'Durées cibles, fixées comme objectif de conception.',
+            'Target durations, set as a design goal.'
           )}
         </Caption>
       </div>
@@ -575,7 +551,6 @@ export default function Page() {
             </li>
           ))}
         </ol>
-        <Caption>{t('Les valeurs affichées dans les écrans sont des données d’exemple.', 'Values shown in the screens are sample data.')}</Caption>
       </div>
 
       {/* PHONE */}
@@ -618,29 +593,15 @@ export default function Page() {
         ))}
       </ol>
 
-      {/* STATUS */}
-      <Chapter title={t('Où en est le projet', 'Where the project stands')}>
+      {/* NEXT */}
+      <Chapter title={t('La suite', 'What’s next')}>
         <p>
           {t(
-            'Le concept est posé. Ce qui reste à faire est ce qui compte le plus : le confronter à des coureurs, mesurer, et corriger.',
-            'The concept is in place. What remains is what matters most: putting it in front of runners, measuring, and correcting.'
+            'Prochaine étape : confronter le concept à des coureurs. Un test de lisibilité en mouvement pour fixer la taille des chiffres, puis un test du prototype sur piste. Viendra ensuite la déclinaison pour montre rectangulaire.',
+            'Next step: putting the concept in front of runners. A legibility test in motion to settle the size of the numbers, then a prototype test on the track. A version for rectangular watches will follow.'
           )}
         </p>
       </Chapter>
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-px bg-black/15 border border-black/15">
-        {status(t).map((s) => (
-          <div key={s.label} className="bg-white p-6 md:p-8 space-y-5">
-            <span className="text-[13px] text-black/45">{s.label}</span>
-            <ul className="divide-y divide-black/15 border-t border-black/15">
-              {s.items.map((it) => (
-                <li key={it} className="py-3 text-[15px]">
-                  {it}
-                </li>
-              ))}
-            </ul>
-          </div>
-        ))}
-      </div>
     </ProjectPage>
   );
 }

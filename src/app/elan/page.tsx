@@ -379,17 +379,21 @@ export default function Page() {
 
       <div className="grid grid-cols-1 md:grid-cols-12 gap-px bg-black/15 border border-black/15">
         <div className="md:col-span-7 bg-[#0c0d0f]">
-          <Image
-            src="/elan/explode.jpg"
-            alt={t(
+          <video
+            className="w-full h-auto block"
+            poster="/elan/explode.jpg"
+            autoPlay
+            loop
+            muted
+            playsInline
+            preload="metadata"
+            aria-label={t(
               'Vue éclatée en 3D de l’écran : boîtier et verre teinté, trame de points, anneau de progression, chiffres, verre de protection',
               'Exploded 3D view of the screen: case and tinted glass, dot field, progress ring, numbers, cover glass'
             )}
-            width={1360}
-            height={1700}
-            sizes="(max-width: 768px) 100vw, 800px"
-            className="w-full h-auto block"
-          />
+          >
+            <source src="/elan/explode.mp4" type="video/mp4" />
+          </video>
         </div>
         <div className="md:col-span-5 bg-white p-6 md:p-8 flex flex-col justify-between gap-10">
           <div className="space-y-4">
@@ -435,6 +439,15 @@ export default function Page() {
         )}
         width={1700}
         height={956}
+      />
+      <Media
+        src="/elan/macro.jpg"
+        alt={t(
+          'Gros plan 3D : le chiffre domine, la trame de points dessine la vitesse en bas de l’écran',
+          '3D close-up: the number dominates, the dot field draws the pace at the bottom of the screen'
+        )}
+        width={1700}
+        height={1062}
       />
       <div className="grid grid-cols-1 md:grid-cols-12 gap-px bg-black/15 border border-black/15">
         <div className="md:col-span-5 bg-[#ecedef] p-10 md:p-14 flex items-center justify-center">
@@ -491,6 +504,15 @@ export default function Page() {
       </div>
 
       {/* HAPTICS */}
+      <Media
+        src="/elan/night.jpg"
+        alt={t(
+          'Rendu 3D de nuit : l’écran passe au rosé quand l’allure est trop rapide, le mot « Trop vite » le dit aussi',
+          '3D night render: the screen turns rose when the pace is too fast, and the words “Trop vite” say it too'
+        )}
+        width={1700}
+        height={1062}
+      />
       <Chapter title={t('Sans regarder', 'Without looking')}>
         <p>
           {t(

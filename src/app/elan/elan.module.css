@@ -1,0 +1,46 @@
+/* Montre animée : trois états qui se relaient, structure identique. */
+.live {
+  position: relative;
+  width: 100%;
+  max-width: 340px;
+  aspect-ratio: 1;
+}
+
+.live img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  opacity: 0;
+  animation: relay 12s infinite;
+}
+
+.live img:nth-child(2) {
+  animation-delay: 4s;
+}
+
+.live img:nth-child(3) {
+  animation-delay: 8s;
+}
+
+@keyframes relay {
+  0% { opacity: 0; }
+  5% { opacity: 1; }
+  33% { opacity: 1; }
+  38% { opacity: 0; }
+  100% { opacity: 0; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .live img {
+    animation: none;
+  }
+
+  .live img:first-child {
+    opacity: 1;
+  }
+}
+
+.smoke {
+  background: linear-gradient(165deg, #2b2d32 0%, #45484f 55%, #666a72 100%);
+}

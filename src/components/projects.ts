@@ -49,6 +49,15 @@ export const projects: Project[] = [
     group: 'product',
   },
   {
+    title: same('Élan'),
+    subtitle: { fr: '2026 — Concept, montre connectée et iOS', en: '2026 — Concept, smartwatch and iOS' },
+    image: '/elan/cover.jpg',
+    size: [1667, 1250],
+    hover: '/elan/cover-hover.jpg',
+    link: '/elan',
+    group: 'product',
+  },
+  {
     title: same('Hennessy X.O Second Skin'),
     subtitle: { fr: '2025 — UI Design, 3D', en: '2025 — UI design, 3D' },
     image: '/hennessy.png',

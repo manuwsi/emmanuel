@@ -21,6 +21,15 @@ const same = (s: string) => ({ fr: s, en: s });
  */
 export const projects: Project[] = [
   {
+    title: same('Élan'),
+    subtitle: { fr: '2026 — Concept, montre connectée et iOS', en: '2026 — Concept, smartwatch and iOS' },
+    image: '/elan/cover.jpg',
+    size: [1667, 1250],
+    hover: '/elan/cover-hover.jpg',
+    link: '/elan',
+    group: 'product',
+  },
+  {
     title: same('Serena'),
     subtitle: { fr: '2025 — Recherche, wireframes & UI', en: '2025 — Research, wireframes & UI' },
     image: '/serena-cover-hd.jpg',
@@ -29,15 +38,6 @@ export const projects: Project[] = [
     link: '/serena',
     group: 'product',
     softCover: true,
-  },
-  {
-    title: same('Élan'),
-    subtitle: { fr: '2026 — Concept, montre connectée et iOS', en: '2026 — Concept, smartwatch and iOS' },
-    image: '/elan/cover.jpg',
-    size: [1667, 1250],
-    hover: '/elan/cover-hover.jpg',
-    link: '/elan',
-    group: 'product',
   },
   {
     title: same('Shu Uemura AI:tutor'),

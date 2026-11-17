@@ -25,38 +25,29 @@ export function usePhone() {
   return phone;
 }
 
-/** Image woven in, strip by strip (a plain fade on phones). */
-export function Weave({ src, alt, strips = 12, priority = false, sizes, delay = 0, force = false, position = 'center' }: { src: string; alt: string; strips?: number; priority?: boolean; sizes: string; delay?: number; force?: boolean; position?: string }) {
+/** Image revealed by a single smooth mask, with a slow settle (a plain fade on phones). */
+export function Weave({ src, alt, priority = false, sizes, delay = 0, force = false, position = 'center' }: { src: string; alt: string; priority?: boolean; sizes: string; delay?: number; force?: boolean; position?: string }) {
   const host = useRef<HTMLDivElement>(null);
   const seen = useInView(host, { once: true, margin: '0px 0px -12% 0px' });
   const phone = usePhone();
   const go = force || seen;
-  const stripH = 100 / strips + 0.2;
-  if (phone) {
-    return (
-      <div ref={host} className="absolute inset-0">
-        <motion.div className="absolute inset-0" initial={{ opacity: 0 }} animate={{ opacity: go ? 1 : 0 }} transition={{ duration: 0.8, ease: 'easeOut' }}>
+  return (
+    <div ref={host} className="absolute inset-0 overflow-hidden">
+      <motion.div
+        className="absolute inset-0"
+        initial={{ clipPath: 'inset(0 0 100% 0)' }}
+        animate={{ clipPath: go ? 'inset(0 0 0% 0)' : 'inset(0 0 100% 0)' }}
+        transition={{ duration: 1.3, ease: EASE, delay }}
+      >
+        <motion.div
+          className="absolute inset-0"
+          initial={{ scale: 1.08 }}
+          animate={{ scale: go ? 1 : 1.08 }}
+          transition={{ duration: 1.8, ease: EASE, delay }}
+        >
           <Image src={src} alt={alt} fill priority={priority} sizes={sizes} className="object-cover" style={{ objectPosition: position }} />
         </motion.div>
-      </div>
-    );
-  }
-  return (
-    <div ref={host} className="absolute inset-0">
-      {Array.from({ length: strips }).map((_, i) => (
-        <motion.div
-          key={i}
-          className="absolute inset-x-0 overflow-hidden"
-          style={{ top: `${(i * 100) / strips}%`, height: `${stripH}%`, transformOrigin: i % 2 ? 'right' : 'left' }}
-          initial={{ scaleX: 0 }}
-          animate={{ scaleX: go ? 1 : 0 }}
-          transition={{ duration: 0.9, ease: EASE, delay: delay + i * 0.045 }}
-        >
-          <div className="absolute inset-x-0" style={{ top: `-${((i * 100) / strips / stripH) * 100}%`, height: `${(100 / stripH) * 100}%` }}>
-            <Image src={src} alt={i === 0 ? alt : ''} fill priority={priority} sizes={sizes} className="object-cover" style={{ objectPosition: position }} />
-          </div>
-        </motion.div>
-      ))}
+      </motion.div>
     </div>
   );
 }

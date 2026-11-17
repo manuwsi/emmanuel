@@ -38,7 +38,7 @@ export function ProjectPage({
   ];
 
   return (
-    <main className="w-full min-h-screen bg-white text-[#0a0a0a] font-sans overflow-x-hidden relative flex flex-col [scroll-snap-type:none]">
+    <main className="w-full min-h-screen bg-white text-[#0a0a0a] font-sans overflow-x-clip relative flex flex-col [scroll-snap-type:none]">
       <Header crumb={title} />
 
       <div className="pt-28 md:pt-36 px-2 md:px-3 w-full max-w-[1400px] mx-auto flex-grow">

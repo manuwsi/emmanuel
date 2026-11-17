@@ -3,12 +3,11 @@
 import Image from 'next/image';
 import { ProjectPage, Media, Chapter } from '@/components/project/ProjectPage';
 import { useT } from '@/components/i18n';
+import HoloCard from './HoloCard';
+import Constellation from './Constellation';
+import Story from './Story';
 
 type T = <V,>(fr: V, en: V) => V;
-
-function Caption({ children }: { children: React.ReactNode }) {
-  return <span className="block text-[13px] text-black/45">{children}</span>;
-}
 
 const problems = (t: T) => [
   {
@@ -175,6 +174,26 @@ export default function Page() {
         width={2000}
         height={800}
       />
+      <Chapter title={t('Touche la carte', 'Touch the card')}>
+        <p>
+          {t(
+            'La carte est le héros de l’application. Elle est éclairée comme un objet, et son reflet holographique suit le mouvement, comme dans la main.',
+            'The card is the hero of the app. It is lit like an object, and its holographic reflection follows the movement, as in the hand.'
+          )}
+        </p>
+      </Chapter>
+      <HoloCard />
+
+      <Chapter title={t('Une carte du ciel', 'A map of the sky')}>
+        <p>
+          {t(
+            'Une collection entière tient dans un seul regard : un point par carte, regroupés par jeu, la taille du point suit la valeur.',
+            'A whole collection fits in a single glance: one dot per card, grouped by game, the size of the dot follows the value.'
+          )}
+        </p>
+      </Chapter>
+      <Constellation />
+
       <Chapter title={t('Quatre principes', 'Four principles')}>
         <p>
           {t(
@@ -193,52 +212,21 @@ export default function Page() {
         ))}
       </div>
 
-      <Chapter title={t('La carte', 'The card')}>
+      <Chapter title={t('Une journée à Tokyo', 'A day in Tokyo')}>
         <p>
           {t(
-            'La carte est le héros de l’application. Elle est éclairée comme un objet, et son reflet holographique change selon l’angle de la lumière.',
-            'The card is the hero of the app. It is lit like an object, and its holographic reflection changes with the angle of the light.'
-          )}
-        </p>
-        <p>
-          {t(
-            'Un rendu 3D la montre sous plusieurs angles. L’interface reste volontairement sobre : fond noir, verre transparent, points blancs. Seule la carte porte la couleur.',
-            'A 3D render shows it from several angles. The interface stays deliberately restrained: black background, transparent glass, white dots. Only the card carries colour.'
+            'Un scénario pour suivre l’application de bout en bout : du comptoir d’une boutique jusqu’à la revente, trois ans plus tard.',
+            'A scenario to follow the app from end to end: from a shop counter to the sale, three years later.'
           )}
         </p>
       </Chapter>
-      <div className="grid grid-cols-1 md:grid-cols-12 gap-px bg-black/15 border border-black/15">
-        <div className="md:col-span-5 bg-[#0c0d0f]">
-          <video
-            className="w-full h-auto block"
-            poster="/ecrin/turn.jpg"
-            autoPlay
-            loop
-            muted
-            playsInline
-            preload="metadata"
-            aria-label={t('Une carte holographique qui pivote : le reflet se déplace', 'A holographic card turning: the reflection moves')}
-          >
-            <source src="/ecrin/turn.mp4" type="video/mp4" />
-          </video>
-        </div>
-        <div className="md:col-span-7 bg-[#0c0d0f]">
-          <Image
-            src="/ecrin/carte.jpg"
-            alt={t('Rendu 3D d’une carte holographique', '3D render of a holographic card')}
-            width={1700}
-            height={1275}
-            sizes="(max-width: 768px) 100vw, 800px"
-            className="w-full h-auto block"
-          />
-        </div>
-      </div>
+      <Story />
 
-      <Chapter title={t('Le parcours', 'The journey')}>
+      <Chapter title={t('Quinze écrans', 'Fifteen screens')}>
         <p>
           {t(
-            'Quinze écrans, regroupés en six temps : découvrir, ajouter, comprendre, suivre, collectionner, vendre.',
-            'Fifteen screens, grouped in six steps: discover, add, understand, follow, collect, sell.'
+            'Le parcours complet, en six temps : découvrir, ajouter, comprendre, suivre, collectionner, vendre.',
+            'The full journey, in six steps: discover, add, understand, follow, collect, sell.'
           )}
         </p>
       </Chapter>
@@ -248,27 +236,23 @@ export default function Page() {
         width={1700}
         height={956}
       />
-      <div className="space-y-12">
-        {flow(t).map((g) => (
-          <div key={g.k} className="space-y-4">
-            <span className="text-[13px] text-black/45">{g.k}</span>
-            <ol className="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-6 items-start">
-              {g.items.map(([f, name]) => (
-                <li key={f} className="space-y-2">
-                  <Image
-                    src={`/ecrin/p/${f}.webp`}
-                    alt={t(`Écran iPhone : ${name}`, `iPhone screen: ${name}`)}
-                    width={780}
-                    height={1688}
-                    sizes="(max-width: 768px) 50vw, 300px"
-                    className="w-full h-auto block border border-black/10"
-                  />
-                  <Caption>{name}</Caption>
-                </li>
-              ))}
-            </ol>
-          </div>
-        ))}
+      <div className="bg-[#08090b] text-white border border-black/15 overflow-hidden">
+        <div className="flex gap-px overflow-x-auto snap-x snap-mandatory pb-6" style={{ scrollbarWidth: 'thin' }}>
+          {flow(t).flatMap((g) => g.items.map(([f, name], k) => ({ f, name, g: k === 0 ? g.k : '' }))).map((p) => (
+            <figure key={p.f} className="snap-start shrink-0 w-[62vw] md:w-[260px] p-5 md:p-6 space-y-3">
+              <span className="block h-4 text-[12px] tracking-[0.08em] uppercase text-white/45">{p.g}</span>
+              <Image
+                src={`/ecrin/p/${p.f}.webp`}
+                alt={t(`Écran iPhone : ${p.name}`, `iPhone screen: ${p.name}`)}
+                width={780}
+                height={1688}
+                sizes="(max-width: 768px) 62vw, 260px"
+                className="w-full h-auto block rounded-[26px] border border-white/15"
+              />
+              <figcaption className="text-[13px] text-white/60">{p.name}</figcaption>
+            </figure>
+          ))}
+        </div>
       </div>
 
       <Chapter title={t('Donner envie de collectionner', 'Making you want to collect')}>

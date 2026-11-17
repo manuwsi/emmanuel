@@ -37,18 +37,32 @@ const problems = (t: T) => [
   },
 ];
 
+const principles = (t: T) => [
+  { n: '01', title: t('La carte est le héros', 'The card is the hero'), text: t('Tout s’organise autour de la carte : grande, éclairée, avec son reflet. L’interface reste en retrait.', 'Everything is organised around the card: large, lit, with its reflection. The interface stays in the background.') },
+  { n: '02', title: t('Une donnée par écran', 'One figure per screen'), text: t('Chaque écran répond à une seule question et affiche un chiffre dominant : la valeur, le gain, l’écart.', 'Each screen answers a single question and shows one dominant figure: value, gain, gap.') },
+  { n: '03', title: t('La donnée se dessine', 'Data is drawn'), text: t('Courbes, répartitions et collection entière sont tracées en points, comme l’illustration de la carte.', 'Curves, breakdowns and the whole collection are drawn in dots, like the card’s illustration.') },
+  { n: '04', title: t('Toujours le gain réel', 'Always the real gain'), text: t('Le prix payé est converti au taux du jour d’achat, et la revente retire frais et envoi avant d’afficher un gain.', 'The price paid is converted at the purchase-day rate, and a sale subtracts fees and shipping before showing a gain.') },
+];
+
 const moments = (t: T) => [
   { n: '01', title: t('Ajouter', 'Add'), text: t('Un scan en boutique : la carte est reconnue, on note le prix payé dans sa devise.', 'One scan in the shop: the card is recognised, the price paid is noted in its own currency.') },
   { n: '02', title: t('Suivre', 'Follow'), text: t('Toute la collection au même endroit, triée par jeu, langue ou valeur, avec l’écart au prix payé.', 'The whole collection in one place, sorted by game, language or value, with the gap to the price paid.') },
   { n: '03', title: t('Vendre', 'Sell'), text: t('Le gain net, une fois les frais, l’envoi et le change retirés, avant de décider.', 'The net gain, once fees, shipping and exchange are taken off, before deciding.') },
 ];
 
-const screens = (t: T) => [
-  { f: 'collection', name: t('Collection', 'Collection') },
-  { f: 'scan', name: t('Scan', 'Scan') },
-  { f: 'fiche', name: t('Fiche carte', 'Card page') },
-  { f: 'valeur', name: t('Évolution', 'Evolution') },
-  { f: 'vendre', name: t('Revente', 'Sale') },
+const flow = (t: T) => [
+  { k: t('Découvrir', 'Discover'), items: [['accueil', t('Accueil', 'Home')], ['constellation', t('Constellation', 'Constellation')]] },
+  { k: t('Ajouter', 'Add'), items: [['scan', t('Scan', 'Scan')], ['ajout', t('Prix d’achat', 'Purchase price')]] },
+  { k: t('Comprendre', 'Understand'), items: [['fiche', t('Fiche carte', 'Card page')], ['marches', t('Marchés', 'Markets')]] },
+  { k: t('Suivre', 'Follow'), items: [['collection', t('Collection', 'Collection')], ['evolution', t('Évolution', 'Evolution')], ['repartition', t('Répartition', 'Breakdown')], ['alertes', t('Alertes', 'Alerts')]] },
+  { k: t('Collectionner', 'Collect'), items: [['serie', t('Série', 'Set')], ['radar', t('Radar', 'Radar')], ['vitrine', t('Vitrine', 'Showcase')], ['voyage', t('Voyage', 'Trip')]] },
+  { k: t('Vendre', 'Sell'), items: [['vendre', t('Revente', 'Sale')]] },
+];
+
+const hooks = (t: T) => [
+  { f: 'serie', n: t('Compléter une série', 'Complete a set'), text: t('Chaque carte possédée allume un point. Voir la série se remplir donne envie de chasser la suivante, avec son coût estimé.', 'Each owned card lights a dot. Watching the set fill up makes you want to hunt the next one, with its estimated cost.') },
+  { f: 'radar', n: t('Repérer ce qui monte', 'Spot what is rising'), text: t('Le radar montre les cartes qui progressent, jeu par jeu, avec une courbe en points et un bouton pour les ajouter aux souhaits.', 'The radar shows rising cards, game by game, with a dotted curve and a button to add them to a wishlist.') },
+  { f: 'vitrine', n: t('Montrer ses plus belles pièces', 'Show off your best pieces'), text: t('La vitrine met en scène les trois cartes dont on est le plus fier, prête à être partagée.', 'The showcase stages the three cards you are proudest of, ready to share.') },
 ];
 
 export default function Page() {
@@ -96,8 +110,8 @@ export default function Page() {
       <Media
         src="/ecrin/hero.jpg"
         alt={t(
-          'Rendu 3D de la même carte holographique sous trois angles de lumière : le reflet change avec l’angle',
-          '3D render of the same holographic card under three light angles: the reflection changes with the angle'
+          'Rendu 3D d’une carte holographique sous trois angles de lumière : le reflet change avec l’angle',
+          '3D render of a holographic card under three light angles: the reflection changes with the angle'
         )}
         width={1700}
         height={956}
@@ -131,17 +145,14 @@ export default function Page() {
         </p>
         <p>
           {t(
-            'L’interface s’efface devant les cartes : fond sombre, une donnée dominante par écran, des traits fins plutôt que des cartes arrondies.',
-            'The interface steps back for the cards: dark background, one dominant figure per screen, hairlines instead of rounded cards.'
+            'Trois moments structurent l’application : ajouter, suivre, vendre. Entre les deux, tout ce qui donne envie de continuer.',
+            'Three moments structure the app: add, follow, sell. In between, everything that makes you want to keep going.'
           )}
         </p>
       </Chapter>
       <Media
         src="/ecrin/duo.jpg"
-        alt={t(
-          'Rendu 3D : une carte holographique à côté de l’écran Collection sur iPhone',
-          '3D render: a holographic card next to the Collection screen on iPhone'
-        )}
+        alt={t('Rendu 3D : une carte holographique à côté de l’accueil de l’application sur iPhone', '3D render: a holographic card next to the app’s home screen on iPhone')}
         width={1700}
         height={1062}
       />
@@ -155,68 +166,149 @@ export default function Page() {
         ))}
       </div>
 
+      <Chapter title={t('Quatre principes', 'Four principles')}>
+        <p>
+          {t(
+            'Quatre règles tiennent l’ensemble des écrans, du scan à la revente.',
+            'Four rules hold every screen together, from scan to sale.'
+          )}
+        </p>
+      </Chapter>
+      <div className="grid grid-cols-1 md:grid-cols-4 gap-px bg-black/15 border border-black/15">
+        {principles(t).map((m) => (
+          <div key={m.n} className="bg-white p-6 md:p-8 space-y-4">
+            <span className="text-[13px] text-black/45">{m.n}</span>
+            <h4 className="text-lg font-medium tracking-[-0.03em] leading-tight">{m.title}</h4>
+            <p className="text-sm text-black/60 leading-relaxed">{m.text}</p>
+          </div>
+        ))}
+      </div>
+
       <Chapter title={t('La carte', 'The card')}>
         <p>
           {t(
-            'La carte est le héros de l’application. Son illustration est dessinée en points, comme une donnée, et son reflet holographique change selon l’angle de la lumière.',
-            'The card is the hero of the app. Its illustration is drawn in dots, like data, and its holographic reflection changes with the angle of the light.'
+            'La carte est le héros de l’application. Elle est éclairée comme un objet, et son reflet holographique change selon l’angle de la lumière.',
+            'The card is the hero of the app. It is lit like an object, and its holographic reflection changes with the angle of the light.'
           )}
         </p>
         <p>
           {t(
-            'Les cartes montrées ici sont des créations originales pour le projet. Les images se remplacent par de vraies cartes sans toucher à l’interface.',
-            'The cards shown here are original creations for the project. The images can be swapped for real cards without touching the interface.'
+            'Un rendu 3D la montre sous plusieurs angles. La même matière se retrouve dans l’interface : verre dépoli, halo holographique, points.',
+            'A 3D render shows it from several angles. The same material runs through the interface: frosted glass, holographic glow, dots.'
           )}
         </p>
       </Chapter>
-      <Media
-        src="/ecrin/carte.jpg"
-        alt={t('Rendu 3D d’une carte holographique, illustrée en points', '3D render of a holographic card illustrated in dots')}
-        width={1700}
-        height={1275}
-      />
+      <div className="grid grid-cols-1 md:grid-cols-12 gap-px bg-black/15 border border-black/15">
+        <div className="md:col-span-5 bg-[#0c0d0f]">
+          <video
+            className="w-full h-auto block"
+            poster="/ecrin/turn.jpg"
+            autoPlay
+            loop
+            muted
+            playsInline
+            preload="metadata"
+            aria-label={t('Une carte holographique qui pivote : le reflet se déplace', 'A holographic card turning: the reflection moves')}
+          >
+            <source src="/ecrin/turn.mp4" type="video/mp4" />
+          </video>
+        </div>
+        <div className="md:col-span-7 bg-[#0c0d0f]">
+          <Image
+            src="/ecrin/carte.jpg"
+            alt={t('Rendu 3D d’une carte holographique', '3D render of a holographic card')}
+            width={1700}
+            height={1275}
+            sizes="(max-width: 768px) 100vw, 800px"
+            className="w-full h-auto block"
+          />
+        </div>
+      </div>
 
-      <Chapter title={t('Les écrans', 'The screens')}>
+      <Chapter title={t('Le parcours', 'The journey')}>
         <p>
           {t(
-            'Cinq écrans suivent le parcours : ajouter, suivre, comprendre une carte, voir l’évolution, vendre.',
-            'Five screens follow the journey: add, follow, understand a card, see the evolution, sell.'
-          )}
-        </p>
-        <p>
-          {t(
-            'Les valeurs affichées sont des chiffres de démonstration, pas des prix de marché réels.',
-            'The figures shown are demonstration values, not real market prices.'
+            'Quinze écrans, regroupés en six temps : découvrir, ajouter, comprendre, suivre, collectionner, vendre.',
+            'Fifteen screens, grouped in six steps: discover, add, understand, follow, collect, sell.'
           )}
         </p>
       </Chapter>
       <Media
-        src="/ecrin/phones.jpg"
-        alt={t('Rendu 3D de trois iPhone : collection, fiche carte, évolution', '3D render of three iPhones: collection, card page, evolution')}
+        src="/ecrin/lineup.jpg"
+        alt={t('Rendu 3D de cinq iPhone : constellation, accueil, fiche carte, série, vitrine', '3D render of five iPhones: constellation, home, card page, set, showcase')}
         width={1700}
-        height={1062}
+        height={956}
       />
-      <ol className="grid grid-cols-2 md:grid-cols-5 gap-4 md:gap-6 items-start">
-        {screens(t).map((p) => (
-          <li key={p.f} className="space-y-2">
+      <div className="space-y-12">
+        {flow(t).map((g) => (
+          <div key={g.k} className="space-y-4">
+            <span className="text-[13px] text-black/45">{g.k}</span>
+            <ol className="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-6 items-start">
+              {g.items.map(([f, name]) => (
+                <li key={f} className="space-y-2">
+                  <Image
+                    src={`/ecrin/p/${f}.webp`}
+                    alt={t(`Écran iPhone : ${name}`, `iPhone screen: ${name}`)}
+                    width={780}
+                    height={1688}
+                    sizes="(max-width: 768px) 50vw, 300px"
+                    className="w-full h-auto block border border-black/10"
+                  />
+                  <Caption>{name}</Caption>
+                </li>
+              ))}
+            </ol>
+          </div>
+        ))}
+      </div>
+
+      <Chapter title={t('Donner envie de collectionner', 'Making you want to collect')}>
+        <p>
+          {t(
+            'Un outil de suivi finit par se vider si seule la valeur compte. Trois mécaniques gardent l’envie de continuer.',
+            'A tracking tool empties out if only value matters. Three mechanics keep the desire to continue.'
+          )}
+        </p>
+      </Chapter>
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-px bg-black/15 border border-black/15">
+        {hooks(t).map((h) => (
+          <div key={h.f} className="bg-[#0c0d0f] text-white">
             <Image
-              src={`/ecrin/p/${p.f}.webp`}
-              alt={t(`Écran iPhone : ${p.name}`, `iPhone screen: ${p.name}`)}
+              src={`/ecrin/p/${h.f}.webp`}
+              alt={h.n}
               width={780}
               height={1688}
-              sizes="(max-width: 768px) 50vw, 260px"
-              className="w-full h-auto block border border-black/10"
+              sizes="(max-width: 768px) 100vw, 420px"
+              className="w-full h-auto block"
             />
-            <Caption>{p.name}</Caption>
-          </li>
+            <div className="p-6 space-y-2">
+              <h4 className="text-lg font-medium tracking-[-0.03em]">{h.n}</h4>
+              <p className="text-sm text-white/60 leading-relaxed">{h.text}</p>
+            </div>
+          </div>
         ))}
-      </ol>
+      </div>
+
+      <Chapter title={t('Données et illustrations', 'Data and artwork')}>
+        <p>
+          {t(
+            'Les valeurs de marché affichées sont des chiffres de démonstration, pas des prix réels : une version réelle demanderait une source de prix et un taux de change fiables.',
+            'The market values shown are demonstration figures, not real prices: a real version would need a reliable price source and exchange rate.'
+          )}
+        </p>
+        <p>
+          {t(
+            'La carte Reshiram ex est utilisée à titre d’illustration du produit. © Pokémon / Nintendo / Creatures / GAME FREAK. Les autres cartes, en points, sont des créations originales.',
+            'The Reshiram ex card is used as an illustration of the product. © Pokémon / Nintendo / Creatures / GAME FREAK. The other, dotted cards are original creations.'
+          )}
+        </p>
+      </Chapter>
 
       <Chapter title={t('La suite', 'What’s next')}>
         <p>
           {t(
-            'Prochaine étape : confronter le concept à d’autres collectionneurs, pour vérifier que le tri par jeu et le gain net répondent à leur façon de décider, puis prototyper le scan.',
-            'Next step: putting the concept in front of other collectors, to check that sorting by game and net gain match how they decide, then prototyping the scan.'
+            'Prochaine étape : confronter le concept à d’autres collectionneurs, pour vérifier que le tri par jeu, la complétion de série et le gain net répondent à leur façon de décider, puis prototyper le scan.',
+            'Next step: putting the concept in front of other collectors, to check that sorting by game, set completion and net gain match how they decide, then prototyping the scan.'
           )}
         </p>
       </Chapter>

@@ -7,6 +7,7 @@ import Link from 'next/link';
 import { useEffect, useRef, useState, useCallback } from 'react';
 import { AnimatePresence, motion, useInView } from 'framer-motion';
 import { useLang, useT } from '@/components/i18n';
+import ProjectMark from '@/components/ProjectMark';
 
 export const EASE = [0.22, 1, 0.36, 1] as const;
 export const TXT = 'text-[13px] leading-[1.35] tracking-[0.005em]';
@@ -96,14 +97,10 @@ export function Chrome({ chapters }: { chapters: { id: string; label: string }[]
       <button onClick={() => setLang(lang === 'fr' ? 'en' : 'fr')} className={`${TXT} fixed right-0 top-0 z-40 px-2 py-1.5 text-white mix-blend-difference hover:underline md:px-3`} aria-label={t('Switch to English', 'Passer en français')}>
         {lang === 'fr' ? 'EN' : 'FR'}
       </button>
-      <a href="#top" className="fixed bottom-0 left-0 z-40 flex items-end gap-2 px-2 pb-1 text-white mix-blend-difference md:px-3" aria-label="Foil">
-        <span className="block text-[22px] uppercase leading-none md:text-[26px]" style={WORDMARK}>Foil</span>
-        <span className="mb-[3px] grid grid-cols-3 gap-[2px]" aria-hidden>
-          {Array.from({ length: 9 }).map((_, i) => (
-            <span key={i} className="block h-[3px] w-[3px] rounded-full bg-white" style={{ opacity: [0, 4, 8].includes(i) ? 1 : 0.35 }} />
-          ))}
-        </span>
-      </a>
+      <Link href="/" className="fixed bottom-0 left-0 z-40 flex items-end gap-2 px-2 pb-1 text-white mix-blend-difference md:px-3" aria-label={t('Accueil', 'Home')}>
+        <span className="block text-[15px] font-bold uppercase leading-none tracking-[-0.045em] min-[380px]:text-[17px] sm:text-[20px] md:text-[24px]">Emmanuel Ijjou</span>
+        <span className="mb-[1px]"><ProjectMark /></span>
+      </Link>
       <div className={`${TXT} fixed bottom-0 right-0 z-40 px-2 pb-1.5 text-white mix-blend-difference md:px-3`}>
         <button onClick={() => setOpen(true)} className="hover:underline">Index</button>
       </div>

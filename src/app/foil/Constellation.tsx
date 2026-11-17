@@ -40,7 +40,7 @@ export default function Constellation() {
   const fmt = (n: number) => n.toLocaleString('fr-FR').replace(/ /g, ' ');
 
   return (
-    <div className="grid grid-cols-1 md:grid-cols-12 bg-[#08090b] text-white border border-black/15">
+    <div className="grid grid-cols-1 md:grid-cols-12 bg-[#08090b] text-white">
       <div className="md:col-span-8 relative" style={{ background: 'radial-gradient(90% 70% at 50% 0%, #17191e 0%, #08090b 70%)' }}>
         <svg viewBox="0 0 800 540" className="w-full h-auto block" role="img" aria-label={t('Constellation de la collection : un point par carte, regroupés par jeu', 'Collection constellation: one dot per card, grouped by game')}>
           {GAMES.map((g, gi) => (

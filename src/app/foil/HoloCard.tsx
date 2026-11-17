@@ -55,7 +55,7 @@ export default function HoloCard() {
   const neg = card.delta.startsWith('−');
 
   return (
-    <div className="grid grid-cols-1 md:grid-cols-12 bg-[#08090b] text-white border border-black/15">
+    <div className="grid grid-cols-1 md:grid-cols-12 bg-[#08090b] text-white">
       <div
         ref={stage}
         onPointerMove={onMove}
@@ -80,7 +80,7 @@ export default function HoloCard() {
         >
           <Image
             key={card.id}
-            src={`/ecrin/cards/${card.id}.webp`}
+            src={`/foil/cards/${card.id}.webp`}
             alt={`${card.name}, ${card.game}`}
             width={card.w}
             height={card.h}
@@ -139,7 +139,7 @@ export default function HoloCard() {
                 aria-pressed={k === i}
                 className={`w-full flex items-center gap-4 px-6 md:px-8 py-4 border-b border-white/10 text-left transition-colors ${k === i ? 'bg-white/[0.06]' : 'hover:bg-white/[0.03]'}`}
               >
-                <Image src={`/ecrin/cards/${c.id}.webp`} alt="" width={c.w} height={c.h} sizes="40px" className="w-10 h-auto rounded-[3px]" />
+                <Image src={`/foil/cards/${c.id}.webp`} alt="" width={c.w} height={c.h} sizes="40px" className="w-10 h-auto rounded-[3px]" />
                 <span className="flex-1">
                   <span className="block text-[15px]">{c.name}</span>
                   <span className="block text-[12px] text-white/45">{c.game}</span>

@@ -193,8 +193,8 @@ export default function Page() {
         </p>
         <p>
           {t(
-            'Un rendu 3D la montre sous plusieurs angles. La même matière se retrouve dans l’interface : verre dépoli, halo holographique, points.',
-            'A 3D render shows it from several angles. The same material runs through the interface: frosted glass, holographic glow, dots.'
+            'Un rendu 3D la montre sous plusieurs angles. L’interface reste volontairement sobre : fond noir, verre transparent, points blancs. Seule la carte porte la couleur.',
+            'A 3D render shows it from several angles. The interface stays deliberately restrained: black background, transparent glass, white dots. Only the card carries colour.'
           )}
         </p>
       </Chapter>

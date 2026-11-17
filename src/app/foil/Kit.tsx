@@ -25,11 +25,10 @@ export function usePhone() {
   return phone;
 }
 
-/** Image revealed by a single smooth mask, with a slow settle (a plain fade on phones). */
+/** Image revealed by a single smooth mask, with a slow settle . */
 export function Weave({ src, alt, priority = false, sizes, delay = 0, force = false, position = 'center' }: { src: string; alt: string; priority?: boolean; sizes: string; delay?: number; force?: boolean; position?: string }) {
   const host = useRef<HTMLDivElement>(null);
   const seen = useInView(host, { once: true, margin: '0px 0px -12% 0px' });
-  const phone = usePhone();
   const go = force || seen;
   return (
     <div ref={host} className="absolute inset-0 overflow-hidden">

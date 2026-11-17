@@ -1,7 +1,7 @@
 'use client';
 
 import { usePathname } from 'next/navigation';
-import { SoftMark } from './SoutrameMarks';
+import { Mark } from './SoutrameMarks';
 
 /**
  * One small mark per project, drawn in dots on a 5×5 grid and shown next to the name in the bottom-left corner.
@@ -115,7 +115,7 @@ export function projectKey(pathname: string) {
 /** The mark that goes with the current page, or nothing on the home and about pages. */
 export default function ProjectMark({ className = 'h-[19px] w-[19px] md:h-[24px] md:w-[24px]' }: { className?: string }) {
   const key = projectKey(usePathname() ?? '');
-  if (key === 'soutrame-ecommerce' || key === 'soutrame') return <SoftMark className="h-[19px] w-[22px] brightness-[0.55] md:h-[24px] md:w-[27px]" />;
+  if (key === 'soutrame-ecommerce' || key === 'soutrame') return <Mark className="h-[15px] w-[19px] md:h-[19px] md:w-[24px]" />;
   const grid = GRIDS[key];
   return grid ? <DotMark grid={grid} className={className} /> : null;
 }
@@ -125,7 +125,7 @@ export { GRIDS };
 /** The mark of a project, from its link (used on the home page). */
 export function MarkFor({ link, className = 'h-[15px] w-[15px]' }: { link: string; className?: string }) {
   const key = projectKey(link);
-  if (key === 'soutrame-ecommerce' || key === 'soutrame') return <SoftMark className="h-[15px] w-[17px] brightness-[0.55]" animate={false} />;
+  if (key === 'soutrame-ecommerce' || key === 'soutrame') return <Mark className="h-[12px] w-[15px]" />;
   const grid = GRIDS[key];
   return grid ? <DotMark grid={grid} className={className} /> : null;
 }

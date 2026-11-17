@@ -102,22 +102,6 @@ export default function Home() {
             {t('Voir les projets', 'See the work')} ↓
           </a>
         </motion.div>
-        {/* the signature: every project in dots, one mark each */}
-        <motion.ul
-          className="mt-10 flex flex-wrap items-center gap-x-5 gap-y-3 border-t border-black/15 pt-4 md:mt-14"
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ duration: 1, delay: 0.7 }}
-          aria-label={t('Projets', 'Projects')}
-        >
-          {projects.map((p) => (
-            <li key={p.link}>
-              <Link href={p.link} title={t(p.title.fr, p.title.en)} aria-label={t(p.title.fr, p.title.en)} className="block text-black/70 transition-colors duration-500 hover:text-black">
-                <MarkFor link={p.link} className="h-[20px] w-[20px]" />
-              </Link>
-            </li>
-          ))}
-        </motion.ul>
       </section>
 
       <div id="work" className="px-0 md:px-3">

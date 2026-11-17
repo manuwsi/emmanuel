@@ -27,7 +27,7 @@ import { useCallback, useEffect, useRef, useState } from 'react';
 import { AnimatePresence, motion, useInView, useScroll, useTransform } from 'framer-motion';
 import { useLang, useT } from '@/components/i18n';
 import ArrowOut from '@/components/ArrowOut';
-import { SoftMark } from '@/components/SoutrameMarks';
+import { Mark, SoftMark } from '@/components/SoutrameMarks';
 
 const DROP = {
   price: null as string | null,
@@ -346,6 +346,11 @@ function Chrome({ filter, setFilter, count }: { filter: Category | 'all'; setFil
   const [filters, setFilters] = useState(false);
   const closeMenu = useCallback(() => setMenu(false), []);
   const closeBag = useCallback(() => setBag(false), []);
+  const { scrollYProgress } = useScroll();
+  const spinning = useTransform(scrollYProgress, [0, 1], [0, 720]);
+  const phone = usePhone();
+  const still = useTransform(scrollYProgress, () => 0);
+  const spin = phone ? still : spinning;
   const go = (id: string) => {
     setMenu(false);
     setTimeout(() => document.getElementById(id)?.scrollIntoView({ behavior: 'smooth' }), 350);
@@ -396,7 +401,9 @@ function Chrome({ filter, setFilter, count }: { filter: Category | 'all'; setFil
         <span className="block text-[22px] uppercase leading-none md:text-[26px]" style={WORDMARK}>
           Soutrame
         </span>
-        <SoftMark className="mb-[1px] block w-[26px] md:w-[30px]" />
+        <motion.span style={{ rotate: spin }} className="mb-[3px] block w-[17px] md:w-[20px]">
+          <Mark className="w-full" />
+        </motion.span>
       </a>
 
       {/* bottom-right: menu, bag */}

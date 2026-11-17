@@ -121,3 +121,11 @@ export default function ProjectMark({ className = 'h-[19px] w-[19px] md:h-[24px]
 }
 
 export { GRIDS };
+
+/** The mark of a project, from its link (used on the home page). */
+export function MarkFor({ link, className = 'h-[15px] w-[15px]' }: { link: string; className?: string }) {
+  const key = projectKey(link);
+  if (key === 'soutrame-ecommerce' || key === 'soutrame') return <SoftMark className="h-[15px] w-[17px] brightness-[0.55]" animate={false} />;
+  const grid = GRIDS[key];
+  return grid ? <DotMark grid={grid} className={className} /> : null;
+}

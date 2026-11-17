@@ -6,6 +6,7 @@ import Link from 'next/link';
 import Header from '@/components/Header';
 import { useT } from '@/components/i18n';
 import { projects, type Project } from '@/components/projects';
+import { MarkFor } from '@/components/ProjectMark';
 import '../styles/globals.css';
 
 const EASE = [0.22, 1, 0.36, 1] as const;
@@ -45,7 +46,10 @@ function ProjectCard({ project, index }: { project: Project; index: number }) {
             <p className="font-medium">{title}</p>
             <p className="text-black/50">{t(project.subtitle.fr, project.subtitle.en)}</p>
           </div>
-          <span className="shrink-0 tabular-nums text-black/40 group-hover:text-black">{String(index + 1).padStart(2, '0')}</span>
+          <span className="flex shrink-0 items-center gap-2.5 tabular-nums text-black/55 transition-colors group-hover:text-black">
+            <MarkFor link={project.link} />
+            {String(index + 1).padStart(2, '0')}
+          </span>
         </div>
       </Link>
     </motion.article>
@@ -98,6 +102,22 @@ export default function Home() {
             {t('Voir les projets', 'See the work')} ↓
           </a>
         </motion.div>
+        {/* the signature: every project in dots, one mark each */}
+        <motion.ul
+          className="mt-10 flex flex-wrap items-center gap-x-5 gap-y-3 border-t border-black/15 pt-4 md:mt-14"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ duration: 1, delay: 0.7 }}
+          aria-label={t('Projets', 'Projects')}
+        >
+          {projects.map((p) => (
+            <li key={p.link}>
+              <Link href={p.link} title={t(p.title.fr, p.title.en)} aria-label={t(p.title.fr, p.title.en)} className="block text-black/70 transition-colors duration-500 hover:text-black">
+                <MarkFor link={p.link} className="h-[20px] w-[20px]" />
+              </Link>
+            </li>
+          ))}
+        </motion.ul>
       </section>
 
       <div id="work" className="px-0 md:px-3">

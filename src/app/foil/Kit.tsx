@@ -29,7 +29,8 @@ export function usePhone() {
 export function Weave({ src, alt, priority = false, sizes, delay = 0, force = false, position = 'center' }: { src: string; alt: string; priority?: boolean; sizes: string; delay?: number; force?: boolean; position?: string }) {
   const host = useRef<HTMLDivElement>(null);
   const seen = useInView(host, { once: true, margin: '0px 0px -12% 0px' });
-  const go = force || seen;
+  const [loaded, setLoaded] = useState(false);
+  const go = (force || seen) && loaded;
   return (
     <div ref={host} className="absolute inset-0 overflow-hidden">
       <motion.div
@@ -44,7 +45,7 @@ export function Weave({ src, alt, priority = false, sizes, delay = 0, force = fa
           animate={{ scale: go ? 1 : 1.08 }}
           transition={{ duration: 1.8, ease: EASE, delay }}
         >
-          <Image src={src} alt={alt} fill priority={priority} sizes={sizes} className="object-cover" style={{ objectPosition: position }} />
+          <Image unoptimized loading={priority ? undefined : 'eager'} onLoad={() => setLoaded(true)} src={src} alt={alt} fill priority={priority} sizes={sizes} className="object-cover" style={{ objectPosition: position }} />
         </motion.div>
       </motion.div>
     </div>
@@ -188,7 +189,7 @@ export function Strip({ items, label, hint }: { items: { src: string; name: stri
         {items.map((s) => (
           <div key={s.src} className="relative flex aspect-[4/5] w-[78vw] shrink-0 items-center justify-center bg-[#0b0c0e] md:aspect-auto md:h-[82svh] md:w-[calc(82svh*0.8)]">
             <div className="relative h-[86%] aspect-[780/1688]">
-              <Image src={s.src} alt={s.name} fill sizes="(min-width:768px) 40vw, 70vw" className="rounded-[4%] object-cover" draggable={false} />
+              <Image unoptimized loading="eager" src={s.src} alt={s.name} fill sizes="(min-width:768px) 40vw, 70vw" className="rounded-[4%] object-cover" draggable={false} />
             </div>
           </div>
         ))}

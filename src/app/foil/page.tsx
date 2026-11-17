@@ -276,7 +276,7 @@ export default function Page() {
             <Reveal key={h.f}>
               <div className="bg-[#0b0c0e] text-white">
                 <div className="flex justify-center px-[14%] pt-[8%]">
-                  <Image src={`/foil/p/${h.f}.webp`} alt={h.n} width={780} height={1688} sizes="(min-width:768px) 30vw, 70vw" className="h-auto w-full rounded-t-[5%]" />
+                  <Image unoptimized loading="eager" src={`/foil/p/${h.f}.webp`} alt={h.n} width={780} height={1688} sizes="(min-width:768px) 30vw, 70vw" className="h-auto w-full rounded-t-[5%]" />
                 </div>
               </div>
               <h3 className="px-2 pt-3 text-[22px] leading-[1.1] md:px-0" style={DISPLAY}>{h.n}</h3>

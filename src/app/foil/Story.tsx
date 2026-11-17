@@ -31,7 +31,7 @@ export default function Story() {
         style={{ background: 'radial-gradient(90% 70% at 50% 0%, #17191e 0%, #08090b 70%)' }}>
         <div className="relative w-[min(300px,70vw)] aspect-[780/1688] rounded-[34px] overflow-hidden border border-white/20 shadow-[0_40px_80px_rgba(0,0,0,.6)]">
           {steps.map((s, i) => (
-            <Image key={s.f} src={`/foil/p/${s.f}.webp`} alt={t(`Écran : ${s.title}`, `Screen: ${s.title}`)} width={780} height={1688} sizes="300px"
+            <Image unoptimized loading="eager" key={s.f} src={`/foil/p/${s.f}.webp`} alt={t(`Écran : ${s.title}`, `Screen: ${s.title}`)} width={780} height={1688} sizes="300px"
               className="absolute inset-0 w-full h-full transition-opacity duration-500" style={{ opacity: a === i ? 1 : 0 }} />
           ))}
         </div>

@@ -166,6 +166,15 @@ export default function Page() {
         ))}
       </div>
 
+      <Media
+        src="/ecrin/collection.jpg"
+        alt={t(
+          'Rendu 3D de cinq cartes de trois jeux différents, côte à côte : Pokémon, One Piece, Yu-Gi-Oh!',
+          '3D render of five cards from three different games side by side: Pokémon, One Piece, Yu-Gi-Oh!'
+        )}
+        width={2000}
+        height={800}
+      />
       <Chapter title={t('Quatre principes', 'Four principles')}>
         <p>
           {t(
@@ -298,8 +307,8 @@ export default function Page() {
         </p>
         <p>
           {t(
-            'La carte Reshiram ex est utilisée à titre d’illustration du produit. © Pokémon / Nintendo / Creatures / GAME FREAK. Les autres cartes, en points, sont des créations originales.',
-            'The Reshiram ex card is used as an illustration of the product. © Pokémon / Nintendo / Creatures / GAME FREAK. The other, dotted cards are original creations.'
+            'Les cartes Pokémon, One Piece et Yu-Gi-Oh! sont utilisées à titre d’illustration du produit et appartiennent à leurs ayants droit respectifs. Les cartes dessinées en points sont des créations originales.',
+            'The Pokémon, One Piece and Yu-Gi-Oh! cards are used to illustrate the product and belong to their respective rights holders. The dotted cards are original creations.'
           )}
         </p>
       </Chapter>

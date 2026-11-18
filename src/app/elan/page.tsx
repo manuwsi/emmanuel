@@ -66,8 +66,8 @@ const glance = (t: T) => [
     time: t('0,2 s', '0.2 s'),
     title: t('La teinte', 'The tint'),
     text: t(
-      'Du coin de l’œil, sans faire le point : effort, récupération ou hors cible.',
-      'From the corner of the eye, without focusing: effort, recovery or off target.'
+      'Vu du coin de l’œil : effort, récupération ou hors cible.',
+      'Seen from the corner of the eye: effort, recovery or off target.'
     ),
   },
   {
@@ -82,8 +82,8 @@ const glance = (t: T) => [
     time: t('1 s', '1 s'),
     title: t('Le chiffre', 'The number'),
     text: t(
-      'Une seule valeur, la plus grande possible : ce qu’il reste à faire.',
-      'A single value, as large as possible: what is left to do.'
+      'Un seul chiffre, le plus grand possible : ce qu’il reste à faire.',
+      'A single number, as large as possible: what is left to do.'
     ),
   },
 ];
@@ -140,8 +140,8 @@ const drawings = (t: T) => [
     where: t('Résumé · iPhone', 'Summary · iPhone'),
     title: t('L’empreinte de la séance', 'The session’s fingerprint'),
     text: t(
-      'Huit tours, huit anneaux. Plus le point est gros, plus l’allure était rapide : le départ trop vif du premier tour se voit d’un regard.',
-      'Eight laps, eight rings. The bigger the dot, the faster the pace: the over-eager start of the first lap shows at a glance.'
+      'Un anneau par tour, huit en tout. Plus le point est gros, plus l’allure était rapide. On voit tout de suite que le premier tour est parti trop vite.',
+      'One ring per lap, eight in all. The bigger the dot, the faster the pace. You can see right away that the first lap started too fast.'
     ),
   },
   {
@@ -149,8 +149,8 @@ const drawings = (t: T) => [
     where: t('Option · montre', 'Option · watch'),
     title: t('La récupération au cœur', 'Recovery by heart rate'),
     text: t(
-      'Le cœur se vide à mesure que le pouls redescend. Vide, on repart : la récupération s’adapte au coureur plutôt qu’au chronomètre.',
-      'The heart empties as the pulse comes down. Empty, you go again: recovery adapts to the runner rather than the stopwatch.'
+      'Le cœur se vide quand le pouls redescend. Quand il est vide, on repart : la récupération dépend du coureur, pas du chronomètre.',
+      'The heart empties as the pulse comes down. When it is empty, you go again: recovery depends on the runner, not on the stopwatch.'
     ),
   },
   {
@@ -167,8 +167,8 @@ const drawings = (t: T) => [
     where: t('Pendant · montre', 'During · watch'),
     title: t('Les vibrations', 'The vibrations'),
     text: t(
-      'Trois ondes serrées, une onde large, deux ondes décalées : chaque signal a sa forme.',
-      'Three tight waves, one wide wave, two offset waves: each signal has its own shape.'
+      'Chaque signal a sa forme : trois ondes serrées, une onde large, deux ondes décalées.',
+      'Each signal has its own shape: three tight waves, one wide wave, two offset waves.'
     ),
   },
 ];
@@ -240,8 +240,8 @@ export default function Page() {
     <ProjectPage
       title="Élan"
       subtitle={t(
-        'Le fractionné qui se lit en une seconde. Concept pour montre connectée et iPhone.',
-        'Interval training, readable in one second. A concept for smartwatch and iPhone.'
+        'Une appli de fractionné qu’on lit d’un coup d’œil. Concept pour montre et iPhone.',
+        'An interval-training app you read at a glance. A concept for watch and iPhone.'
       )}
       meta={{
         year: '2026',
@@ -252,34 +252,24 @@ export default function Page() {
       intro={t(
         <>
           <p>
-            Élan est un concept d&apos;application de course pour les séances de fractionné : celles où
-            l&apos;on alterne des efforts courts et des récupérations, montre au poignet, souvent seul.
+            Élan est un concept d&apos;appli de course pour le fractionné : on alterne des efforts courts et des récupérations, montre au poignet, souvent seul.
           </p>
           <p>
-            Le point de départ est une contrainte : en plein effort, un coup d&apos;œil à la montre dure
-            une à deux secondes. Tout le projet cherche à faire tenir l&apos;essentiel dans ce coup
-            d&apos;œil, puis à simplifier ce qui se passe avant et après, sur le téléphone.
+            En plein effort, un coup d&apos;œil à la montre dure une à deux secondes. J&apos;ai cherché à y faire tenir l&apos;essentiel, puis à simplifier ce qui se passe avant et après, sur le téléphone.
           </p>
           <p>
-            Le concept couvre le parcours complet : la préparation de la séance sur iPhone, seize
-            états de montre pendant la course, et le résumé. La prochaine étape est le test sur
-            piste, avec des coureurs.
+            Le concept va de la préparation de la séance sur iPhone au résumé, avec seize états de montre pendant la course. La prochaine étape est un test sur piste, avec des coureurs.
           </p>
         </>,
         <>
           <p>
-            Élan is a concept for a running app built around interval sessions: the ones where you
-            alternate short efforts and recoveries, watch on your wrist, often alone.
+            Élan is a concept for a running app for interval training: you alternate short efforts and recoveries, watch on your wrist, often alone.
           </p>
           <p>
-            It starts from a constraint: mid-effort, a glance at the watch lasts one to two seconds.
-            The whole project tries to fit what matters into that glance, then to simplify what
-            happens before and after, on the phone.
+            Mid-effort, a glance at the watch lasts one to two seconds. I tried to fit what matters into that glance, then to simplify what happens before and after, on the phone.
           </p>
           <p>
-            The concept covers the full journey: setting up the session on iPhone, sixteen watch
-            states during the run, and the summary. The next step is testing on the track, with
-            runners.
+            The concept goes from setting up the session on iPhone to the summary, with sixteen watch states during the run. The next step is a test on the track, with runners.
           </p>
         </>
       )}
@@ -299,14 +289,14 @@ export default function Page() {
       <Chapter title={t('Le problème', 'The problem')}>
         <p>
           {t(
-            'Pendant un fractionné, trois questions reviennent sans cesse : où j’en suis, est-ce que je cours à la bonne allure, et quand est-ce que ça change. Les montres de sport y répondent en affichant tout à la fois.',
-            'During intervals, three questions keep coming back: where am I, am I running at the right pace, and when does it change. Sports watches answer by showing everything at once.'
+            'Pendant un fractionné, on se pose toujours les mêmes trois questions : où j’en suis, est-ce que je suis à la bonne allure, et quand est-ce que ça change. Les montres de sport répondent en affichant tout en même temps.',
+            'During intervals you ask yourself the same three questions: where am I, am I at the right pace, and when does it change. Sports watches answer by showing everything at the same time.'
           )}
         </p>
         <p>
           {t(
-            'Le benchmark couvre Garmin, Apple Watch, Runna et Strava. Côté coureurs, un premier retour de terrain oriente le projet : deux informations regardées, la distance restante et l’allure, une programmation jugée pénible, et une frustration, le temps de repos.',
-            'The benchmark covers Garmin, Apple Watch, Runna and Strava. On the runners’ side, a first piece of field feedback steers the project: two things looked at, distance left and pace, set-up felt as a chore, and one frustration, rest time.'
+            'J’ai comparé Garmin, Apple Watch, Runna et Strava. Un premier retour de terrain m’a aussi orienté : on ne regarde que deux informations, la distance restante et l’allure, programmer une séance est pénible, et le temps de repos frustre.',
+            'I compared Garmin, Apple Watch, Runna and Strava. A first piece of field feedback also steered me: people only look at two things, distance left and pace, setting up a session is a chore, and rest time is frustrating.'
           )}
         </p>
       </Chapter>
@@ -324,8 +314,8 @@ export default function Page() {
       <Chapter title={t('Le concept', 'The concept')}>
         <p>
           {t(
-            'Trois moments, une idée par moment. Le téléphone prépare et conclut ; la montre ne garde que ce qui se lit en courant.',
-            'Three moments, one idea each. The phone prepares and wraps up; the watch keeps only what can be read while running.'
+            'Le téléphone sert à préparer la séance et à la relire. La montre ne garde que ce qui se lit en courant.',
+            'The phone is for setting up the session and reviewing it. The watch keeps only what can be read while running.'
           )}
         </p>
       </Chapter>
@@ -354,8 +344,8 @@ export default function Page() {
       <Chapter title={t('Le principe', 'The principle')}>
         <p>
           {t(
-            'Anatomie d’un coup d’œil. Une seconde ne suffit pas pour lire un écran. Elle suffit pour en lire une couche à la fois, toujours dans le même ordre. L’interface de la montre vise cette lecture en trois temps.',
-            'Anatomy of a glance. One second is not enough to read a screen. It is enough to read one layer at a time, always in the same order. The watch interface is designed for that three-step read.'
+            'En une seconde, on ne lit pas un écran entier, mais on peut en lire une partie, toujours dans le même ordre. L’interface de la montre est faite pour cette lecture en trois temps.',
+            'In one second you cannot read a whole screen, but you can read part of it, always in the same order. The watch interface is made for that three-step read.'
           )}
         </p>
       </Chapter>
@@ -399,7 +389,7 @@ export default function Page() {
           <div className="space-y-4">
             <span className="text-[13px] text-black/45">{t('Vue éclatée', 'Exploded view')}</span>
             <h4 className="text-2xl md:text-[2.6vw] font-medium tracking-[-0.035em] leading-[1.05]">
-              {t('Un écran, quatre couches. Chacune ne dit qu’une chose.', 'One screen, four layers. Each says only one thing.')}
+              {t('Un écran, quatre couches, une information par couche.', 'One screen, four layers, one piece of information per layer.')}
             </h4>
           </div>
           <ol className="divide-y divide-black/15 border-t border-black/15">
@@ -420,14 +410,14 @@ export default function Page() {
       <Chapter title={t('La montre', 'The watch')}>
         <p>
           {t(
-            'Le verre change de teinte, la structure ne bouge jamais : le mot en haut, le chiffre au centre, le détail en dessous. Bleuté en récupération, neutre en effort, rosé hors de la cible.',
-            'The glass changes tint, the structure never moves: the word on top, the number in the centre, the detail below. Bluish in recovery, neutral in effort, rose when off target.'
+            'Le verre change de teinte, mais la mise en page ne bouge pas : le mot en haut, le chiffre au centre, le détail en dessous. Bleuté en récupération, neutre en effort, rosé hors cible.',
+            'The glass changes tint, but the layout does not move: the word on top, the number in the centre, the detail below. Bluish in recovery, neutral in effort, rose when off target.'
           )}
         </p>
         <p>
           {t(
-            'La couleur ne porte jamais l’information seule : le mot la dit toujours.',
-            'Colour never carries the information alone: the word always says it.'
+            'La couleur n’est jamais seule à porter l’information, le mot la répète toujours.',
+            'Colour is never the only carrier of the information, the word always repeats it.'
           )}
         </p>
       </Chapter>
@@ -496,7 +486,7 @@ export default function Page() {
           ))}
           <li className="bg-white p-3 md:p-5 flex items-end">
             <p className="text-[12px] md:text-[13px] text-black/45 leading-snug">
-              {t('Chaque écran répond à une seule question.', 'Each screen answers a single question.')}
+              {t('Un écran, une question.', 'One screen, one question.')}
             </p>
           </li>
         </ol>
@@ -516,8 +506,8 @@ export default function Page() {
       <Chapter title={t('Sans regarder', 'Without looking')}>
         <p>
           {t(
-            'Le poignet prévient avant l’écran. Trois signaux, toujours dans le même ordre : ça va changer, ça change, tu sors de la cible.',
-            'The wrist warns before the screen does. Three signals, always in the same order: it is about to change, it changes, you are off target.'
+            'La montre vibre avant que l’écran change. Trois signaux : ça va changer, ça change, on sort de la cible.',
+            'The watch vibrates before the screen changes. Three signals: it is about to change, it changes, you are off target.'
           )}
         </p>
       </Chapter>
@@ -526,11 +516,11 @@ export default function Page() {
       </div>
 
       {/* DRAWN DATA */}
-      <Chapter title={t('La donnée, dessinée', 'Data, drawn')}>
+      <Chapter title={t('Les données en points', 'Data in dots')}>
         <p>
           {t(
-            'Du blanc, du verre fumé et des points. Chaque illustration est une mesure : on reconnaît la forme avant de lire le chiffre.',
-            'White, smoked glass and dots. Every illustration is a measurement: you recognise the shape before you read the number.'
+            'Du blanc, du verre fumé et des points. Chaque illustration représente une mesure, donc on reconnaît la forme avant de lire le chiffre.',
+            'White, smoked glass and dots. Each illustration stands for a measurement, so you recognise the shape before you read the number.'
           )}
         </p>
       </Chapter>
@@ -579,8 +569,8 @@ export default function Page() {
       <Chapter title={t('Le téléphone', 'The phone')}>
         <p>
           {t(
-            'La séance s’écrit comme une phrase : huit fois quatre cents mètres à 4:00, récupération une minute. Chaque valeur se touche et se modifie.',
-            'The session is written as a sentence: eight times four hundred metres at 4:00, one minute recovery. Each value can be tapped and changed.'
+            'La séance s’écrit comme une phrase : huit fois 400 mètres à 4:00, une minute de récupération. On touche une valeur pour la modifier.',
+            'The session is written as a sentence: eight times 400 metres at 4:00, one minute of recovery. You tap a value to change it.'
           )}
         </p>
         <p>
@@ -619,8 +609,8 @@ export default function Page() {
       <Chapter title={t('La suite', 'What’s next')}>
         <p>
           {t(
-            'Prochaine étape : confronter le concept à des coureurs. Un test de lisibilité en mouvement pour fixer la taille des chiffres, puis un test du prototype sur piste. Viendra ensuite la déclinaison pour montre rectangulaire.',
-            'Next step: putting the concept in front of runners. A legibility test in motion to settle the size of the numbers, then a prototype test on the track. A version for rectangular watches will follow.'
+            'Prochaine étape : le montrer à des coureurs. D’abord un test de lisibilité en mouvement pour fixer la taille des chiffres, puis un test du prototype sur piste. Ensuite, une version pour montre rectangulaire.',
+            'Next step: show it to runners. First a legibility test in motion to settle the size of the numbers, then a prototype test on the track. After that, a version for rectangular watches.'
           )}
         </p>
       </Chapter>

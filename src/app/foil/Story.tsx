@@ -7,10 +7,10 @@ import { useT } from '@/components/i18n';
 export default function Story() {
   const t = useT();
   const steps = [
-    { f: 'scan', n: '01', k: t('Akihabara, 16 h', 'Akihabara, 4 pm'), title: t('Je scanne la carte', 'I scan the card'), big: '98 %', text: t('La carte est reconnue en une seconde : jeu, série, langue.', 'The card is recognised in a second: game, set, language.') },
-    { f: 'ajout', n: '02', k: t('Au comptoir', 'At the counter'), title: t('Je note le prix en yens', 'I note the price in yen'), big: '168 000 ¥', text: t('Foil le convertit en euros au taux du jour : 1 040 €. Ce prix de revient ne bougera plus.', 'Foil converts it to euros at that day’s rate: €1,040. This cost price will never change.') },
-    { f: 'fiche', n: '03', k: t('Dans le train', 'On the train'), title: t('Je vois ce qu’elle vaut', 'I see what it is worth'), big: '+ 200 €', text: t('Valeur de marché, écart avec le prix payé, et l’évolution sur quelques mois.', 'Market value, gap with the price paid, and the trend over a few months.') },
-    { f: 'constellation', n: '04', k: t('Le soir', 'In the evening'), title: t('Elle rejoint la collection', 'It joins the collection'), big: '148', text: t('Un point de plus dans la constellation, parmi tous les jeux.', 'One more dot in the constellation, among all the games.') },
+    { f: 'scan', n: '01', k: t('Akihabara, 16 h', 'Akihabara, 4 pm'), title: t('Je scanne la carte', 'I scan the card'), big: '98 %', text: t('Foil reconnaît le jeu, la série et la langue.', 'Foil picks up the game, the set and the language.') },
+    { f: 'ajout', n: '02', k: t('Au comptoir', 'At the counter'), title: t('Je note le prix en yens', 'I note the price in yen'), big: '168 000 ¥', text: t('L’appli le convertit en euros au taux du jour : 1 040 €. Ce prix reste fixe.', 'The app converts it to euros at that day’s rate: €1,040. This price stays fixed.') },
+    { f: 'fiche', n: '03', k: t('Dans le train', 'On the train'), title: t('Je regarde ce qu’elle vaut', 'I check what it is worth'), big: '+ 200 €', text: t('Valeur du marché, écart avec le prix payé, et courbe sur quelques mois.', 'Market value, gap with the price paid, and a curve over a few months.') },
+    { f: 'constellation', n: '04', k: t('Le soir', 'In the evening'), title: t('Elle rejoint la collection', 'It joins the collection'), big: '148', text: t('Un point de plus, parmi tous les jeux.', 'One more dot, among all the games.') },
     { f: 'vendre', n: '05', k: t('Dans trois ans', 'In three years'), title: t('Je décide de vendre', 'I decide to sell'), big: '+ 125 €', text: t('Le gain net, une fois les frais, l’envoi et le change retirés.', 'The net gain, once fees, shipping and exchange are taken off.') },
   ];
   const [a, setA] = useState(0);

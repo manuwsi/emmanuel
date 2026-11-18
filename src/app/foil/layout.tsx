@@ -1,7 +1,7 @@
 import type { Metadata } from 'next';
 
 const description =
-  'Foil, un concept d’application iOS pour suivre une collection de cartes (Pokémon, One Piece, Yu-Gi-Oh!) avec sa valeur de marché et son gain réel à la revente.';
+  'Foil, un concept d’application iOS pour suivre une collection de cartes (Pokémon, One Piece, Yu-Gi-Oh!) avec ce qu’elle vaut et ce qu’on gagnerait à la revente.';
 
 export const metadata: Metadata = {
   title: 'Foil — Concept iOS, collection de cartes',

@@ -86,6 +86,23 @@ const principles = (t: T) => [
   { title: t('Deux tons', 'Two registers'), text: t('Sombre et dense pour le studio, comme un logiciel de montage. Clair et éditorial pour le client.', 'Dark and dense for the studio, like editing software. Light and editorial for the client.') },
 ];
 
+const compare = (t: T) => [
+  { label: t('Commentaires au timecode', 'Timecoded comments'), frame: '✓', preview: t('non précisé', 'not specified'), dailies: '✓' },
+  { label: t('Versions comparées côte à côte', 'Side-by-side versions'), frame: '✓', preview: t('non précisé', 'not specified'), dailies: '✓' },
+  { label: t('Génération intégrée, tous modèles', 'Built-in generation, any model'), frame: '—', preview: '✓', dailies: '✓' },
+  { label: t('Origine de chaque image (prompt, modèle)', 'Origin of each image (prompt, model)'), frame: '—', preview: '✓', dailies: '✓' },
+  { label: t('Coût des rendus, avant de générer', 'Render cost, before generating'), frame: '—', preview: t('non précisé', 'not specified'), dailies: '✓' },
+  { label: t('Client qui ne voit qu’une version', 'Client sees a single version'), frame: t('selon partage', 'depends on share'), preview: t('non précisé', 'not specified'), dailies: '✓' },
+];
+
+const metrics = (t: T) => [
+  { m: t('Temps pour retrouver une génération', 'Time to find a generation'), why: t('Hypothèse 2 : l’origine des images se perd.', 'Assumption 2: images lose their origin.') },
+  { m: t('Part des retours rattachés à un plan', 'Share of feedback tied to a shot'), why: t('Hypothèse 3 : les retours sont flous.', 'Assumption 3: feedback is vague.') },
+  { m: t('Validations sur une version dépassée', 'Approvals on an outdated version'), why: t('Hypothèse 4 : objectif zéro.', 'Assumption 4: target is zero.') },
+  { m: t('Écart entre budget prévu et dépensé', 'Gap between planned and spent budget'), why: t('Hypothèse 5 : le coût est invisible.', 'Assumption 5: cost is invisible.') },
+  { m: t('Nombre de tours de retours par film', 'Feedback rounds per film'), why: t('À comparer avec ce que prévoit le devis.', 'To compare with what the quote includes.') },
+];
+
 function Caption({ children }: { children: React.ReactNode }) {
   return <p className="text-[13px] text-black/50 leading-relaxed pt-2 max-w-2xl">{children}</p>;
 }
@@ -166,8 +183,49 @@ export default function Page() {
         ))}
       </ol>
 
+      {/* EXISTING */}
+      <Chapter n={2} title={t('L’existant', 'What exists')} lede={t('Les outils de revue ne savent pas d’où vient une image. Les plateformes de génération parlent peu du client.', 'Review tools don’t know where an image comes from. Generation platforms say little about the client.')}>
+        <p>
+          {t(
+            'Frame.io est la référence de la revue vidéo : commentaires au timecode, versions empilées, statuts de validation. Mais il reçoit des fichiers finis, sans le prompt ni le coût derrière. Preview, une plateforme de production IA récente, garde l’origine de chaque image et fonctionne avec tous les modèles ; sa page ne détaille ni la revue client ni les coûts.',
+            'Frame.io is the reference for video review: timecoded comments, stacked versions, approval statuses. But it receives finished files, without the prompt or cost behind them. Preview, a recent AI production platform, keeps the origin of every image and works with any model; its page doesn’t detail client review or costs.'
+          )}
+        </p>
+        <p>
+          {t(
+            'Dailies prend la revue de l’un et la traçabilité de l’autre, et ajoute ce qu’aucun des deux ne met en avant : le coût avant de générer.',
+            'Dailies takes review from one and traceability from the other, and adds what neither puts forward: the cost before generating.'
+          )}
+        </p>
+      </Chapter>
+      <div className="overflow-x-auto">
+        <table className="w-full min-w-[560px] text-[13px] border-collapse">
+          <thead>
+            <tr className="text-black/45 text-left">
+              <th className="font-normal py-3 pr-4 border-b border-black/15"></th>
+              <th className="font-normal py-3 px-4 border-b border-black/15">Frame.io</th>
+              <th className="font-normal py-3 px-4 border-b border-black/15">Preview</th>
+              <th className="font-medium text-black py-3 px-4 border-b border-black/15">Dailies</th>
+            </tr>
+          </thead>
+          <tbody>
+            {compare(t).map((r) => (
+              <tr key={r.label}>
+                <td className="py-3 pr-4 border-b border-black/10">{r.label}</td>
+                <td className="py-3 px-4 border-b border-black/10 text-black/60">{r.frame}</td>
+                <td className="py-3 px-4 border-b border-black/10 text-black/60">{r.preview}</td>
+                <td className="py-3 px-4 border-b border-black/10 font-medium">{r.dailies}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+      <Caption>
+        {t('D’après leurs pages publiques, novembre 2026. « Non précisé » : la page n’en parle pas, ce qui ne veut pas dire que la fonction n’existe pas.', 'Based on their public pages, November 2026. “Not specified”: the page doesn’t mention it, which doesn’t mean the feature doesn’t exist.')}
+      </Caption>
+
       {/* USERS */}
-      <Chapter n={2} title={t('Trois rôles', 'Three roles')} lede={t('Le studio prépare, le client décide. C’est entre les deux que les versions se perdent.', 'The studio prepares, the client decides. Versions get lost in between.')} />
+      <Chapter n={3} title={t('Trois rôles', 'Three roles')} lede={t('Le studio prépare, le client décide. C’est entre les deux que les versions se perdent.', 'The studio prepares, the client decides. Versions get lost in between.')} />
       <div className="grid grid-cols-1 md:grid-cols-3 gap-px bg-black/15 border border-black/15">
         {roles(t).map((r) => (
           <div key={r.name} className="bg-white p-6 md:p-8 flex flex-col gap-4">
@@ -182,7 +240,7 @@ export default function Page() {
       </div>
 
       {/* FLOW */}
-      <Chapter n={3} title={t('Le parcours', 'The flow')}>
+      <Chapter n={4} title={t('Le parcours', 'The flow')}>
         <p>
           {t(
             'Un « non » du client ne repart pas de zéro : chaque commentaire revient sur le plan concerné, et on régénère seulement celui-là.',
@@ -202,7 +260,7 @@ export default function Page() {
       </ol>
 
       {/* STUDIO */}
-      <Chapter n={4} title={t('Côté studio', 'Studio side')} lede={t('Chaque génération garde son prompt, son modèle et son coût.', 'Every generation keeps its prompt, model and cost.')}>
+      <Chapter n={5} title={t('Côté studio', 'Studio side')} lede={t('Chaque génération garde son prompt, son modèle et son coût.', 'Every generation keeps its prompt, model and cost.')}>
         <p>
           {t(
             'Sur la page d’un plan, l’artiste voit les variantes gardées et, pour celle choisie, tout ce qui permet de la refaire : prompt, modèle, image de départ, graine, coût. Le prompt se modifie au même endroit avant de régénérer.',
@@ -222,7 +280,7 @@ export default function Page() {
       <Media src="/dailies/03-comparer.webp" alt={t('Dailies — comparer la v3 et la v4', 'Dailies — comparing v3 and v4')} {...W} />
 
       {/* CLIENT */}
-      <Chapter n={5} title={t('Côté client', 'Client side')} lede={t('Le client ne voit qu’une version, et commente au bon endroit.', 'The client sees one version, and comments in the right place.')}>
+      <Chapter n={6} title={t('Côté client', 'Client side')} lede={t('Le client ne voit qu’une version, et commente au bon endroit.', 'The client sees one version, and comments in the right place.')}>
         <p>
           {t(
             'Chaque commentaire est rattaché à un plan et à un timecode. En haut, ce qui a changé depuis la version précédente, pour ne pas tout revoir.',
@@ -254,7 +312,7 @@ export default function Page() {
       <Media src="/dailies/06-retours.webp" alt={t('Dailies — retours à traiter', 'Dailies — feedback to handle')} {...W} />
 
       {/* PERSONAS */}
-      <Chapter n={6} title={t('Revue par personas', 'Persona review')} lede={t('Avant de montrer l’outil à de vraies personnes, je l’ai parcouru avec trois profils.', 'Before showing the tool to real people, I walked through it as three profiles.')}>
+      <Chapter n={7} title={t('Revue par personas', 'Persona review')} lede={t('Avant de montrer l’outil à de vraies personnes, je l’ai parcouru avec trois profils.', 'Before showing the tool to real people, I walked through it as three profiles.')}>
         <p>
           {t(
             'Ce n’est pas un test utilisateur : chaque profil avait une tâche précise, et j’ai noté où le parcours bloquait. Ça a déjà changé quatre écrans.',
@@ -284,7 +342,7 @@ export default function Page() {
       </Row>
 
       {/* EDGE CASES */}
-      <Chapter n={7} title={t('Quand ça se passe mal', 'When things go wrong')} lede={t('Prévenir avant de dépenser, jamais après.', 'Warn before spending, never after.')}>
+      <Chapter n={8} title={t('Quand ça se passe mal', 'When things go wrong')} lede={t('Prévenir avant de dépenser, jamais après.', 'Warn before spending, never after.')}>
         <p>
           {t(
             'Trois cas que le parcours idéal ne montre pas : le budget qui ne suffit plus, une génération qui échoue, et un client qui ouvre un ancien lien sur son téléphone.',
@@ -296,14 +354,36 @@ export default function Page() {
       <Caption>{t('Rien n’est débité avant le choix : demander des crédits à la productrice, ou faire un brouillon moins cher.', 'Nothing is charged before the choice: ask the producer for credits, or make a cheaper draft.')}</Caption>
       <div className="pt-6" />
       <Media src="/dailies/08-echec.webp" alt={t('Dailies — génération ratée', 'Dailies — failed generation')} {...W} />
-      <Caption>{t('Une génération ratée ne coûte rien, et le retour client qui l’a déclenchée reste affiché.', 'A failed generation costs nothing, and the client feedback that triggered it stays visible.')}</Caption>
+      <Caption>{t('Une génération ratée n’est pas comptée dans le budget, et le retour client qui l’a déclenchée reste affiché.', 'A failed generation isn’t counted in the budget, and the client feedback that triggered it stays visible.')}</Caption>
       <div className="max-w-[300px] mx-auto pt-10">
         <Media src="/dailies/09-mobile.webp" alt={t('Dailies — ancien lien sur mobile', 'Dailies — old link on mobile')} width={780} height={1688} />
         <Caption>{t('Un ancien lien ouvre la v2 : un bandeau envoie vers la v3, et la v2 n’est plus validable.', 'An old link opens v2: a banner points to v3, and v2 can no longer be approved.')}</Caption>
       </div>
 
+      {/* FEASIBILITY */}
+      <Chapter n={9} title={t('Est-ce faisable ?', 'Is it feasible?')} lede={t('Oui, si les générations passent par Dailies.', 'Yes, if generations go through Dailies.')}>
+        <p>
+          {t(
+            'Runway et Kling proposent des API. Une génération y est une tâche : on l’envoie avec un prompt et une image de départ, elle passe par « en cours », puis « réussie » ou « échouée », et l’outil est prévenu à chaque changement. Dailies peut donc enregistrer le prompt, le modèle, l’image de départ et le statut de chaque génération, et afficher l’écran « en cours » ou « échec » au bon moment.',
+            'Runway and Kling offer APIs. A generation there is a task: you send it with a prompt and a source image, it goes through “processing”, then “succeeded” or “failed”, and the tool is notified at each change. Dailies can therefore store the prompt, model, source image and status of every generation, and show the “processing” or “failed” screen at the right time.'
+          )}
+        </p>
+        <p>
+          {t(
+            'Le coût se calcule avant de lancer : chez Runway, chaque modèle coûte un nombre fixe de crédits par seconde de vidéo. Durée × tarif du modèle donne l’estimation affichée sur le bouton.',
+            'Cost can be worked out before launching: at Runway, each model costs a fixed number of credits per second of video. Duration × model rate gives the estimate shown on the button.'
+          )}
+        </p>
+        <p className="text-black/60">
+          {t(
+            'La limite : une génération faite directement dans l’appli Runway, hors de Dailies, n’est pas captée. Il faut donc un import manuel, où l’artiste dépose le fichier et colle le prompt. Et les vidéos renvoyées par certaines API expirent : Dailies doit les copier tout de suite.',
+            'The limit: a generation made directly in the Runway app, outside Dailies, isn’t captured. So there has to be a manual import, where the artist drops the file and pastes the prompt. And videos returned by some APIs expire: Dailies has to copy them right away.'
+          )}
+        </p>
+      </Chapter>
+
       {/* PRINCIPLES */}
-      <Chapter n={8} title={t('Choix de design', 'Design choices')}>
+      <Chapter n={10} title={t('Choix de design', 'Design choices')}>
         <p>
           {t(
             'Les trois premiers viennent d’une analyse du studio Shovel sur le site de la marque Hyeja : garder les gestes connus, changer la surface.',
@@ -321,8 +401,27 @@ export default function Page() {
         ))}
       </div>
 
+      {/* METRICS */}
+      <Chapter n={11} title={t('Comment savoir si ça marche', 'How to know it works')}>
+        <p>
+          {t(
+            'Cinq mesures, une par hypothèse. Je n’ai pas encore de chiffres : ce sont elles que les premiers tests devront remplir.',
+            'Five measures, one per assumption. I don’t have figures yet: these are what the first tests will have to fill in.'
+          )}
+        </p>
+      </Chapter>
+      <div className="grid grid-cols-1 md:grid-cols-5 gap-px bg-black/15 border border-black/15">
+        {metrics(t).map((x, i) => (
+          <div key={x.m} className="bg-white p-5 md:p-6 space-y-2">
+            <span className="text-[13px] text-black/45">0{i + 1}</span>
+            <h4 className="text-[13px] font-medium">{x.m}</h4>
+            <p className="text-xs text-black/50 leading-relaxed">{x.why}</p>
+          </div>
+        ))}
+      </div>
+
       {/* NEXT */}
-      <Chapter n={9} title={t('La suite', 'What’s next')}>
+      <Chapter n={12} title={t('La suite', 'What’s next')}>
         <p>
           {t(
             'Confronter les cinq hypothèses à des personnes qui produisent de la vidéo IA en studio, puis leur faire tester le parcours revue → validation avec le prototype. Ce qu’elles diront remplacera la revue par personas.',

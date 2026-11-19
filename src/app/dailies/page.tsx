@@ -120,9 +120,9 @@ export default function Page() {
       )}
       meta={{
         year: '2026',
-        context: t('Concept personnel, en cours', 'Personal concept, in progress'),
-        role: t('Cadrage, UX/UI, prototype', 'Framing, UX/UI, prototype'),
-        tools: 'Claude, HTML/CSS',
+        context: t('Projet indépendant, en cours', 'Independent product design case study, in progress'),
+        role: t('Cadrage, UX/UI, prototype codé', 'Framing, UX/UI, coded prototype'),
+        tools: t('HTML/CSS avec Claude', 'HTML/CSS with Claude'),
       }}
       intro={t(
         <>
@@ -315,8 +315,8 @@ export default function Page() {
       <Chapter n={7} title={t('Revue par personas', 'Persona review')} lede={t('Avant de montrer l’outil à de vraies personnes, je l’ai parcouru avec trois profils.', 'Before showing the tool to real people, I walked through it as three profiles.')}>
         <p>
           {t(
-            'Ce n’est pas un test utilisateur : chaque profil avait une tâche précise, et j’ai noté où le parcours bloquait. Ça a déjà changé quatre écrans.',
-            'This isn’t user testing: each profile had a specific task, and I noted where the flow got stuck. It already changed four screens.'
+            'Ce n’est pas un test utilisateur : chaque profil avait une tâche précise, et j’ai noté où le parcours bloquait. Ça a déjà changé quatre écrans. Les écrans et le prototype sont codés directement en HTML/CSS : une correction se republie en quelques minutes.',
+            'This isn’t user testing: each profile had a specific task, and I noted where the flow got stuck. It already changed four screens. The screens and prototype are coded directly in HTML/CSS, so a fix can be republished in minutes.'
           )}
         </p>
       </Chapter>
@@ -376,8 +376,8 @@ export default function Page() {
         </p>
         <p className="text-black/60">
           {t(
-            'La limite : une génération faite directement dans l’appli Runway, hors de Dailies, n’est pas captée. Il faut donc un import manuel, où l’artiste dépose le fichier et colle le prompt. Et les vidéos renvoyées par certaines API expirent : Dailies doit les copier tout de suite.',
-            'The limit: a generation made directly in the Runway app, outside Dailies, isn’t captured. So there has to be a manual import, where the artist drops the file and pastes the prompt. And videos returned by some APIs expire: Dailies has to copy them right away.'
+            'Ne pas compter une génération ratée dans le budget est un choix produit : selon le fournisseur, elle peut quand même être facturée au studio. La limite : une génération faite directement dans l’appli Runway, hors de Dailies, n’est pas captée. Il faut donc un import manuel, où l’artiste dépose le fichier et colle le prompt. Et les vidéos renvoyées par certaines API expirent : Dailies doit les copier tout de suite.',
+            'Not counting a failed generation in the budget is a product choice: depending on the provider, the studio may still be billed for it. The limit: a generation made directly in the Runway app, outside Dailies, isn’t captured. So there has to be a manual import, where the artist drops the file and pastes the prompt. And videos returned by some APIs expire: Dailies has to copy them right away.'
           )}
         </p>
       </Chapter>

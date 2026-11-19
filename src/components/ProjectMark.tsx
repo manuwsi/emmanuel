@@ -8,6 +8,14 @@ import { Mark } from './SoutrameMarks';
  * 0 = empty, 1 = faint dot, 2 = full dot.
  */
 const GRIDS: Record<string, number[][]> = {
+  // Dailies: a strip of film, one frame chosen among the takes
+  dailies: [
+    [1, 0, 1, 0, 1],
+    [0, 0, 0, 0, 0],
+    [1, 1, 2, 1, 1],
+    [0, 0, 0, 0, 0],
+    [1, 0, 1, 0, 1],
+  ],
   // Élan: a ring of dots, a short arc lit: one interval in progress
   elan: [
     [0, 1, 2, 2, 0],

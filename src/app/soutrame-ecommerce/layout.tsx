@@ -6,7 +6,8 @@ const description =
 export const metadata: Metadata = {
   title: 'Soutrame — E-commerce',
   description,
-  openGraph: { title: 'Soutrame — Emmanuel Ijjou', description, url: '/soutrame-ecommerce', images: [{ url: '/soutrame-case/cover.jpg', width: 2000, height: 1500 }] },
+  openGraph: { title: 'Soutrame — Emmanuel Ijjou', description, url: '/soutrame-ecommerce', images: [{ url: '/og/soutrame-ecommerce.jpg', width: 1200, height: 630 }] },
+  twitter: { card: 'summary_large_image', images: ['/og/soutrame-ecommerce.jpg'] },
 };
 
 export default function Layout({ children }: { children: React.ReactNode }) {

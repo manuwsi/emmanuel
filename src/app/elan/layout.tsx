@@ -6,7 +6,8 @@ const description =
 export const metadata: Metadata = {
   title: 'Élan — Concept montre et iOS',
   description,
-  openGraph: { title: 'Élan — Emmanuel Ijjou', description, url: '/elan', images: [{ url: '/elan/cover.jpg', width: 1667, height: 1250 }] },
+  openGraph: { title: 'Élan — Emmanuel Ijjou', description, url: '/elan', images: [{ url: '/og/elan.jpg', width: 1200, height: 630 }] },
+  twitter: { card: 'summary_large_image', images: ['/og/elan.jpg'] },
 };
 
 export default function Layout({ children }: { children: React.ReactNode }) {

@@ -6,7 +6,8 @@ const description =
 export const metadata: Metadata = {
   title: 'Foil — Concept iOS, collection de cartes',
   description,
-  openGraph: { title: 'Foil — Emmanuel Ijjou', description, url: '/foil', images: [{ url: '/foil/cover.jpg', width: 1667, height: 1250 }] },
+  openGraph: { title: 'Foil — Emmanuel Ijjou', description, url: '/foil', images: [{ url: '/og/foil.jpg', width: 1200, height: 630 }] },
+  twitter: { card: 'summary_large_image', images: ['/og/foil.jpg'] },
 };
 
 export default function Layout({ children }: { children: React.ReactNode }) {

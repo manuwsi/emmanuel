@@ -39,13 +39,13 @@ export const metadata: Metadata = {
     siteName: 'Emmanuel Ijjou',
     title: 'Emmanuel Ijjou — Product Designer',
     description,
-    images: [{ url: '/og.jpg', width: 1200, height: 630, alt: 'Emmanuel Ijjou — Product Designer' }],
+    images: [{ url: '/og/site.jpg', width: 1200, height: 630, alt: 'Emmanuel Ijjou — Product Designer' }],
   },
   twitter: {
     card: 'summary_large_image',
     title: 'Emmanuel Ijjou — Product Designer',
     description,
-    images: ['/og.jpg'],
+    images: ['/og/site.jpg'],
   },
 };
 

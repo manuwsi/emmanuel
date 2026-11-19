@@ -64,15 +64,14 @@ export default function Page() {
       }}
       intro={t(
         <p>
-          Un espace de recherche personnelle où je teste ce que l&apos;IA et la 3D peuvent
-          apporter à l&apos;image au-delà du réalisme : matière, couleur, distorsion,
-          composition. Chaque pièce part d&apos;une question simple, comment représenter
-          autrement la chaleur, la foule, la matière, le mouvement.
+          Des essais personnels pour voir ce que l&apos;IA et la 3D permettent quand on ne
+          cherche pas le réalisme. Chaque pièce part d&apos;une question simple : comment
+          montrer autrement la chaleur, une foule, une matière, un mouvement ?
         </p>,
         <p>
-          A personal research space where I test what AI and 3D can bring to the image beyond
-          realism: material, colour, distortion, composition. Each piece starts from a simple
-          question: how else could we show heat, a crowd, matter, movement?
+          Personal experiments to see what AI and 3D can do when realism isn&apos;t the goal.
+          Each piece starts from a simple question: how else could you show heat, a crowd, a
+          material, movement?
         </p>
       )}
     >

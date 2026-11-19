@@ -27,8 +27,8 @@ export default function Page() {
       n: '02',
       title: t('Échanger', 'Talk'),
       text: t(
-        'Un chat guidé pour cerner les besoins de la cliente, jusqu’à proposer un tutoriel filmé en direct.',
-        'A guided chat to understand the client’s needs, leading to a live camera tutorial.'
+        'Quelques questions dans un chat pour comprendre ce que veut la cliente, puis le mentor lui propose d’allumer la caméra.',
+        'A few questions in a chat to understand what the client wants, then the mentor offers to turn on the camera.'
       ),
       screens: [
         screen('03-chat', 'conversation avec Haruto', 'chat with Haruto'),
@@ -39,8 +39,8 @@ export default function Page() {
       n: '03',
       title: t('Analyser le visage', 'Read the face'),
       text: t(
-        'Reconnaissance des proportions du visage, puis recommandation de la forme de sourcil la plus adaptée.',
-        'Facial proportions are analysed, then the best-suited brow shape is recommended.'
+        'L’appli mesure les proportions du visage et recommande la forme de sourcil qui lui va.',
+        'The app measures the face’s proportions and recommends the brow shape that suits it.'
       ),
       screens: [
         screen('05-face-scan', 'analyse faciale', 'face analysis'),
@@ -51,7 +51,7 @@ export default function Page() {
       n: '04',
       title: t('Apprendre le geste', 'Learn the technique'),
       text: t(
-        'Un tutoriel pas-à-pas avec repères sur le visage et le produit Shu Uemura associé à chaque étape.',
+        'Un tutoriel étape par étape, avec des repères sur le visage et le produit Shu Uemura à utiliser à chaque fois.',
         'A step-by-step tutorial with guides on the face and the matching Shu Uemura product at each step.'
       ),
       screens: [
@@ -65,6 +65,10 @@ export default function Page() {
     <ProjectPage
       title="Shu Uemura AI:tutor"
       subtitle={t('Un coach beauté IA personnel, sur mobile', 'A personal AI beauty coach, on mobile')}
+      lede={t(
+        'Un coach maquillage sur mobile qui lit le visage de la cliente et lui montre le geste, produit par produit.',
+        'A mobile make-up coach that reads the client’s face and shows her the technique, product by product.'
+      )}
       meta={{
         year: '2025',
         context: 'OKCC',
@@ -74,46 +78,41 @@ export default function Page() {
       intro={t(
         <>
           <p>
-            Shu Uemura voulait un assistant capable de guider ses clientes dans le choix et
-            l&apos;application de leurs produits, comme un coach beauté personnel accessible
-            depuis mobile.
+            Shu Uemura voulait aider ses clientes à choisir et à appliquer leurs produits, avec
+            un coach personnel sur leur téléphone.
           </p>
           <p>
-            J&apos;ai conçu les maquettes de bout en bout, en échange direct avec le client sur
-            trois itérations. Chacune a affiné un point précis : mieux mettre en avant le
-            savoir-faire de la marque, rendre la personnalisation réellement fidèle au visage de
-            chaque cliente, et jusqu&apos;au choix des décors, avec des mannequins IA posés
-            devant du béton façon Tokyo pour ancrer l&apos;univers visuel.
+            J&apos;ai conçu tous les écrans, en échange direct avec le client, sur trois
+            itérations. Elles ont porté sur trois points : mieux montrer le savoir-faire de la
+            marque, adapter vraiment les conseils au visage de chaque cliente, et choisir les
+            décors (des mannequins IA devant du béton, dans l&apos;esprit de Tokyo).
           </p>
           <p>
-            En complément, j&apos;ai produit une vidéo générée par IA pour présenter le concept
-            directement au CEO de Shu Uemura, avant même le développement. Le concept a été très
-            bien reçu, et le projet livré.
+            J&apos;ai aussi réalisé une vidéo en IA pour présenter le concept au CEO de Shu
+            Uemura, avant le développement. Le concept a été bien reçu et le projet a été livré.
           </p>
         </>,
         <>
           <p>
-            Shu Uemura wanted an assistant able to guide clients in choosing and applying their
-            products, like a personal beauty coach available on mobile.
+            Shu Uemura wanted to help its clients choose and apply their products, with a
+            personal coach on their phone.
           </p>
           <p>
-            I designed the screens end to end, working directly with the client over three
-            iterations. Each one sharpened a specific point: showcasing the brand&apos;s
-            craftsmanship, making personalisation truly faithful to each client&apos;s face, and
-            even the choice of settings, with AI models posed against Tokyo-style concrete to
-            anchor the visual world.
+            I designed every screen, working directly with the client over three iterations.
+            They focused on three things: showing the brand&apos;s craft more clearly, fitting
+            the advice to each client&apos;s face, and choosing the settings (AI models against
+            concrete, in a Tokyo spirit).
           </p>
           <p>
-            Alongside the screens, I produced an AI-generated video to present the concept
-            directly to Shu Uemura&apos;s CEO, before development even started. The concept was
-            very well received, and the project was delivered.
+            I also made an AI video to present the concept to Shu Uemura&apos;s CEO before
+            development. The concept was well received and the project was delivered.
           </p>
         </>
       )}
     >
       {steps.map((step, i) => (
         <div key={step.n}>
-          <Chapter title={`${step.n} — ${step.title}`}>
+          <Chapter n={i + 1} title={step.title}>
             <p>{step.text}</p>
           </Chapter>
           <Row cols={2} mobileCols={2} className="max-w-3xl mx-auto">
@@ -124,11 +123,11 @@ export default function Page() {
         </div>
       ))}
 
-      <Chapter title={t('05 — Prolonger en boutique', '05 — Continue in store')}>
+      <Chapter n={5} title={t('Prolonger en boutique', 'Continue in store')}>
         <p>
           {t(
-            'L’expérience se conclut sur les produits utilisés et une prise de rendez-vous avec les maquilleurs en boutique.',
-            'The experience ends with the products used and a booking with the in-store make-up artists.'
+            'À la fin, la cliente retrouve les produits utilisés et peut prendre rendez-vous avec un maquilleur en boutique.',
+            'At the end, the client sees the products used and can book an in-store make-up artist.'
           )}
         </p>
       </Chapter>
@@ -141,11 +140,11 @@ export default function Page() {
       />
 
       {/* ITERATIONS */}
-      <Chapter title={t('Itérations', 'Iterations')}>
+      <Chapter n={6} title={t('Itérations', 'Iterations')} lede={t('Trois versions, de l’appli générique à l’appli Shu Uemura.', 'Three versions, from a generic app to a Shu Uemura one.')}>
         <p>
           {t(
-            'Le premier jet posait les bases fonctionnelles : un compte, une galerie de demandes et un chat texte neutre. La V1 installe l’univers de marque (rouge Shu Uemura, choix d’un mentor, analyse faciale) mais reste générique. La version finale ancre tout dans le savoir-faire maison : mesures du visage propres à Shu Uemura, décors béton façon Tokyo et tutoriels liés aux produits.',
-            'The first draft laid the functional groundwork: an account, a request gallery and a neutral text chat. V1 brought in the brand world (Shu Uemura red, mentor choice, face analysis) but stayed generic. The final version roots everything in the house’s craft: Shu Uemura’s own face measurements, Tokyo-style concrete settings and product-linked tutorials.'
+            'Le premier jet posait les bases fonctionnelles : un compte, une galerie de demandes et un chat texte neutre. La V1 installe l’univers de marque (rouge Shu Uemura, choix d’un mentor, analyse faciale) mais reste générique. La version finale s’appuie sur le savoir-faire de la maison : les mesures du visage propres à Shu Uemura, les décors en béton et des tutoriels liés aux produits.',
+            'The first draft laid the functional groundwork: an account, a request gallery and a neutral text chat. V1 brought in the brand world (Shu Uemura red, mentor choice, face analysis) but stayed generic. The final version builds on the house’s craft: Shu Uemura’s own face measurements, concrete settings and product-linked tutorials.'
           )}
         </p>
       </Chapter>
@@ -167,11 +166,11 @@ export default function Page() {
       </div>
 
       {/* STORYBOARD */}
-      <Chapter title={t('Le film de présentation', 'The concept film')}>
+      <Chapter n={7} title={t('Le film de présentation', 'The concept film')}>
         <p>
           {t(
-            'Pour convaincre avant le développement, j’ai écrit et produit un film en IA présenté au CEO de Shu Uemura : du geste d’un maquilleur de la maison jusqu’aux mentors virtuels qui accompagnent chaque cliente.',
-            'To win buy-in before development, I wrote and produced an AI film shown to Shu Uemura’s CEO: from the gesture of a house make-up artist to the virtual mentors guiding each client.'
+            'Pour présenter le concept avant le développement, j’ai écrit et réalisé un film en IA, montré au CEO de Shu Uemura. Il part du geste d’un maquilleur de la maison et arrive aux mentors virtuels.',
+            'To present the concept before development, I wrote and made an AI film, shown to Shu Uemura’s CEO. It starts from a house make-up artist’s gesture and ends with the virtual mentors.'
           )}
         </p>
       </Chapter>

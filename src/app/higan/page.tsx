@@ -25,7 +25,7 @@ export default function Page() {
             le lys araignée rouge, la fleur qui borde ce passage dans la tradition japonaise.
           </p>
           <p>
-            Tout le flacon est une métaphore de cette traversée. La fleur est vidée de son essence :
+            Le flacon raconte cette traversée. La fleur est vidée de son essence :
             son rouge devient le liquide du parfum. Ce qu&apos;il reste d&apos;elle, entièrement noir,
             se métamorphose en une créature humanoïde déformée qui devient le bouchon du flacon. Son
             passage à elle vers l&apos;autre monde, c&apos;est de devenir parfum.
@@ -37,7 +37,7 @@ export default function Page() {
             spider lily, the flower that lines this passage in Japanese tradition.
           </p>
           <p>
-            The whole bottle is a metaphor for that crossing. The flower is emptied of its essence:
+            The bottle tells that crossing. The flower is emptied of its essence:
             its red becomes the perfume itself. What remains of it, entirely black, transforms into a
             distorted humanoid creature that becomes the stopper. Its own passage to the other world
             is to become a perfume.
@@ -89,8 +89,8 @@ export default function Page() {
       <Chapter title={t('La sculpture', 'The sculpture')}>
         <p>
           {t(
-            'La créature est sculptée en 3D, du modèle en terre au rendu final, puis devient le bouchon du flacon. Une forme pensée pour être lue sous tous les angles.',
-            'The creature is sculpted in 3D, from clay model to final render, then becomes the bottle’s stopper: a form designed to read from every angle.'
+            'La créature est sculptée en 3D, du modèle brut au rendu final, puis devient le bouchon du flacon. Elle devait fonctionner sous tous les angles.',
+            'The creature is sculpted in 3D, from rough model to final render, then becomes the bottle’s stopper. It had to work from every angle.'
           )}
         </p>
       </Chapter>

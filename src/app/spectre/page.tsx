@@ -22,27 +22,24 @@ export default function Page() {
       intro={t(
         <>
           <p>
-            SPECTRE est né d&apos;un exercice interne chez OKCC : explorer ce que
-            l&apos;intelligence artificielle permet en matière d&apos;image, avec une totale
-            liberté artistique. Seule contrainte, chaque membre de l&apos;équipe recevait deux
-            couleurs imposées à décliner en série.
+            SPECTRE part d&apos;un exercice interne chez OKCC : voir ce qu&apos;on peut faire
+            en image avec l&apos;IA, en toute liberté. Une seule règle : chaque membre de
+            l&apos;équipe recevait deux couleurs, à décliner en série.
           </p>
           <p>
-            Le résultat a été imprimé et offert aux clients du groupe (dont LVMH) à Noël, à la
-            fois comme démonstration de savoir-faire et comme objet à part entière. J&apos;ai
-            porté les deux séries vert et violet, et la mise en page complète sous InDesign.
+            Le magazine a été imprimé et offert à Noël aux clients du groupe, dont LVMH.
+            J&apos;ai fait les séries verte et violette, et toute la mise en page sous InDesign.
           </p>
         </>,
         <>
           <p>
-            SPECTRE started as an internal exercise at OKCC: exploring what artificial
-            intelligence can do for imagery, with complete artistic freedom. The only rule: each
-            team member was given two colours to develop into a series.
+            SPECTRE started as an internal exercise at OKCC: seeing what we could do with AI
+            imagery, with total freedom. One rule: each team member got two colours to develop
+            into a series.
           </p>
           <p>
-            The result was printed and given to the group&apos;s clients (including LVMH) at
-            Christmas, both as a showcase of craft and as an object in its own right. I led the
-            green and purple series and the full layout in InDesign.
+            The magazine was printed and given to the group&apos;s clients, including LVMH, at
+            Christmas. I made the green and purple series and the full layout in InDesign.
           </p>
         </>
       )}

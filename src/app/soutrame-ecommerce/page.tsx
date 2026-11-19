@@ -29,8 +29,8 @@ const decisions = (t: T) => [
   {
     title: t('Le vêtement d’abord', 'The garment first'),
     text: t(
-      'Fond blanc, typo petite et en minuscules, navigation dans les coins de l’écran. Les photos portent la hiérarchie, l’interface s’efface.',
-      'White page, small sentence-case type, navigation in the corners of the screen. The photographs carry the hierarchy; the interface steps back.'
+      'Fond blanc, texte petit, navigation dans les coins de l’écran. Ce sont les photos qui guident l’œil.',
+      'White page, small type, navigation in the corners of the screen. The photos lead the eye.'
     ),
   },
   {
@@ -43,8 +43,8 @@ const decisions = (t: T) => [
   {
     title: t('Un chapitre pour l’univers', 'One chapter for the universe'),
     text: t(
-      'La boutique reste claire et lisible. L’univers de la collection, la chimère et le film, est regroupé à des endroits précis plutôt que partout.',
-      'The shop stays light and legible. The collection’s universe, the chimera and the film, is kept to specific places rather than spread everywhere.'
+      'La boutique reste simple à lire. La chimère et le film de la collection sont regroupés à deux endroits précis.',
+      'The shop stays easy to read. The collection’s chimera and film are kept to two specific places.'
     ),
   },
 ];
@@ -56,6 +56,10 @@ export default function Page() {
     <ProjectPage
       title="Soutrame"
       subtitle={t('Le site e-commerce de ma marque de vêtements', 'The e-commerce site for my clothing label')}
+      lede={t(
+        'La boutique en ligne de ma marque, faite seul et presque sans budget, pour vendre une première capsule en précommande.',
+        'My label’s online shop, built on my own with almost no budget, to sell a first capsule on pre-order.'
+      )}
       meta={{
         year: '2026',
         context: t('Projet personnel, en ligne', 'Personal project, live'),
@@ -106,13 +110,7 @@ export default function Page() {
       </p>
 
       {/* CONSTRAINTS */}
-      <Chapter title={t('Les contraintes', 'The constraints')}>
-        <p>
-          {t(
-            'Le point de départ n’était pas une page blanche, mais quatre limites très concrètes. Chaque choix du site en découle.',
-            'The starting point wasn’t a blank page but four very concrete limits. Every choice on the site follows from them.'
-          )}
-        </p>
+      <Chapter n={1} title={t('Les contraintes', 'The constraints')} lede={t('Pas de page blanche : quatre limites très concrètes, et chaque choix du site en découle.', 'No blank page: four very concrete limits, and every choice on the site follows from them.')}>
       </Chapter>
       <ol className="grid grid-cols-2 md:grid-cols-4 gap-px bg-black/15 border border-black/15">
         {constraints(t).map((c, i) => (
@@ -125,7 +123,7 @@ export default function Page() {
       </ol>
 
       {/* PHOTOGRAPHY */}
-      <Chapter title={t('Rendre les photos vendables', 'Making the photos sell')}>
+      <Chapter n={2} title={t('Rendre les photos vendables', 'Making the photos sell')}>
         <p>
           {t(
             'Les photos du shooting avaient un fond inégal, une teinte jaune et les pieds de lumière dans le cadre. Avant de dessiner le site, je les ai retravaillées : fond uniformisé et neutre, matériel de studio effacé, format 4:5 pour les fiches produit, puis modèle détouré sur un fond propre avec une ombre au sol.',
@@ -142,11 +140,11 @@ export default function Page() {
       <Media src="/soutrame-case/retouch.jpg" alt={t('Avant et après retouche', 'Before and after retouching')} width={2400} height={534} />
 
       {/* DIRECTION */}
-      <Chapter title={t('La direction', 'The direction')}>
+      <Chapter n={3} title={t('La direction', 'The direction')}>
         <p>
           {t(
-            'Je suis parti des boutiques des marques indépendantes que j’admire, pour une raison simple : elles vendent sans jamais crier. J’en ai gardé la logique, pas l’apparence, et j’ai ajouté ce qui n’appartient qu’à Soutrame.',
-            'I started from the shops of independent labels I admire, for a simple reason: they sell without ever shouting. I kept their logic, not their look, and added what belongs only to Soutrame.'
+            'Je suis parti des boutiques de marques indépendantes que j’aime bien, parce qu’elles vendent sans en faire trop. J’ai repris leur façon d’organiser une boutique, pas leur style, et j’ai ajouté ce qui est propre à Soutrame.',
+            'I started from the shops of independent labels I like, because they sell without overdoing it. I kept how they organise a shop, not their style, and added what is specific to Soutrame.'
           )}
         </p>
       </Chapter>
@@ -163,7 +161,7 @@ export default function Page() {
       </div>
 
       {/* ITERATIONS */}
-      <Chapter title={t('Itérations', 'Iterations')}>
+      <Chapter n={4} title={t('Itérations', 'Iterations')}>
         <p>
           {t(
             'La première version mettait l’univers au premier plan : grands titres, neige animée partout, fond beige. En la testant, un problème est vite apparu : on ne savait pas ce qu’on regardait. La campagne, la veste ou l’ensemble ? Toutes les photos montraient la même tenue portée.',
@@ -207,7 +205,7 @@ export default function Page() {
       </Row>
 
       {/* PURCHASE FLOW */}
-      <Chapter title={t('Le parcours d’achat', 'The purchase flow')}>
+      <Chapter n={5} title={t('Le parcours d’achat', 'The purchase flow')}>
         <p>
           {t(
             'La fiche produit reprend les codes d’une boutique : les photos défilent à gauche, les informations d’achat restent fixes à droite. Taille, prix, description, guide des tailles et conditions de précommande sont au même endroit. Une section « Compléter la silhouette » propose l’autre pièce de l’ensemble.',
@@ -236,7 +234,7 @@ export default function Page() {
       </Row>
 
       {/* MOTION */}
-      <Chapter title={t('Le mouvement', 'Motion')}>
+      <Chapter n={6} title={t('Le mouvement', 'Motion')}>
         <p>
           {t(
             'Le site s’ouvre sur un court film en noir et blanc : un cocon, un papillon qui en sort, des fils tissés, le tissu de la veste. Les plans ont été générés avec Midjourney, puis montés et étalonnés. Leur définition étant faible, le film est présenté à sa taille réelle, comme une projection, plutôt qu’étiré en plein écran.',
@@ -256,7 +254,7 @@ export default function Page() {
       </Row>
 
       {/* MOBILE */}
-      <Chapter title={t('Mobile d’abord, en pratique', 'Mobile first, in practice')}>
+      <Chapter n={7} title={t('Sur mobile', 'On mobile')}>
         <p>
           {t(
             'Les visiteurs arrivent d’Instagram, donc sur téléphone. Sur mobile, la navigation garde les mêmes coins, les cartes passent sur une colonne, les photos d’une fiche se font défiler au doigt et le chapitre de la capsule repasse en lecture verticale.',
@@ -272,7 +270,7 @@ export default function Page() {
       </Row>
 
       {/* UNIVERSE */}
-      <Chapter title={t('L’univers, à sa place', 'The universe, in its place')}>
+      <Chapter n={8} title={t('La chimère', 'The chimera')}>
         <p>
           {t(
             'La chimère brodée sur l’ensemble devient un visuel en nacre, présenté dans un seul chapitre noir aux côtés d’une courte note de collection. C’est la seule couleur du site, et elle n’apparaît qu’une fois.',
@@ -283,7 +281,7 @@ export default function Page() {
       <Media src="/soutrame-case/capsule.jpg" alt={t('Chapitre Chimera School', 'Chimera School chapter')} width={2400} height={1500} />
 
       {/* NEXT */}
-      <Chapter title={t('Et maintenant', 'What’s next')}>
+      <Chapter n={9} title={t('La suite', 'What’s next')}>
         <p>
           {t(
             'Le site est en ligne sur soutrame.com. Prochaines étapes : brancher le paiement, publier les pages légales, et ouvrir les précommandes. Ce sont les premières commandes qui diront si les choix de ce site tiennent face à de vrais clients.',

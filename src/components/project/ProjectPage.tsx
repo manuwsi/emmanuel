@@ -10,6 +10,8 @@ import Header from '../Header';
 import { useT } from '../i18n';
 import '../../styles/globals.css';
 
+const DISPLAY = { fontFamily: 'var(--font-general-sans), Inter, sans-serif', fontWeight: 500, letterSpacing: '-0.03em' } as const;
+
 type Meta = { year: string; context: string; role: string; tools: string; award?: string };
 
 export function ProjectPage({
@@ -17,12 +19,15 @@ export function ProjectPage({
   subtitle,
   meta,
   intro,
+  lede,
   children,
 }: {
   title: string;
   subtitle: string;
   meta: Meta;
   intro: ReactNode;
+  /** One plain sentence saying what the project is, shown large under the title (as on Foil). */
+  lede?: string;
   children: ReactNode;
 }) {
   const t = useT();
@@ -55,6 +60,11 @@ export function ProjectPage({
           <h2 className="text-[13px] leading-[1.35] text-black/50">
             {subtitle}
           </h2>
+          {lede && (
+            <p className="!mt-14 md:!mt-20 max-w-[900px] text-[28px] md:text-[48px] leading-[1.08]" style={DISPLAY}>
+              {lede}
+            </p>
+          )}
         </motion.div>
 
         {/* META + INTRO */}
@@ -212,8 +222,35 @@ export function Row({
   );
 }
 
-/** Text interlude between visuals. */
-export function Chapter({ title, children }: { title: string; children?: ReactNode }) {
+/**
+ * Text interlude between visuals.
+ * With `n` the label reads "01 → Title"; with `lede` a large sentence opens the chapter (Foil layout).
+ */
+export function Chapter({ title, n, lede, children }: { title: string; n?: number; lede?: string; children?: ReactNode }) {
+  const label = n ? `${String(n).padStart(2, '0')} → ${title}` : title;
+  if (lede) {
+    return (
+      <motion.div
+        initial={{ opacity: 0 }}
+        whileInView={{ opacity: 1 }}
+        transition={{ duration: 0.8 }}
+        viewport={{ once: true }}
+        className="pt-24 pb-6 md:pt-36 md:pb-10"
+      >
+        <h3 className="text-[13px] text-black/45 pb-3">{label}</h3>
+        <p className="max-w-[900px] text-[26px] md:text-[44px] leading-[1.1]" style={DISPLAY}>
+          {lede}
+        </p>
+        {children && (
+          <div className="mt-10 md:mt-14 grid grid-cols-1 md:grid-cols-12 gap-6">
+            <div className="md:col-start-5 md:col-span-8 text-[15px] md:text-[17px] leading-[1.5] max-w-2xl space-y-4">
+              {children}
+            </div>
+          </div>
+        )}
+      </motion.div>
+    );
+  }
   return (
     <motion.div
       initial={{ opacity: 0 }}
@@ -223,7 +260,7 @@ export function Chapter({ title, children }: { title: string; children?: ReactNo
       className="pt-20 pb-6 md:pt-28 md:pb-10 grid grid-cols-1 md:grid-cols-12 gap-6"
     >
       <h3 className="md:col-span-4 text-[13px] text-black/45">
-        {title}
+        {label}
       </h3>
       {children && (
         <div className="md:col-span-8 text-[15px] md:text-[17px] leading-[1.5] max-w-2xl space-y-4">

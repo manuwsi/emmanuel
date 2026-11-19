@@ -44,8 +44,8 @@ const insights = (t: T) => [
       'A milking robot changes your life. You used to have to go at 6am on Sundays. With the robot, you don’t.'
     ),
     answer: t(
-      'L’IA n’est pas un gadget : elle remplit les documents et prépare les démarches.',
-      'AI isn’t a gimmick: it fills in documents and prepares the paperwork.'
+      'L’IA sert à remplir les documents et à préparer les démarches.',
+      'AI is there to fill in documents and prepare the paperwork.'
     ),
   },
   {
@@ -55,8 +55,8 @@ const insights = (t: T) => [
       'There’s training for spreading fertiliser, but nothing for using the admin websites.'
     ),
     answer: t(
-      'Une interface claire, sans jargon ni surcharge technique.',
-      'A clear interface, with no jargon or technical clutter.'
+      'Des écrans simples, sans jargon administratif.',
+      'Simple screens, with no admin jargon.'
     ),
   },
   {
@@ -85,6 +85,10 @@ export default function Page() {
     <ProjectPage
       title="Serena"
       subtitle={t('Un assistant IA pour l’administratif agricole', 'An AI assistant for farm paperwork')}
+      lede={t(
+        'Un assistant qui prépare la paperasse des agriculteurs. Ils n’ont plus qu’à vérifier et valider.',
+        'An assistant that prepares farmers’ paperwork. All they have left to do is check and approve.'
+      )}
       meta={{
         year: '2025',
         context: t('Projet d’équipe, ESD', 'Team project, ESD'),
@@ -94,34 +98,34 @@ export default function Page() {
       intro={t(
         <>
           <p>
-            1,5 suicides par jour en France dans le secteur agricole. Les agriculteurs passent
-            aujourd&apos;hui jusqu&apos;à 1h par jour, et une journée entière de leur week-end,
-            à gérer des tâches administratives, une charge mentale qui s&apos;ajoute à un métier
-            déjà exigeant.
+            En France, un agriculteur passe jusqu&apos;à une heure par jour sur
+            l&apos;administratif, et souvent une journée de son week-end. Ça s&apos;ajoute à un
+            métier déjà dur, dans un secteur qui compte environ 1,5 suicide par jour.
           </p>
           <p>
-            Serena répond à ce constat avec un assistant pensé pour prendre en charge
-            l&apos;ensemble de ces démarches : automatisé, disponible, transparent sur
-            l&apos;usage des données, et personnalisé selon les besoins de chaque exploitation.
+            Serena regroupe les tâches et les documents de l&apos;exploitation, remplit les
+            formulaires et prépare les démarches. L&apos;agriculteur garde la main : rien ne part
+            sans sa validation, et il sait ce qui est fait de ses données.
           </p>
           <p>
-            Des interviews terrain avec des agriculteurs ont nourri la compréhension du besoin
-            réel. J&apos;ai porté le concept produit et le design, du wireframing des premières
-            pistes jusqu&apos;aux maquettes finales, desktop et mobile.
+            Projet d&apos;équipe à l&apos;ESD. Nous avons interrogé des agriculteurs avant de
+            dessiner. J&apos;ai porté le concept produit et le design, des premiers wireframes aux
+            écrans finaux, sur ordinateur et sur mobile.
           </p>
         </>,
         <>
           <p>
-            In France, the farming sector sees 1.5 suicides a day. Farmers spend up to an hour
-            a day, and a full day of their weekend, on paperwork: a mental load on top of an
-            already demanding job.
+            In France, a farmer spends up to an hour a day on paperwork, and often a full day of
+            the weekend. It comes on top of a hard job, in a sector that sees around 1.5 suicides
+            a day.
           </p>
           <p>
-            Serena answers this with an assistant built to handle all of that admin: automated,
-            always available, transparent about data use, and tailored to each farm&apos;s needs.
+            Serena gathers the farm&apos;s tasks and documents, fills in forms and prepares the
+            paperwork. The farmer stays in control: nothing goes out without their approval, and
+            they know what happens to their data.
           </p>
           <p>
-            Field interviews with farmers shaped our understanding of the real need. I led the
+            A team project at ESD. We interviewed farmers before drawing anything. I led the
             product concept and design, from the first wireframes to the final desktop and
             mobile screens.
           </p>
@@ -131,11 +135,11 @@ export default function Page() {
       <Media src="/serena-dashboard.png" alt={t('Serena — tableau de bord', 'Serena — dashboard')} width={1010} height={632} priority className="max-w-4xl mx-auto" />
 
       {/* RESEARCH */}
-      <Chapter title={t('Comprendre le terrain', 'Understanding the field')}>
+      <Chapter n={1} title={t('Le terrain', 'The field')} lede={t('Avant de dessiner, nous sommes allés parler à des agriculteurs.', 'Before drawing anything, we went and talked to farmers.')}>
         <p>
           {t(
-            'Avant de dessiner quoi que ce soit, nous avons listé ce que les données publiques ne disaient pas, formulé nos hypothèses, puis construit un questionnaire en quatre thèmes pour aller interroger des agriculteurs.',
-            'Before drawing anything, we listed what public data couldn’t tell us, wrote down our assumptions, then built a four-theme questionnaire to interview farmers.'
+            'Nous avons d’abord listé ce que les chiffres publics ne disaient pas et écrit nos hypothèses. Puis un questionnaire en quatre thèmes, et des entretiens. Voici ce qui en est ressorti, et ce que nous en avons fait.',
+            'We first listed what public figures couldn’t tell us and wrote down our assumptions. Then a four-theme questionnaire, and interviews. Here is what came out of it, and what we did with it.'
           )}
         </p>
       </Chapter>
@@ -168,7 +172,7 @@ export default function Page() {
       </div>
 
       {/* ITERATIONS */}
-      <Chapter title={t('Itérations', 'Iterations')}>
+      <Chapter n={2} title={t('Itérations', 'Iterations')} lede={t('D’un chat posé sur une liste à un tableau de bord qui propose des actions.', 'From a chat on top of a list to a dashboard that suggests actions.')}>
         <p>
           {t(
             'La V1, encore baptisée Agriprev, posait une fenêtre de chat sur une simple liste de tâches. La V2 recentre le tableau de bord sur les tâches et les documents, ajoute des statuts, le choix de l’exploitation, et place l’assistant en bas de l’écran avec des actions proposées plutôt qu’un chat vide.',
@@ -192,17 +196,17 @@ export default function Page() {
         <Media src="/serena-mockup-v1.png" alt={t('Serena — première maquette', 'Serena — first mockup')} width={1017} height={620} />
         <p className="text-xs text-black/50 leading-relaxed max-w-2xl pt-2">
           {t(
-            'Première mise en couleur : la barre latérale entièrement vert foncé rendait l’interface lourde. La version finale l’allège et réserve le vert aux accents, pour un outil qui rassure plutôt qu’il ne pèse.',
-            'First colour pass: the fully dark-green sidebar made the interface feel heavy. The final version lightens it and keeps green for accents, so the tool reassures rather than weighs down.'
+            'Première mise en couleur : la barre latérale entièrement vert foncé rendait l’interface lourde. La version finale l’éclaircit et garde le vert pour les accents.',
+            'First colour pass: the fully dark-green sidebar made the interface feel heavy. The final version lightens it and keeps green for accents.'
           )}
         </p>
       </div>
 
-      <Chapter title={t('Version finale — desktop', 'Final version — desktop')}>
+      <Chapter n={3} title={t('Version finale — ordinateur', 'Final version — desktop')}>
         <p>
           {t(
-            'L’assistant est pensé comme un fil conducteur plutôt qu’un simple chatbot : suggestions d’actions contextuelles sur le tableau de bord, tâches priorisées, et bibliothèque de documents classés automatiquement.',
-            'The assistant runs through the whole product rather than being a simple chatbot: contextual action suggestions on the dashboard, prioritised tasks, and a document library sorted automatically.'
+            'L’assistant n’est pas une fenêtre de chat à part. Il apparaît là où on en a besoin : des actions proposées sur le tableau de bord, les tâches classées par priorité, les documents rangés automatiquement.',
+            'The assistant isn’t a separate chat window. It shows up where it’s needed: suggested actions on the dashboard, tasks sorted by priority, documents filed automatically.'
           )}
         </p>
       </Chapter>
@@ -212,11 +216,11 @@ export default function Page() {
         <Media src="/serena-doc-viewer.png" alt={t('Serena — lecture de document', 'Serena — document viewer')} width={1047} height={653} />
       </Row>
 
-      <Chapter title={t('Version finale — mobile', 'Final version — mobile')}>
+      <Chapter n={4} title={t('Version finale — mobile', 'Final version — mobile')}>
         <p>
           {t(
-            'Sur le terrain, l’agriculteur scanne un document depuis son téléphone pour alimenter l’assistant directement.',
-            'Out in the field, farmers scan a document with their phone to feed the assistant directly.'
+            'Dans la cour ou au champ, l’agriculteur scanne un document avec son téléphone et l’assistant le range.',
+            'In the yard or the field, the farmer scans a document with their phone and the assistant files it.'
           )}
         </p>
       </Chapter>
@@ -226,11 +230,11 @@ export default function Page() {
         <Media src="/serena-mobile-tasks.png" alt={t('Serena — tâches mobile', 'Serena — mobile tasks')} width={368} height={768} />
       </Row>
 
-      <Chapter title={t('Identité', 'Identity')}>
+      <Chapter n={5} title={t('Identité', 'Identity')}>
         <p>
           {t(
-            'Une identité pensée pour rassurer plutôt qu’imposer : un vert profond et un jaune chaleureux, loin du vocabulaire froid des logiciels de gestion habituels du secteur. Serena s’exprime avec calme, clarté et bienveillance.',
-            'An identity designed to reassure rather than impose: a deep green and a warm yellow, far from the cold vocabulary of the sector’s usual management software. Serena speaks with calm, clarity and kindness.'
+            'Un vert profond et un jaune chaud, pour se démarquer des logiciels de gestion agricole, souvent froids. L’assistant parle simplement, avec des phrases courtes.',
+            'A deep green and a warm yellow, to stand apart from farm management software, which tends to feel cold. The assistant speaks plainly, in short sentences.'
           )}
         </p>
       </Chapter>

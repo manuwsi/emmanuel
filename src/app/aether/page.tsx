@@ -20,33 +20,29 @@ export default function Page() {
       intro={t(
         <>
           <p>
-            Aether est un jeu de tarot complet imaginé à quatre. Le défi n&apos;était pas
-            seulement de dessiner 22 cartes, mais de construire un design system capable de
-            les générer toutes de façon cohérente : une colorimétrie, des textures, des
-            ornements et un traitement du texte pensés comme des briques assemblées à chaque
-            carte, IA et retouche manuelle à l&apos;appui pour garder la qualité et
-            l&apos;originalité de chaque rendu.
+            Aether est un jeu de tarot de 22 cartes, fait à quatre à l&apos;ESD. Pour que les
+            cartes se ressemblent sans être identiques, nous avons d&apos;abord construit un
+            design system : couleurs, textures, ornements et typographie, assemblés sur chaque
+            carte. L&apos;IA donne un premier rendu, que nous retouchons ensuite à la main.
           </p>
           <p>
-            Autour de ce système, nous avons construit un lore entier : les âmes des défunts
-            traversent le royaume d&apos;Aether entre mort et purgatoire, chaque arcane majeure
-            incarnant une étape de ce voyage initiatique. J&apos;ai contribué à l&apos;ensemble
-            du projet, de la construction de l&apos;univers à la direction visuelle des cartes.
+            Le jeu a son histoire : les âmes des morts traversent le royaume d&apos;Aether, entre
+            la mort et le purgatoire, et chaque arcane majeure est une étape de ce voyage.
+            J&apos;ai participé à tout le projet, de l&apos;écriture de l&apos;univers à la
+            direction visuelle des cartes.
           </p>
         </>,
         <>
           <p>
-            Aether is a complete tarot deck created by a team of four. The challenge wasn&apos;t
-            just to draw 22 cards, but to build a design system able to generate all of them
-            consistently: colour, textures, ornaments and typography designed as building blocks
-            assembled on every card, with AI and manual retouching to keep each render unique
-            and to a high standard.
+            Aether is a 22-card tarot deck made by a team of four at ESD. To keep the cards
+            consistent without making them identical, we first built a design system: colours,
+            textures, ornaments and typography, assembled on each card. AI gives a first render,
+            which we then retouch by hand.
           </p>
           <p>
-            Around this system we built an entire lore: the souls of the dead cross the realm of
-            Aether, between death and purgatory, each major arcana embodying one step of this
-            initiatory journey. I contributed to the whole project, from worldbuilding to the
-            art direction of the cards.
+            The deck has its own story: the souls of the dead cross the realm of Aether, between
+            death and purgatory, and each major arcana is one step of that journey. I worked on
+            the whole project, from writing the world to the art direction of the cards.
           </p>
         </>
       )}
@@ -56,7 +52,7 @@ export default function Page() {
       <Chapter title={t('Les 22 arcanes majeures', 'The 22 major arcana')}>
         <p>
           {t(
-            'De l’Initiation au Purgatoire, chaque carte est une étape du voyage de l’âme. Même cadre, mêmes ornements, même traitement monochrome : c’est le système qui garantit l’unité du jeu.',
+            'De l’Initiation au Purgatoire, chaque carte est une étape du voyage de l’âme. Même cadre, mêmes ornements, même traitement monochrome : c’est ce qui fait tenir le jeu ensemble.',
             'From Initiation to Purgatory, each card is one step of the soul’s journey. Same frame, same ornaments, same monochrome treatment: the system is what holds the deck together.'
           )}
         </p>
@@ -83,8 +79,8 @@ export default function Page() {
       <Chapter title={t('Un alphabet propre', 'A dedicated alphabet')}>
         <p>
           {t(
-            'Pour ancrer l’univers, nous sommes allés jusqu’à inventer un alphabet de treize caractères propre à Aether.',
-            'To root the world, we went as far as inventing a thirteen-character alphabet of its own.'
+            'Nous avons aussi inventé un alphabet de treize caractères, propre à Aether.',
+            'We also invented a thirteen-character alphabet of its own.'
           )}
         </p>
       </Chapter>

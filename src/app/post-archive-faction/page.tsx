@@ -18,33 +18,28 @@ export default function Page() {
       intro={t(
         <>
           <p>
-            Post Archive Faction est l&apos;une de mes marques favorites : une photographie
-            forte, un travail de layering singulier, et un fondateur lui-même issu du UX/UI, qui
-            transpose cette sensibilité dans le vêtement. J&apos;ai voulu lui rendre hommage à
-            travers un projet personnel, aussi pensé comme un terrain d&apos;entraînement pour
-            l&apos;UI et le motion.
+            Post Archive Faction est l&apos;une de mes marques préférées : des photos fortes, une
+            façon particulière de superposer les couches, et un fondateur qui vient lui-même du
+            UX/UI. J&apos;en ai fait un projet perso, pour m&apos;entraîner en UI et en motion.
           </p>
           <p>
-            Le concept : un musée digital où l&apos;on navigue entre les pièces comme dans une
-            galerie, une colonne d&apos;œuvres en aperçu à gauche, une scène immersive à droite
-            qui change à chaque sélection. L&apos;ambiance du site (matières, lenteur, textures
-            sculpturales) cherche à retrouver l&apos;énergie des vêtements eux-mêmes, complétée
-            par une page éditoriale qui raconte l&apos;histoire de la marque.
+            L&apos;idée : un musée en ligne où l&apos;on passe d&apos;une pièce à l&apos;autre
+            comme dans une galerie. À gauche, la liste des pièces ; à droite, une grande scène qui
+            change à chaque sélection. Le site est lent et très texturé, comme les vêtements. Une
+            page éditoriale raconte l&apos;histoire de la marque.
           </p>
         </>,
         <>
           <p>
-            Post Archive Faction is one of my favourite labels: strong photography, a singular
-            approach to layering, and a founder who comes from UX/UI himself and brings that
-            sensibility to clothing. I wanted to pay tribute to it through a personal project,
-            also designed as a playground for UI and motion.
+            Post Archive Faction is one of my favourite labels: strong photos, a particular way
+            of layering, and a founder who comes from UX/UI himself. I turned it into a personal
+            project to practise UI and motion.
           </p>
           <p>
-            The concept: a digital museum where you move between pieces as in a gallery, with a
-            column of works on the left and an immersive scene on the right that changes with
-            each selection. The mood of the site (materials, slowness, sculptural textures) aims
-            to capture the energy of the garments themselves, completed by an editorial page
-            telling the story of the label.
+            The idea: an online museum where you move from piece to piece as in a gallery. On
+            the left, the list of pieces; on the right, a large scene that changes with each
+            selection. The site is slow and heavily textured, like the clothes. An editorial page
+            tells the label&apos;s story.
           </p>
         </>
       )}
@@ -54,8 +49,8 @@ export default function Page() {
       <Chapter title={t('La galerie', 'The gallery')}>
         <p>
           {t(
-            'À gauche, la colonne d’œuvres ; à droite, une scène immersive qui change à chaque sélection.',
-            'On the left, the column of works; on the right, an immersive scene that changes with each selection.'
+            'On choisit une pièce dans la colonne de gauche, la scène de droite change.',
+            'Pick a piece in the left column and the scene on the right changes.'
           )}
         </p>
       </Chapter>
@@ -77,8 +72,8 @@ export default function Page() {
       <Chapter title="Motion">
         <p>
           {t(
-            'Des scènes générées puis animées pour prolonger l’univers de la marque.',
-            'Scenes generated and then animated to extend the label’s world.'
+            'Des scènes générées en IA puis animées, dans l’esprit des collections.',
+            'Scenes generated with AI then animated, in the spirit of the collections.'
           )}
         </p>
       </Chapter>

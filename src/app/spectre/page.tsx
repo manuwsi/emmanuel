@@ -45,8 +45,8 @@ export default function Page() {
       )}
     >
       <Row cols={2}>
-        <Media src="/spectre1.png" alt={t('SPECTRE — couverture du magazine imprimé', 'SPECTRE — printed magazine cover')} width={1080} height={1350} priority />
-        <Media src="/spectre2.png" alt={t('SPECTRE — magazine ouvert', 'SPECTRE — open magazine')} width={1080} height={1350} priority />
+        <Media src="/spectre1.webp" alt={t('SPECTRE — couverture du magazine imprimé', 'SPECTRE — printed magazine cover')} width={1080} height={1350} priority />
+        <Media src="/spectre2.webp" alt={t('SPECTRE — magazine ouvert', 'SPECTRE — open magazine')} width={1080} height={1350} priority />
       </Row>
 
       <Chapter title={t('Série verte', 'Green series')}>
@@ -57,7 +57,7 @@ export default function Page() {
           )}
         </p>
       </Chapter>
-      <Media src="/spectre3.png" alt={t('SPECTRE — série verte, voile', 'SPECTRE — green series, veil')} width={1080} height={1350} className="max-w-3xl mx-auto" />
+      <Media src="/spectre3.webp" alt={t('SPECTRE — série verte, voile', 'SPECTRE — green series, veil')} width={1080} height={1350} className="max-w-3xl mx-auto" />
       {[11, 12, 13, 15].map(spread)}
 
       <Chapter title={t('Série violette', 'Purple series')}>
@@ -68,7 +68,7 @@ export default function Page() {
           )}
         </p>
       </Chapter>
-      <Media src="/spectre4.png" alt={t('SPECTRE — série violette, pétale', 'SPECTRE — purple series, petal')} width={1080} height={1350} className="max-w-3xl mx-auto" />
+      <Media src="/spectre4.webp" alt={t('SPECTRE — série violette, pétale', 'SPECTRE — purple series, petal')} width={1080} height={1350} className="max-w-3xl mx-auto" />
       {[14, 17, 18].map(spread)}
     </ProjectPage>
   );

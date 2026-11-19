@@ -77,7 +77,7 @@ export const projects: Project[] = [
   {
     title: same('Hennessy X.O Second Skin'),
     subtitle: { fr: '2025 — UI Design, 3D', en: '2025 — UI design, 3D' },
-    image: '/hennessy.png',
+    image: '/hennessy.webp',
     size: [3000, 1688],
     link: '/hennessy',
     group: 'product',
@@ -85,7 +85,7 @@ export const projects: Project[] = [
   {
     title: same('Z_Lab'),
     subtitle: { fr: '2025 — Refonte de site, UI/UX', en: '2025 — Website redesign, UI/UX' },
-    image: '/1.png',
+    image: '/1.webp',
     size: [1080, 1080],
     link: '/z_lab',
     group: 'product',
@@ -109,7 +109,7 @@ export const projects: Project[] = [
   {
     title: same('Aether'),
     subtitle: { fr: '2024 — Design system, jeu de tarot', en: '2024 — Design system, tarot deck' },
-    image: '/AETHERCOVER.png',
+    image: '/AETHERCOVER.webp',
     size: [1445, 1024],
     link: '/aether',
     group: 'explorations',
@@ -117,7 +117,7 @@ export const projects: Project[] = [
   {
     title: same('SPECTRE'),
     subtitle: { fr: '2025 — Design éditorial, direction artistique IA', en: '2025 — Editorial design, AI art direction' },
-    image: '/spectre1.png',
+    image: '/spectre1.webp',
     size: [1080, 1350],
     link: '/spectre',
     group: 'explorations',
@@ -125,7 +125,7 @@ export const projects: Project[] = [
   {
     title: { fr: 'Recherche visuelle IA', en: 'AI Visual Research' },
     subtitle: { fr: '2025 — Motion, direction artistique IA', en: '2025 — Motion, AI art direction' },
-    image: '/f1-cover.png',
+    image: '/f1-cover.webp',
     size: [1800, 1008],
     link: '/ai-research',
     group: 'explorations',

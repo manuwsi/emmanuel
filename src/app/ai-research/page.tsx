@@ -85,7 +85,7 @@ export default function Page() {
         </Row>
         <Captioned p={doubleExp} />
         <figure className="space-y-4 max-w-2xl mx-auto">
-          <Media src="/ai-red-figure.png" alt="Material Study" width={1920} height={2400} />
+          <Media src="/ai-red-figure.webp" alt="Material Study" width={1920} height={2400} />
           <figcaption className="text-center space-y-1">
             <span className="block text-[13px] text-black/45">Material Study</span>
             <span className="block text-xs text-black/45">

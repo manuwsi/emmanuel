@@ -46,7 +46,7 @@ export default function Page() {
         </>
       )}
     >
-      <Media src="/hennessy.png" alt={t('Hennessy X.O Second Skin — rendu 3D', 'Hennessy X.O Second Skin — 3D render')} width={3000} height={1688} priority />
+      <Media src="/hennessy.webp" alt={t('Hennessy X.O Second Skin — rendu 3D', 'Hennessy X.O Second Skin — 3D render')} width={3000} height={1688} priority />
 
       <Chapter n={1} title={t('Le parcours tablette', 'The tablet journey')}>
         <p>
@@ -56,13 +56,13 @@ export default function Page() {
           )}
         </p>
       </Chapter>
-      <Media src="/hennessy1.png" alt={t('Hennessy — écran d’accueil de la tablette', 'Hennessy — tablet welcome screen')} width={1366} height={1024} />
+      <Media src="/hennessy1.webp" alt={t('Hennessy — écran d’accueil de la tablette', 'Hennessy — tablet welcome screen')} width={1366} height={1024} />
       <Row cols={2}>
         <Media src="/hennessy2.png" alt={t('Hennessy — choix de la couleur dominante', 'Hennessy — dominant colour')} width={1366} height={1024} />
         <Media src="/hennessy3.png" alt={t('Hennessy — choix de la couleur secondaire', 'Hennessy — secondary colour')} width={1366} height={1024} />
       </Row>
       <Row cols={2}>
-        <Media src="/hennessy4.png" alt={t('Hennessy — génération de l’œuvre', 'Hennessy — artwork generation')} width={1366} height={1024} />
+        <Media src="/hennessy4.webp" alt={t('Hennessy — génération de l’œuvre', 'Hennessy — artwork generation')} width={1366} height={1024} />
         <Media src="/hennessy5.png" alt={t('Hennessy — validation de la création', 'Hennessy — approving the creation')} width={1366} height={1024} />
       </Row>
       <Media src="/hennessy6.png" alt={t('Hennessy — écran de remerciement', 'Hennessy — thank-you screen')} width={1366} height={1024} />

@@ -47,7 +47,7 @@ export default function Page() {
         </>
       )}
     >
-      <Media src="/AETHERCOVER.png" alt={t('Aether — visuel d’univers', 'Aether — key visual')} width={1445} height={1024} priority />
+      <Media src="/AETHERCOVER.webp" alt={t('Aether — visuel d’univers', 'Aether — key visual')} width={1445} height={1024} priority />
 
       <Chapter title={t('Les 22 arcanes majeures', 'The 22 major arcana')}>
         <p>

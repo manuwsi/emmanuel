@@ -1,0 +1,239 @@
+<!doctype html>
+<html><head><meta charset="utf-8">
+<style>
+@font-face{font-family:GS;font-weight:400;src:url('fonts/GeneralSans-Regular.otf')}
+@font-face{font-family:GS;font-weight:500;src:url('fonts/GeneralSans-Medium.otf')}
+@font-face{font-family:GS;font-weight:600;src:url('fonts/GeneralSans-Semibold.otf')}
+@font-face{font-family:GS;font-weight:700;src:url('fonts/GeneralSans-Bold.otf')}
+*{margin:0;padding:0;box-sizing:border-box}
+html,body{width:1080px;height:1920px;overflow:hidden;background:#fff}
+body{font-family:GS;color:#0a0a0a;-webkit-font-smoothing:antialiased;font-variant-numeric:tabular-nums}
+.a{position:absolute}
+.dots{background-image:radial-gradient(circle,rgba(10,10,10,.17) 2px,transparent 2.7px);background-size:40px 40px}
+</style></head><body>
+<div id="grid" class="a" style="inset:0"></div>
+<div id="stage" class="a" style="inset:0"></div>
+<div id="world" class="a" style="inset:0;perspective:2600px;perspective-origin:540px 860px;display:none"><div id="plane" class="a" style="left:0;top:0;width:1080px;height:1px;transform-style:preserve-3d;transform-origin:540px 0"></div></div>
+<div id="fade3" class="a" style="inset:0;display:none;background:linear-gradient(#fff 0,#fff 15.5%,rgba(255,255,255,0) 24%,rgba(255,255,255,0) 80%,#fff 90%)"></div>
+<canvas id="wipe" class="a" width="1080" height="1920" style="left:0;top:0"></canvas>
+<div id="over" class="a" style="inset:0"></div>
+<div id="chrome" class="a" style="inset:0;mix-blend-mode:difference;color:#fff"></div>
+<script>
+/* DOT — Emmanuel Ijjou's reel system.
+   Everything is born from the dot grid: visuals arrive as halftone dots that bloom into the picture,
+   type is set in dots before it turns solid, and scenes change through a ripple of dots. */
+const clamp=(x,a=0,b=1)=>Math.min(b,Math.max(a,x)), lerp=(a,b,t)=>a+(b-a)*t, prog=(t,a,b)=>clamp((t-a)/(b-a));
+const eo=t=>1-Math.pow(1-clamp(t),3), eio=t=>{t=clamp(t);return t<.5?4*t*t*t:1-Math.pow(-2*t+2,3)/2};
+const spring=(s,f=2.2,z=.62)=>{if(s<=0)return 0;const w=2*Math.PI*f,wd=w*Math.sqrt(1-z*z);return 1-Math.exp(-z*w*s)*(Math.cos(wd*s)+z*w/wd*Math.sin(wd*s))};
+const $=(css,html,parent)=>{const e=document.createElement('div');e.className='a';e.style.cssText=css;if(html!==undefined)e.innerHTML=html;parent.appendChild(e);return e};
+const loadImg=src=>new Promise(r=>{const i=new Image();i.onload=()=>r(i);i.onerror=()=>{console.log('missing',src);r(i)};i.src=src});
+const stage=document.getElementById('stage'), world=document.getElementById('world'), plane=document.getElementById('plane'), over=document.getElementById('over'), chrome=document.getElementById('chrome'), grid=document.getElementById('grid');
+const wctx=document.getElementById('wipe').getContext('2d');
+const INK='#0a0a0a';
+
+function prescale(img,W,H){const c=document.createElement('canvas');c.width=W;c.height=H;const x=c.getContext('2d');x.imageSmoothingQuality='high';const iw=img.naturalWidth||img.width,ih=img.naturalHeight||img.height;const s=Math.max(W/iw,H/ih);const sw=W/s,sh=H/s;x.drawImage(img,(iw-sw)/2,(ih-sh)/2,sw,sh,0,0,W,H);return c}
+function textCanvas(txt,W,weight=600,ls=-.05){
+  const m=document.createElement('canvas').getContext('2d');const setF=(x,f)=>{x.font=`${weight} ${f}px GS`;x.letterSpacing=(ls*f)+'px'};
+  let fs=300;setF(m,fs);fs=fs*W/m.measureText(txt).width*.99;setF(m,fs);const mt=m.measureText(txt);
+  const asc=mt.actualBoundingBoxAscent,desc=mt.actualBoundingBoxDescent,pad=10,H=Math.ceil((asc+desc+pad*2)/20)*20;
+  const c=document.createElement('canvas');c.width=W;c.height=H;const x=c.getContext('2d');setF(x,fs);x.fillStyle=INK;x.fillText(txt,(mt.actualBoundingBoxLeft||0)+2,pad+asc);return c}
+
+const MK=[[1,0,1,0,1],[0,0,0,0,0],[1,1,2,1,1],[0,0,0,0,0],[1,0,1,0,1]];
+/* Reveals: the picture is cut out by shapes from the mark, never filtered.
+   mark: the logo appears as windows, then the windows open · cols/rows: five dots stretch into bands · iris: one dot opens · rise: plain mask */
+class Bloom{
+  constructor({src,x,y,w,h,parent,res=1,mode='mark',ox=.5,oy=.5}){
+    Object.assign(this,{w,h,res,mode,ox,oy});this.dynamic=typeof src==='function';
+    this.cv=document.createElement('canvas');this.cv.width=Math.round(w*res);this.cv.height=Math.round(h*res);this.cv.className='a';
+    this.cv.style.cssText=`left:${x}px;top:${y}px;width:${w}px;height:${h}px`;parent.appendChild(this.cv);this.ctx=this.cv.getContext('2d');
+    if(!this.dynamic)this.pre=(src instanceof HTMLCanvasElement)?src:prescale(src,this.cv.width,this.cv.height);
+    this.last=-1;
+  }
+  blit(source){const ctx=this.ctx;if(!this.dynamic){ctx.drawImage(source,0,0,this.w,this.h)}else{const iw=source.naturalWidth,ih=source.naturalHeight,s=Math.max(this.w/iw,this.h/ih),sw=this.w/s,sh=this.h/s;ctx.drawImage(source,(iw-sw)/2,(ih-sh)/2,sw,sh,0,0,this.w,this.h)}}
+  shape(k){const ctx=this.ctx,w=this.w,h=this.h;ctx.beginPath();
+    if(this.mode==='mark'){const cw=w/5,ch=h/5,m=Math.min(cw,ch),big=Math.hypot(cw,ch)/2+1;let n=0;
+      for(let y=0;y<5;y++)for(let x=0;x<5;x++){const v=MK[y][x];const base=v?m*(v==2?.46:.31)*eo(clamp(k/.4*1.7-(v==2?0:.12+n++*.045))):0;
+        const dist=Math.hypot(x-2,y-2)/2.83,q=eio(clamp((k-.38)/.62*1.5-dist*.5));const r=lerp(base,big,q);
+        if(r>.3){const cx=(x+.5)*cw,cy=(y+.5)*ch;ctx.moveTo(cx+r,cy);ctx.arc(cx,cy,r,0,6.2832)}}}
+    else if(this.mode==='cols'||this.mode==='rows'){const C=this.mode==='cols';const L=C?w/5:h/5,F=C?h:w;
+      for(let i=0;i<5;i++){const q=eio(clamp(k*1.7-i*.14));if(q<=0&&k<=0)continue;const d0=L*.42*eo(clamp(k*4-i*.3));const thick=lerp(d0,L+1,q),len=lerp(d0,F,q);if(thick<.5)continue;
+        const r=Math.min(thick,len)/2*(1-q*q);const a=i*L+(L-thick)/2,b=(F-len)/2;C?ctx.roundRect(a,b,thick,len,r):ctx.roundRect(b,a,len,thick,r)}}
+    else if(this.mode==='iris'){const cx=this.ox*w,cy=this.oy*h,R=Math.max(Math.hypot(cx,cy),Math.hypot(w-cx,cy),Math.hypot(cx,h-cy),Math.hypot(w-cx,h-cy));const r=R*eio(k);if(r>.3){ctx.moveTo(cx+r,cy);ctx.arc(cx,cy,r,0,6.2832)}}
+    else {const q=eo(k);ctx.rect(0,h*(1-q),w,h*q)}
+  }
+  draw(P,O=0,img){
+    const ctx=this.ctx,k=O>0?1-O:P;
+    if(!this.dynamic&&k===this.last)return;this.last=k;
+    ctx.setTransform(this.res,0,0,this.res,0,0);ctx.clearRect(0,0,this.w,this.h);
+    if(k<=0)return;const source=this.dynamic?img:this.pre;
+    if(k>=1){this.blit(source);return}
+    ctx.save();this.shape(k);ctx.clip();this.blit(source);ctx.restore();
+  }
+  play(t,a,out,img,din=1.0,dout=.55){this.draw(prog(t,a,a+din),out===undefined?0:prog(t,out,out+dout),img)}
+}
+/* full-screen ripple of dots: K = how much is covered, travelling away from (ox,oy) */
+function wipe(K,ox,oy,color){wctx.clearRect(0,0,1080,1920);if(K<=0)return;wctx.fillStyle=color;
+  const R=Math.max(Math.hypot(ox,oy),Math.hypot(1080-ox,oy),Math.hypot(ox,1920-oy),Math.hypot(1080-ox,1920-oy));wctx.beginPath();wctx.arc(ox,oy,R*eio(K),0,6.2832);wctx.fill()}
+function soft(e,t,a,out,d=.55){const p=eo(prog(t,a,a+d)),q=out===undefined?0:eio(prog(t,out,out+.4));e.style.opacity=p*(1-q);e.style.filter=(p<1||q>0)?`blur(${(1-p)*10+q*8}px)`:'none';e.style.transform=`translateY(${(1-p)*18}px)`}
+
+let READY=false,drawFn=()=>{};
+(async()=>{
+  await Promise.all(['400','500','600','700'].map(w=>document.fonts.load(w+' 60px GS')));
+  const IM={},EN={};
+  await Promise.all(['silhouette','hand','lycoris','detail-1','detail-2','shoot-1','ampoule','tshirt','rotation','packshot','creature','flower-poppy'].map(async n=>IM[n]=await loadImg('higan/'+n+'.jpg')));
+  await Promise.all(['01-projet','02-plan','03-comparer','04-revue','05-validation','10-valide','crop-comments','crop-approve'].map(async n=>EN[n]=await loadImg('en/'+n+'.png')));
+  const BUD=await Promise.all(Array.from({length:240},(_,i)=>loadImg('bud/'+String(i+1).padStart(4,'0')+'.jpg')));
+  const SCU=await Promise.all(Array.from({length:106},(_,i)=>loadImg('sculpt/'+String(i+1).padStart(4,'0')+'.jpg')));
+  const budAt=f=>BUD[((Math.floor(f)%240)+240)%240], scuAt=f=>SCU[clamp(Math.floor(f),0,105)];
+
+  // ---------- chrome: breadcrumb, a short label, and the mark as a playhead ----------
+  $('left:32px;top:252px;font-size:26px;letter-spacing:.005em;white-space:nowrap','Emmanuel Ijjou → Dailies',chrome);
+  const lab=$('right:96px;top:252px;font-size:26px;white-space:nowrap;display:flex;align-items:center;gap:12px','<i style="width:11px;height:11px;border-radius:50%;background:#fff;display:inline-block"></i><span></span>',chrome);
+  const labTxt=lab.querySelector('span'),labDot=lab.querySelector('i');
+  const mk=$('left:1004px;top:248px;width:44px;height:44px','',chrome);
+  [[0,0],[2,0],[4,0],[0,4],[2,4],[4,4]].forEach(([x,y])=>$(`left:${x*8.8+1.6}px;top:${y*8.8+1.6}px;width:5.6px;height:5.6px;border-radius:50%;background:#fff;opacity:.55`,'',mk));
+  for(let x=0;x<5;x++)$(`left:${x*8.8+1.6}px;top:${2*8.8+1.6}px;width:5.6px;height:5.6px;border-radius:50%;background:#fff;opacity:.55`,'',mk);
+  const head=$('top:'+(2*8.8-.4)+'px;width:9.6px;height:9.6px;border-radius:50%;background:#fff','',mk);
+  const SCENES=[0,5.5,8.5,17.4,22.1];
+
+  // ---------- 1. visuals ----------
+  const V1=new Bloom({src:IM.silhouette,x:30,y:330,w:1020,h:1280,parent:stage,mode:'mark'});
+  const V2=new Bloom({src:()=>0,x:30,y:410,w:1020,h:580,parent:stage,mode:'iris',ox:.5,oy:.5});
+  const V2b=new Bloom({src:IM['detail-1'],x:510,y:1010,w:540,h:680,parent:stage,mode:'cols'});
+  const V3=new Bloom({src:IM.hand,x:30,y:330,w:1020,h:1280,parent:stage,mode:'rows'});
+  const V4=new Bloom({src:()=>0,x:30,y:410,w:1020,h:580,parent:stage,mode:'iris',ox:.97,oy:-.25});
+  // ---------- 2. title ----------
+  function dotTitle(x,y,W,parent){
+    const m=document.createElement('canvas').getContext('2d');const setF=f=>{m.font=`600 ${f}px GS`;m.letterSpacing=(-.055*f)+'px'};
+    let fs=300;setF(fs);fs=fs*W/m.measureText('Daılıes').width;setF(fs);
+
+    const box=$(`left:${x}px;top:${y}px;width:${W+40}px;height:${Math.ceil(fs*1.08)}px;overflow:hidden`,'',parent);
+    const inner=$(`left:0;top:0;font-size:${fs}px;font-weight:600;letter-spacing:-.055em;line-height:1;white-space:nowrap`,'Daılıes',box);
+    const base=fs*.86; // baseline offset inside the line box, refined below
+    // find the real i-dot of the font, in pixels
+    const g=document.createElement('canvas');g.width=Math.ceil(fs);g.height=Math.ceil(fs*1.2);const gx=g.getContext('2d');gx.font=`600 ${fs}px GS`;gx.fillStyle='#000';const gb=Math.round(fs);gx.fillText('i',Math.round(fs*.3),gb);
+    const px=gx.getImageData(0,0,g.width,g.height).data;let top=-1,bot=-1,L=1e9,Rr=-1;
+    for(let yy=0;yy<g.height;yy++){let any=false;for(let xx=0;xx<g.width;xx++){if(px[(yy*g.width+xx)*4+3]>128){any=true;if(top<0||bot<0){L=Math.min(L,xx);Rr=Math.max(Rr,xx)}}}if(any&&top<0)top=yy;if(top>=0&&bot<0&&!any){bot=yy;break}}
+    const d=Math.max(bot-top,Rr-L+1),dotLeft=L-Math.round(fs*.3),dotTop=gb-top, dots=[];
+    for(const pre of ['Da','Dail']){const xl=m.measureText(pre).width+dotLeft;dots.push($(`left:${x+xl}px;width:${d}px;height:${d}px;border-radius:50%;background:#0a0a0a;opacity:0`,'',parent))}
+    const asI=dotTop;
+    return {box,inner,dots,fs,d,asI,y};
+  }
+  const TT=dotTitle(30,1010,1010,stage);
+  // baseline of the DOM line box measured once fonts are in
+  const probe=document.createElement('span');probe.style.cssText='display:inline-block;width:1px;height:0;vertical-align:baseline';TT.inner.appendChild(probe);
+  const BL=probe.offsetTop; TT.dots.forEach(e=>e.style.top=(TT.y+BL-TT.asI)+'px');
+  const tc={height:Math.ceil(TT.fs*.95)};
+  const sub1=$(`left:32px;top:${1030+tc.height+36}px;font-size:48px;font-weight:500;letter-spacing:-.03em;opacity:0`,'A product design concept',stage);
+  const sub2=$(`left:32px;top:${1030+tc.height+96}px;font-size:48px;font-weight:500;letter-spacing:-.03em;color:rgba(10,10,10,.45);opacity:0`,'for studios making AI films.',stage);
+
+  // ---------- 3. the interface, on a tilted dot canvas ----------
+  $('left:-900px;top:-1300px;width:2880px;height:6800px','',plane).className='a dots';
+  const SCR=['01-projet','02-plan','03-comparer','04-revue','05-validation','10-valide'],NAMES=['01 — Project','02 — Shot & takes','03 — Compare','04 — Client review','05 — Approval','06 — Approved'],TIL=['detail-2','flower-poppy','shoot-1','ampoule','creature','tshirt'];
+  const rows=SCR.map((f,i)=>{const y0=i*600,sx=i%2?330:30,tx=i%2?30:770;
+    const name=$(`left:${sx}px;top:${y0}px;font-size:20px;color:rgba(10,10,10,.5);white-space:nowrap;opacity:0`,NAMES[i],plane);
+    const sh=$(`left:${sx}px;top:${y0+34}px;width:700px;height:440px;box-shadow:0 34px 80px rgba(10,10,10,.18),0 0 0 1px rgba(10,10,10,.12);opacity:0`,'',plane);
+    return {name,sh,sx,y0,cy:y0+34+220,b:new Bloom({src:EN[f],x:sx,y:y0+34,w:700,h:440,parent:plane,res:1.5,mode:'rise'}),tl:new Bloom({src:IM[TIL[i]],x:tx,y:y0+90,w:280,h:360,parent:plane,mode:['mark','cols','iris','rows','mark','cols'][i]})}});
+  const sel=$('border:3px solid #0a0a0a;opacity:0','',plane), selTag=$('background:#0a0a0a;color:#fff;font-size:17px;font-weight:500;padding:4px 9px;opacity:0;white-space:nowrap','1440 × 900',plane);
+  const T3a=8.9,T3b=17.0,panAt=t=>{const pl=prog(t,T3a,T3b);return .78*pl+.22*eio(pl)};
+  const hop=[0];for(let k=1;k<6;k++){let t=T3a;while(panAt(t)*5<k-.5&&t<T3b)t+=1/120;hop.push(t)}
+  const enter=i=>i<2?8.5+i*.3:hop[i]-1.25;
+
+  // ---------- 4. close-ups ----------
+  const BC=new Bloom({src:EN['crop-comments'],x:130,y:330,w:820,h:1140,parent:stage,mode:'rows'});
+  const shA=$('left:90px;top:530px;width:900px;height:720px;box-shadow:0 40px 100px rgba(10,10,10,.16),0 0 0 1px rgba(10,10,10,.1);opacity:0','',stage);
+  const BA=new Bloom({src:EN['crop-approve'],x:90,y:530,w:900,h:720,parent:stage,mode:'rise'});
+  const cur=$('width:46px;height:46px;border-radius:50%;background:#fff;opacity:0','',chrome);
+  const CLICK={x:540,y:1176,t:20.75};
+  const okT=$('left:32px;top:800px;font-size:190px;font-weight:600;letter-spacing:-.055em;line-height:.9;color:#fff;opacity:0','Approved.',over);
+  const okS=$('left:38px;top:1010px;font-size:34px;color:rgba(255,255,255,.6);opacity:0','Version 4 — From the Other Shore',over);
+
+  // ---------- 5. end ----------
+  // the mark, large: every dot is a window onto Higan
+  const EM=$('left:90px;top:450px;width:900px;height:900px;transform-origin:0 0','',stage);
+  const PICS=['silhouette','lycoris','creature','detail-1','hand','packshot','flower-poppy','detail-2','rotation','shoot-1'];let pi=0;const edots=[];
+  MK.forEach((r,y)=>r.forEach((v,x)=>{if(!v)return;const d=v==2?166:112;
+    const e=$(`left:${(x+.5)*180-d/2}px;top:${(y+.5)*180-d/2}px;width:${d}px;height:${d}px;border-radius:50%;overflow:hidden;background:#0a0a0a;opacity:0`,'',EM);
+    let pic;if(v==2){pic=document.createElement('canvas');pic.width=pic.height=d*2;}else{pic=document.createElement('img');pic.src='higan/'+PICS[pi++]+'.jpg'}
+    pic.style.cssText='position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:0';e.appendChild(pic);
+    edots.push({v,x,y,e,pic,order:edots.length})}));
+  const TT2=dotTitle(30,640,760,stage);
+  const pr2=document.createElement('span');pr2.style.cssText='display:inline-block;width:1px;height:0;vertical-align:baseline';TT2.inner.appendChild(pr2);
+  TT2.dots.forEach(e=>e.style.top=(TT2.y+pr2.offsetTop-TT2.asI)+'px');
+  const ey=640+Math.ceil(TT2.fs*.95);
+  const e1=$(`left:32px;top:${ey+30}px;font-size:46px;font-weight:500;letter-spacing:-.03em;opacity:0`,'A product design concept',stage);
+  const e2=$(`left:32px;top:${ey+88}px;font-size:46px;font-weight:500;letter-spacing:-.03em;color:rgba(10,10,10,.45);opacity:0`,'by Emmanuel Ijjou',stage);
+  const ebtn=$(`left:32px;top:${ey+190}px;padding:22px 30px;background:#0a0a0a;color:#fff;font-size:38px;font-weight:500;letter-spacing:-.015em;white-space:nowrap;opacity:0`,'Case study → ijjouemmanuel.com/dailies',stage);
+
+  const LABELS=[[0,'Take 041'],[1.55,'Take 127'],[3.25,'Take 208'],[4.8,'Take 312'],[5.9,'New project — 2026'],[8.6,'Studio side'],[hop[3]-.3,'Client side'],[17.6,'Feedback, on the exact shot'],[19.5,'One approval'],[21.0,''],[22.9,'2026'],[99,'']];
+
+  drawFn=function(t){
+    // chrome
+    let li=0;while(LABELS[li+1][0]<=t)li++;labTxt.textContent=LABELS[li][1];
+    lab.style.opacity=LABELS[li][1]?clamp(Math.min((t-LABELS[li][0])/.2,(LABELS[li+1][0]-t)/.2)):0;
+    labDot.style.transform=`scale(${1+.35*Math.max(0,Math.sin((t-LABELS[li][0])*9))*Math.exp(-(t-LABELS[li][0])*3)})`;
+    let si=0;while(si<4&&SCENES[si+1]<=t)si++;const hp=si===0?0:lerp(si-1,si,clamp(spring(t-SCENES[si],2.4,.6),0,1.2));head.style.left=(hp*8.8-.4)+'px';
+
+    // 1 — visuals
+    V1.play(t,-.3,1.5);
+    V2.play(t,1.6,3.25,scuAt((t-1.6)*30+8));V2b.play(t,1.95,3.35);
+    V3.play(t,3.3,4.8);
+    V4.play(t,4.85,8.05,budAt(40+(t-4.85)*30));
+    // 2 — title
+    {const r=spring(t-5.75,1.9,.72),o=eio(prog(t,8.0,8.4));TT.inner.style.transform=`translateY(${(1-r)*110+o*-110}%)`;
+     TT.dots.forEach((e,i)=>{const s=spring(t-(6.25+i*.14),2.6,.42);e.style.opacity=t>6.2&&t<8.35?1:0;e.style.transform=`translateY(${(1-s)*-260}px) scale(${1-eio(prog(t,8.0,8.3))})`})}
+    soft(sub1,t,6.65,7.95);soft(sub2,t,6.85,7.95);
+
+    // 3 — interface
+    const on3=t>=8.35&&t<17.5;world.style.display=on3?'block':'none';document.getElementById('fade3').style.display=on3?'block':'none';
+    grid.style.opacity=on3?1-eo(prog(t,8.35,8.7)):1;
+    if(on3){
+      const pan=panAt(t),cy=lerp(rows[0].cy-60,rows[5].cy+30,pan);
+      plane.style.opacity=eo(prog(t,8.35,8.9));
+      plane.style.transform=`translateY(880px) rotateX(${lerp(24,15,pan)}deg) rotateZ(${lerp(-8,-4,pan)}deg) scale(1.16) translateY(${-cy}px)`;
+      const k=Math.round(pan*5);
+      rows.forEach((r,i)=>{const a=enter(i);r.b.play(t,a,undefined,undefined,1.0);r.sh.style.opacity=Math.pow(prog(t,a+.6,a+1.1),2);r.name.style.opacity=eo(prog(t,a+.2,a+.7));
+        // the visual beside a screen stays in dots until its screen is the one in focus
+        r.tl.draw(prog(t,(i?hop[i]-.5:9.2),(i?hop[i]-.5:9.2)+1.0))});
+      const f=rows[k],sp=spring(t-(k?hop[k]:9.0),2.6,.7);
+      sel.style.opacity=selTag.style.opacity=t>9.0?1:0;
+      sel.style.left=(f.sx-8)+'px';sel.style.top=(f.y0+26)+'px';sel.style.width=716+'px';sel.style.height=456+'px';sel.style.transform=`scale(${lerp(1.05,1,clamp(sp))})`;
+      selTag.style.left=(f.sx-8)+'px';selTag.style.top=(f.y0+34+440+16)+'px';
+    }
+
+    // white ripple between the canvas and the close-ups
+    let wK=0,wx=0,wy=0,wc='#fff';
+    if(t>=17.0&&t<17.45){wK=prog(t,17.0,17.45)}else if(t>=17.45&&t<17.95){wK=1-prog(t,17.45,17.95);wx=1080;wy=1920}
+
+    // 4 — close-ups
+    BC.play(t,17.5,19.15,undefined,.95,.5);
+    const on4b=t<21.35;
+    BA.play(on4b?t:0,19.5,undefined,undefined,.9);shA.style.opacity=on4b?Math.pow(prog(t,20.1,20.5),2):0;
+    const cg=eio(prog(t,20.0,20.68)),press=Math.sin(clamp((t-CLICK.t+.06)/.24)*Math.PI);
+    cur.style.opacity=on4b?eo(prog(t,19.95,20.15))*(1-prog(t,20.85,21.0)):0;
+    cur.style.left=(lerp(900,CLICK.x,cg)-23)+'px';cur.style.top=(lerp(1520,CLICK.y,cg)-23)+'px';cur.style.transform=`scale(${1-.3*press})`;
+    // black ripple from the click, then it clears from the top-left to show the end card
+    if(t>=CLICK.t&&t<22.1){wK=prog(t,CLICK.t,21.35);wx=CLICK.x;wy=CLICK.y;wc=INK}
+    else if(t>=22.1&&t<22.55){wK=1-prog(t,22.1,22.55);wx=540;wy=900;wc=INK}
+    wipe(wK,wx,wy,wc);
+    soft(okT,t,21.2,21.85,.45);soft(okS,t,21.35,21.85,.45);
+
+    // 5 — end
+    const on5=t>=21.4;
+    // the black dot left by the click becomes the centre of the mark, the others pop around it, then each opens onto a visual
+    const sh=eio(prog(t,24.0,24.75));
+    EM.style.transform=`translate(${lerp(0,-58,sh)}px,${lerp(0,-120,sh)}px) scale(${lerp(1,.27,sh)})`;
+    edots.forEach(d=>{const st=d.v==2?22.5:22.62+((d.x*7+d.y*3)%9)*.045;const s=spring(t-st,2.3,.5);
+      d.e.style.opacity=on5&&t>=st?1:0;d.e.style.transform=`scale(${Math.max(0,s)})`;
+      d.pic.style.opacity=on5?eo(prog(t,st+.3,st+.75))*(1-eo(prog(t,24.0,24.5))):0;
+      if(d.v==2&&on5){const c=d.pic.getContext('2d'),im=budAt(40+(t-22.5)*30),iw=im.naturalWidth,ih=im.naturalHeight,S=d.pic.width,sc=Math.max(S/iw,S/ih);c.drawImage(im,(iw-S/sc)/2,(ih-S/sc)/2,S/sc,S/sc,0,0,S,S)}});
+    {const r=spring(t-24.55,1.9,.72);TT2.inner.style.transform=`translateY(${on5?(1-r)*110:110}%)`;
+     TT2.dots.forEach((e,i)=>{const s=spring(t-(24.95+i*.14),2.6,.42);e.style.opacity=on5&&t>24.9?1:0;e.style.transform=`translateY(${(1-s)*-220}px)`})}
+    soft(e1,on5?t:0,25.1);soft(e2,on5?t:0,25.25);
+    const bs=spring(t-25.45,1.9,.7);ebtn.style.opacity=on5?clamp(bs*1.3):0;ebtn.style.transform=`translateY(${(1-bs)*26}px)`;
+  };
+  READY=true;
+})();
+window.isReady=()=>READY;
+window.draw=t=>drawFn(t);
+</script></body></html>

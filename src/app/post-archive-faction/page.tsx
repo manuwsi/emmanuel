@@ -65,8 +65,8 @@ export default function Page() {
         </p>
       </Chapter>
       <Row cols={2}>
-        <Media src="/PAF2.png" alt={t('Post Archive Faction — affiche', 'Post Archive Faction — poster')} width={2480} height={3508} />
-        <Media src="/PAF3.png" alt={t('Post Archive Faction — page éditoriale', 'Post Archive Faction — editorial page')} width={1080} height={1350} />
+        <Media src="/PAF2.webp" alt={t('Post Archive Faction — affiche', 'Post Archive Faction — poster')} width={2480} height={3508} />
+        <Media src="/PAF3.webp" alt={t('Post Archive Faction — page éditoriale', 'Post Archive Faction — editorial page')} width={1080} height={1350} />
       </Row>
 
       <Chapter title="Motion">

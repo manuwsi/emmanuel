@@ -21,6 +21,15 @@ const same = (s: string) => ({ fr: s, en: s });
  */
 export const projects: Project[] = [
   {
+    title: same('Dailies'),
+    subtitle: { fr: '2026 — Concept SaaS, production vidéo IA', en: '2026 — SaaS concept, AI video production' },
+    image: '/dailies/cover.jpg',
+    size: [1667, 1250],
+    hover: '/dailies/cover-hover.jpg',
+    link: '/dailies',
+    group: 'product',
+  },
+  {
     title: same('Élan'),
     subtitle: { fr: '2026 — Concept, montre connectée et iOS', en: '2026 — Concept, smartwatch and iOS' },
     image: '/elan/cover.jpg',

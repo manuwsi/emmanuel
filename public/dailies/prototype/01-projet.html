@@ -1,0 +1,95 @@
+<!doctype html><html lang="fr"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Dailies — Projet</title><style>html{background:#0b0b0c;height:100%;overflow:hidden}body{width:auto!important;height:100vh!important;margin:0!important;overflow:hidden!important}#stage{position:absolute;top:0;width:1440px;height:900px;transform-origin:0 0;overflow:hidden}
+[data-go]{cursor:pointer;outline:2px solid transparent;transition:outline-color .2s}
+.hint [data-go]{outline-color:#7aa7ffcc;outline-offset:2px}
+#bar{position:fixed;left:0;right:0;bottom:0;display:flex;gap:14px;align-items:center;padding:10px 14px;font:13px/1.3 -apple-system,Inter,sans-serif;color:#ddd;background:#000d;z-index:9}#bar a{color:#fff}@media(max-width:600px){#bar span:last-child{display:none}}</style></head>
+<body><div id="stage"><style>@font-face{font-family:GS;font-weight:300;src:url('fonts/GeneralSans-Light.otf')}@font-face{font-family:GS;font-weight:400;src:url('fonts/GeneralSans-Regular.otf')}@font-face{font-family:GS;font-weight:500;src:url('fonts/GeneralSans-Medium.otf')}@font-face{font-family:GS;font-weight:600;src:url('fonts/GeneralSans-Semibold.otf')}@font-face{font-family:NR;font-weight:300;src:url('fonts/newsreader-latin-300-normal.woff2')}@font-face{font-family:NR;font-weight:400;src:url('fonts/newsreader-latin-400-normal.woff2')}@font-face{font-family:NR;font-weight:500;src:url('fonts/newsreader-latin-500-normal.woff2')}@font-face{font-family:NR;font-style:italic;font-weight:400;src:url('fonts/newsreader-latin-400-italic.woff2')}@font-face{font-family:GM;font-weight:400;src:url('fonts/geist-mono-latin-400-normal.woff2')}@font-face{font-family:GM;font-weight:500;src:url('fonts/geist-mono-latin-500-normal.woff2')}
+*{box-sizing:border-box;margin:0;padding:0}
+body{width:1440px;height:900px;overflow:hidden;font-family:GS;font-size:13px;line-height:1.35;-webkit-font-smoothing:antialiased}
+img{display:block;width:100%;height:100%;object-fit:cover}
+.mono{font-family:GS;font-variant-numeric:tabular-nums;letter-spacing:0}
+.row{display:flex;align-items:center}
+.sp{flex:1}
+
+body{background:#0b0b0c;color:#ececed}
+.mut{color:#8b8b91}.dim{color:#5c5c62}
+.chip{background:#ececed;color:#0b0b0c;padding:6px 11px;border-radius:4px;font-weight:500;white-space:nowrap}
+.pill{border:1px solid #2a2a2e;border-radius:30px;padding:5px 12px;color:#b9b9bf;white-space:nowrap}
+.pill.on{background:#ececed;color:#0b0b0c;border-color:#ececed}
+.line{border-top:1px solid #1f1f22}
+.st{display:inline-flex;align-items:center;gap:6px;white-space:nowrap}
+.st i{width:7px;height:7px;border-radius:50%;display:inline-block}
+.ok i{background:#7fd99a}.rev i{background:#f2c46b}.fb i{background:#ff7a66}.gen i{background:#7aa7ff}.todo i{background:#4a4a50}
+.btn{background:#ececed;color:#0b0b0c;border-radius:4px;padding:10px 16px;font-weight:500;white-space:nowrap}
+.btn2{border:1px solid #2f2f33;border-radius:4px;padding:9px 14px;color:#d8d8dc;white-space:nowrap}
+.k{color:#8b8b91;font-size:12px}
+</style>
+<div style="padding:14px 16px 0">
+<div class="row" style="gap:6px">
+  <span class="chip">Menu</span>
+  <span class="chip row" style="gap:9px">Rendus <span class="mono" style="font-size:12px">214 / 400</span>
+    <span style="width:46px;height:4px;background:#0b0b0c22;border-radius:2px;overflow:hidden;display:inline-block"><span style="display:block;height:100%;width:54%;background:#0b0b0c"></span></span></span>
+  <span class="pill" style="margin-left:6px;border-color:transparent;color:#b9b9bf">Studio Rive <span class="dim">/</span> Higan — From the Other Shore</span>
+  <span class="sp"></span>
+  <span class="row" style="padding-left:7px"><span style="width:26px;height:26px;border-radius:50%;background:#c9b8ff;border:2px solid #0b0b0c;margin-left:-7px;display:inline-flex;align-items:center;justify-content:center;font-size:10px;font-weight:600;color:#0b0b0c">IN</span><span style="width:26px;height:26px;border-radius:50%;background:#9fe0c0;border:2px solid #0b0b0c;margin-left:-7px;display:inline-flex;align-items:center;justify-content:center;font-size:10px;font-weight:600;color:#0b0b0c">TH</span></span>
+</div>
+<div class="row" style="gap:6px;margin-top:10px;padding-left:2px"><span class="dim" style="margin-right:4px">↳</span><span class="pill on">Plans</span><span class="pill" data-go="02-plan">Versions</span><span class="pill" data-go="06-retours">Retours</span><span class="pill">Livraison</span></div>
+</div>
+<div style="padding:30px 32px 0">
+ <div class="row" style="align-items:flex-end">
+  <div><div class="k">Projet · client Higan · film parfum</div>
+   <div style="font-size:40px;font-weight:500;letter-spacing:-.03em;margin-top:6px">From the Other Shore</div></div>
+  <span class="sp"></span>
+  <div class="row" style="gap:36px;margin-bottom:6px">
+   <div><div class="k">Durée</div><div style="font-size:15px;margin-top:3px">30 s · 8 plans</div></div><div><div class="k">Livraison</div><div style="font-size:15px;margin-top:3px">12 décembre</div></div><div><div class="k">Validés</div><div style="font-size:15px;margin-top:3px">3 / 8</div></div><div><div class="k">Dans la v3</div><div style="font-size:15px;margin-top:3px">3 plans</div></div>
+   <span class="btn" data-go="04-revue">Envoyer au client</span>
+  </div>
+ </div>
+ <div style="margin-top:20px"><div class="row" style="gap:14px"><span class="k" style="width:120px">Budget de rendus</span>
+  <div style="flex:1;height:8px;background:#1d1d20;border-radius:2px;display:flex;overflow:hidden"><div style="width:53.5%;background:#ececed"></div><div style="width:37.5%;background:repeating-linear-gradient(135deg,#8b8b91 0 3px,transparent 3px 7px)"></div></div>
+  <span class="mono">214 utilisés</span><span class="mono mut">≈ 150 pour finir</span><span class="mono mut">marge 36 cr</span>
+  <span class="row" style="gap:4px;margin-left:8px"><span class="pill on" style="padding:3px 10px">Crédits</span><span class="pill" style="padding:3px 10px">Euros</span></span></div></div>
+ <div style="margin-top:18px"><div class="row k" style="margin-bottom:8px"><span>Montage · 0:00 → 0:30</span><span class="sp"></span>
+   <span class="row" style="gap:14px"><span class="st ok"><i></i>Validé</span><span class="st rev"><i></i>Dans la v3 envoyée</span><span class="st fb"><i></i>Retour à traiter</span><span class="st gen"><i></i>En génération</span></span></div>
+  <div class="row" style="gap:3px"><div style="flex:4.0;height:30px;border-radius:2px;overflow:hidden;position:relative"><img src="img/planet.jpg" style="opacity:.75"><span style="position:absolute;left:0;right:0;bottom:0;height:3px;background:#7fd99a"></span></div><div style="flex:3.5;height:30px;border-radius:2px;overflow:hidden;position:relative"><img src="img/shore-1.jpg" style="opacity:.75"><span style="position:absolute;left:0;right:0;bottom:0;height:3px;background:#f2c46b"></span></div><div style="flex:3.0;height:30px;border-radius:2px;overflow:hidden;position:relative"><img src="img/shore-river.jpg" style="opacity:.75"><span style="position:absolute;left:0;right:0;bottom:0;height:3px;background:#7fd99a"></span></div><div style="flex:4.5;height:30px;border-radius:2px;overflow:hidden;position:relative"><img src="img/shore-light.jpg" style="opacity:.75"><span style="position:absolute;left:0;right:0;bottom:0;height:3px;background:#ff7a66"></span></div><div style="flex:4.0;height:30px;border-radius:2px;overflow:hidden;position:relative"><img src="img/flower-red.jpg" style="opacity:.75"><span style="position:absolute;left:0;right:0;bottom:0;height:3px;background:#f2c46b"></span></div><div style="flex:4.5;height:30px;border-radius:2px;overflow:hidden;position:relative"><img src="img/metamorphosis.jpg" style="opacity:.75"><span style="position:absolute;left:0;right:0;bottom:0;height:3px;background:#7aa7ff"></span></div><div style="flex:3.5;height:30px;border-radius:2px;overflow:hidden;position:relative"><img src="img/creature.jpg" style="opacity:.75"><span style="position:absolute;left:0;right:0;bottom:0;height:3px;background:#f2c46b"></span></div><div style="flex:3.0;height:30px;border-radius:2px;overflow:hidden;position:relative"><img src="img/packshot.jpg" style="opacity:.75"><span style="position:absolute;left:0;right:0;bottom:0;height:3px;background:#7fd99a"></span></div></div></div>
+ <div style="display:flex;flex-wrap:wrap;gap:26px 24px;margin-top:26px"><div style="width:322px">
+<div style="width:322px;height:181px;border-radius:3px;overflow:hidden;background:#1a1a1c;"><img src="img/planet.jpg"></div>
+<div class="row" style="margin-top:9px"><span class="mono dim" style="width:26px">01</span><span style="font-weight:500">La planète</span><span class="sp"></span><span class="mono mut">v2</span></div>
+<div class="row k" style="margin-top:5px;padding-left:26px"><span class="st ok"><i></i>Validé</span><span class="sp"></span><span class="mono">4,0 s · 18 cr</span></div>
+</div><div style="width:322px" data-go="02-plan">
+<div style="width:322px;height:181px;border-radius:3px;overflow:hidden;background:#1a1a1c;"><img src="img/shore-1.jpg"></div>
+<div class="row" style="margin-top:9px"><span class="mono dim" style="width:26px">02</span><span style="font-weight:500">La côte</span><span class="sp"></span><span class="mono mut">v3</span></div>
+<div class="row k" style="margin-top:5px;padding-left:26px"><span class="st rev"><i></i>Dans la v3 envoyée</span><span class="sp"></span><span class="mono">3,5 s · 41 cr</span></div>
+</div><div style="width:322px">
+<div style="width:322px;height:181px;border-radius:3px;overflow:hidden;background:#1a1a1c;"><img src="img/shore-river.jpg"></div>
+<div class="row" style="margin-top:9px"><span class="mono dim" style="width:26px">03</span><span style="font-weight:500">Le fleuve rouge</span><span class="sp"></span><span class="mono mut">v1</span></div>
+<div class="row k" style="margin-top:5px;padding-left:26px"><span class="st ok"><i></i>Validé</span><span class="sp"></span><span class="mono">3,0 s · 9 cr</span></div>
+</div><div style="width:322px">
+<div style="width:322px;height:181px;border-radius:3px;overflow:hidden;background:#1a1a1c;"><img src="img/shore-light.jpg"></div>
+<div class="row" style="margin-top:9px"><span class="mono dim" style="width:26px">04</span><span style="font-weight:500">La brume</span><span class="sp"></span><span class="mono mut">v2</span></div>
+<div class="row k" style="margin-top:5px;padding-left:26px"><span class="st fb"><i></i>Retour à traiter</span><span class="sp"></span><span class="mono">4,5 s · 26 cr</span></div>
+</div><div style="width:322px">
+<div style="width:322px;height:181px;border-radius:3px;overflow:hidden;background:#1a1a1c;"><img src="img/flower-red.jpg"></div>
+<div class="row" style="margin-top:9px"><span class="mono dim" style="width:26px">05</span><span style="font-weight:500">La fleur</span><span class="sp"></span><span class="mono mut">v4</span></div>
+<div class="row k" style="margin-top:5px;padding-left:26px"><span class="st rev"><i></i>Dans la v3 envoyée</span><span class="sp"></span><span class="mono">4,0 s · 38 cr</span></div>
+</div><div style="width:322px">
+<div style="width:322px;height:181px;border-radius:3px;overflow:hidden;background:#1a1a1c;"><img src="img/metamorphosis.jpg"></div>
+<div class="row" style="margin-top:9px"><span class="mono dim" style="width:26px">06</span><span style="font-weight:500">La métamorphose</span><span class="sp"></span><span class="mono mut">v5</span></div>
+<div class="row k" style="margin-top:5px;padding-left:26px"><span class="st gen"><i></i>En génération</span><span class="sp"></span><span class="mono">4,5 s · 52 cr</span></div>
+</div><div style="width:322px">
+<div style="width:322px;height:181px;border-radius:3px;overflow:hidden;background:#1a1a1c;"><img src="img/creature.jpg"></div>
+<div class="row" style="margin-top:9px"><span class="mono dim" style="width:26px">07</span><span style="font-weight:500">La créature</span><span class="sp"></span><span class="mono mut">v2</span></div>
+<div class="row k" style="margin-top:5px;padding-left:26px"><span class="st rev"><i></i>Dans la v3 envoyée</span><span class="sp"></span><span class="mono">3,5 s · 22 cr</span></div>
+</div><div style="width:322px">
+<div style="width:322px;height:181px;border-radius:3px;overflow:hidden;background:#1a1a1c;"><img src="img/packshot.jpg"></div>
+<div class="row" style="margin-top:9px"><span class="mono dim" style="width:26px">08</span><span style="font-weight:500">Le flacon</span><span class="sp"></span><span class="mono mut">v1</span></div>
+<div class="row k" style="margin-top:5px;padding-left:26px"><span class="st ok"><i></i>Validé</span><span class="sp"></span><span class="mono">3,0 s · 8 cr</span></div>
+</div></div>
+</div></div>
+<div id="bar"><a href="index.html">← Tous les écrans</a><span style="opacity:.6">Projet</span><span style="flex:1"></span><span style="opacity:.6">Cliquez sur un bouton, ou appuyez sur H pour voir les zones cliquables</span></div>
+<script>
+const W=1440,H=900;function fit(){const s=Math.min(innerWidth/W,(innerHeight-40)/H);const st=document.getElementById('stage');st.style.transform='scale('+s+')';st.style.left=Math.max(0,(innerWidth-W*s)/2)+'px';}fit();addEventListener('resize',fit);
+document.querySelectorAll('[data-go]').forEach(e=>e.addEventListener('click',()=>location.href=e.dataset.go+'.html'));
+addEventListener('keydown',e=>{if(e.key==='h'||e.key==='H')document.documentElement.classList.toggle('hint')});
+document.addEventListener('click',e=>{if(!e.target.closest('[data-go],#bar')){document.documentElement.classList.add('hint');setTimeout(()=>document.documentElement.classList.remove('hint'),900)}});
+</script></body></html>

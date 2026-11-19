@@ -1,0 +1,84 @@
+<!doctype html><html lang="fr"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Dailies — Plan et variantes</title><style>html{background:#0b0b0c;height:100%;overflow:hidden}body{width:auto!important;height:100vh!important;margin:0!important;overflow:hidden!important}#stage{position:absolute;top:0;width:1440px;height:900px;transform-origin:0 0;overflow:hidden}
+[data-go]{cursor:pointer;outline:2px solid transparent;transition:outline-color .2s}
+.hint [data-go]{outline-color:#7aa7ffcc;outline-offset:2px}
+#bar{position:fixed;left:0;right:0;bottom:0;display:flex;gap:14px;align-items:center;padding:10px 14px;font:13px/1.3 -apple-system,Inter,sans-serif;color:#ddd;background:#000d;z-index:9}#bar a{color:#fff}@media(max-width:600px){#bar span:last-child{display:none}}</style></head>
+<body><div id="stage"><style>@font-face{font-family:GS;font-weight:300;src:url('fonts/GeneralSans-Light.otf')}@font-face{font-family:GS;font-weight:400;src:url('fonts/GeneralSans-Regular.otf')}@font-face{font-family:GS;font-weight:500;src:url('fonts/GeneralSans-Medium.otf')}@font-face{font-family:GS;font-weight:600;src:url('fonts/GeneralSans-Semibold.otf')}@font-face{font-family:NR;font-weight:300;src:url('fonts/newsreader-latin-300-normal.woff2')}@font-face{font-family:NR;font-weight:400;src:url('fonts/newsreader-latin-400-normal.woff2')}@font-face{font-family:NR;font-weight:500;src:url('fonts/newsreader-latin-500-normal.woff2')}@font-face{font-family:NR;font-style:italic;font-weight:400;src:url('fonts/newsreader-latin-400-italic.woff2')}@font-face{font-family:GM;font-weight:400;src:url('fonts/geist-mono-latin-400-normal.woff2')}@font-face{font-family:GM;font-weight:500;src:url('fonts/geist-mono-latin-500-normal.woff2')}
+*{box-sizing:border-box;margin:0;padding:0}
+body{width:1440px;height:900px;overflow:hidden;font-family:GS;font-size:13px;line-height:1.35;-webkit-font-smoothing:antialiased}
+img{display:block;width:100%;height:100%;object-fit:cover}
+.mono{font-family:GS;font-variant-numeric:tabular-nums;letter-spacing:0}
+.row{display:flex;align-items:center}
+.sp{flex:1}
+
+body{background:#0b0b0c;color:#ececed}
+.mut{color:#8b8b91}.dim{color:#5c5c62}
+.chip{background:#ececed;color:#0b0b0c;padding:6px 11px;border-radius:4px;font-weight:500;white-space:nowrap}
+.pill{border:1px solid #2a2a2e;border-radius:30px;padding:5px 12px;color:#b9b9bf;white-space:nowrap}
+.pill.on{background:#ececed;color:#0b0b0c;border-color:#ececed}
+.line{border-top:1px solid #1f1f22}
+.st{display:inline-flex;align-items:center;gap:6px;white-space:nowrap}
+.st i{width:7px;height:7px;border-radius:50%;display:inline-block}
+.ok i{background:#7fd99a}.rev i{background:#f2c46b}.fb i{background:#ff7a66}.gen i{background:#7aa7ff}.todo i{background:#4a4a50}
+.btn{background:#ececed;color:#0b0b0c;border-radius:4px;padding:10px 16px;font-weight:500;white-space:nowrap}
+.btn2{border:1px solid #2f2f33;border-radius:4px;padding:9px 14px;color:#d8d8dc;white-space:nowrap}
+.k{color:#8b8b91;font-size:12px}
+</style>
+<div style="padding:14px 16px 0">
+<div class="row" style="gap:6px">
+  <span class="chip">Menu</span>
+  <span class="chip row" style="gap:9px">Rendus <span class="mono" style="font-size:12px">214 / 400</span>
+    <span style="width:46px;height:4px;background:#0b0b0c22;border-radius:2px;overflow:hidden;display:inline-block"><span style="display:block;height:100%;width:54%;background:#0b0b0c"></span></span></span>
+  <span class="pill" style="margin-left:6px;border-color:transparent;color:#b9b9bf">Studio Rive <span class="dim">/</span> From the Other Shore <span class="dim">/</span> Plan 02</span>
+  <span class="sp"></span>
+  <span class="row" style="padding-left:7px"><span style="width:26px;height:26px;border-radius:50%;background:#c9b8ff;border:2px solid #0b0b0c;margin-left:-7px;display:inline-flex;align-items:center;justify-content:center;font-size:10px;font-weight:600;color:#0b0b0c">IN</span><span style="width:26px;height:26px;border-radius:50%;background:#9fe0c0;border:2px solid #0b0b0c;margin-left:-7px;display:inline-flex;align-items:center;justify-content:center;font-size:10px;font-weight:600;color:#0b0b0c">TH</span></span>
+</div>
+<div class="row" style="gap:6px;margin-top:10px;padding-left:2px"><span class="dim" style="margin-right:4px">↳</span><span class="pill" data-go="01-projet">Plans</span><span class="pill on">Versions</span><span class="pill" data-go="06-retours">Retours</span><span class="pill">Livraison</span></div>
+</div>
+<div style="display:flex;gap:28px;padding:20px 32px 0">
+ <div style="width:880px">
+  <div class="row"><span class="mono dim" style="margin-right:12px">02</span><span style="font-size:26px;font-weight:500;letter-spacing:-.02em">La côte</span>
+   <span style="margin-left:16px"><span class="st rev"><i></i>Dans la v3 envoyée</span></span><span class="sp"></span><span class="k">0:04,0 → 0:07,5 · 3,5 s</span></div>
+  <div style="margin-top:16px;position:relative"><div style="width:880px;height:470px;border-radius:3px;overflow:hidden;background:#1a1a1c;"><img src="img/shore-1.jpg"></div>
+   <div class="row" style="position:absolute;left:14px;right:14px;bottom:12px;gap:12px">
+    <span class="chip" style="padding:5px 9px">▶</span>
+    <div style="flex:1;height:3px;background:#ffffff33;border-radius:2px"><div style="width:38%;height:100%;background:#fff"></div></div>
+    <span class="mono" style="color:#fff">0:01,3 / 0:03,5</span></div></div>
+  <div class="row" style="margin-top:20px;margin-bottom:10px"><span class="k">Variantes gardées · 4</span><span class="k" style="margin-left:14px">13 écartées, masquées</span><span class="sp"></span><span class="k">Afficher tout</span></div>
+  <div class="row" style="gap:16px;align-items:flex-start"><div style="width:206px">
+<div style="position:relative;outline:1px solid #232326;outline-offset:0;border-radius:3px"><div style="width:206px;height:116px;border-radius:3px;overflow:hidden;background:#1a1a1c;"><img src="img/shore-1b.jpg"></div>
+</div>
+<div class="row" style="margin-top:9px"><span class="mono" style="font-weight:500">v1</span><span class="sp"></span><span class="mono mut">9 cr</span></div>
+<div class="k" style="margin-top:3px">Midjourney → Kling</div></div><div style="width:206px">
+<div style="position:relative;outline:1px solid #232326;outline-offset:0;border-radius:3px"><div style="width:206px;height:116px;border-radius:3px;overflow:hidden;background:#1a1a1c;"><img src="img/shore-2.jpg"></div>
+</div>
+<div class="row" style="margin-top:9px"><span class="mono" style="font-weight:500">v2</span><span class="sp"></span><span class="mono mut">11 cr</span></div>
+<div class="k" style="margin-top:3px">Kling</div></div><div style="width:206px">
+<div style="position:relative;outline:2px solid #ececed;outline-offset:3px;border-radius:3px"><div style="width:206px;height:116px;border-radius:3px;overflow:hidden;background:#1a1a1c;"><img src="img/shore-1.jpg"></div>
+<span class="chip" style="position:absolute;left:6px;top:6px;padding:3px 7px;font-size:11px">Choisie</span></div>
+<div class="row" style="margin-top:9px"><span class="mono" style="font-weight:500">v3</span><span class="sp"></span><span class="mono mut">12 cr</span></div>
+<div class="k" style="margin-top:3px">Kling</div></div><div style="width:206px">
+<div style="position:relative;outline:1px solid #232326;outline-offset:0;border-radius:3px"><div style="width:206px;height:116px;border-radius:3px;overflow:hidden;background:#1a1a1c;"><img src="img/shore-river.jpg"></div>
+<span class="pill" style="position:absolute;left:6px;top:6px;padding:2px 8px;font-size:11px;background:#0b0b0caa;border-color:#7aa7ff;color:#cfe0ff">Nouvelle</span></div>
+<div class="row" style="margin-top:9px"><span class="mono" style="font-weight:500">v4</span><span class="sp"></span><span class="mono mut">9 cr</span></div>
+<div class="k" style="margin-top:3px">Runway</div></div></div>
+ </div>
+ <div style="flex:1;padding-top:44px">
+  <div class="row"><span class="k">Prompt de la v3</span><span class="sp"></span><span class="k">Modifiable avant de régénérer</span></div>
+  <div style="margin-top:10px;border:1px solid #2f2f33;border-radius:4px;padding:12px 14px;font-size:15px;line-height:1.45">Vue aérienne d’une côte noire, vagues blanches, une bande de lys rouges le long du rivage, lumière froide et rasante, <span style="background:#7aa7ff33;border-radius:2px">brume plus dense au loin</span><span style="display:inline-block;width:1.5px;height:17px;background:#ececed;vertical-align:-3px;margin-left:1px"></span></div>
+  <div class="line" style="margin-top:20px"></div>
+  <div class="row" style="padding:11px 0;border-bottom:1px solid #1f1f22"><span class="k" style="width:120px">Modèle</span><span class="">Kling · image → vidéo</span></div><div class="row" style="padding:11px 0;border-bottom:1px solid #1f1f22"><span class="k" style="width:120px">Image de départ</span><span class="">v1, image fixe</span></div><div class="row" style="padding:11px 0;border-bottom:1px solid #1f1f22"><span class="k" style="width:120px">Graine</span><span class="mono">48 210 377</span></div><div class="row" style="padding:11px 0;border-bottom:1px solid #1f1f22"><span class="k" style="width:120px">Durée</span><span class="">5 s, coupée à 3,5 s</span></div><div class="row" style="padding:11px 0;border-bottom:1px solid #1f1f22"><span class="k" style="width:120px">Coût</span><span class="mono">12 crédits</span></div><div class="row" style="padding:11px 0;border-bottom:1px solid #1f1f22"><span class="k" style="width:120px">Par</span><span class="">Théo · 17 nov., 16:42</span></div>
+  <div class="row" style="margin-top:16px;gap:10px"><div style="width:92px;height:52px;border-radius:3px;overflow:hidden;background:#1a1a1c;"><img src="img/shore-1b.jpg"></div><span class="k">Image de départ<br><span style="color:#ececed">shore_v1_still.png</span></span></div>
+  <div style="margin-top:26px;display:flex;flex-direction:column;gap:8px">
+   <span class="btn" style="text-align:center" data-go="03-comparer">Comparer avec la v4</span>
+   <span class="btn2" style="text-align:center">Régénérer avec ce prompt · ≈ 12 cr</span>
+  </div>
+ </div>
+</div></div>
+<div id="bar"><a href="index.html">← Tous les écrans</a><span style="opacity:.6">Plan et variantes</span><span style="flex:1"></span><span style="opacity:.6">Cliquez sur un bouton, ou appuyez sur H pour voir les zones cliquables</span></div>
+<script>
+const W=1440,H=900;function fit(){const s=Math.min(innerWidth/W,(innerHeight-40)/H);const st=document.getElementById('stage');st.style.transform='scale('+s+')';st.style.left=Math.max(0,(innerWidth-W*s)/2)+'px';}fit();addEventListener('resize',fit);
+document.querySelectorAll('[data-go]').forEach(e=>e.addEventListener('click',()=>location.href=e.dataset.go+'.html'));
+addEventListener('keydown',e=>{if(e.key==='h'||e.key==='H')document.documentElement.classList.toggle('hint')});
+document.addEventListener('click',e=>{if(!e.target.closest('[data-go],#bar')){document.documentElement.classList.add('hint');setTimeout(()=>document.documentElement.classList.remove('hint'),900)}});
+</script></body></html>

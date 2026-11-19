@@ -1,0 +1,65 @@
+<!doctype html><html lang="fr"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Dailies — Génération ratée</title><style>html{background:#0b0b0c;height:100%;overflow:hidden}body{width:auto!important;height:100vh!important;margin:0!important;overflow:hidden!important}#stage{position:absolute;top:0;width:1440px;height:900px;transform-origin:0 0;overflow:hidden}
+[data-go]{cursor:pointer;outline:2px solid transparent;transition:outline-color .2s}
+.hint [data-go]{outline-color:#7aa7ffcc;outline-offset:2px}
+#bar{position:fixed;left:0;right:0;bottom:0;display:flex;gap:14px;align-items:center;padding:10px 14px;font:13px/1.3 -apple-system,Inter,sans-serif;color:#ddd;background:#000d;z-index:9}#bar a{color:#fff}@media(max-width:600px){#bar span:last-child{display:none}}</style></head>
+<body><div id="stage"><style>@font-face{font-family:GS;font-weight:300;src:url('fonts/GeneralSans-Light.otf')}@font-face{font-family:GS;font-weight:400;src:url('fonts/GeneralSans-Regular.otf')}@font-face{font-family:GS;font-weight:500;src:url('fonts/GeneralSans-Medium.otf')}@font-face{font-family:GS;font-weight:600;src:url('fonts/GeneralSans-Semibold.otf')}@font-face{font-family:NR;font-weight:300;src:url('fonts/newsreader-latin-300-normal.woff2')}@font-face{font-family:NR;font-weight:400;src:url('fonts/newsreader-latin-400-normal.woff2')}@font-face{font-family:NR;font-weight:500;src:url('fonts/newsreader-latin-500-normal.woff2')}@font-face{font-family:NR;font-style:italic;font-weight:400;src:url('fonts/newsreader-latin-400-italic.woff2')}@font-face{font-family:GM;font-weight:400;src:url('fonts/geist-mono-latin-400-normal.woff2')}@font-face{font-family:GM;font-weight:500;src:url('fonts/geist-mono-latin-500-normal.woff2')}
+*{box-sizing:border-box;margin:0;padding:0}
+body{width:1440px;height:900px;overflow:hidden;font-family:GS;font-size:13px;line-height:1.35;-webkit-font-smoothing:antialiased}
+img{display:block;width:100%;height:100%;object-fit:cover}
+.mono{font-family:GS;font-variant-numeric:tabular-nums;letter-spacing:0}
+.row{display:flex;align-items:center}
+.sp{flex:1}
+
+body{background:#0b0b0c;color:#ececed}
+.mut{color:#8b8b91}.dim{color:#5c5c62}
+.chip{background:#ececed;color:#0b0b0c;padding:6px 11px;border-radius:4px;font-weight:500;white-space:nowrap}
+.pill{border:1px solid #2a2a2e;border-radius:30px;padding:5px 12px;color:#b9b9bf;white-space:nowrap}
+.pill.on{background:#ececed;color:#0b0b0c;border-color:#ececed}
+.line{border-top:1px solid #1f1f22}
+.st{display:inline-flex;align-items:center;gap:6px;white-space:nowrap}
+.st i{width:7px;height:7px;border-radius:50%;display:inline-block}
+.ok i{background:#7fd99a}.rev i{background:#f2c46b}.fb i{background:#ff7a66}.gen i{background:#7aa7ff}.todo i{background:#4a4a50}
+.btn{background:#ececed;color:#0b0b0c;border-radius:4px;padding:10px 16px;font-weight:500;white-space:nowrap}
+.btn2{border:1px solid #2f2f33;border-radius:4px;padding:9px 14px;color:#d8d8dc;white-space:nowrap}
+.k{color:#8b8b91;font-size:12px}
+</style>
+<div style="padding:14px 16px 0">
+<div class="row" style="gap:6px">
+  <span class="chip">Menu</span>
+  <span class="chip row" style="gap:9px">Rendus <span class="mono" style="font-size:12px">214 / 400</span>
+    <span style="width:46px;height:4px;background:#0b0b0c22;border-radius:2px;overflow:hidden;display:inline-block"><span style="display:block;height:100%;width:54%;background:#0b0b0c"></span></span></span>
+  <span class="pill" style="margin-left:6px;border-color:transparent;color:#b9b9bf">Studio Rive <span class="dim">/</span> From the Other Shore <span class="dim">/</span> Plan 06</span>
+  <span class="sp"></span>
+  <span class="row" style="padding-left:7px"><span style="width:26px;height:26px;border-radius:50%;background:#c9b8ff;border:2px solid #0b0b0c;margin-left:-7px;display:inline-flex;align-items:center;justify-content:center;font-size:10px;font-weight:600;color:#0b0b0c">IN</span><span style="width:26px;height:26px;border-radius:50%;background:#9fe0c0;border:2px solid #0b0b0c;margin-left:-7px;display:inline-flex;align-items:center;justify-content:center;font-size:10px;font-weight:600;color:#0b0b0c">TH</span></span>
+</div>
+<div class="row" style="gap:6px;margin-top:10px;padding-left:2px"><span class="dim" style="margin-right:4px">↳</span><span class="pill" data-go="01-projet">Plans</span><span class="pill on">Versions</span><span class="pill" data-go="06-retours">Retours</span><span class="pill">Livraison</span></div>
+</div>
+<div style="display:flex;gap:28px;padding:20px 32px 0">
+ <div style="width:880px">
+  <div class="row"><span class="mono dim" style="margin-right:12px">06</span><span style="font-size:26px;font-weight:500;letter-spacing:-.02em">La métamorphose</span>
+   <span style="margin-left:16px"><span class="st fb"><i></i>Retour à traiter</span></span><span class="sp"></span><span class="k">0:20,0 → 0:24,5 · 4,5 s</span></div>
+  <div style="margin-top:16px"><div style="width:880px;height:470px;border-radius:3px;overflow:hidden;background:#1a1a1c;"><img src="img/metamorphosis.jpg"></div></div>
+  <div class="row" style="margin-top:20px;margin-bottom:10px"><span class="k">Variantes gardées · 4</span><span class="k" style="margin-left:14px">9 écartées, masquées</span><span class="sp"></span><span class="k">Afficher tout</span></div>
+  <div class="row" style="gap:16px;align-items:flex-start"><div style="width:206px"><div style=""><div style="width:206px;height:116px;border-radius:3px;overflow:hidden;background:#1a1a1c;"><img src="img/meta-b.jpg"></div></div><div class="row" style="margin-top:9px"><span class="mono" style="font-weight:500">v4</span><span class="sp"></span><span class="mono mut">10 cr</span></div><div class="k" style="margin-top:3px">Kling</div></div><div style="width:206px"><div style="outline:2px solid #ececed;outline-offset:3px;border-radius:3px"><div style="width:206px;height:116px;border-radius:3px;overflow:hidden;background:#1a1a1c;"><img src="img/metamorphosis.jpg"></div></div><div class="row" style="margin-top:9px"><span class="mono" style="font-weight:500">v5</span><span class="sp"></span><span class="mono mut">12 cr</span></div><div class="k" style="margin-top:3px">Kling</div></div><div style="width:206px"><div style="width:206px;height:116px;border-radius:3px;border:1px dashed #ff7a6688;display:flex;flex-direction:column;justify-content:center;padding:0 14px;gap:6px"><span class="st fb"><i></i>Échec</span><span class="k" style="line-height:1.3">Expirée après 10 min. Aucun crédit débité.</span></div><div class="row" style="margin-top:9px"><span class="mono" style="font-weight:500">v6</span><span class="sp"></span><span class="mono mut">0 cr</span></div><div class="k" style="margin-top:3px">Runway</div></div><div style="width:206px"><div style="position:relative"><div style="width:206px;height:116px;border-radius:3px;overflow:hidden;background:#1a1a1c;filter:blur(6px) brightness(.6)"><img src="img/metamorphosis.jpg"></div><div style="position:absolute;left:12px;right:12px;bottom:12px"><div class="row k"><span class="st gen"><i></i>En cours</span><span class="sp"></span><span class="mono">62 %</span></div><div style="height:3px;background:#ffffff22;margin-top:6px"><div style="width:62%;height:100%;background:#7aa7ff"></div></div></div></div><div class="row" style="margin-top:9px"><span class="mono" style="font-weight:500">v7</span><span class="sp"></span><span class="mono mut">≈ 14 cr</span></div><div class="k" style="margin-top:3px">Kling</div></div></div>
+ </div>
+ <div style="flex:1;padding-top:44px">
+  <div style="border:1px solid #ff7a6655;background:#ff7a6610;border-radius:4px;padding:14px 16px">
+   <div class="row"><span class="st fb"><i></i>La v6 a échoué</span><span class="sp"></span><span class="k">17:58</span></div>
+   <div style="margin-top:8px;line-height:1.45;color:#d8d8dc">Runway n’a pas répondu au bout de 10 minutes. La génération est annulée et rien n’a été débité.</div>
+   <div class="row" style="gap:8px;margin-top:14px"><span class="btn">Relancer sur Runway</span><span class="btn2">Essayer avec Kling · ≈ 14 cr</span></div></div>
+  <div class="k" style="margin-top:28px">Retour client à l’origine</div>
+  <div style="margin-top:10px;font-size:15px;line-height:1.45">« La transition est trop rapide, on ne comprend pas que la fleur devient la créature. »</div>
+  <div class="k" style="margin-top:8px">Mia, Higan · 0:22 · version 3</div>
+  <div class="line" style="margin-top:22px"></div>
+  <div class="row" style="padding:11px 0;border-bottom:1px solid #1f1f22"><span class="k" style="width:120px">v7 en cours</span><span>Kling · durée passée de 3 à 4,5 s</span></div>
+  <div class="row" style="padding:11px 0;border-bottom:1px solid #1f1f22"><span class="k" style="width:120px">Prévenir</span><span>Inès quand la v7 est prête</span></div>
+ </div>
+</div></div>
+<div id="bar"><a href="index.html">← Tous les écrans</a><span style="opacity:.6">Génération ratée</span><span style="flex:1"></span><span style="opacity:.6">Cliquez sur un bouton, ou appuyez sur H pour voir les zones cliquables</span></div>
+<script>
+const W=1440,H=900;function fit(){const s=Math.min(innerWidth/W,(innerHeight-40)/H);const st=document.getElementById('stage');st.style.transform='scale('+s+')';st.style.left=Math.max(0,(innerWidth-W*s)/2)+'px';}fit();addEventListener('resize',fit);
+document.querySelectorAll('[data-go]').forEach(e=>e.addEventListener('click',()=>location.href=e.dataset.go+'.html'));
+addEventListener('keydown',e=>{if(e.key==='h'||e.key==='H')document.documentElement.classList.toggle('hint')});
+document.addEventListener('click',e=>{if(!e.target.closest('[data-go],#bar')){document.documentElement.classList.add('hint');setTimeout(()=>document.documentElement.classList.remove('hint'),900)}});
+</script></body></html>

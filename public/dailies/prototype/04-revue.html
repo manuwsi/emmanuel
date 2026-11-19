@@ -1,0 +1,61 @@
+<!doctype html><html lang="fr"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Dailies — Revue client</title><style>html{background:#f1efea;height:100%;overflow:hidden}body{width:auto!important;height:100vh!important;margin:0!important;overflow:hidden!important}#stage{position:absolute;top:0;width:1440px;height:900px;transform-origin:0 0;overflow:hidden}
+[data-go]{cursor:pointer;outline:2px solid transparent;transition:outline-color .2s}
+.hint [data-go]{outline-color:#7aa7ffcc;outline-offset:2px}
+#bar{position:fixed;left:0;right:0;bottom:0;display:flex;gap:14px;align-items:center;padding:10px 14px;font:13px/1.3 -apple-system,Inter,sans-serif;color:#ddd;background:#000d;z-index:9}#bar a{color:#fff}@media(max-width:600px){#bar span:last-child{display:none}}</style></head>
+<body><div id="stage"><style>@font-face{font-family:GS;font-weight:300;src:url('fonts/GeneralSans-Light.otf')}@font-face{font-family:GS;font-weight:400;src:url('fonts/GeneralSans-Regular.otf')}@font-face{font-family:GS;font-weight:500;src:url('fonts/GeneralSans-Medium.otf')}@font-face{font-family:GS;font-weight:600;src:url('fonts/GeneralSans-Semibold.otf')}@font-face{font-family:NR;font-weight:300;src:url('fonts/newsreader-latin-300-normal.woff2')}@font-face{font-family:NR;font-weight:400;src:url('fonts/newsreader-latin-400-normal.woff2')}@font-face{font-family:NR;font-weight:500;src:url('fonts/newsreader-latin-500-normal.woff2')}@font-face{font-family:NR;font-style:italic;font-weight:400;src:url('fonts/newsreader-latin-400-italic.woff2')}@font-face{font-family:GM;font-weight:400;src:url('fonts/geist-mono-latin-400-normal.woff2')}@font-face{font-family:GM;font-weight:500;src:url('fonts/geist-mono-latin-500-normal.woff2')}
+*{box-sizing:border-box;margin:0;padding:0}
+body{width:1440px;height:900px;overflow:hidden;font-family:GS;font-size:13px;line-height:1.35;-webkit-font-smoothing:antialiased}
+img{display:block;width:100%;height:100%;object-fit:cover}
+.mono{font-family:GS;font-variant-numeric:tabular-nums;letter-spacing:0}
+.row{display:flex;align-items:center}
+.sp{flex:1}
+
+body{background:#f1efea;color:#141414}
+.mut{color:#76736c}
+.serif{font-family:NR;font-weight:400;letter-spacing:-.01em}
+.chip{background:#fff;padding:6px 11px;border-radius:3px;white-space:nowrap}
+.pill{background:#fff;border-radius:30px;padding:5px 12px;white-space:nowrap}
+.btn{background:#141414;color:#f1efea;padding:15px 18px;text-align:center;letter-spacing:.06em;font-size:12px;font-weight:500;text-transform:uppercase}
+</style>
+<div class="row" style="padding:14px 16px 0;gap:6px"><span class="chip">Menu</span><span class="chip">Version 3 · à valider</span>
+<span class="pill" style="margin-left:6px;background:transparent">Higan <span class="mut">/</span> From the Other Shore</span><span class="sp"></span>
+<span class="mut">Studio Rive · tour de retours <span style="color:#141414">2 sur 3</span> prévus au devis</span></div>
+<div class="row" style="gap:6px;padding:10px 18px 0"><span class="mut" style="margin-right:4px">↳</span>
+<span class="pill" style="background:#141414;color:#f1efea">Film</span><span class="pill" style="">Plans</span><span class="pill" style="">Versions précédentes</span></div>
+<div style="display:flex;gap:40px;padding:26px 32px 0">
+ <div><div style="width:900px"><div style="width:900px;height:506px;border-radius:3px;overflow:hidden;background:#1a1a1c;border-radius:0"><img src="img/flower-red.jpg"></div>
+<div style="position:relative;margin-top:14px;height:6px;background:#dcd9d1;display:flex">
+<div style="position:absolute;left:0;top:0;bottom:0;width:55%;background:#141414"></div><div style="flex:4.0;border-left:1px solid #f1efea;height:100%"></div><div style="flex:3.5;border-left:1px solid #f1efea;height:100%"></div><div style="flex:3.0;border-left:1px solid #f1efea;height:100%"></div><div style="flex:4.5;border-left:1px solid #f1efea;height:100%"></div><div style="flex:4.0;border-left:1px solid #f1efea;height:100%"></div><div style="flex:4.5;border-left:1px solid #f1efea;height:100%"></div><div style="flex:3.5;border-left:1px solid #f1efea;height:100%"></div><div style="flex:3.0;border-left:1px solid #f1efea;height:100%"></div><span style="position:absolute;left:40.0%;top:-5px;width:9px;height:9px;margin-left:-4px;border-radius:50%;background:#141414;border:2px solid #f1efea"></span><span style="position:absolute;left:56.7%;top:-5px;width:9px;height:9px;margin-left:-4px;border-radius:50%;background:#141414;border:2px solid #f1efea"></span><span style="position:absolute;left:73.3%;top:-5px;width:9px;height:9px;margin-left:-4px;border-radius:50%;background:#141414;border:2px solid #f1efea"></span></div>
+<div class="row" style="margin-top:7px"><div style="flex:4.0;padding-left:4px" class="mono mut">01</div><div style="flex:3.5;padding-left:4px" class="mono mut">02</div><div style="flex:3.0;padding-left:4px" class="mono mut">03</div><div style="flex:4.5;padding-left:4px" class="mono mut">04</div><div style="flex:4.0;padding-left:4px" class="mono mut">05</div><div style="flex:4.5;padding-left:4px" class="mono mut">06</div><div style="flex:3.5;padding-left:4px" class="mono mut">07</div><div style="flex:3.0;padding-left:4px" class="mono mut">08</div></div></div>
+  <div class="row" style="margin-top:26px;align-items:flex-end">
+   <div><div class="serif" style="font-size:38px;line-height:1">From the Other Shore</div>
+   <div class="mut" style="margin-top:8px">Film parfum · 30 s · version 3, envoyée par Inès le 18 novembre</div></div>
+   <span class="sp"></span><span class="mono" style="font-size:13px">0:17 / 0:30</span></div>
+ </div>
+ <div style="flex:1;padding-top:2px">
+  <div style="background:#fff;padding:14px 16px">
+   <div class="row"><span style="font-weight:500">Ce qui a changé depuis la v2</span><span class="sp"></span><span class="mut" style="font-size:12px">2 plans</span></div>
+   <div class="row" style="gap:10px;margin-top:10px"><div style="width:46px;height:26px;border-radius:3px;overflow:hidden;background:#1a1a1c;border-radius:0;flex:none"><img src="img/shore-1.jpg"></div><span class="mono">0:04</span><span>Plan 02 · nouvelle prise de vue</span><span class="sp"></span><span class="mut" style="font-size:12px">Voir</span></div><div class="row" style="gap:10px;margin-top:10px"><div style="width:46px;height:26px;border-radius:3px;overflow:hidden;background:#1a1a1c;border-radius:0;flex:none"><img src="img/flower-red.jpg"></div><span class="mono">0:15</span><span>Plan 05 · fond plus clair</span><span class="sp"></span><span class="mut" style="font-size:12px">Voir</span></div></div>
+  <div class="row" style="margin-top:20px"><span class="mut">Vos retours · 3</span><span class="sp"></span><span class="mut">Tout lire</span></div>
+  <div style="margin-top:4px"><div style="padding:12px 0;border-top:1px solid #dcd9d1">
+<div class="row" style="gap:10px"><span class="mono">0:12</span><span class="mut">Plan 04 · La brume</span><span class="sp"></span><span class="mut" style="font-size:12px"></span></div>
+<div class="row" style="gap:12px;margin-top:10px;align-items:flex-start"><div style="width:72px;height:40px;border-radius:3px;overflow:hidden;background:#1a1a1c;border-radius:0;flex:none"><img src="img/shore-light.jpg"></div><div style="font-size:14px;line-height:1.45">Plus de rouge dans la brume, on perd la couleur de la marque.</div></div></div><div style="padding:12px 0;border-top:1px solid #dcd9d1">
+<div class="row" style="gap:10px"><span class="mono">0:17</span><span class="mut">Plan 05 · La fleur</span><span class="sp"></span><span class="mut" style="font-size:12px"></span></div>
+<div class="row" style="gap:12px;margin-top:10px;align-items:flex-start"><div style="width:72px;height:40px;border-radius:3px;overflow:hidden;background:#1a1a1c;border-radius:0;flex:none"><img src="img/flower-red.jpg"></div><div style="font-size:14px;line-height:1.45">La fleur est parfaite. On garde.</div></div></div><div style="padding:12px 0;border-top:1px solid #dcd9d1">
+<div class="row" style="gap:10px"><span class="mono">0:22</span><span class="mut">Plan 06 · La métamorphose</span><span class="sp"></span><span class="mut" style="font-size:12px"></span></div>
+<div class="row" style="gap:12px;margin-top:10px;align-items:flex-start"><div style="width:72px;height:40px;border-radius:3px;overflow:hidden;background:#1a1a1c;border-radius:0;flex:none"><img src="img/metamorphosis.jpg"></div><div style="font-size:14px;line-height:1.45">La transition est trop rapide, on ne comprend pas que la fleur devient la créature.</div></div></div></div>
+  <div style="margin-top:6px;background:#fff;padding:14px 14px 12px">
+   <div class="row" style="gap:6px"><span class="pill" style="background:#141414;color:#f1efea;padding:3px 10px;font-size:12px">À 0:17 · plan 05</span><span class="pill" style="background:#f1efea;padding:3px 10px;font-size:12px">Sur tout le film</span></div>
+   <div style="margin-top:10px;font-size:14px;color:#a5a29a">Écrire un retour…</div></div>
+  <div class="btn" style="margin-top:16px" data-go="05-validation">Valider cette version</div>
+  <div class="mut" style="font-size:12px;margin-top:10px;text-align:center">Ou envoyer vos retours au studio</div>
+ </div>
+</div></div>
+<div id="bar"><a href="index.html">← Tous les écrans</a><span style="opacity:.6">Revue client</span><span style="flex:1"></span><span style="opacity:.6">Cliquez sur un bouton, ou appuyez sur H pour voir les zones cliquables</span></div>
+<script>
+const W=1440,H=900;function fit(){const s=Math.min(innerWidth/W,(innerHeight-40)/H);const st=document.getElementById('stage');st.style.transform='scale('+s+')';st.style.left=Math.max(0,(innerWidth-W*s)/2)+'px';}fit();addEventListener('resize',fit);
+document.querySelectorAll('[data-go]').forEach(e=>e.addEventListener('click',()=>location.href=e.dataset.go+'.html'));
+addEventListener('keydown',e=>{if(e.key==='h'||e.key==='H')document.documentElement.classList.toggle('hint')});
+document.addEventListener('click',e=>{if(!e.target.closest('[data-go],#bar')){document.documentElement.classList.add('hint');setTimeout(()=>document.documentElement.classList.remove('hint'),900)}});
+</script></body></html>

@@ -1,0 +1,39 @@
+<!doctype html><html lang="fr"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Dailies — Mobile, ancien lien</title><style>html{background:#f1efea;height:100%;overflow:hidden}body{width:auto!important;height:100vh!important;margin:0!important;overflow:hidden!important}#stage{position:absolute;top:0;width:390px;height:844px;transform-origin:0 0;overflow:hidden}
+[data-go]{cursor:pointer;outline:2px solid transparent;transition:outline-color .2s}
+.hint [data-go]{outline-color:#7aa7ffcc;outline-offset:2px}
+#bar{position:fixed;left:0;right:0;bottom:0;display:flex;gap:14px;align-items:center;padding:10px 14px;font:13px/1.3 -apple-system,Inter,sans-serif;color:#ddd;background:#000d;z-index:9}#bar a{color:#fff}@media(max-width:600px){#bar span:last-child{display:none}}</style></head>
+<body><div id="stage"><style>@font-face{font-family:GS;font-weight:300;src:url('fonts/GeneralSans-Light.otf')}@font-face{font-family:GS;font-weight:400;src:url('fonts/GeneralSans-Regular.otf')}@font-face{font-family:GS;font-weight:500;src:url('fonts/GeneralSans-Medium.otf')}@font-face{font-family:GS;font-weight:600;src:url('fonts/GeneralSans-Semibold.otf')}@font-face{font-family:NR;font-weight:300;src:url('fonts/newsreader-latin-300-normal.woff2')}@font-face{font-family:NR;font-weight:400;src:url('fonts/newsreader-latin-400-normal.woff2')}@font-face{font-family:NR;font-weight:500;src:url('fonts/newsreader-latin-500-normal.woff2')}@font-face{font-family:NR;font-style:italic;font-weight:400;src:url('fonts/newsreader-latin-400-italic.woff2')}@font-face{font-family:GM;font-weight:400;src:url('fonts/geist-mono-latin-400-normal.woff2')}@font-face{font-family:GM;font-weight:500;src:url('fonts/geist-mono-latin-500-normal.woff2')}
+*{box-sizing:border-box;margin:0;padding:0}
+body{width:1440px;height:900px;overflow:hidden;font-family:GS;font-size:13px;line-height:1.35;-webkit-font-smoothing:antialiased}
+img{display:block;width:100%;height:100%;object-fit:cover}
+.mono{font-family:GS;font-variant-numeric:tabular-nums;letter-spacing:0}
+.row{display:flex;align-items:center}
+.sp{flex:1}
+
+body{background:#f1efea;color:#141414}
+.mut{color:#76736c}
+.serif{font-family:NR;font-weight:400;letter-spacing:-.01em}
+.chip{background:#fff;padding:6px 11px;border-radius:3px;white-space:nowrap}
+.pill{background:#fff;border-radius:30px;padding:5px 12px;white-space:nowrap}
+.btn{background:#141414;color:#f1efea;padding:15px 18px;text-align:center;letter-spacing:.06em;font-size:12px;font-weight:500;text-transform:uppercase}
+ body{width:390px;height:844px}</style>
+<div class="row" style="padding:52px 14px 0;gap:6px"><span class="chip">Menu</span><span class="chip">Version 2</span><span class="sp"></span><span class="mut" style="font-size:12px">Studio Rive</span></div>
+<div style="margin:14px 14px 0;background:#141414;color:#f1efea;padding:12px 14px">
+ <div style="font-size:13px">Ce lien ouvre la version 2. La version 3 est arrivée le 18 novembre.</div>
+ <div class="row" style="margin-top:10px"><span style="text-decoration:underline;text-underline-offset:3px" data-go="04-revue">Voir la version 3</span><span class="sp"></span><span style="opacity:.6;font-size:12px">Fermer</span></div></div>
+<div style="margin-top:14px;opacity:.55"><div style="width:390px;height:219px;border-radius:3px;overflow:hidden;background:#1a1a1c;border-radius:0"><img src="img/shore-2.jpg"></div></div>
+<div style="padding:12px 14px 0">
+ <div class="serif" style="font-size:26px;line-height:1.05">From the Other Shore</div>
+ <div class="mut" style="margin-top:6px;font-size:12px">Version 2 · remplacée, plus validable</div>
+ <div class="mut" style="margin-top:18px;font-size:12px">Vos retours sur la v2 · traités dans la v3</div>
+ <div style="margin-top:6px"><div style="padding:12px 0;border-top:1px solid #dcd9d1"><div class="row" style="gap:8px"><span class="mono">0:04</span><span class="mut">Plan 02 · La côte</span></div><div style="margin-top:6px;font-size:14px;line-height:1.4">Le cadre est trop serré, on ne voit pas assez le rivage.</div></div><div style="padding:12px 0;border-top:1px solid #dcd9d1"><div class="row" style="gap:8px"><span class="mono">0:15</span><span class="mut">Plan 05 · La fleur</span></div><div style="margin-top:6px;font-size:14px;line-height:1.4">Le fond est trop sombre, la fleur se perd.</div></div></div>
+</div>
+<div style="position:absolute;left:14px;right:14px;bottom:28px" class="btn" data-go="04-revue">Ouvrir la version 3</div></div>
+<div id="bar"><a href="index.html">← Tous les écrans</a><span style="opacity:.6">Mobile, ancien lien</span><span style="flex:1"></span><span style="opacity:.6">Cliquez sur un bouton, ou appuyez sur H pour voir les zones cliquables</span></div>
+<script>
+const W=390,H=844;function fit(){const s=Math.min(innerWidth/W,(innerHeight-40)/H);const st=document.getElementById('stage');st.style.transform='scale('+s+')';st.style.left=Math.max(0,(innerWidth-W*s)/2)+'px';}fit();addEventListener('resize',fit);
+document.querySelectorAll('[data-go]').forEach(e=>e.addEventListener('click',()=>location.href=e.dataset.go+'.html'));
+addEventListener('keydown',e=>{if(e.key==='h'||e.key==='H')document.documentElement.classList.toggle('hint')});
+document.addEventListener('click',e=>{if(!e.target.closest('[data-go],#bar')){document.documentElement.classList.add('hint');setTimeout(()=>document.documentElement.classList.remove('hint'),900)}});
+</script></body></html>

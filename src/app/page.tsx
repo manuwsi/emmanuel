@@ -34,7 +34,8 @@ function ProjectCard({ project, index }: { project: Project; index: number }) {
               alt=""
               fill
               sizes="(min-width:768px) 50vw, 100vw"
-              className="object-cover opacity-0 transition-opacity duration-700 ease-out group-hover:opacity-100"
+              loading="eager"
+              className="object-cover opacity-0 group-hover:opacity-100"
             />
           )}
         </div>

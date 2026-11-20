@@ -92,14 +92,6 @@ export const projects: Project[] = [
     group: 'product',
   },
   {
-    title: same('Z_Lab'),
-    subtitle: { fr: '2025 — Refonte de site, UI/UX', en: '2025 — Website redesign, UI/UX' },
-    image: '/1.webp',
-    size: [1080, 1080],
-    link: '/z_lab',
-    group: 'product',
-  },
-  {
     title: same('HIGAN'),
     subtitle: { fr: '2026 — Design de flacon, 3D & direction artistique', en: '2026 — Bottle design, 3D & art direction' },
     image: '/higan/silhouette.jpg',
@@ -113,22 +105,6 @@ export const projects: Project[] = [
     image: '/paf-cover-v2.jpg',
     size: [1667, 1250],
     link: '/post-archive-faction',
-    group: 'explorations',
-  },
-  {
-    title: same('Aether'),
-    subtitle: { fr: '2024 — Design system, jeu de tarot', en: '2024 — Design system, tarot deck' },
-    image: '/AETHERCOVER.webp',
-    size: [1445, 1024],
-    link: '/aether',
-    group: 'explorations',
-  },
-  {
-    title: same('SPECTRE'),
-    subtitle: { fr: '2025 — Design éditorial, direction artistique IA', en: '2025 — Editorial design, AI art direction' },
-    image: '/spectre1.webp',
-    size: [1080, 1350],
-    link: '/spectre',
     group: 'explorations',
   },
   {

@@ -92,8 +92,8 @@ export default function Home() {
         >
           <p className="md:col-span-2 md:max-w-[480px]">
             {t(
-              'Je conçois des applications web et mobile, de l’entretien utilisateur à l’écran final : Serena, un assistant administratif pour les agriculteurs, et Shu Uemura AI:tutor, un coach maquillage par IA.',
-              'I design web and mobile apps, from user interviews to the final screen: Serena, an admin assistant for farmers, and Shu Uemura AI:tutor, an AI make-up coach.'
+              'Je conçois des applis et des outils, du grand public au métier très technique. Mon dernier projet : Colosse, l’écran de pilotage d’un tunnelier.',
+              'I design apps and tools, from consumer products to very technical jobs. My latest project: Colosse, the cockpit screen of a tunnel boring machine.'
             )}
           </p>
           <p className="text-black/50 md:col-span-1">

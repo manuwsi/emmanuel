@@ -123,6 +123,7 @@ export function Media({
   video = false,
   className = '',
   priority = false,
+  crisp = false,
 }: {
   src: string;
   alt: string;
@@ -131,6 +132,8 @@ export function Media({
   video?: boolean;
   className?: string;
   priority?: boolean;
+  /** Serve the file as is (no recompression): for line drawings and interface screens with fine detail. */
+  crisp?: boolean;
 }) {
   return (
     <motion.div
@@ -149,6 +152,7 @@ export function Media({
           width={width}
           height={height}
           priority={priority}
+          unoptimized={crisp}
           sizes="(max-width: 768px) 100vw, 1152px"
           className="w-full h-auto block"
         />

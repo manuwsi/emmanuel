@@ -14,7 +14,7 @@ if LIGHT:
 else:
     INK, BG, SIG, AMB, RED, WATER, RGB = '#ecebe4', '#0b0b0a', '#d6ff4a', '#ffb547', '#ff5b4a', '#7fb2d9', '236,235,228'
 CSS = FONTS + f"""*{{box-sizing:border-box;margin:0;padding:0}}
-body{{width:1440px;height:900px;overflow:hidden;background:{BG};{'background-image:radial-gradient(circle,rgba(10,10,10,.10) 1px,transparent 1.6px);background-size:20px 20px;' if LIGHT else ''}color:{INK};font-family:GS;-webkit-font-smoothing:antialiased}}
+body{{width:1440px;height:900px;overflow:hidden;background:{BG};color:{INK};font-family:GS;-webkit-font-smoothing:antialiased}}
 svg text{{font-family:GM;font-size:10px;fill:{INK}}}
 .t{{font-family:GS}}"""
 
@@ -288,8 +288,8 @@ def progress_view(x, y, alert=False):
 
 def header(state='EN CREUSEMENT', col=SIG, clock='02:14'):
     return f"""<div style="position:absolute;left:40px;right:40px;top:22px;display:flex;align-items:center;gap:16px">
-<span style="font-weight:600;font-size:17px;letter-spacing:.04em">YSÉE</span>
-<span style="font-family:GM;font-size:11px;color:{op(.55)};letter-spacing:.04em">COUPE LONGITUDINALE · TRONÇON FICTIF SOUS PARIS · ÉCHELLE VERTICALE ×3,4</span>
+<span style="font-weight:600;font-size:17px;letter-spacing:.04em">COLOSSE</span>
+<span style="font-family:GM;font-size:11px;color:{op(.55)};letter-spacing:.04em">TUNNELIER YSÉE · COUPE LONGITUDINALE · TRONÇON FICTIF SOUS PARIS · ÉCHELLE VERTICALE ×3,4</span>
 <span style="flex:1"></span>
 <span style="font-family:GM;font-size:11px;display:flex;align-items:center;gap:7px;color:{col}"><i style="width:7px;height:7px;border-radius:50%;background:{col};display:inline-block"></i>{state}</span>
 <span style="font-family:GM;font-size:11px;color:{op(.55)}">POSTE DE NUIT</span><span style="font-family:GS;font-size:17px;font-variant-numeric:tabular-nums">{clock}</span></div>"""

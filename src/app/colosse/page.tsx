@@ -12,7 +12,7 @@ import Depth from '@/components/colosse/Depth';
 import Scale from '@/components/colosse/Scale';
 import '@/styles/globals.css';
 
-const W = { width: 2000, height: 1250 };
+const W = { width: 2880, height: 1800, crisp: true };
 const DISPLAY = { fontFamily: 'var(--font-general-sans), Inter, sans-serif', fontWeight: 500, letterSpacing: '-0.03em' } as const;
 
 function Chap({ n, title, depth, lede, children }: { n: number; title: string; depth: string; lede?: string; children?: ReactNode }) {

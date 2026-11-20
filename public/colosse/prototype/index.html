@@ -15,7 +15,6 @@ body{font-family:GS;-webkit-font-smoothing:antialiased;background:var(--bg);colo
 :root{--ink:#0a0a0a;--bg:#fff;--sig:#0a0a0a;--red:#e3382a;--amb:#c97d00;--water:#3b7cb0;--rgb:10,10,10}
 body.night{--ink:#ecebe4;--bg:#0b0b0a;--sig:#d6ff4a;--red:#ff5b4a;--amb:#ffb547;--water:#7fb2d9;--rgb:236,235,228}
 #stage{position:absolute;left:50%;top:50%;width:1440px;height:900px;transform-origin:center;}
-body:not(.night) #stage{background-image:radial-gradient(circle,rgba(10,10,10,.10) 1px,transparent 1.6px);background-size:20px 20px}
 svg text{font-family:GM;font-size:10px;fill:var(--ink)}
 .mono{font-family:GM;font-size:11px;letter-spacing:.04em}
 .hdr{position:absolute;left:40px;right:40px;top:22px;display:flex;align-items:center;gap:16px}
@@ -42,7 +41,8 @@ button:disabled{opacity:.35;cursor:not-allowed}
   <svg id="stat" width="1440" height="640" style="position:absolute;left:0;top:0"></svg>
   <svg id="dyn" width="1440" height="640" style="position:absolute;left:0;top:0"></svg>
   <div class="hdr">
-    <span style="font-weight:500;font-size:17px;letter-spacing:.04em">YSÉE</span>
+    <a id="back" href="/colosse" target="_top" class="mono" style="color:inherit;text-decoration:none;border:1px solid rgba(var(--rgb),.35);padding:6px 10px;margin-right:4px"></a>
+    <span style="font-weight:500;font-size:17px;letter-spacing:.04em">COLOSSE</span>
     <span class="mono mut" id="sub"></span><span style="flex:1"></span>
     <span class="mono" id="state" style="display:flex;align-items:center;gap:7px"></span>
     <span style="font-size:17px;font-variant-numeric:tabular-nums" id="clock"></span>
@@ -69,7 +69,7 @@ button:disabled{opacity:.35;cursor:not-allowed}
 let L = 'fr';
 try { const s = localStorage.getItem('lang'); if (s === 'en' || s === 'fr') L = s; } catch (e) {}
 const T = {
-  fr: { sub: 'COUPE LONGITUDINALE · TRONÇON FICTIF SOUS PARIS · PROTOTYPE', go: 'Avancer', pause: 'Pause', wait: 'En attente d’une décision', done: 'Recommencer',
+  fr: { sub: 'TUNNELIER YSÉE · COUPE LONGITUDINALE · TRONÇON FICTIF SOUS PARIS · PROTOTYPE', back: '← RETOUR AU PROJET', go: 'Avancer', pause: 'Pause', wait: 'En attente d’une décision', done: 'Recommencer',
     hint0: 'Lance la machine. Le prototype est accéléré : une seconde, c’est environ une heure de creusement.', hintWait: 'La machine s’est arrêtée d’elle-même. Choisis une option dans le panneau.', hintRun: 'Regarde les repères de tassement au-dessus de la machine.',
     kpk: 'POSITION DE LA ROUE', kst: 'TASSEMENT SOUS L’ÉCOLE', ksp: 'VITESSE', alertAt: 'alerte à 6 mm · seuil 10 mm', normal: 'rythme normal', slow: 'ralenti, coulis injecté', stopped: 'arrêtée',
     day: 'Jour', night: 'Cabine', reset: 'Recommencer', digging: 'EN CREUSEMENT', paused: 'À L’ARRÊT', anomaly: 'ANOMALIE DEVANT LA ROUE', drilling: 'SONDAGE EN COURS', over: 'SEUIL DÉPASSÉ',
@@ -80,7 +80,7 @@ const T = {
     tA: 'Décision A enregistrée · ralentir et combler', tB: 'Décision B enregistrée · sondage', tC: 'Décision C enregistrée · continuer',
     endA: 'Le vide est franchi. Tassement sous l’école : {s} mm.', endB: 'Le vide est franchi après sondage. Tassement sous l’école : {s} mm.', endC: 'Le seuil de 10 mm est dépassé sous l’école. La machine est arrêtée en urgence.',
     layers: ['REMBLAIS', 'MARNES ET CAILLASSES', 'CALCAIRE GROSSIER', 'ARGILE PLASTIQUE'], mh: 'm/h', md: 'm/jour' },
-  en: { sub: 'LONGITUDINAL SECTION · FICTIONAL STRETCH UNDER PARIS · PROTOTYPE', go: 'Move forward', pause: 'Pause', wait: 'Waiting for a decision', done: 'Start again',
+  en: { sub: 'TBM YSÉE · LONGITUDINAL SECTION · FICTIONAL STRETCH UNDER PARIS · PROTOTYPE', back: '← BACK TO THE PROJECT', go: 'Move forward', pause: 'Pause', wait: 'Waiting for a decision', done: 'Start again',
     hint0: 'Start the machine. The prototype is sped up: one second is about one hour of digging.', hintWait: 'The machine stopped on its own. Pick an option in the panel.', hintRun: 'Watch the settlement markers above the machine.',
     kpk: 'WHEEL POSITION', kst: 'SETTLEMENT UNDER THE SCHOOL', ksp: 'SPEED', alertAt: 'alert at 6 mm · limit 10 mm', normal: 'normal pace', slow: 'slowed, grout injected', stopped: 'stopped',
     day: 'Day', night: 'Cab', reset: 'Start again', digging: 'DIGGING', paused: 'STOPPED', anomaly: 'ANOMALY AHEAD OF THE WHEEL', drilling: 'BOREHOLE IN PROGRESS', over: 'LIMIT EXCEEDED',
@@ -277,6 +277,7 @@ function hhmm(min) { const d = Math.floor(min / 1440), m = Math.floor(min % 1440
 function ui() {
   const sig = css('--sig'), red = css('--red'), amb = css('--amb');
   document.getElementById('sub').textContent = tr('sub');
+  const bk = document.getElementById('back'); bk.textContent = tr('back'); if (window.self !== window.top) bk.style.display = 'none';
   document.getElementById('clock').innerHTML = hhmm(S.minutes);
   let st = S.playing ? tr('digging') : tr('paused'), col = S.playing ? sig : op(.7);
   if (S.detected && !S.decision) { st = tr('anomaly'); col = red; }

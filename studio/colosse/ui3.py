@@ -8,8 +8,8 @@ MONO = "font-family:GM;font-size:11px;letter-spacing:.04em"
 
 def header(title, state, col, clock):
     return f"""<div style="position:absolute;left:40px;right:40px;top:22px;display:flex;align-items:center;gap:16px">
-<span style="font-weight:600;font-size:17px;letter-spacing:.04em">YSÉE</span>
-<span style="{MONO};color:{op(.55)}">{title}</span><span style="flex:1"></span>
+<span style="font-weight:600;font-size:17px;letter-spacing:.04em">COLOSSE</span>
+<span style="{MONO};color:{op(.55)}">TUNNELIER YSÉE · {title}</span><span style="flex:1"></span>
 <span style="{MONO};display:flex;align-items:center;gap:7px;color:{col}"><i style="width:7px;height:7px;border-radius:50%;background:{col};display:inline-block"></i>{state}</span>
 <span style="font-family:GS;font-size:17px;font-variant-numeric:tabular-nums">{clock}</span></div>"""
 

@@ -169,10 +169,10 @@ export default function Page() {
       </section>
 
       <Plate
-        src="/foil/duo.jpg"
+        src="/foil/duo-v2.jpg"
         aspect="1700/1062" mobileAspect="1700/1062"
-        alt={t('Rendu 3D : une carte holographique à côté de l’accueil de l’application sur iPhone', '3D render: a holographic card next to the app’s home screen on iPhone')}
-        caption={t('La carte et son application.', 'The card and its app.')}
+        alt={t('L’accueil de l’application et la fiche d’une carte, sur iPhone', 'The app’s home screen and a card page, on iPhone')}
+        caption={t('L’accueil et la fiche d’une carte.', 'The home screen and a card page.')}
       />
 
       {/* the concept */}
@@ -253,9 +253,9 @@ export default function Page() {
           </Lede>
         </div>
         <Plate
-          src="/foil/lineup.jpg"
+          src="/foil/lineup-v2.jpg"
           aspect="1700/956" mobileAspect="1700/956"
-          alt={t('Rendu 3D de cinq iPhone : constellation, accueil, fiche carte, série, vitrine', '3D render of five iPhones: constellation, home, card page, set, showcase')}
+          alt={t('Cinq écrans sur iPhone : constellation, accueil, fiche carte, évolution, marchés', 'Five screens on iPhone: constellation, home, card page, growth, markets')}
         />
         <div className="mt-1">
           <Strip items={screens} label={t('Les écrans', 'The screens')} hint={t('Faire glisser', 'Drag')} />

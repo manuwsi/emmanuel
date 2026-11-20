@@ -1,0 +1,382 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Colosse — prototype</title>
+<style>
+@font-face{font-family:GS;font-weight:400;src:url('../../dailies/prototype/fonts/GeneralSans-Regular.otf')}
+@font-face{font-family:GS;font-weight:500;src:url('../../dailies/prototype/fonts/GeneralSans-Medium.otf')}
+@font-face{font-family:GM;font-weight:400;src:url('../../dailies/prototype/fonts/geist-mono-latin-400-normal.woff2')}
+@font-face{font-family:GM;font-weight:500;src:url('../../dailies/prototype/fonts/geist-mono-latin-500-normal.woff2')}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{height:100%;overflow:hidden}
+body{font-family:GS;-webkit-font-smoothing:antialiased;background:var(--bg);color:var(--ink);transition:background .3s}
+:root{--ink:#0a0a0a;--bg:#fff;--sig:#0a0a0a;--red:#e3382a;--amb:#c97d00;--water:#3b7cb0;--rgb:10,10,10}
+body.night{--ink:#ecebe4;--bg:#0b0b0a;--sig:#d6ff4a;--red:#ff5b4a;--amb:#ffb547;--water:#7fb2d9;--rgb:236,235,228}
+#stage{position:absolute;left:50%;top:50%;width:1440px;height:900px;transform-origin:center;}
+body:not(.night) #stage{background-image:radial-gradient(circle,rgba(10,10,10,.10) 1px,transparent 1.6px);background-size:20px 20px}
+svg text{font-family:GM;font-size:10px;fill:var(--ink)}
+.mono{font-family:GM;font-size:11px;letter-spacing:.04em}
+.hdr{position:absolute;left:40px;right:40px;top:22px;display:flex;align-items:center;gap:16px}
+.mut{color:rgba(var(--rgb),.55)}
+#bar{position:absolute;left:40px;right:40px;top:660px;height:200px;border-top:1px solid rgba(var(--rgb),.2);display:grid;grid-template-columns:300px 1fr 1fr 1fr 260px;gap:28px;padding-top:22px}
+.k{font-family:GM;font-size:10.5px;letter-spacing:.06em;color:rgba(var(--rgb),.55)}
+.v{font-size:30px;font-weight:500;letter-spacing:-.02em;margin-top:6px;font-variant-numeric:tabular-nums}
+.n{font-family:GM;font-size:11px;color:rgba(var(--rgb),.5);margin-top:4px}
+button{font:inherit;color:inherit;background:none;border:1px solid rgba(var(--rgb),.35);padding:11px 14px;cursor:pointer;font-size:14px}
+button:hover{border-color:var(--ink)}
+button.pri{background:var(--sig);color:var(--bg);border-color:var(--sig);font-weight:500}
+button:disabled{opacity:.35;cursor:not-allowed}
+#play{width:100%;padding:16px;font-size:16px}
+#panel{position:absolute;right:40px;top:66px;width:372px;background:var(--bg);border:1px solid var(--red);padding:16px 18px 14px;display:none}
+.opt{display:flex;gap:12px;padding:12px 8px;border-top:1px solid rgba(var(--rgb),.14);cursor:pointer;margin:0 -8px}
+.opt:hover{background:rgba(var(--rgb),.05)}
+.opt b{font-weight:500;font-size:14px}
+#toast{position:absolute;left:50%;top:612px;transform:translateX(-50%);padding:9px 14px;font-size:13px;background:var(--ink);color:var(--bg);display:none;white-space:nowrap}
+.seg{display:flex;border:1px solid rgba(var(--rgb),.35)}.seg button{border:0;padding:8px 10px;font-size:12px}.seg button.on{background:var(--ink);color:var(--bg)}
+</style>
+</head>
+<body>
+<div id="stage">
+  <svg id="stat" width="1440" height="640" style="position:absolute;left:0;top:0"></svg>
+  <svg id="dyn" width="1440" height="640" style="position:absolute;left:0;top:0"></svg>
+  <div class="hdr">
+    <span style="font-weight:500;font-size:17px;letter-spacing:.04em">YSÉE</span>
+    <span class="mono mut" id="sub"></span><span style="flex:1"></span>
+    <span class="mono" id="state" style="display:flex;align-items:center;gap:7px"></span>
+    <span style="font-size:17px;font-variant-numeric:tabular-nums" id="clock"></span>
+  </div>
+  <div id="toast"></div>
+  <div id="panel"></div>
+  <div id="bar">
+    <div>
+      <button id="play" class="pri"></button>
+      <div class="n" id="hint" style="margin-top:10px;line-height:1.5"></div>
+    </div>
+    <div><div class="k" id="kpk"></div><div class="v" id="vpk"></div><div class="n" id="npk"></div></div>
+    <div><div class="k" id="ksp"></div><div class="v" id="vsp"></div><div class="n" id="nsp"></div></div>
+    <div><div class="k" id="kst"></div><div class="v" id="vst"></div><div class="n" id="nst"></div></div>
+    <div style="display:flex;flex-direction:column;gap:10px;align-items:flex-end">
+      <div class="seg"><button id="tDay"></button><button id="tNight"></button></div>
+      <div class="seg"><button id="lFr">FR</button><button id="lEn">EN</button></div>
+      <button id="reset" style="font-size:12px;padding:8px 10px"></button>
+    </div>
+  </div>
+</div>
+<script>
+// ---------- language ----------
+let L = 'fr';
+try { const s = localStorage.getItem('lang'); if (s === 'en' || s === 'fr') L = s; } catch (e) {}
+const T = {
+  fr: { sub: 'COUPE LONGITUDINALE · TRONÇON FICTIF SOUS PARIS · PROTOTYPE', go: 'Avancer', pause: 'Pause', wait: 'En attente d’une décision', done: 'Recommencer',
+    hint0: 'Lance la machine. Le prototype est accéléré : une seconde, c’est environ une heure de creusement.', hintWait: 'La machine s’est arrêtée d’elle-même. Choisis une option dans le panneau.', hintRun: 'Regarde les repères de tassement au-dessus de la machine.',
+    kpk: 'POSITION DE LA ROUE', kst: 'TASSEMENT SOUS L’ÉCOLE', ksp: 'VITESSE', alertAt: 'alerte à 6 mm · seuil 10 mm', normal: 'rythme normal', slow: 'ralenti, coulis injecté', stopped: 'arrêtée',
+    day: 'Jour', night: 'Cabine', reset: 'Recommencer', digging: 'EN CREUSEMENT', paused: 'À L’ARRÊT', anomaly: 'ANOMALIE DEVANT LA ROUE', drilling: 'SONDAGE EN COURS', over: 'SEUIL DÉPASSÉ',
+    now: 'MAINTENANT', metro: 'MÉTRO EXISTANT', school: 'ÉCOLE · N°14', voidL: 'VIDE PROBABLE · ≈ 6 m', voidS: 'ancienne carrière, comblement incomplet', voidF: 'VIDE COMBLÉ', water: 'NAPPE  −8,2 m', axis: '22,0 m  AXE',
+    pTitle: 'Le sol répond comme un vide, {d} m devant la roue.', pKick: 'ANOMALIE · {t} · SONDE FRONTALE', pNote: 'Effet estimé sur le tassement de l’école. L’ingénieur de quart décide, sa décision est tracée.',
+    oA: 'Ralentir et combler', oAd: '4 m/jour, coulis injecté devant la roue', oB: 'Arrêter et sonder', oBd: 'Forage depuis la rue, rue fermée 2 jours', oC: 'Continuer', oCd: 'Rythme normal',
+    dA: '+3 jours', dB: '+2 jours', dC: 'aucun délai', drill: 'Sondage depuis la rue. Le vide est mesuré puis comblé depuis la surface.', drillBtn: 'Voir le résultat du sondage →',
+    tA: 'Décision A enregistrée · ralentir et combler', tB: 'Décision B enregistrée · sondage', tC: 'Décision C enregistrée · continuer',
+    endA: 'Le vide est franchi. Tassement sous l’école : {s} mm.', endB: 'Le vide est franchi après sondage. Tassement sous l’école : {s} mm.', endC: 'Le seuil de 10 mm est dépassé sous l’école. La machine est arrêtée en urgence.',
+    layers: ['REMBLAIS', 'MARNES ET CAILLASSES', 'CALCAIRE GROSSIER', 'ARGILE PLASTIQUE'], mh: 'm/h', md: 'm/jour' },
+  en: { sub: 'LONGITUDINAL SECTION · FICTIONAL STRETCH UNDER PARIS · PROTOTYPE', go: 'Move forward', pause: 'Pause', wait: 'Waiting for a decision', done: 'Start again',
+    hint0: 'Start the machine. The prototype is sped up: one second is about one hour of digging.', hintWait: 'The machine stopped on its own. Pick an option in the panel.', hintRun: 'Watch the settlement markers above the machine.',
+    kpk: 'WHEEL POSITION', kst: 'SETTLEMENT UNDER THE SCHOOL', ksp: 'SPEED', alertAt: 'alert at 6 mm · limit 10 mm', normal: 'normal pace', slow: 'slowed, grout injected', stopped: 'stopped',
+    day: 'Day', night: 'Cab', reset: 'Start again', digging: 'DIGGING', paused: 'STOPPED', anomaly: 'ANOMALY AHEAD OF THE WHEEL', drilling: 'BOREHOLE IN PROGRESS', over: 'LIMIT EXCEEDED',
+    now: 'NOW', metro: 'EXISTING METRO', school: 'SCHOOL · NO.14', voidL: 'PROBABLE VOID · ≈ 6 m', voidS: 'old quarry, partly filled', voidF: 'VOID FILLED', water: 'GROUNDWATER  −8.2 m', axis: '22.0 m  AXIS',
+    pTitle: 'The ground responds like a void, {d} m ahead of the wheel.', pKick: 'ANOMALY · {t} · FRONT PROBE', pNote: 'Estimated settlement under the school. The engineer on shift decides; the decision is logged.',
+    oA: 'Slow down and fill', oAd: '4 m/day, grout injected ahead of the wheel', oB: 'Stop and drill', oBd: 'Borehole from the street, closed 2 days', oC: 'Carry on', oCd: 'Normal pace',
+    dA: '+3 days', dB: '+2 days', dC: 'no delay', drill: 'Borehole from the street. The void is measured, then filled from the surface.', drillBtn: 'See the borehole result →',
+    tA: 'Decision A logged · slow down and fill', tB: 'Decision B logged · borehole', tC: 'Decision C logged · carry on',
+    endA: 'The void is behind. Settlement under the school: {s} mm.', endB: 'The void is behind, after the borehole. Settlement under the school: {s} mm.', endC: 'The 10 mm limit is exceeded under the school. Emergency stop.',
+    layers: ['FILL', 'MARL AND RUBBLE', 'COARSE LIMESTONE', 'PLASTIC CLAY'], mh: 'm/h', md: 'm/day' },
+};
+const tr = (k, o = {}) => { let s = T[L][k]; for (const x in o) s = s.replace('{' + x + '}', o[x]); return s; };
+const num = (v, d = 1) => (L === 'fr' ? v.toFixed(d).replace('.', ',') : v.toFixed(d));
+
+// ---------- geometry ----------
+const S0 = 3180, S1 = 3460, X0 = 40, X1 = 1400, SURF = 232, VS = 10.7;
+const X = m => X0 + (m - S0) * (X1 - X0) / (S1 - S0);
+const Y = d => SURF + d * VS;
+const AX = 22, RAD = 5, CROWN = AX - RAD, INV = AX + RAD, LEN = 110;
+const VOID = { a: 3352, b: 3366, top: 12.2, bot: 14.9 };
+const DETECT = 3320.4, SCHOOL = 3356;
+const MARKS = [3296, 3312, 3328, 3342, SCHOOL, 3372, 3390];
+let night = false;
+const css = v => getComputedStyle(document.body).getPropertyValue(v).trim();
+const op = a => `rgba(${css('--rgb')},${a})`;
+
+function rnd(seed) { return () => (seed = (seed * 16807) % 2147483647) / 2147483647; }
+function wave(d, amp, ph, step = 6) { const p = []; for (let m = S0; m <= S1; m += step) p.push([X(m), Y(d + amp * Math.sin((m - S0) / 38 + ph))]); return p; }
+const pl = pts => pts.map(p => p[0].toFixed(1) + ',' + p[1].toFixed(1)).join(' ');
+
+function defs() {
+  const red = css('--red');
+  return `<defs>
+<pattern id="h-remb" width="8" height="8" patternUnits="userSpaceOnUse"><circle cx="2" cy="2" r=".8" fill="${op(.22)}"/><circle cx="6" cy="6" r=".6" fill="${op(.15)}"/></pattern>
+<pattern id="h-marn" width="16" height="10" patternUnits="userSpaceOnUse"><line x1="1" y1="3" x2="7" y2="3" stroke="${op(.17)}" stroke-width=".8"/><line x1="9" y1="8" x2="15" y2="8" stroke="${op(.17)}" stroke-width=".8"/></pattern>
+<pattern id="h-calc" width="18" height="9" patternUnits="userSpaceOnUse"><line x1="0" y1="8.5" x2="18" y2="8.5" stroke="${op(.13)}" stroke-width=".7"/><line x1="4" y1="0" x2="4" y2="4.2" stroke="${op(.13)}" stroke-width=".7"/><line x1="13" y1="4.5" x2="13" y2="8.5" stroke="${op(.13)}" stroke-width=".7"/></pattern>
+<pattern id="h-argi" width="7" height="7" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><line x1="0" y1="0" x2="0" y2="7" stroke="${op(.13)}" stroke-width=".8"/></pattern>
+<pattern id="h-void" width="5" height="5" patternUnits="userSpaceOnUse" patternTransform="rotate(-45)"><line x1="0" y1="0" x2="0" y2="5" stroke="${red}" stroke-width="1"/></pattern>
+<pattern id="h-fill" width="4" height="4" patternUnits="userSpaceOnUse"><circle cx="2" cy="2" r=".9" fill="${op(.6)}"/></pattern>
+<pattern id="h-ring" width="4" height="4" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><line x1="0" y1="0" x2="0" y2="4" stroke="${op(.35)}" stroke-width=".7"/></pattern>
+<marker id="ar" viewBox="0 0 8 8" refX="7" refY="4" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,1 L7,4 L0,7" fill="none" stroke="${css('--ink')}"/></marker>
+<marker id="arr" viewBox="0 0 8 8" refX="7" refY="4" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,1 L7,4 L0,7" fill="none" stroke="${red}"/></marker>
+<linearGradient id="fade" x1="0" x2="0" y1="0" y2="1"><stop offset="0" stop-color="${css('--bg')}" stop-opacity="0"/><stop offset="1" stop-color="${css('--bg')}"/></linearGradient>
+</defs>`;
+}
+
+let BUILDINGS = [];
+function drawStatic() {
+  const ink = css('--ink'), bg = css('--bg'), water = css('--water');
+  let s = defs();
+  const LAY = [[0, 3.5, 'h-remb', 0], [3.5, 12.5, 'h-marn', .5], [12.5, 27.8, 'h-calc', .8], [27.8, 36, 'h-argi', .6]];
+  const bounds = [[[X(S0), Y(0)], [X(S1), Y(0)]]].concat(LAY.map((l, i) => wave(l[1], l[3], i + 1)));
+  LAY.forEach((l, i) => {
+    let top = bounds[i], bot = i === 3 ? [[X(S0), Y(34.5)], [X(S1), Y(34.5)]] : bounds[i + 1];
+    s += `<polygon points="${pl(top.concat(bot.slice().reverse()))}" fill="url(#${l[2]})"/>`;
+    if (i) s += `<polyline points="${pl(top)}" fill="none" stroke="${op(.28)}" stroke-width=".7"/>`;
+    s += `<text x="${X0 + 4}" y="${((Y(l[0]) + Y(Math.min(l[1], 34))) / 2 + 3).toFixed(1)}" style="fill:${op(.55)}">${T[L].layers[i]}</text>`;
+  });
+  s += `<rect x="0" y="${Y(31)}" width="1440" height="${Y(34.6) - Y(31)}" fill="url(#fade)"/>`;
+  s += `<polyline points="${pl(wave(8.2, .35, 2.2, 8))}" fill="none" stroke="${water}" stroke-width=".9" stroke-dasharray="6 4"/>`;
+  const wx = X(3230), wy = Y(8.2) - 5;
+  s += `<path d="M${wx - 6},${wy - 8} L${wx + 6},${wy - 8} L${wx},${wy}" fill="none" stroke="${water}"/><text x="${wx + 12}" y="${wy - 2}" style="fill:${water}">${tr('water')}</text>`;
+  s += `<line x1="${X0}" y1="${SURF}" x2="${X1}" y2="${SURF}" stroke="${ink}" stroke-width="1.1"/>`;
+  // buildings
+  const r = rnd(11); let m = S0 + 3; BUILDINGS = [];
+  while (m < S1 - 8) {
+    const w = [16, 19, 22, 25][Math.floor(r() * 4)], h = [15, 17, 18, 20][Math.floor(r() * 4)];
+    const school = m <= SCHOOL && SCHOOL < m + w;
+    BUILDINGS.push({ m, w, h, school });
+    m += w;
+  }
+  s += `<g id="blds"></g>`;
+  // metro
+  const mc = 3428, md = 10, mr = 3.6, pxm = (X1 - X0) / (S1 - S0);
+  s += `<ellipse cx="${X(mc)}" cy="${Y(md)}" rx="${mr * pxm + 3}" ry="${mr * VS}" fill="${bg}" stroke="${ink}"/><ellipse cx="${X(mc)}" cy="${Y(md)}" rx="${mr * pxm - 1}" ry="${mr * VS - 4}" fill="none" stroke="${op(.4)}" stroke-width=".7"/>`;
+  s += `<text x="${X(mc) + 22}" y="${Y(md) - 26}" style="fill:${op(.75)}">${tr('metro')}</text>`;
+  s += dimV(X(mc), md + mr, CROWN, num(3.4) + ' m', ink, 1, 'ar');
+  // ruler
+  const yy = Y(34.6) + 6;
+  for (let k = S0; k <= S1; k += 10) {
+    s += `<line x1="${X(k)}" y1="${yy}" x2="${X(k)}" y2="${yy + (k % 50 ? 3 : 7)}" stroke="${op(.45)}" stroke-width=".7"/>`;
+    if (k % 50 === 0 && k > S0 && k < S1) s += `<text x="${X(k)}" y="${yy + 19}" text-anchor="middle" style="fill:${op(.5)}">3+${String(k % 1000).padStart(3, '0')}</text>`;
+  }
+  document.getElementById('stat').innerHTML = s;
+}
+
+function dimV(x, d0, d1, label, col, side, mk) {
+  const y0 = Y(d0), y1 = Y(d1);
+  return `<line x1="${x - 6}" y1="${y0}" x2="${x + 6}" y2="${y0}" stroke="${col}" stroke-width=".8"/><line x1="${x - 6}" y1="${y1}" x2="${x + 6}" y2="${y1}" stroke="${col}" stroke-width=".8"/>
+<line x1="${x}" y1="${y0 + 1}" x2="${x}" y2="${y1 - 1}" stroke="${col}" stroke-width=".8" marker-start="url(#${mk})" marker-end="url(#${mk})"/>
+<text x="${x + 9 * side}" y="${(y0 + y1) / 2 + 3.5}" text-anchor="${side > 0 ? 'start' : 'end'}" style="fill:${col};font-size:11px">${label}</text>`;
+}
+
+// ---------- state ----------
+let S;
+function init() {
+  S = { head: 3308.4, minutes: 129, playing: false, detected: false, decision: null, phase: 'run', fill: 0, tDetect: null, ended: false, drillDone: false };
+  document.getElementById('panel').style.display = 'none';
+  render(); ui();
+}
+
+function settle(x) {
+  let v = 0.15 + 1.9 * Math.exp(-Math.pow((x - (S.head - 6)) / 14, 2)) * Math.min(1, Math.max(0, (S.head - x + 40) / 40));
+  if (x === SCHOOL && S.decision === 'B') v *= 0.45;
+  if (x === SCHOOL) {
+    const k = Math.min(1, Math.max(0, (S.head - 3330) / 26));
+    if (S.decision === 'C') v += 17 * Math.pow(k, 1.5);
+    if (S.decision === 'A') v += 1.0 * k;
+    if (S.decision === 'B') v += 0.3 * k;
+    if (!S.decision && S.detected) v += 0;
+  }
+  return v;
+}
+
+function render() {
+  const ink = css('--ink'), bg = css('--bg'), sig = css('--sig'), red = css('--red'), amb = css('--amb');
+  const head = S.head, tail = head - LEN, yc = Y(CROWN), yi = Y(INV);
+  const school = settle(SCHOOL);
+  // buildings (school turns red when at risk)
+  let b = '';
+  BUILDINGS.forEach(B => {
+    const x0 = X(B.m), x1 = Math.min(X(B.m + B.w) - 4, X1), top = SURF - B.h * 4.6;
+    const hot = B.school && S.detected && !(S.decision === 'A' || S.decision === 'B') ;
+    const col = B.school && (hot || school > 6) ? red : op(.55);
+    b += `<rect x="${x0.toFixed(1)}" y="${top}" width="${(x1 - x0).toFixed(1)}" height="${SURF - top}" fill="${bg}" stroke="${col}" stroke-width=".9"/>`;
+    const fl = Math.floor(B.h / 3.1);
+    for (let k = 1; k < fl; k++) {
+      const yy = SURF - k * (SURF - top) / fl;
+      b += `<line x1="${x0}" y1="${yy}" x2="${x1}" y2="${yy}" stroke="${op(.12)}" stroke-width=".6"/>`;
+      const nw = Math.floor((x1 - x0) / 11);
+      for (let j = 0; j < nw; j++) b += `<rect x="${(x0 + 4 + j * (x1 - x0 - 6) / Math.max(nw, 1)).toFixed(1)}" y="${yy + 3}" width="4" height="6" fill="none" stroke="${op(.22)}" stroke-width=".5"/>`;
+    }
+    b += `<line x1="${x0 - 2}" y1="${top}" x2="${x1 + 2}" y2="${top}" stroke="${col}" stroke-width="1.2"/>`;
+    if (B.school) b += `<text x="${(x0 + x1) / 2}" y="${top - 8}" text-anchor="middle" style="fill:${(S.detected && (!S.decision || S.decision === 'C')) || school > 6 ? red : op(.7)}">${tr('school')}</text>`;
+  });
+  document.getElementById('blds').innerHTML = b;
+
+  let s = '';
+  // built tunnel
+  const tx = Math.max(X(S0), X(tail));
+  if (tail > S0) {
+    s += `<rect x="${X(S0)}" y="${yc}" width="${tx - X(S0)}" height="${yi - yc}" fill="${bg}"/>`;
+    s += `<rect x="${X(S0)}" y="${yc - 3}" width="${tx - X(S0)}" height="3" fill="url(#h-ring)"/><rect x="${X(S0)}" y="${yi}" width="${tx - X(S0)}" height="3" fill="url(#h-ring)"/>`;
+    s += `<line x1="${X(S0)}" y1="${yc}" x2="${tx}" y2="${yc}" stroke="${op(.6)}" stroke-width=".8"/><line x1="${X(S0)}" y1="${yi}" x2="${tx}" y2="${yi}" stroke="${op(.6)}" stroke-width=".8"/>`;
+  }
+  // gantries
+  for (let g = 0; g < 4; g++) {
+    const g0 = tail + 2 + g * 21, g1 = g0 + 18;
+    if (g1 < S0) continue;
+    s += `<rect x="${X(Math.max(g0, S0))}" y="${yc + 18}" width="${X(g1) - X(Math.max(g0, S0))}" height="${yi - yc - 30}" fill="none" stroke="${op(.4)}" stroke-width=".8"/>`;
+  }
+  const sh0 = head - 12;
+  s += `<rect x="${X(sh0)}" y="${yc - 2}" width="${X(head) - X(sh0)}" height="${yi - yc + 4}" fill="${bg}" stroke="${ink}" stroke-width="1.3"/>`;
+  for (let k = 0; k < 5; k++) { const yy = yc + 12 + k * (yi - yc - 24) / 4; s += `<line x1="${X(sh0 + 1)}" y1="${yy}" x2="${X(head - 4)}" y2="${yy}" stroke="${op(.35)}" stroke-width="2"/>`; }
+  s += `<rect x="${X(head - 3)}" y="${yc}" width="${X(head) - X(head - 3)}" height="${yi - yc}" fill="url(#h-remb)"/>`;
+  s += `<circle cx="${X(sh0 - 4)}" cy="${(yc + yi) / 2}" r="13" fill="none" stroke="${op(.45)}" stroke-width=".8"/>`;
+  // rotating cutter ticks
+  const ph = (head * 7) % 1;
+  s += `<line x1="${X(head)}" y1="${yc - 3}" x2="${X(head)}" y2="${yi + 3}" stroke="${ink}" stroke-width="3"/>`;
+  for (let k = 0; k < 13; k++) { const yy = yc + ((k + ph) % 13) * (yi - yc) / 12; s += `<line x1="${X(head)}" y1="${yy}" x2="${X(head) + 4}" y2="${yy}" stroke="${ink}" stroke-width="1"/>`; }
+  // future + axis
+  s += `<rect x="${X(head)}" y="${yc}" width="${X(S1) - X(head)}" height="${yi - yc}" fill="none" stroke="${op(.3)}" stroke-dasharray="2 4"/>`;
+  s += `<line x1="${X(head)}" y1="${Y(AX)}" x2="${X(S1)}" y2="${Y(AX)}" stroke="${op(.25)}" stroke-dasharray="14 4 2 4" stroke-width=".7"/>`;
+  s += dimV(X(Math.max(S0 + 8, tail + 6)), 0, AX, tr('axis'), ink, -1, 'ar');
+  // void
+  if (S.detected) {
+    const filled = S.fill;
+    const pts = [[X(VOID.a), Y(13.6)], [X(VOID.a + 3), Y(VOID.top)], [X(VOID.b - 4), Y(VOID.top + .2)], [X(VOID.b), Y(13.4)], [X(VOID.b - 2), Y(VOID.bot)], [X(VOID.a + 2), Y(VOID.bot - .1)]];
+    const col = filled > .99 ? op(.6) : red;
+    s += `<polygon points="${pl(pts)}" fill="url(#${filled > .99 ? 'h-fill' : 'h-void'})" stroke="${col}" stroke-width="1.2"/>`;
+    if (filled > 0 && filled <= .99) s += `<polygon points="${pl(pts)}" fill="url(#h-fill)" opacity="${filled}"/>`;
+    if (filled <= .99) {
+      s += dimV(X(VOID.b + 3), VOID.bot, CROWN, num(2.1) + ' m', red, 1, 'arr');
+      s += `<text x="${X(VOID.a - 15)}" y="${Y(13.6) - 4}" text-anchor="end" style="fill:${red};font-size:11px">${tr('voidL')}</text><text x="${X(VOID.a - 15)}" y="${Y(13.6) + 10}" text-anchor="end" style="fill:${red};opacity:.75">${tr('voidS')}</text>`;
+      if (head < VOID.a) { const y = Y(INV) + 52; s += `<line x1="${X(head)}" y1="${y}" x2="${X(VOID.a)}" y2="${y}" stroke="${red}" stroke-width=".8" marker-start="url(#arr)" marker-end="url(#arr)"/><text x="${(X(head) + X(VOID.a)) / 2}" y="${y - 6}" text-anchor="middle" style="fill:${red};font-size:11px">${num(VOID.a - head)} m</text>`; }
+    } else s += `<text x="${X(VOID.a - 4)}" y="${Y(13.6) + 3}" text-anchor="end" style="fill:${op(.6)}">${tr('voidF')}</text>`;
+    if (S.decision === 'B' && !S.drillDone) s += `<line x1="${X(VOID.a + 7)}" y1="${SURF}" x2="${X(VOID.a + 7)}" y2="${Y(VOID.top)}" stroke="${ink}" stroke-width="2"/><rect x="${X(VOID.a + 7) - 6}" y="${SURF - 18}" width="12" height="18" fill="${bg}" stroke="${ink}"/>`;
+  }
+  // settlement markers
+  MARKS.forEach(x => {
+    const v = settle(x), px = X(x);
+    const c = v > 10 ? red : v > 6 ? amb : (x === SCHOOL && S.detected && (!S.decision || S.decision === 'C') ? red : op(.85));
+    s += `<path d="M${px - 4},${SURF + 8} L${px + 4},${SURF + 8} L${px},${SURF + 1}" fill="${c}"/><text x="${px}" y="${SURF + 20}" text-anchor="middle" style="fill:${c};font-size:9.5px">${num(v)} mm</text>`;
+  });
+  // now
+  const x = X(head);
+  s += `<line x1="${x}" y1="${SURF - 128}" x2="${x}" y2="${Y(34)}" stroke="${sig}" stroke-width="1"/>`;
+  s += `<rect x="${x - 1}" y="${SURF - 146}" width="${L === 'fr' ? 168 : 120}" height="18" fill="${sig}"/><text x="${x + 6}" y="${SURF - 133.5}" style="fill:${bg};font-weight:500">PK 3+${num(head % 1000, 1).padStart(5, '0')} · ${tr('now')}</text>`;
+  document.getElementById('dyn').innerHTML = defs() + s;
+}
+
+function hhmm(min) { const d = Math.floor(min / 1440), m = Math.floor(min % 1440); return String(Math.floor(m / 60)).padStart(2, '0') + ':' + String(m % 60).padStart(2, '0') + (d ? ` <span class="mono mut">${L === 'fr' ? 'J+' : 'D+'}${d}</span>` : ''); }
+
+function ui() {
+  const sig = css('--sig'), red = css('--red'), amb = css('--amb');
+  document.getElementById('sub').textContent = tr('sub');
+  document.getElementById('clock').innerHTML = hhmm(S.minutes);
+  let st = S.playing ? tr('digging') : tr('paused'), col = S.playing ? sig : op(.7);
+  if (S.detected && !S.decision) { st = tr('anomaly'); col = red; }
+  if (S.decision === 'B' && !S.drillDone) { st = tr('drilling'); col = amb; }
+  if (settle(SCHOOL) > 10) { st = tr('over'); col = red; }
+  document.getElementById('state').innerHTML = `<i style="width:7px;height:7px;border-radius:50%;background:${col};display:inline-block"></i><span style="color:${col}">${st}</span>`;
+  const play = document.getElementById('play');
+  if (S.ended) { play.textContent = tr('done'); play.disabled = false; }
+  else if (S.detected && !S.decision) { play.textContent = tr('wait'); play.disabled = true; }
+  else if (S.decision === 'B' && !S.drillDone) { play.textContent = tr('wait'); play.disabled = true; }
+  else { play.textContent = S.playing ? tr('pause') : tr('go'); play.disabled = false; }
+  document.getElementById('hint').textContent = S.ended ? '' : (S.detected && !S.decision) ? tr('hintWait') : S.head > 3309 ? tr('hintRun') : tr('hint0');
+  document.getElementById('kpk').textContent = tr('kpk');
+  document.getElementById('vpk').textContent = 'PK 3+' + num(S.head % 1000, 1).padStart(5, '0');
+  document.getElementById('npk').textContent = S.detected && S.fill < 1 && S.head < VOID.a ? (L === 'fr' ? 'vide à ' : 'void at ') + num(VOID.a - S.head) + ' m' : '';
+  document.getElementById('ksp').textContent = tr('ksp');
+  const slow = S.decision === 'A' && S.head < 3350;
+  const stopped = (S.detected && !S.decision) || (S.decision === 'B' && !S.drillDone) || S.ended;
+  document.getElementById('vsp').textContent = stopped ? '0 ' + tr('md') : slow ? '4 ' + tr('md') : '12 ' + tr('md');
+  document.getElementById('nsp').textContent = stopped ? tr('stopped') : slow ? tr('slow') : tr('normal');
+  document.getElementById('kst').textContent = tr('kst');
+  const sv = settle(SCHOOL), vst = document.getElementById('vst');
+  vst.textContent = num(sv) + ' mm'; vst.style.color = sv > 10 ? red : sv > 6 ? amb : '';
+  document.getElementById('nst').textContent = tr('alertAt');
+  document.getElementById('tDay').textContent = tr('day'); document.getElementById('tNight').textContent = tr('night');
+  document.getElementById('tDay').classList.toggle('on', !night); document.getElementById('tNight').classList.toggle('on', night);
+  document.getElementById('lFr').classList.toggle('on', L === 'fr'); document.getElementById('lEn').classList.toggle('on', L === 'en');
+  document.getElementById('reset').textContent = tr('reset');
+}
+
+function panel() {
+  const p = document.getElementById('panel');
+  if (!S.detected || (S.decision && S.decision !== 'B') || (S.decision === 'B' && S.drillDone)) { p.style.display = 'none'; return; }
+  p.style.display = 'block';
+  if (S.decision === 'B') {
+    p.style.borderColor = css('--amb');
+    p.innerHTML = `<div class="mono" style="color:var(--amb);font-size:10.5px">${tr('drilling')}</div><div style="font-size:17px;font-weight:500;line-height:1.3;margin:8px 0 14px">${tr('drill')}</div><button class="pri" id="drillBtn" style="width:100%">${tr('drillBtn')}</button>`;
+    document.getElementById('drillBtn').onclick = () => { S.drillDone = true; animFill(() => { S.minutes += 2 * 1440; render(); ui(); }); panel(); };
+    return;
+  }
+  p.style.borderColor = css('--red');
+  const opts = [['A', tr('oA'), tr('oAd'), '≈ 3 mm', tr('dA')], ['B', tr('oB'), tr('oBd'), '≈ 1 mm', tr('dB')], ['C', tr('oC'), tr('oCd'), '> 15 mm', tr('dC')]];
+  p.innerHTML = `<div class="mono" style="color:var(--red);font-size:10.5px">${tr('pKick', { t: hhmm(S.tDetect).replace(/<[^>]+>/g, '') })}</div>
+<div style="font-size:19px;font-weight:500;line-height:1.25;margin:8px 0 12px">${tr('pTitle', { d: num(VOID.a - S.head, 1) })}</div>
+${opts.map(o => `<div class="opt" data-k="${o[0]}"><span class="mono mut" style="width:16px">${o[0]}</span><div style="flex:1"><b>${o[1]}</b><div style="font-size:12px;color:rgba(var(--rgb),.55);margin-top:2px">${o[2]}</div></div><div class="mono" style="text-align:right"><div style="color:${o[3][0] === '>' ? 'var(--red)' : 'inherit'}">${o[3]}</div><div class="mut" style="margin-top:3px">${o[4]}</div></div></div>`).join('')}
+<div style="font-size:11.5px;color:rgba(var(--rgb),.55);margin-top:10px;line-height:1.45">${tr('pNote')}</div>`;
+  p.querySelectorAll('.opt').forEach(el => el.onclick = () => decide(el.dataset.k));
+}
+
+function toast(msg, ms = 2600) { const t = document.getElementById('toast'); t.textContent = msg; t.style.display = 'block'; clearTimeout(toast.h); toast.h = setTimeout(() => (t.style.display = 'none'), ms); }
+
+function decide(k) {
+  S.decision = k; toast(tr('t' + k));
+  if (k === 'A' || k === 'C') { S.playing = true; last = performance.now(); requestAnimationFrame(loop); }
+  panel(); render(); ui();
+}
+
+function animFill(done) {
+  const t0 = performance.now();
+  function f(t) { S.fill = Math.min(1, (t - t0) / 1400); render(); if (S.fill < 1) requestAnimationFrame(f); else done && done(); }
+  requestAnimationFrame(f);
+}
+
+let last = 0;
+function loop(t) {
+  if (!S.playing) return;
+  const dt = Math.min(.05, (t - last) / 1000); last = t;
+  let speed = 1.6; // metres per real second (sped up)
+  if (S.decision === 'A' && S.head < 3350) speed = 1.2;
+  const step = speed * dt;
+  S.head += step;
+  S.minutes += step * (S.decision === 'A' && S.head < 3350 ? 360 : 120);
+  if (S.decision === 'A' && S.detected) S.fill = Math.min(1, Math.max(S.fill, (S.head - DETECT) / (3348 - DETECT)));
+  if (!S.detected && S.head >= DETECT) {
+    S.minutes -= (S.head - DETECT) * 120; S.head = DETECT; S.detected = true; S.playing = false; S.tDetect = S.minutes; panel();
+  }
+  if (S.decision === 'C' && settle(SCHOOL) > 10.5) { S.playing = false; S.ended = true; toast(tr('endC'), 6000); }
+  if (S.head >= 3392) { S.playing = false; S.ended = true; const sv = num(settle(SCHOOL)); toast(tr(S.decision === 'B' ? 'endB' : 'endA', { s: sv }), 6000); }
+  render(); ui();
+  if (S.playing) requestAnimationFrame(loop);
+}
+
+document.getElementById('play').onclick = () => {
+  if (S.ended) { init(); return; }
+  S.playing = !S.playing; ui();
+  if (S.playing) { last = performance.now(); requestAnimationFrame(loop); }
+};
+document.getElementById('reset').onclick = init;
+const setTheme = n => { night = n; document.body.classList.toggle('night', n); drawStatic(); render(); ui(); panel(); };
+document.getElementById('tDay').onclick = () => setTheme(false);
+document.getElementById('tNight').onclick = () => setTheme(true);
+const setLang = l => { L = l; try { localStorage.setItem('lang', l); } catch (e) {} drawStatic(); render(); ui(); panel(); };
+document.getElementById('lFr').onclick = () => setLang('fr');
+document.getElementById('lEn').onclick = () => setLang('en');
+document.addEventListener('keydown', e => { if (e.code === 'Space') { e.preventDefault(); document.getElementById('play').click(); } });
+
+function fit() { const k = Math.min(innerWidth / 1440, innerHeight / 900); document.getElementById('stage').style.transform = `translate(-50%,-50%) scale(${k})`; }
+addEventListener('resize', fit); fit();
+document.fonts.ready.then(() => { drawStatic(); init(); });
+drawStatic(); init();
+</script>
+</body>
+</html>

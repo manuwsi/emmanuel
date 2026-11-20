@@ -8,6 +8,14 @@ import { Mark } from './SoutrameMarks';
  * 0 = empty, 1 = faint dot, 2 = full dot.
  */
 const GRIDS: Record<string, number[][]> = {
+  // Colosse: the cutterhead seen from the front, spokes and a hub
+  colosse: [
+    [0, 1, 2, 1, 0],
+    [1, 0, 1, 0, 1],
+    [2, 1, 2, 1, 2],
+    [1, 0, 1, 0, 1],
+    [0, 1, 2, 1, 0],
+  ],
   // Dailies: a strip of film, one frame chosen among the takes
   dailies: [
     [1, 0, 1, 0, 1],

@@ -392,7 +392,7 @@ export default function Colosse() {
         />
 
         <figure className="mt-24 md:mt-32">
-          <Media src="/colosse/tablette-anomalie.jpg" alt={t('Mise en situation : l’écran Anomalie sur une tablette de chantier, tenue par des mains gantées', 'In context: the Anomaly screen on a rugged site tablet, held in gloved hands')} width={2400} height={1800} />
+          <Media crisp src="/colosse/tablette-anomalie-v2.jpg" alt={t('Mise en situation : l’écran Anomalie sur une tablette de chantier, tenue par des mains gantées', 'In context: the Anomaly screen on a rugged site tablet, held in gloved hands')} width={2560} height={1920} />
           <figcaption className="mt-3 text-[13px] text-black/50">{t('Mise en situation, sur une tablette de chantier.', 'In context, on a rugged site tablet.')}</figcaption>
         </figure>
 

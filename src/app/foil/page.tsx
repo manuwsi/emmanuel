@@ -169,7 +169,7 @@ export default function Page() {
       </section>
 
       <Plate
-        src="/foil/duo-v2.jpg"
+        src="/foil/duo-v3.jpg"
         aspect="1700/1062" mobileAspect="1700/1062"
         alt={t('L’accueil de l’application et la fiche d’une carte, sur iPhone', 'The app’s home screen and a card page, on iPhone')}
         caption={t('L’accueil et la fiche d’une carte.', 'The home screen and a card page.')}
@@ -253,9 +253,9 @@ export default function Page() {
           </Lede>
         </div>
         <Plate
-          src="/foil/lineup-v2.jpg"
+          src="/foil/lineup-v3.jpg"
           aspect="1700/956" mobileAspect="1700/956"
-          alt={t('Cinq écrans sur iPhone : constellation, accueil, fiche carte, évolution, marchés', 'Five screens on iPhone: constellation, home, card page, growth, markets')}
+          alt={t('L’écran évolution sur iPhone : plus 718 euros depuis les achats', 'The growth screen on iPhone: plus 718 euros since purchase')}
         />
         <div className="mt-1">
           <Strip items={screens} label={t('Les écrans', 'The screens')} hint={t('Faire glisser', 'Drag')} />

@@ -391,6 +391,11 @@ export default function Colosse() {
           ]}
         />
 
+        <figure className="mt-24 md:mt-32">
+          <Media src="/colosse/tablette-anomalie.jpg" alt={t('Mise en situation : l’écran Anomalie sur une tablette de chantier, tenue par des mains gantées', 'In context: the Anomaly screen on a rugged site tablet, held in gloved hands')} width={2400} height={1800} />
+          <figcaption className="mt-3 text-[13px] text-black/50">{t('Mise en situation, sur une tablette de chantier.', 'In context, on a rugged site tablet.')}</figcaption>
+        </figure>
+
         {/* 09 — PROTOTYPE */}
         <Chap n={9} title={t('Le prototype', 'The prototype')} depth="−22 m" lede={t('Fais avancer la machine, choisis quoi faire face au vide, puis passe la main à l’équipe du matin.', 'Move the machine forward, choose what to do about the void, then hand over to the morning crew.')} />
         <div className="md:hidden border border-black/15">

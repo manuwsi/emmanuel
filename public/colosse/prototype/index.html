@@ -352,7 +352,7 @@ function loop(t) {
   S.minutes += step * (S.decision === 'A' && S.head < 3350 ? 360 : 120);
   if (S.decision === 'A' && S.detected) S.fill = Math.min(1, Math.max(S.fill, (S.head - DETECT) / (3348 - DETECT)));
   if (!S.detected && S.head >= DETECT) {
-    S.minutes -= (S.head - DETECT) * 120; S.head = DETECT; S.detected = true; S.playing = false; S.tDetect = S.minutes; panel();
+    S.minutes = Math.round(S.minutes - (S.head - DETECT) * 120); S.head = DETECT; S.detected = true; S.playing = false; S.tDetect = S.minutes; panel();
   }
   if (S.decision === 'C' && settle(SCHOOL) > 10.5) { S.playing = false; S.ended = true; toast(tr('endC'), 6000); }
   if (S.head >= 3392) { S.playing = false; S.ended = true; const sv = num(settle(SCHOOL)); toast(tr(S.decision === 'B' ? 'endB' : 'endA', { s: sv }), 6000); }

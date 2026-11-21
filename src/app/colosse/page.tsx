@@ -4,15 +4,31 @@ import { ReactNode } from 'react';
 import Link from 'next/link';
 import { motion } from 'framer-motion';
 import Header from '@/components/Header';
-import { Media, Row } from '@/components/project/ProjectPage';
+import { Media } from '@/components/project/ProjectPage';
 import { nextProject } from '@/components/projects';
 import { useT } from '@/components/i18n';
 import Cutter from '@/components/colosse/Cutter';
 import Depth from '@/components/colosse/Depth';
 import Scale from '@/components/colosse/Scale';
+import Compare from '@/components/colosse/Compare';
 import '@/styles/globals.css';
 
 const W = { width: 2880, height: 1800, crisp: true };
+
+/** A close-up of one screen, with its letter and one sentence. */
+function Zoom({ k, title, src, w, h, alt, bare = false, children }: { k: string; title: string; src: string; w: number; h: number; alt: string; bare?: boolean; children: ReactNode }) {
+  return (
+    <figure>
+      <div className={bare ? '' : 'border border-black/15'}>
+        <Media src={src} alt={alt} width={w} height={h} crisp />
+      </div>
+      <figcaption className="mt-3 grid grid-cols-[28px_1fr] gap-x-2 text-[13px] leading-[1.45]">
+        <span className="text-black/45">{k}</span>
+        <span><span className="font-medium">{title}</span> <span className="text-black/60">{children}</span></span>
+      </figcaption>
+    </figure>
+  );
+}
 const DISPLAY = { fontFamily: 'var(--font-general-sans), Inter, sans-serif', fontWeight: 500, letterSpacing: '-0.03em' } as const;
 
 function Chap({ n, title, depth, lede, children }: { n: number; title: string; depth: string; lede?: string; children?: ReactNode }) {
@@ -180,6 +196,15 @@ export default function Colosse() {
             </p>
           </div>
         </div>
+        <figure className="mt-16 md:mt-24">
+          <Media src="/colosse/2-anomalie.webp" alt={t('Anomalie : un vide devant la roue, sous une école', 'Anomaly: a void ahead of the wheel, under a school')} priority {...W} />
+          <figcaption className="mt-3 max-w-3xl text-[13px] text-black/50">
+            {t(
+              '02:09. La sonde détecte un vide sous une école. L’écran le dessine à sa place dans le sol et propose trois options au pilote.',
+              '02:09. The probe picks up a void under a school. The screen draws it where it is in the ground and gives the driver three options.'
+            )}
+          </figcaption>
+        </figure>
       </div>
 
       {/* 01 — SCALE */}
@@ -273,8 +298,19 @@ export default function Colosse() {
             </div>
           </div>
         </section>
-        <div className="mt-14 md:mt-20">
-          <Media src="/colosse/2-anomalie.webp" alt={t('Anomalie : un vide devant la roue, sous une école', 'Anomaly: a void ahead of the wheel, under a school')} {...W} />
+        <div className="mt-14 md:mt-20 grid grid-cols-1 items-start gap-10 md:grid-cols-2 md:gap-6">
+          <Zoom k="A" title={t('L’alerte.', 'The alert.')} src="/colosse/zoom-alerte.webp" w={2032} h={2096} alt={t('Gros plan : le vide dessiné dans le sol, à 31,6 m de la roue', 'Close-up: the void drawn in the ground, 31.6 m from the wheel')}>
+            {t(
+              'Le vide est dessiné là où il est, à 31,6 m de la roue et à 2,1 m du haut du tunnel. Au-dessus, le tassement estimé immeuble par immeuble, en rouge pour l’école.',
+              'The void is drawn where it is, 31.6 m from the wheel and 2.1 m from the top of the tunnel. Above, the estimated settlement building by building, in red for the school.'
+            )}
+          </Zoom>
+          <Zoom k="B" title={t('La décision.', 'The decision.')} src="/colosse/zoom-decision.webp" w={1448} h={1640} bare alt={t('Gros plan : les trois options proposées au pilote', 'Close-up: the three options offered to the driver')}>
+            {t(
+              'Trois options, chacune avec son effet sous l’école et son délai. Rien ne part sans un humain : il applique, ou il appelle la géotechnique.',
+              'Three options, each with its effect under the school and its delay. Nothing happens without a human: he applies one, or calls the geotechnical team.'
+            )}
+          </Zoom>
         </div>
 
         {/* 05 — HANDOVER */}
@@ -292,6 +328,14 @@ export default function Colosse() {
           </p>
         </Chap>
         <Media src="/colosse/3-releve.webp" alt={t('Relève : la nuit dessinée le long du tunnel', 'Handover: the night drawn along the tunnel')} {...W} />
+        <div className="mt-6 md:mt-8">
+          <Zoom k="C" title={t('La relève.', 'The handover.')} src="/colosse/zoom-releve.webp" w={3864} h={944} alt={t('Gros plan : ce qui change pour le poste du matin, et le cartouche de relève', 'Close-up: what changes for the morning shift, and the handover title block')}>
+            {t(
+              'Ce qui change pour le poste du matin est barré puis remplacé : 12 m/jour devient 4 m/jour. La relève se signe dans un cartouche, comme un plan.',
+              'What changes for the morning shift is crossed out and replaced: 12 m/day becomes 4 m/day. The handover is signed in a title block, like a drawing.'
+            )}
+          </Zoom>
+        </div>
 
         {/* 06 — RINGS */}
         <Chap
@@ -340,13 +384,18 @@ export default function Colosse() {
             )}
           </p>
         </Chap>
-        <Row cols={2}>
-          <Media src="/colosse/1-pilotage-nuit.webp" alt={t('Pilotage, mode cabine', 'Driving, cab mode')} {...W} />
-          <Media src="/colosse/2-anomalie-nuit.webp" alt={t('Anomalie, mode cabine', 'Anomaly, cab mode')} {...W} />
-        </Row>
+        <Compare
+          pairs={[
+            { name: t('Pilotage', 'Driving'), day: '/colosse/1-pilotage.webp', night: '/colosse/1-pilotage-nuit.webp', alt: t('Pilotage', 'Driving') },
+            { name: t('Anomalie', 'Anomaly'), day: '/colosse/2-anomalie.webp', night: '/colosse/2-anomalie-nuit.webp', alt: t('Anomalie', 'Anomaly') },
+          ]}
+        />
 
         {/* 09 — PROTOTYPE */}
         <Chap n={9} title={t('Le prototype', 'The prototype')} depth="−22 m" lede={t('Fais avancer la machine. Tu verras ce qui se passe quand le vide apparaît.', 'Move the machine forward. You’ll see what happens when the void shows up.')} />
+        <div className="md:hidden border border-black/15">
+          <Media video src="/colosse/colosse-prototype.mp4" width={1622} height={1208} alt={t('Vidéo du prototype : la machine avance, détecte le vide, le pilote choisit l’option A', 'Prototype video: the machine moves forward, detects the void, the driver picks option A')} />
+        </div>
         <div className="hidden md:block w-full aspect-[16/10] border border-black/15">
           <iframe src="/colosse/prototype/index.html" title={t('Prototype Colosse', 'Colosse prototype')} className="w-full h-full" loading="lazy" />
         </div>
@@ -354,7 +403,7 @@ export default function Colosse() {
           <a href="/colosse/prototype/index.html" className="underline underline-offset-2">
             {t('Ouvrir le prototype en plein écran', 'Open the prototype full screen')} →
           </a>
-          <span className="text-black/45 md:hidden"> {t('(plus confortable sur ordinateur)', '(better on a computer)')}</span>
+          <span className="text-black/45 md:hidden"> {t('(à essayer sur ordinateur)', '(try it on a computer)')}</span>
         </p>
 
         {/* 10 — WHAT'S LEFT */}

@@ -5,10 +5,18 @@ import Image from 'next/image';
 import { useT } from '@/components/i18n';
 
 type Pair = { name: string; day: string; night: string; alt: string };
+type Labels = { left: string; right: string; leftAlt: string; rightAlt: string; aria: string };
 
-/** Day / cab mode, same screen: drag the line to compare. */
-export default function Compare({ pairs, width = 2880, height = 1800 }: { pairs: Pair[]; width?: number; height?: number }) {
+/** Two versions of the same screen: drag the line to compare (day / cab mode by default). */
+export default function Compare({ pairs, width = 2880, height = 1800, labels }: { pairs: Pair[]; width?: number; height?: number; labels?: Labels }) {
   const t = useT();
+  const L: Labels = labels ?? {
+    left: t('Jour', 'Day'),
+    right: t('Cabine', 'Cab'),
+    leftAlt: t('jour', 'day'),
+    rightAlt: t('mode cabine', 'cab mode'),
+    aria: t('Comparer jour et mode cabine', 'Compare day and cab mode'),
+  };
   const [i, setI] = useState(0);
   const [pos, setPos] = useState(50);
   const box = useRef<HTMLDivElement>(null);
@@ -49,9 +57,9 @@ export default function Compare({ pairs, width = 2880, height = 1800 }: { pairs:
         onPointerUp={() => (drag.current = false)}
         onPointerCancel={() => (drag.current = false)}
       >
-        <Image src={p.night} alt={`${p.alt}, ${t('mode cabine', 'cab mode')}`} fill unoptimized draggable={false} className="object-cover" />
+        <Image src={p.night} alt={`${p.alt}, ${L.rightAlt}`} fill unoptimized draggable={false} className="object-cover" />
         <div className="absolute inset-0" style={{ clipPath: `inset(0 ${100 - pos}% 0 0)` }}>
-          <Image src={p.day} alt={`${p.alt}, ${t('jour', 'day')}`} fill unoptimized draggable={false} className="object-cover" />
+          <Image src={p.day} alt={`${p.alt}, ${L.leftAlt}`} fill unoptimized draggable={false} className="object-cover" />
         </div>
         <div className="pointer-events-none absolute inset-y-0" style={{ left: `${pos}%` }}>
           <div className="absolute inset-y-0 -ml-px w-[2px] bg-white mix-blend-difference" />
@@ -65,14 +73,14 @@ export default function Compare({ pairs, width = 2880, height = 1800 }: { pairs:
           max={100}
           value={Math.round(pos)}
           onChange={(e) => setPos(Number(e.target.value))}
-          aria-label={t('Comparer jour et mode cabine', 'Compare day and cab mode')}
+          aria-label={L.aria}
           className="sr-only"
         />
       </div>
       <figcaption className="mt-3 flex items-baseline justify-between gap-4 text-[13px]">
-        <span>← {t('Jour', 'Day')}</span>
+        <span>← {L.left}</span>
         <span className="text-center text-black/50">{t('Fais glisser la ligne', 'Drag the line')}</span>
-        <span>{t('Cabine', 'Cab')} →</span>
+        <span>{L.right} →</span>
       </figcaption>
     </figure>
   );

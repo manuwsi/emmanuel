@@ -1,122 +1,187 @@
 'use client';
 
-import { ProjectPage, Media, Row, Chapter } from '@/components/project/ProjectPage';
+import Image from 'next/image';
+import { motion } from 'framer-motion';
+import Header from '@/components/Header';
 import { useT } from '@/components/i18n';
+import { Bleed, Chap, DISPLAY, Lede, Meta, Next, Principles, Title, WRAP } from '@/components/case/Kit';
+import TabletStrip from '@/components/hennessy/TabletStrip';
+import SecondSkin from '@/components/hennessy/SecondSkin';
+import '@/styles/globals.css';
 
 export default function Page() {
   const t = useT();
+
+  const screens = [
+    { src: '/hennessy1.webp', n: '01', title: t('Accueil.', 'Welcome.'), text: t('La collection, l’artiste, et un seul bouton : « Créer mon œuvre ».', 'The collection, the artist, and a single button: “Create my artwork”.') },
+    { src: '/hennessy2.png', n: '02', title: t('La couleur dominante.', 'The dominant colour.'), text: t('Douze couleurs, en touches de peinture, à côté de la bouteille.', 'Twelve colours, as paint strokes, next to the bottle.') },
+    { src: '/hennessy3.png', n: '03', title: t('La couleur secondaire.', 'The secondary colour.'), text: t('La même grille, puis « Générer ma création ».', 'The same grid, then “Generate my artwork”.') },
+    { src: '/hennessy4.webp', n: '04', title: t('La génération.', 'The generation.'), text: t('L’œuvre se dessine en direct, en plein écran.', 'The artwork draws itself live, full screen.') },
+    { src: '/hennessy5.png', n: '05', title: t('La validation.', 'Approval.'), text: t('Valider l’œuvre sur la bouteille, ou en générer une nouvelle.', 'Approve the artwork on the bottle, or generate a new one.') },
+    { src: '/hennessy6.png', n: '06', title: t('Merci.', 'Thank you.'), text: t('L’œuvre sera imprimée, et le bras robotisé peut commencer.', 'The artwork will be printed, and the robotic arm can begin.') },
+  ];
+
+  const explorations = [
+    { n: 1, src: '/hen-explo-1-palettes.png', fr: 'Palettes prédéfinies : rapide, mais le visiteur ne compose pas vraiment son œuvre.', en: 'Preset palettes: quick, but visitors don’t really compose their artwork.' },
+    { n: 2, src: '/hen-explo-2-list.png', fr: 'Liste nommée : claire, mais longue à parcourir, et la couleur passe après le texte.', en: 'Named list: clear, but long to scan, and the colour comes after the text.' },
+    { n: 3, src: '/hen-explo-3-grid.png', fr: 'Grille de nuanciers : la couleur devient l’élément principal, tout est visible d’un coup.', en: 'Swatch grid: colour becomes the main element, everything is visible at once.', kept: true },
+    { n: 4, src: '/hen-explo-4-carousel.png', fr: 'Carrousel : plus compact, mais il cache une partie des choix.', en: 'Carousel: more compact, but it hides part of the choice.' },
+  ];
+
+  const principles = [
+    { k: t('La couleur d’abord', 'Colour first'), v: t('Dans la grille, la couleur est l’élément principal et tout se voit d’un coup. La liste faisait passer le texte avant, le carrousel cachait des choix.', 'In the grid, colour is the main element and everything is visible at once. The list put text first, the carousel hid options.') },
+    { k: t('Un choix à la fois', 'One choice at a time'), v: t('Dominante, puis secondaire : deux étapes, pour que chacune reste simple, debout devant une tablette.', 'Dominant, then secondary: two steps, so each one stays simple, standing in front of a tablet.') },
+    { k: t('De la peinture, pas des aplats', 'Paint, not flat chips'), v: t('Les nuanciers deviennent des touches de peinture, plus proches du travail de Florian Zumbrunn.', 'The swatches become paint strokes, closer to Florian Zumbrunn’s work.') },
+  ];
+
   return (
-    <ProjectPage
-      title="Hennessy X.O Second Skin"
-      subtitle={t('Art génératif & UI, avec OKCC', 'Generative art & UI, with OKCC')}
-      lede={t(
-        'Une tablette où chaque visiteur choisit les couleurs de sa bouteille. L’œuvre est générée sur place, puis imprimée.',
-        'A tablet where each visitor picks the colours of their bottle. The artwork is generated on the spot, then printed.'
-      )}
-      meta={{
-        year: '2025',
-        context: t('OKCC — présenté à VivaTech 2025', 'OKCC — shown at VivaTech 2025'),
-        role: t('Visuels 3D, UI de la tablette de vente', '3D visuals, sales tablet UI'),
-        tools: 'Figma, Blender, After Effects',
-        award: 'Lovie Award — Best Experience Art Direction',
-      }}
-      intro={t(
-        <>
-          <p>
-            Second Skin est une édition limitée du Hennessy X.O, faite avec l&apos;artiste
-            génératif Florian Zumbrunn. Chaque bouteille reçoit une « seconde peau » créée par ses
-            algorithmes, et un numéro de série : aucune n&apos;est identique.
-          </p>
-          <p>
-            Chez OKCC, j&apos;ai fait les visuels 3D des bouteilles sous Blender et l&apos;UI de
-            la tablette de vente du château, où les visiteurs personnalisent leur édition. Le
-            projet a reçu un Lovie Award.
-          </p>
-        </>,
-        <>
-          <p>
-            Second Skin is a limited edition of Hennessy X.O, made with generative artist
-            Florian Zumbrunn. Each bottle gets a “second skin” created by his algorithms, and a
-            serial number: no two are the same.
-          </p>
-          <p>
-            At OKCC, I made the 3D bottle visuals in Blender and the UI of the sales tablet at
-            the château, where visitors personalise their edition. The project won a Lovie Award.
-          </p>
-        </>
-      )}
-    >
-      <Media src="/hennessy.webp" alt={t('Hennessy X.O Second Skin — rendu 3D', 'Hennessy X.O Second Skin — 3D render')} width={3000} height={1688} priority />
+    <main className="w-full min-h-screen bg-white text-[#0a0a0a] font-sans overflow-x-clip relative flex flex-col [scroll-snap-type:none]">
+      <Header crumb="Hennessy X.O Second Skin" />
 
-      <Chapter n={1} title={t('Le parcours tablette', 'The tablet journey')}>
-        <p>
+      <div className={`${WRAP} pt-28 md:pt-36`}>
+        <Title title="Hennessy X.O" kicker="Second Skin" subtitle={t('2025 — Art génératif, UI et 3D, avec OKCC', '2025 — Generative art, UI and 3D, with OKCC')} />
+      </div>
+
+      <div className="mt-14 md:mt-20">
+        <Bleed
+          src="/hennessy.webp"
+          alt={t('Rendu 3D : un bras robotisé personnalise la seconde peau d’une bouteille Hennessy X.O', '3D render: a robotic arm customises the second skin of a Hennessy X.O bottle')}
+          aspect="3000/1688"
+          mobileAspect="4/5"
+          position="42% 50%"
+          priority
+          caption={t('Rendu 3D, Blender. Le bras robotisé personnalise la seconde peau.', '3D render, Blender. The robotic arm customises the second skin.')}
+        />
+      </div>
+
+      <div className={WRAP}>
+        <Lede className="pt-20 md:pt-28">
           {t(
-            'Le visiteur choisit une couleur dominante puis une couleur secondaire, l’œuvre est générée en direct, et il valide sa création avant impression de la seconde peau.',
-            'Visitors pick a dominant colour, then a secondary one; the artwork is generated live, and they approve their creation before the second skin is printed.'
+            'Quarante carafes, quarante œuvres. Chaque visiteur choisit deux couleurs sur une tablette, l’œuvre se génère devant lui, puis un bras robotisé personnalise sa bouteille.',
+            'Forty decanters, forty artworks. Each visitor picks two colours on a tablet, the artwork is generated in front of them, then a robotic arm customises their bottle.'
+          )}
+        </Lede>
+        <Meta
+          rows={[
+            [t('Année', 'Year'), '2025'],
+            [t('Contexte', 'Context'), t('OKCC — présenté à VivaTech 2025', 'OKCC — shown at VivaTech 2025')],
+            [t('Rôle', 'Role'), t('Visuels 3D, UI de la tablette de vente', '3D visuals, sales tablet UI')],
+            [t('Outils', 'Tools'), 'Figma, Blender, After Effects'],
+            [t('Distinction', 'Award'), 'Lovie Award — Best Experience Art Direction'],
+          ]}
+        >
+          <p>
+            {t(
+              'Second Skin est une édition limitée du Hennessy X.O, faite avec l’artiste génératif Florian Zumbrunn. Chaque bouteille reçoit une « seconde peau » créée par ses algorithmes, et un numéro de série : aucune n’est identique.',
+              'Second Skin is a limited edition of Hennessy X.O, made with generative artist Florian Zumbrunn. Each bottle gets a “second skin” created by his algorithms, and a serial number: no two are the same.'
+            )}
+          </p>
+          <p>
+            {t(
+              'Chez OKCC, j’ai fait les visuels 3D des bouteilles sous Blender et l’UI de la tablette de vente du château, où les visiteurs personnalisent leur édition.',
+              'At OKCC, I made the 3D bottle visuals in Blender and the UI of the sales tablet at the château, where visitors personalise their edition.'
+            )}
+          </p>
+        </Meta>
+
+        {/* 01 — JOURNEY */}
+        <Chap
+          n={1}
+          title={t('Le parcours', 'The journey')}
+          aside={t('6 écrans', '6 screens')}
+          lede={t('Six écrans, et un seul vrai choix : deux couleurs.', 'Six screens, and only one real choice: two colours.')}
+        >
+          <p>
+            {t(
+              'Le visiteur choisit une couleur dominante puis une couleur secondaire. L’œuvre est générée en direct, il la valide, puis elle part à l’impression.',
+              'Visitors pick a dominant colour, then a secondary one. The artwork is generated live, they approve it, then it goes to print.'
+            )}
+          </p>
+        </Chap>
+      </div>
+
+      <TabletStrip items={screens} hint={t('Faire glisser', 'Drag')} />
+
+      <div className={WRAP}>
+        {/* 02 — COLOURS */}
+        <Chap
+          n={2}
+          title={t('Le choix des couleurs', 'Choosing colours')}
+          aside={t('4 pistes', '4 options')}
+          lede={t('C’est le choix des couleurs qui rend chaque bouteille unique. J’ai testé quatre façons de le faire.', 'Choosing colours is what makes each bottle unique. I tested four ways of doing it.')}
+        />
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-x-3 gap-y-10">
+          {explorations.map((v) => (
+            <motion.figure
+              key={v.n}
+              initial={{ opacity: 0, y: 24 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, margin: '-60px' }}
+              transition={{ duration: 0.8, delay: (v.n % 2) * 0.08 }}
+            >
+              <div className={`relative overflow-hidden border ${v.kept ? 'border-[#0a0a0a]' : 'border-black/10'}`} style={{ aspectRatio: '1366/1024' }}>
+                <Image src={v.src} alt={t(`Exploration ${v.n} du choix des couleurs`, `Colour choice exploration ${v.n}`)} fill sizes="(min-width:768px) 50vw, 100vw" className={`object-cover ${v.kept ? '' : 'grayscale-[35%] opacity-90'}`} />
+                {v.kept && (
+                  <span className="absolute left-3 top-3 bg-[#0a0a0a] px-2 py-1 text-[11px] tracking-[0.06em] uppercase text-white">{t('Retenue', 'Kept')}</span>
+                )}
+              </div>
+              <figcaption className="mt-3 grid grid-cols-[28px_1fr] gap-x-2 text-[13px] leading-[1.45]">
+                <span className="text-black/45 tabular-nums">0{v.n}</span>
+                <span className={v.kept ? '' : 'text-black/60'}>{t(v.fr, v.en)}</span>
+              </figcaption>
+            </motion.figure>
+          ))}
+        </div>
+        <p className="mt-12 max-w-2xl text-[15px] md:text-[17px] leading-[1.55] text-black/75">
+          {t(
+            'La version finale garde la grille, plus lisible, mais remplace les aplats par des touches de peinture. Et le choix se fait en deux étapes, pour que chacune reste simple.',
+            'The final version keeps the grid, which reads best, but swaps flat swatches for paint strokes. And the choice happens in two steps, so each one stays simple.'
           )}
         </p>
-      </Chapter>
-      <Media src="/hennessy1.webp" alt={t('Hennessy — écran d’accueil de la tablette', 'Hennessy — tablet welcome screen')} width={1366} height={1024} />
-      <Row cols={2}>
-        <Media src="/hennessy2.png" alt={t('Hennessy — choix de la couleur dominante', 'Hennessy — dominant colour')} width={1366} height={1024} />
-        <Media src="/hennessy3.png" alt={t('Hennessy — choix de la couleur secondaire', 'Hennessy — secondary colour')} width={1366} height={1024} />
-      </Row>
-      <Row cols={2}>
-        <Media src="/hennessy4.webp" alt={t('Hennessy — génération de l’œuvre', 'Hennessy — artwork generation')} width={1366} height={1024} />
-        <Media src="/hennessy5.png" alt={t('Hennessy — validation de la création', 'Hennessy — approving the creation')} width={1366} height={1024} />
-      </Row>
-      <Media src="/hennessy6.png" alt={t('Hennessy — écran de remerciement', 'Hennessy — thank-you screen')} width={1366} height={1024} />
+        <div className="mt-20 md:mt-28">
+          <div className="text-[13px] text-black/45 mb-4">{t('Choix de design', 'Design choices')}</div>
+          <Principles items={principles} />
+        </div>
 
-      <Chapter n={2} title={t('Le choix des couleurs', 'Choosing colours')} lede={t('Tout repose sur le choix des couleurs. J’ai testé quatre façons de le faire.', 'Everything hinges on choosing colours. I tested four ways of doing it.')}>
-        <p>
-          {t(
-            'C’est ce choix qui rend chaque bouteille différente. Avant d’arriver au parcours final en deux temps, couleur dominante puis secondaire, j’ai comparé ces pistes.',
-            'This choice is what makes each bottle different. Before settling on the final two-step flow, dominant colour then secondary, I compared these options.'
-          )}
-        </p>
-      </Chapter>
-      <Row cols={2}>
-        {[
-          {
-            n: 1,
-            src: '/hen-explo-1-palettes.png',
-            fr: 'Palettes prédéfinies : rapide, mais le visiteur ne compose pas vraiment son œuvre.',
-            en: 'Preset palettes: quick, but visitors don’t really compose their artwork.',
-          },
-          {
-            n: 2,
-            src: '/hen-explo-2-list.png',
-            fr: 'Liste nommée : claire, mais longue à parcourir et la couleur passe après le texte.',
-            en: 'Named list: clear, but long to scan, and the colour comes after the text.',
-          },
-          {
-            n: 3,
-            src: '/hen-explo-3-grid.png',
-            fr: 'Grille de nuanciers : la couleur devient l’élément principal, tout est visible d’un coup.',
-            en: 'Swatch grid: colour becomes the main element, everything is visible at once.',
-          },
-          {
-            n: 4,
-            src: '/hen-explo-4-carousel.png',
-            fr: 'Carrousel : plus compact, mais il cache une partie des choix.',
-            en: 'Carousel: more compact, but it hides part of the choice.',
-          },
-        ].map((v) => (
-          <figure key={v.n} className="space-y-3">
-            <Media src={v.src} alt={t(`Hennessy — exploration ${v.n}`, `Hennessy — exploration ${v.n}`)} width={1366} height={1024} />
-            <figcaption className="text-xs text-black/50 leading-relaxed">
-              <span className="text-black/45 tabular-nums">0{v.n} — </span>
-              {t(v.fr, v.en)}
-            </figcaption>
-          </figure>
-        ))}
-      </Row>
-      <p className="max-w-2xl text-sm text-black/70 leading-relaxed">
-        {t(
-          'La version finale garde la grille, plus lisible, mais remplace les aplats par des touches de peinture, plus proches du travail de Florian Zumbrunn. Le choix se fait en deux étapes pour que chacune reste simple.',
-          'The final version keeps the grid, which reads best, but swaps flat swatches for paint strokes, closer to Florian Zumbrunn’s work. The choice happens in two steps so each one stays simple.'
-        )}
-      </p>
-    </ProjectPage>
+        {/* 03 — TRY IT */}
+        <Chap
+          n={3}
+          title={t('À toi', 'Your turn')}
+          lede={t('Le parcours de la tablette, à refaire ici : deux couleurs, et ta seconde peau.', 'The tablet journey, to replay here: two colours, and your second skin.')}
+        />
+      </div>
+
+      <div className="px-2 md:px-3 w-full max-w-[1400px] mx-auto">
+        <SecondSkin />
+      </div>
+
+      <div className={WRAP}>
+        {/* 04 — THE EDITION */}
+        <section className="pt-32 md:pt-48">
+          <div className="flex items-baseline justify-between border-t border-black/15 pt-3">
+            <h3 className="text-[13px] text-black/45">04 → {t('L’édition', 'The edition')}</h3>
+            <span className="text-[13px]">VivaTech 2025</span>
+          </div>
+          <motion.div
+            initial={{ opacity: 0, scale: 0.94 }}
+            whileInView={{ opacity: 1, scale: 1 }}
+            transition={{ duration: 0.9, ease: 'easeOut' }}
+            viewport={{ once: true, margin: '-100px' }}
+            className="mt-6 text-[40vw] md:text-[26vw] leading-[0.78] tracking-[-0.07em] font-medium tabular-nums"
+          >
+            40
+          </motion.div>
+          <p className="mt-8 md:mt-12 max-w-[980px] text-[28px] md:text-[52px] leading-[1.04]" style={DISPLAY}>
+            {t('carafes, chacune avec sa seconde peau et son numéro de série. Aucune n’est identique.', 'decanters, each with its second skin and its serial number. No two are the same.')}
+          </p>
+          <div className="mt-12 border-t border-black/15 pt-3 flex flex-col md:flex-row md:items-baseline md:justify-between gap-2 text-[13px]">
+            <span className="text-black/45">{t('Distinction', 'Award')}</span>
+            <span>Lovie Award — Best Experience Art Direction</span>
+          </div>
+        </section>
+      </div>
+
+      <Next path="/hennessy" />
+    </main>
   );
 }

@@ -32,7 +32,11 @@ button:disabled{opacity:.35;cursor:not-allowed}
 .opt{display:flex;gap:12px;padding:12px 8px;border-top:1px solid rgba(var(--rgb),.14);cursor:pointer;margin:0 -8px}
 .opt:hover{background:rgba(var(--rgb),.05)}
 .opt b{font-weight:500;font-size:14px}
-#toast{position:absolute;left:50%;top:612px;transform:translateX(-50%);padding:9px 14px;font-size:13px;background:var(--ink);color:var(--bg);display:none;white-space:nowrap}
+#toast{position:absolute;z-index:6;left:50%;top:612px;transform:translateX(-50%);padding:9px 14px;font-size:13px;background:var(--ink);color:var(--bg);display:none;white-space:nowrap}
+#handover{position:absolute;left:0;top:0;width:1440px;height:900px;background:var(--bg);display:none;z-index:5}
+#handover .row{display:grid;grid-template-columns:150px 1fr;border-top:1px solid rgba(var(--rgb),.25)}
+#handover .row>div{padding:9px 12px}#handover .row>div:first-child{border-right:1px solid rgba(var(--rgb),.25)}
+#handover s{color:rgba(var(--rgb),.45)}
 .seg{display:flex;border:1px solid rgba(var(--rgb),.35)}.seg button{border:0;padding:8px 10px;font-size:12px}.seg button.on{background:var(--ink);color:var(--bg)}
 </style>
 </head>
@@ -49,6 +53,7 @@ button:disabled{opacity:.35;cursor:not-allowed}
   </div>
   <div id="toast"></div>
   <div id="panel"></div>
+  <div id="handover"></div>
   <div id="bar">
     <div>
       <button id="play" class="pri"></button>
@@ -79,7 +84,18 @@ const T = {
     dA: '+3 jours', dB: '+2 jours', dC: 'aucun délai', drill: 'Sondage depuis la rue. Le vide est mesuré puis comblé depuis la surface.', drillBtn: 'Voir le résultat du sondage →',
     tA: 'Décision A enregistrée · ralentir et combler', tB: 'Décision B enregistrée · sondage', tC: 'Décision C enregistrée · continuer',
     endA: 'Le vide est franchi. Tassement sous l’école : {s} mm.', endB: 'Le vide est franchi après sondage. Tassement sous l’école : {s} mm.', endC: 'Le seuil de 10 mm est dépassé sous l’école. La machine est arrêtée en urgence.',
-    layers: ['REMBLAIS', 'MARNES ET CAILLASSES', 'CALCAIRE GROSSIER', 'ARGILE PLASTIQUE'], mh: 'm/h', md: 'm/jour' },
+    layers: ['REMBLAIS', 'MARNES ET CAILLASSES', 'CALCAIRE GROSSIER', 'ARGILE PLASTIQUE'], mh: 'm/h', md: 'm/jour',
+    dawn: 'FIN DE NUIT', dawnBtn: 'Fin de la nuit…', handBtn: 'Relève en cours',
+    hSub: 'TUNNELIER YSÉE · RELÈVE · POUR L’ÉQUIPE DU MATIN', hState: 'FIN DE POSTE', hCut: 'COUPE DÉTAILLÉE · CE QUI A ÉTÉ CREUSÉ CETTE NUIT · {m} m', ring: 'ANNEAU', wheel: 'ROUE',
+    e1: 'Prise de poste', e2: '4 molettes changées, secteur 3', e3: 'Vide probable détecté · décision {k}', eA: 'Coulis injecté devant la roue', eB: 'Machine arrêtée · forage installé rue', eC: 'Aucune mesure prise', e5: 'Fin de poste',
+    vA: 'VIDE · {d} m DEVANT', vsA: 'comblement en cours', vsB: 'sondage en cours', vsC: 'aucune mesure',
+    watch: 'À SURVEILLER EN PRIORITÉ', watchT: 'Tassement sous l’école du 14', watchU: 'mm aujourd’hui · alerte à 6 · seuil 10', fc: 'prévu au passage du vide', 
+    chg: 'CE QUI CHANGE POUR LE POSTE DU MATIN', none: 'Rien ne change. Le vide reste devant la roue.',
+    cA: [['VITESSE CIBLE', '12 m/jour', '4 m/jour'], ['PRESSION DE CONSIGNE', '2,40 bar', '2,55 bar'], ['COULIS DEVANT LA ROUE', 'non', 'oui, en continu']],
+    cB: [['MACHINE', 'en creusement', 'à l’arrêt, 2 jours'], ['RUE AU-DESSUS DU VIDE', 'ouverte', 'fermée, forage'], ['REPRISE', '—', 'après le résultat du sondage']],
+    cC: [['VITESSE CIBLE', '12 m/jour', '12 m/jour'], ['COULIS DEVANT LA ROUE', 'non', 'non']],
+    cart: 'RELÈVE N° 214 · 06:00', by: 'ÉTABLI PAR', byV: 'Équipe de nuit · R. Haddad', dec: 'DÉCISION 02:09', decV: '{k} · M. Ferrand, ingénieur de quart', took: 'REPRIS PAR', tookV: 'Équipe du matin · S. Lemaire · 06:02',
+    sign: 'Signer et prendre le poste', signed: 'Relève signée. Le poste du matin reprend.', signedB: 'Relève signée. Le sondage continue.' },
   en: { sub: 'TBM YSÉE · LONGITUDINAL SECTION · FICTIONAL STRETCH UNDER PARIS · PROTOTYPE', back: '← BACK TO THE PROJECT', go: 'Move forward', pause: 'Pause', wait: 'Waiting for a decision', done: 'Start again',
     hint0: 'Start the machine. The prototype is sped up: one second is about one hour of digging.', hintWait: 'The machine stopped on its own. Pick an option in the panel.', hintRun: 'Watch the settlement markers above the machine.',
     kpk: 'WHEEL POSITION', kst: 'SETTLEMENT UNDER THE SCHOOL', ksp: 'SPEED', alertAt: 'alert at 6 mm · limit 10 mm', normal: 'normal pace', slow: 'slowed, grout injected', stopped: 'stopped',
@@ -90,9 +106,20 @@ const T = {
     dA: '+3 days', dB: '+2 days', dC: 'no delay', drill: 'Borehole from the street. The void is measured, then filled from the surface.', drillBtn: 'See the borehole result →',
     tA: 'Decision A logged · slow down and fill', tB: 'Decision B logged · borehole', tC: 'Decision C logged · carry on',
     endA: 'The void is behind. Settlement under the school: {s} mm.', endB: 'The void is behind, after the borehole. Settlement under the school: {s} mm.', endC: 'The 10 mm limit is exceeded under the school. Emergency stop.',
-    layers: ['FILL', 'MARL AND RUBBLE', 'COARSE LIMESTONE', 'PLASTIC CLAY'], mh: 'm/h', md: 'm/day' },
+    layers: ['FILL', 'MARL AND RUBBLE', 'COARSE LIMESTONE', 'PLASTIC CLAY'], mh: 'm/h', md: 'm/day',
+    dawn: 'END OF NIGHT', dawnBtn: 'End of the night…', handBtn: 'Handover in progress',
+    hSub: 'TBM YSÉE · HANDOVER · FOR THE MORNING CREW', hState: 'END OF SHIFT', hCut: 'DETAILED SECTION · WHAT WAS DUG TONIGHT · {m} m', ring: 'RING', wheel: 'WHEEL',
+    e1: 'Shift starts', e2: '4 cutters changed, sector 3', e3: 'Probable void detected · decision {k}', eA: 'Grout injected ahead of the wheel', eB: 'Machine stopped · borehole set up in the street', eC: 'No action taken', e5: 'End of shift',
+    vA: 'VOID · {d} m AHEAD', vsA: 'filling in progress', vsB: 'borehole in progress', vsC: 'no action',
+    watch: 'WATCH FIRST', watchT: 'Settlement under school no. 14', watchU: 'mm today · alert at 6 · limit 10', fc: 'expected when passing the void',
+    chg: 'WHAT CHANGES FOR THE MORNING SHIFT', none: 'Nothing changes. The void is still ahead of the wheel.',
+    cA: [['TARGET SPEED', '12 m/day', '4 m/day'], ['SET PRESSURE', '2.40 bar', '2.55 bar'], ['GROUT AHEAD OF THE WHEEL', 'no', 'yes, continuous']],
+    cB: [['MACHINE', 'digging', 'stopped, 2 days'], ['STREET ABOVE THE VOID', 'open', 'closed, borehole'], ['RESTART', '—', 'after the borehole result']],
+    cC: [['TARGET SPEED', '12 m/day', '12 m/day'], ['GROUT AHEAD OF THE WHEEL', 'no', 'no']],
+    cart: 'HANDOVER NO. 214 · 06:00', by: 'WRITTEN BY', byV: 'Night crew · R. Haddad', dec: 'DECISION 02:09', decV: '{k} · M. Ferrand, engineer on shift', took: 'TAKEN OVER BY', tookV: 'Morning crew · S. Lemaire · 06:02',
+    sign: 'Sign and take over', signed: 'Handover signed. The morning shift takes over.', signedB: 'Handover signed. The borehole goes on.' },
 };
-const tr = (k, o = {}) => { let s = T[L][k]; for (const x in o) s = s.replace('{' + x + '}', o[x]); return s; };
+const tr = (k, o = {}) => { let s = T[L][k]; if (typeof s !== 'string') return s; for (const x in o) s = s.replace('{' + x + '}', o[x]); return s; };
 const num = (v, d = 1) => (L === 'fr' ? v.toFixed(d).replace('.', ',') : v.toFixed(d));
 
 // ---------- geometry ----------
@@ -177,8 +204,8 @@ function dimV(x, d0, d1, label, col, side, mk) {
 // ---------- state ----------
 let S;
 function init() {
-  S = { head: 3308.4, minutes: 129, playing: false, detected: false, decision: null, phase: 'run', fill: 0, tDetect: null, ended: false, drillDone: false };
-  document.getElementById('panel').style.display = 'none';
+  S = { head: 3308.4, minutes: 129, playing: false, detected: false, decision: null, phase: 'run', fill: 0, tDetect: null, ended: false, drillDone: false, dawn: false, hand: null, hDetect: null };
+  document.getElementById('panel').style.display = 'none'; document.getElementById('handover').style.display = 'none';
   render(); ui();
 }
 
@@ -283,9 +310,12 @@ function ui() {
   if (S.detected && !S.decision) { st = tr('anomaly'); col = red; }
   if (S.decision === 'B' && !S.drillDone) { st = tr('drilling'); col = amb; }
   if (settle(SCHOOL) > 10) { st = tr('over'); col = red; }
+  if (S.dawn) { st = tr('dawn'); col = op(.7); }
   document.getElementById('state').innerHTML = `<i style="width:7px;height:7px;border-radius:50%;background:${col};display:inline-block"></i><span style="color:${col}">${st}</span>`;
   const play = document.getElementById('play');
-  if (S.ended) { play.textContent = tr('done'); play.disabled = false; }
+  if (S.dawn) { play.textContent = tr('dawnBtn'); play.disabled = true; }
+  else if (S.hand === 'showing') { play.textContent = tr('handBtn'); play.disabled = true; }
+  else if (S.ended) { play.textContent = tr('done'); play.disabled = false; }
   else if (S.detected && !S.decision) { play.textContent = tr('wait'); play.disabled = true; }
   else if (S.decision === 'B' && !S.drillDone) { play.textContent = tr('wait'); play.disabled = true; }
   else { play.textContent = S.playing ? tr('pause') : tr('go'); play.disabled = false; }
@@ -295,7 +325,7 @@ function ui() {
   document.getElementById('npk').textContent = S.detected && S.fill < 1 && S.head < VOID.a ? (L === 'fr' ? 'vide à ' : 'void at ') + num(VOID.a - S.head) + ' m' : '';
   document.getElementById('ksp').textContent = tr('ksp');
   const slow = S.decision === 'A' && S.head < 3350;
-  const stopped = (S.detected && !S.decision) || (S.decision === 'B' && !S.drillDone) || S.ended;
+  const stopped = (S.detected && !S.decision) || (S.decision === 'B' && !S.drillDone) || S.ended || (S.hand === 'showing' && S.decision !== 'A' && S.decision !== 'C');
   document.getElementById('vsp').textContent = stopped ? '0 ' + tr('md') : slow ? '4 ' + tr('md') : '12 ' + tr('md');
   document.getElementById('nsp').textContent = stopped ? tr('stopped') : slow ? tr('slow') : tr('normal');
   document.getElementById('kst').textContent = tr('kst');
@@ -310,6 +340,7 @@ function ui() {
 
 function panel() {
   const p = document.getElementById('panel');
+  if (S.dawn || S.hand === 'showing') { p.style.display = 'none'; return; }
   if (!S.detected || (S.decision && S.decision !== 'B') || (S.decision === 'B' && S.drillDone)) { p.style.display = 'none'; return; }
   p.style.display = 'block';
   if (S.decision === 'B') {
@@ -331,8 +362,119 @@ function toast(msg, ms = 2600) { const t = document.getElementById('toast'); t.t
 
 function decide(k) {
   S.decision = k; toast(tr('t' + k));
-  if (k === 'A' || k === 'C') { S.playing = true; last = performance.now(); requestAnimationFrame(loop); }
+  dawn();
   panel(); render(); ui();
+}
+
+// ---------- end of the night, then the handover ----------
+const NIGHT0 = 1320; // 22:00, start of the night shift
+const MPM = { A: 360, B: Infinity, C: 120 }; // minutes per metre after the decision
+function headAt(min) { // where the wheel was at a given minute of this night
+  if (min <= S.tDetect) return DETECT - (S.tDetect - min) / 120;
+  return DETECT + (min - S.tDetect) / MPM[S.decision];
+}
+function dawn() {
+  S.dawn = true; S.playing = false;
+  const m0 = S.minutes, day = Math.floor(m0 / 1440), m1 = (m0 % 1440 < 360 ? day : day + 1) * 1440 + 360;
+  const t0 = performance.now(), D = 2400;
+  function f(t) {
+    const u = Math.min(1, (t - t0) / D), e = u < .5 ? 2 * u * u : 1 - Math.pow(-2 * u + 2, 2) / 2;
+    S.minutes = m0 + (m1 - m0) * e; S.head = headAt(S.minutes);
+    if (S.decision === 'A') S.fill = Math.min(1, Math.max(S.fill, (S.head - DETECT) / (3348 - DETECT)));
+    render(); ui();
+    if (u < 1) requestAnimationFrame(f); else { S.minutes = m1; S.dawn = false; handover(); }
+  }
+  requestAnimationFrame(f);
+}
+
+function handover() {
+  S.hand = 'showing';
+  drawHandover();
+  document.getElementById('handover').style.display = 'block';
+  panel(); ui();
+}
+
+function drawHandover() {
+  if (!S.hand) return;
+  const h = document.getElementById('handover'), k = S.decision;
+  const ink = css('--ink'), red = css('--red'), amb = css('--amb'), sig = css('--sig');
+  const h06 = S.head;
+  const n0 = Math.floor(S.tDetect / 1440) * 1440 - 120; // 22:00 the evening before the detection
+  const hs = headAt(n0), span = 4.2, x0 = 120, x1 = 1300, px = (x1 - x0) / span;
+  const XX = m => x0 + (m - hs) * px, yT = 330, yB = 480;
+  const dug = h06 - hs;
+  let g = `<text x="40" y="96" style="fill:${op(.55)};font-size:10.5px;letter-spacing:.06em">${tr('hCut', { m: num(dug) })}</text>`;
+  // ground hatch above and below, tunnel strip
+  g += `<rect x="${x0}" y="${yT - 120}" width="${x1 - x0}" height="120" fill="url(#h-calc)"/><rect x="${x0}" y="${yB}" width="${x1 - x0}" height="70" fill="url(#h-calc)"/>`;
+  g += `<line x1="80" y1="${yT}" x2="${XX(h06)}" y2="${yT}" stroke="${ink}"/><line x1="80" y1="${yB}" x2="${XX(h06)}" y2="${yB}" stroke="${ink}"/>`;
+  g += `<rect x="${x0}" y="${yT}" width="${XX(h06) - x0}" height="3" fill="url(#h-ring)"/><rect x="${x0}" y="${yB - 3}" width="${XX(h06) - x0}" height="3" fill="url(#h-ring)"/>`;
+  g += `<line x1="${x0}" y1="${(yT + yB) / 2}" x2="${x1}" y2="${(yT + yB) / 2}" stroke="${op(.25)}" stroke-dasharray="14 4 2 4"/>`;
+  // rings (1.5 m, ring 1284 starts at PK 3319.5)
+  for (let n = 1280; n < 1290; n++) {
+    const a = 3319.5 + (n - 1284) * 1.5, b = a + 1.5;
+    const ra = Math.max(a, hs), rb = Math.min(b, h06);
+    if (rb <= ra) continue;
+    g += `<rect x="${XX(ra)}" y="${yT}" width="${XX(rb) - XX(ra)}" height="${yB - yT}" fill="none" stroke="${op(.45)}" stroke-width=".8"/>`;
+    if (XX(rb) - XX(ra) > 70) g += `<text x="${(XX(ra) + XX(rb)) / 2}" y="${(yT + yB) / 2 + 6}" text-anchor="middle" style="font-family:GS;font-size:15px;fill:${op(.8)}">${n}</text><text x="${(XX(ra) + XX(rb)) / 2}" y="${(yT + yB) / 2 + 24}" text-anchor="middle" style="fill:${op(.5)};font-size:9px;letter-spacing:.06em">${tr('ring')}</text>`;
+  }
+  // future and wheel
+  g += `<rect x="${XX(h06)}" y="${yT}" width="${x1 - XX(h06)}" height="${yB - yT}" fill="none" stroke="${op(.3)}" stroke-dasharray="2 4"/>`;
+  g += `<line x1="${XX(h06)}" y1="${yT - 6}" x2="${XX(h06)}" y2="${yB + 6}" stroke="${ink}" stroke-width="3"/><text x="${XX(h06) + 10}" y="${yT + 4}" style="fill:${op(.7)};font-size:10px">${tr('wheel')}</text>`;
+  const vc = k === 'A' ? amb : k === 'B' ? amb : red;
+  g += `<text x="${x1 + 100}" y="${yB + 40}" text-anchor="end" style="fill:${red};font-size:10.5px;letter-spacing:.04em">${tr('vA', { d: num(VOID.a - h06) })}</text><text x="${x1 + 100}" y="${yB + 54}" text-anchor="end" style="fill:${vc};font-size:10.5px">${tr('vs' + k)}</text>`;
+  // dimension of the night
+  const yd = yB + 92;
+  g += `<line x1="${x0}" y1="${yd}" x2="${XX(h06)}" y2="${yd}" stroke="${ink}" stroke-width=".8" marker-start="url(#ar)" marker-end="url(#ar)"/><line x1="${x0}" y1="${yd - 7}" x2="${x0}" y2="${yd + 7}" stroke="${ink}" stroke-width=".8"/><line x1="${XX(h06)}" y1="${yd - 7}" x2="${XX(h06)}" y2="${yd + 7}" stroke="${ink}" stroke-width=".8"/>`;
+  g += `<rect x="${(x0 + XX(h06)) / 2 - 80}" y="${yd - 9}" width="160" height="18" fill="${css('--bg')}"/><text x="${(x0 + XX(h06)) / 2}" y="${yd + 4}" text-anchor="middle" style="font-family:GS;font-size:13px">${num(dug)} m · 22:00 → 06:00</text>`;
+  // events pinned where they happened
+  const ev = [[n0, '22:00', tr('e1'), ink, 230], [n0 + 100, '23:40', tr('e2'), ink, 184], [S.tDetect, '02:09', tr('e3', { k }), red, 184]];
+  if (k === 'A') ev.push([S.tDetect + 6, '02:15', tr('eA'), amb, 230]);
+  if (k === 'B') ev.push([S.tDetect + 21, '02:30', tr('eB'), amb, 230]);
+  if (k === 'C') ev.push([S.tDetect + 1, '02:10', tr('eC'), red, 230]);
+  ev.push([S.tDetect + 221, '05:50', tr('e5'), ink, 184]);
+  const LV = [236, 190, 144], placed = [];
+  ev.forEach(e => {
+    const x = XX(headAt(e[0]));
+    const y = LV.find(l => !placed.some(p => p.y === l && Math.abs(p.x - x) < 320)) || 144;
+    placed.push({ x, y }); e[4] = y; e.push(x);
+  });
+  ev.forEach(([m, t, label, c, y, x]) => { g += `<line x1="${x}" y1="${y + 8}" x2="${x}" y2="${yT}" stroke="${c}" stroke-width="1"/><circle cx="${x}" cy="${yT}" r="3.5" fill="${c}"/>`; });
+  ev.forEach(([m, t, label, c, y, x]) => {
+    const right = x > 980;
+    const halo = `paint-order:stroke;stroke:${css('--bg')};stroke-width:7px;stroke-linejoin:round`;
+    g += `<text x="${x + (right ? -6 : 6)}" y="${y - 12}" text-anchor="${right ? 'end' : 'start'}" style="fill:${c};font-size:10.5px;${halo}">${t}</text><text x="${x + (right ? -6 : 6)}" y="${y + 2}" text-anchor="${right ? 'end' : 'start'}" style="font-family:GS;font-size:13.5px;fill:${c};${halo}">${label}</text>`;
+  });
+  // bottom: watch, changes, title block
+  const sv = settle(SCHOOL), fcv = k === 'A' ? '≈ 3 mm' : k === 'B' ? '≈ 1 mm' : '> 15 mm', fcc = k === 'C' ? red : 'inherit';
+  const rows = tr('c' + k);
+  const chg = rows.map(r => `<div style="margin-top:12px"><div class="k" style="font-size:9.5px">${r[0]}</div><div style="display:flex;gap:16px;align-items:baseline;margin-top:3px;font-size:16px"><span style="width:120px">${r[1] === r[2] ? r[1] : `<s>${r[1]}</s>`}</span><span style="color:${k === 'C' ? red : 'inherit'}">${r[1] === r[2] ? (L === 'fr' ? '→ inchangé' : '→ unchanged') : '→ ' + r[2]}</span></div></div>`).join('');
+  const signedRow = S.hand === 'signed' ? tr('tookV') : '—';
+  h.innerHTML = `<svg width="1440" height="900" style="position:absolute;left:0;top:0">${defs()}${g}</svg>
+<div class="hdr"><span style="font-weight:500;font-size:17px;letter-spacing:.04em">COLOSSE</span><span class="mono mut">${tr('hSub')}</span><span style="flex:1"></span>
+<span class="mono" style="display:flex;align-items:center;gap:7px"><i style="width:7px;height:7px;border-radius:50%;background:${op(.7)};display:inline-block"></i>${tr('hState')}</span><span style="font-size:17px;font-variant-numeric:tabular-nums">${hhmm(S.minutes)}</span></div>
+<div style="position:absolute;left:40px;right:40px;top:650px;border-top:1px solid rgba(var(--rgb),.2);display:grid;grid-template-columns:380px 1fr 440px;gap:40px;padding-top:20px">
+  <div><div class="mono" style="color:var(--amb);font-size:10.5px">${tr('watch')}</div><div style="font-size:19px;margin-top:8px">${tr('watchT')}</div>
+    <div style="display:flex;align-items:baseline;gap:10px;margin-top:6px"><span style="font-size:46px;font-weight:500;letter-spacing:-.03em;font-variant-numeric:tabular-nums">${num(sv)}</span><span class="n" style="margin:0">${tr('watchU')}</span></div>
+    <div class="mono" style="margin-top:8px;font-size:11px"><span class="mut">${tr('fc')} · </span><span style="color:${fcc}">${fcv}</span></div></div>
+  <div><div class="k">${tr('chg')}</div>${k === 'C' ? `<div style="margin-top:12px;font-size:15px;color:${red}">${tr('none')}</div>` : ''}${chg}</div>
+  <div><div style="border:1px solid rgba(var(--rgb),.3)"><div class="mono mut" style="padding:9px 12px;font-size:10.5px">${tr('cart')}</div>
+    <div class="row"><div class="mono mut" style="font-size:10px">${tr('by')}</div><div style="font-size:14px">${tr('byV')}</div></div>
+    <div class="row"><div class="mono mut" style="font-size:10px">${tr('dec')}</div><div style="font-size:14px;color:${k === 'C' ? red : 'inherit'}">${tr('decV', { k })}</div></div>
+    <div class="row"><div class="mono mut" style="font-size:10px">${tr('took')}</div><div style="font-size:14px">${signedRow}</div></div></div>
+    <button id="signBtn" class="pri" style="width:100%;margin-top:14px;padding:14px"${S.hand === 'signed' ? ' disabled' : ''}>${tr('sign')}</button></div>
+</div>`;
+  const sb = document.getElementById('signBtn'); if (sb) sb.onclick = sign;
+}
+
+function sign() {
+  if (S.hand !== 'showing') return;
+  S.hand = 'signed'; drawHandover();
+  toast(tr(S.decision === 'B' ? 'signedB' : 'signed'));
+  setTimeout(() => {
+    document.getElementById('handover').style.display = 'none'; S.hand = 'done';
+    if (S.decision === 'A' || S.decision === 'C') { S.playing = true; last = performance.now(); requestAnimationFrame(loop); }
+    panel(); render(); ui();
+  }, 1100);
 }
 
 function animFill(done) {
@@ -366,10 +508,10 @@ document.getElementById('play').onclick = () => {
   if (S.playing) { last = performance.now(); requestAnimationFrame(loop); }
 };
 document.getElementById('reset').onclick = init;
-const setTheme = n => { night = n; document.body.classList.toggle('night', n); drawStatic(); render(); ui(); panel(); };
+const setTheme = n => { night = n; document.body.classList.toggle('night', n); drawStatic(); render(); ui(); panel(); drawHandover(); };
 document.getElementById('tDay').onclick = () => setTheme(false);
 document.getElementById('tNight').onclick = () => setTheme(true);
-const setLang = l => { L = l; try { localStorage.setItem('lang', l); } catch (e) {} drawStatic(); render(); ui(); panel(); };
+const setLang = l => { L = l; try { localStorage.setItem('lang', l); } catch (e) {} drawStatic(); render(); ui(); panel(); drawHandover(); };
 document.getElementById('lFr').onclick = () => setLang('fr');
 document.getElementById('lEn').onclick = () => setLang('en');
 document.addEventListener('keydown', e => { if (e.code === 'Space') { e.preventDefault(); document.getElementById('play').click(); } });

@@ -392,9 +392,9 @@ export default function Colosse() {
         />
 
         {/* 09 — PROTOTYPE */}
-        <Chap n={9} title={t('Le prototype', 'The prototype')} depth="−22 m" lede={t('Fais avancer la machine. Tu verras ce qui se passe quand le vide apparaît.', 'Move the machine forward. You’ll see what happens when the void shows up.')} />
+        <Chap n={9} title={t('Le prototype', 'The prototype')} depth="−22 m" lede={t('Fais avancer la machine, choisis quoi faire face au vide, puis passe la main à l’équipe du matin.', 'Move the machine forward, choose what to do about the void, then hand over to the morning crew.')} />
         <div className="md:hidden border border-black/15">
-          <Media video src="/colosse/colosse-prototype.mp4" width={1622} height={1208} alt={t('Vidéo du prototype : la machine avance, détecte le vide, le pilote choisit l’option A', 'Prototype video: the machine moves forward, detects the void, the driver picks option A')} />
+          <Media video src="/colosse/colosse-prototype-v2.mp4" width={1622} height={1208} alt={t('Vidéo du prototype : la machine détecte le vide, le pilote choisit l’option A, puis la relève de 6 h est signée', 'Prototype video: the machine detects the void, the driver picks option A, then the 6 am handover is signed')} />
         </div>
         <div className="hidden md:block w-full aspect-[16/10] border border-black/15">
           <iframe src="/colosse/prototype/index.html" title={t('Prototype Colosse', 'Colosse prototype')} className="w-full h-full" loading="lazy" />

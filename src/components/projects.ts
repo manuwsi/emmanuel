@@ -23,9 +23,9 @@ export const projects: Project[] = [
   {
     title: same('Colosse'),
     subtitle: { fr: '2026 — Concept UX/UI, pilotage d’un tunnelier', en: '2026 — UX/UI concept, tunnel boring machine cockpit' },
-    image: '/colosse/cover.jpg',
+    image: '/colosse/cover-v2.jpg',
     size: [1667, 1250],
-    hover: '/colosse/cover-hover-v2.jpg',
+    hover: '/colosse/cover.jpg',
     link: '/colosse',
     group: 'product',
   },

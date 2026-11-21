@@ -239,6 +239,12 @@ export default function Colosse() {
           depth="−8 m"
           lede={t('Les ingénieurs lisent déjà des coupes, des hachures et des cotes. Alors l’écran parle leur langue.', 'Engineers already read sections, hatches and dimensions. So the screen speaks their language.')}
         />
+        <p className="max-w-3xl pb-12 text-[17px] leading-[1.55] text-black/75">
+          {t(
+            'Pas d’écran façon science-fiction. C’est un poste de nuit, de 22 h à 6 h, où une décision peut faire tasser une école : à 2 h du matin, le pilote doit comprendre l’écran sans effort. Donc pas d’effets ni de néons, du noir et blanc, et le rouge réservé à ce qui demande une décision. Si tout clignote, plus rien n’alerte. Le mode cabine existe pour la même raison : l’écran ne doit pas éblouir dans le noir. L’originalité est dans la façon de montrer le sol, pas dans l’habillage.',
+            'No sci-fi screen. It’s a night shift, 10 pm to 6 am, where one decision can make a school sink: at 2 am, the driver must understand the screen without effort. So no effects and no neon, black and white, and red kept for what needs a decision. If everything flashes, nothing alerts anymore. Cab mode exists for the same reason: the screen must not dazzle in the dark. The originality is in how the ground is shown, not in the styling.'
+          )}
+        </p>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8 md:gap-10 pb-16">
           {principles.map((p, i) => (
             <div key={p.k} className="border-t-[3px] border-[#0a0a0a] pt-3">

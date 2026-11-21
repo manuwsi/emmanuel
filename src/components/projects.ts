@@ -67,9 +67,8 @@ export const projects: Project[] = [
   {
     title: same('Shu Uemura AI:tutor'),
     subtitle: { fr: '2025 — UI Design, coach beauté IA', en: '2025 — UI design, AI beauty tutor' },
-    image: '/shu-cover-v6.jpg',
+    image: '/shu-cover-v7.jpg',
     size: [1667, 1250],
-    hover: '/shu-hover-v6.jpg',
     link: '/shu-uemura',
     group: 'product',
   },

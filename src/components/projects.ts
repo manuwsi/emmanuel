@@ -59,9 +59,8 @@ export const projects: Project[] = [
   {
     title: same('Serena'),
     subtitle: { fr: '2025 — Recherche, wireframes & UI', en: '2025 — Research, wireframes & UI' },
-    image: '/serena-cover-v6.jpg',
+    image: '/serena-cover-v7.jpg',
     size: [1667, 1250],
-    hover: '/serena-hover-v6.jpg',
     link: '/serena',
     group: 'product',
   },

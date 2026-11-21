@@ -29,17 +29,6 @@ function ProjectCard({ project, index }: { project: Project; index: number }) {
             quality={90}
             className="object-cover"
           />
-          {project.hover && (
-            <Image
-              src={project.hover}
-              alt=""
-              fill
-              sizes="(min-width:768px) 50vw, 100vw"
-              quality={90}
-              loading="eager"
-              className="object-cover opacity-0 group-hover:opacity-100"
-            />
-          )}
         </div>
         <div className="h-[2px] w-full bg-black/10">
           <div className="h-full w-0 bg-[#0a0a0a] transition-[width] duration-700 ease-[cubic-bezier(.22,1,.36,1)] group-hover:w-full" />

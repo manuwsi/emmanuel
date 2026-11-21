@@ -169,7 +169,7 @@ export default function Page() {
       </section>
 
       <Plate
-        src="/foil/duo-v3.jpg"
+        src="/foil/duo-v4.jpg"
         aspect="1700/1062" mobileAspect="1700/1062"
         alt={t('L’accueil de l’application et la fiche d’une carte, sur iPhone', 'The app’s home screen and a card page, on iPhone')}
         caption={t('L’accueil et la fiche d’une carte.', 'The home screen and a card page.')}
@@ -253,7 +253,7 @@ export default function Page() {
           </Lede>
         </div>
         <Plate
-          src="/foil/lineup-v3.jpg"
+          src="/foil/lineup-v4.jpg"
           aspect="1700/956" mobileAspect="1700/956"
           alt={t('L’écran évolution sur iPhone : plus 718 euros depuis les achats', 'The growth screen on iPhone: plus 718 euros since purchase')}
         />

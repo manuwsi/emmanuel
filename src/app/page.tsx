@@ -26,6 +26,7 @@ function ProjectCard({ project, index }: { project: Project; index: number }) {
             fill
             priority={index < 2}
             sizes="(min-width:768px) 50vw, 100vw"
+            quality={90}
             className="object-cover transition-transform duration-[1.4s] ease-[cubic-bezier(.22,1,.36,1)] group-hover:scale-[1.03]"
           />
           {project.hover && (
@@ -34,6 +35,7 @@ function ProjectCard({ project, index }: { project: Project; index: number }) {
               alt=""
               fill
               sizes="(min-width:768px) 50vw, 100vw"
+              quality={90}
               loading="eager"
               className="object-cover opacity-0 group-hover:opacity-100"
             />

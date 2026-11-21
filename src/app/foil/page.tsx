@@ -194,10 +194,11 @@ export default function Page() {
       </section>
 
       <Plate
-        src="/foil/collection.jpg"
-        aspect="2000/800" mobileAspect="2000/800"
-        alt={t('Rendu 3D de cinq cartes de trois jeux différents côte à côte', '3D render of five cards from three different games side by side')}
-        caption={t('Cinq cartes, trois jeux.', 'Five cards, three games.')}
+        src="/foil/collection-main.jpg"
+        mobileSrc="/foil/collection-main-m.jpg"
+        aspect="2400/960" mobileAspect="1600/1200"
+        alt={t('Une main tient l’iPhone, à contre-jour, sur l’écran Collection : des cartes de trois jeux', 'A hand holds the iPhone against the light, on the Collection screen: cards from three games')}
+        caption={t('Une seule collection, trois jeux.', 'One collection, three games.')}
       />
 
       {/* the product: one dark chapter */}
@@ -259,11 +260,11 @@ export default function Page() {
       </section>
 
       <Plate
-        src="/foil/hero.jpg"
-        mobileSrc="/foil/cover.jpg"
-        aspect="1700/956" mobileAspect="1667/1250"
-        alt={t('Rendu 3D d’une carte holographique sous trois angles de lumière', '3D render of a holographic card under three light angles')}
-        caption={t('La carte en 3D, sous trois lumières.', 'The card in 3D, under three lights.')}
+        src="/foil/scan-main.jpg"
+        mobileSrc="/foil/scan-main-m.jpg"
+        aspect="2400/1350" mobileAspect="1600/1200"
+        alt={t('Un doigt touche la carte reconnue sur l’écran Scan, à contre-jour', 'A finger taps the recognised card on the Scan screen, against the light')}
+        caption={t('Cadrer une carte pour l’ajouter.', 'Frame a card to add it.')}
       />
 
       {/* desire */}

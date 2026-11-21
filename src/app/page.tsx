@@ -27,7 +27,7 @@ function ProjectCard({ project, index }: { project: Project; index: number }) {
             priority={index < 2}
             sizes="(min-width:768px) 50vw, 100vw"
             quality={90}
-            className="object-cover transition-transform duration-[1.4s] ease-[cubic-bezier(.22,1,.36,1)] group-hover:scale-[1.03]"
+            className="object-cover"
           />
           {project.hover && (
             <Image

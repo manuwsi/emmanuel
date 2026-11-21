@@ -50,9 +50,9 @@ export const projects: Project[] = [
   {
     title: same('Foil'),
     subtitle: { fr: '2026 — Concept iOS, collection de cartes', en: '2026 — iOS concept, card collection' },
-    image: '/foil/cover.jpg',
+    image: '/foil/cover-v2.jpg',
     size: [1667, 1250],
-    hover: '/foil/cover-hover.jpg',
+    hover: '/foil/cover-hover-v2.jpg',
     link: '/foil',
     group: 'product',
   },

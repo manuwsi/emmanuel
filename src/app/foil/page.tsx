@@ -109,9 +109,10 @@ export default function Page() {
       {/* cover: one render, edge to edge */}
       <section className="relative h-[100svh] w-full bg-[#0b0c0e]">
         <Weave
-          src={phone ? '/foil/cover.jpg' : '/foil/hero.jpg'}
-          alt={t('Rendu 3D d’une carte holographique sous trois angles de lumière', '3D render of a holographic card under three light angles')}
+          src={phone ? '/foil/cover-v2.jpg' : '/foil/hero-v2.jpg'}
+          alt={t('Gros plan d’un iPhone tenu en main, sur l’écran évolution de Foil : plus 718 euros', 'Close-up of an iPhone held in hand, on Foil’s growth screen: plus 718 euros')}
           sizes="100vw"
+          position={phone ? '42% 50%' : 'center'}
           priority
           force
         />
@@ -252,15 +253,18 @@ export default function Page() {
             )}
           </Lede>
         </div>
-        <Plate
-          src="/foil/lineup-v4.jpg"
-          aspect="1700/956" mobileAspect="1700/956"
-          alt={t('L’écran évolution sur iPhone : plus 718 euros depuis les achats', 'The growth screen on iPhone: plus 718 euros since purchase')}
-        />
-        <div className="mt-1">
+        <div>
           <Strip items={screens} label={t('Les écrans', 'The screens')} hint={t('Faire glisser', 'Drag')} />
         </div>
       </section>
+
+      <Plate
+        src="/foil/hero.jpg"
+        mobileSrc="/foil/cover.jpg"
+        aspect="1700/956" mobileAspect="1667/1250"
+        alt={t('Rendu 3D d’une carte holographique sous trois angles de lumière', '3D render of a holographic card under three light angles')}
+        caption={t('La carte en 3D, sous trois lumières.', 'The card in 3D, under three lights.')}
+      />
 
       {/* desire */}
       <section id="envie" className="scroll-mt-8 px-2 py-28 md:px-3 md:py-40">

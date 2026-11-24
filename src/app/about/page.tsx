@@ -41,8 +41,12 @@ export default function AboutPage() {
       date: t('Depuis nov. 2025', 'Since Nov. 2025'),
       items: [
         t(
-          'Mission OKCC × L’Oréal Professionnel (2 semaines) : conception et production de vidéos animées générées par IA.',
-          'OKCC × L’Oréal Professionnel mission (2 weeks): designed and produced AI-generated animated videos.'
+          'Mission OKCC × L’Oréal Professionnel : conception et production de vidéos animées générées par IA.',
+          'OKCC × L’Oréal Professionnel mission: designed and produced AI-generated animated videos.'
+        ),
+        t(
+          'En parallèle, je conçois mes propres produits (Dailies, Élan, Foil, Colosse, le site Soutrame).',
+          'Alongside, I design my own products (Dailies, Élan, Foil, Colosse, the Soutrame store).'
         ),
       ],
     },

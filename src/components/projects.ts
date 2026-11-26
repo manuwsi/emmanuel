@@ -32,9 +32,9 @@ export const projects: Project[] = [
   {
     title: same('Proxy'),
     subtitle: { fr: '2026 — Concept UX/UI, superviser un agent IA', en: '2026 — UX/UI concept, supervising an AI agent' },
-    image: '/proxy/cover.jpg',
+    image: '/proxy/cover-photo.jpg',
     size: [1667, 1250],
-    hover: '/proxy/cover-hover.jpg',
+    hover: '/proxy/cover-photo-hover.jpg',
     link: '/proxy',
     group: 'product',
   },

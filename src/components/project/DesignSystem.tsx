@@ -41,12 +41,14 @@ const PRES: Record<string, string> = {
   work: '..a...aha.ahaha.aha...a..',
   wait: '......a.a.......a.a......',
   stop: 'w...w.w.w...w...w.w.w...w',
+  idle: '............a............',
+  done: 'aaaaa.....aaaaa.....aaaaa',
 };
-function Presence({ k, size = 8 }: { k: string; size?: number }) {
+export function Presence({ k, size = 8 }: { k: string; size?: number }) {
   return (
     <div className="grid grid-cols-5 w-fit" style={{ gap: size * 0.7 }}>
       {PRES[k].split('').map((c, i) => (
-        <span key={i} className="block rounded-full" style={{ width: size, height: size, background: c === 'a' ? P.ink : c === 'h' ? P.grey : c === 'w' ? P.warn : P.off }} />
+        <span key={i} className="block rounded-full transition-colors duration-500" style={{ width: size, height: size, background: c === 'a' ? P.ink : c === 'h' ? P.grey : c === 'w' ? P.warn : P.off }} />
       ))}
     </div>
   );

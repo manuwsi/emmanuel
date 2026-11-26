@@ -24,7 +24,7 @@ const same = (s: string) => ({ fr: s, en: s });
 export const projects: Project[] = [
   {
     title: same('Colosse'),
-    subtitle: { fr: '2026 — Interface métier, pilotage d’un tunnelier', en: '2026 — Industrial interface, tunnel boring machine cockpit' },
+    subtitle: { fr: '2026 — Cockpit de tunnelier', en: '2026 — Tunnel boring machine cockpit' },
     image: '/colosse/cover-v3.jpg',
     size: [1667, 1250],
     hover: '/colosse/cover.jpg',
@@ -33,7 +33,7 @@ export const projects: Project[] = [
   },
   {
     title: same('Proxy'),
-    subtitle: { fr: '2026 — IA agentique, superviser un agent personnel', en: '2026 — Agentic AI, supervising a personal agent' },
+    subtitle: { fr: '2026 — Agent IA personnel', en: '2026 — Personal AI agent' },
     image: '/proxy/cover-photo-v3.jpg',
     size: [1667, 1250],
     hover: '/proxy/cover-photo-hover-v3.jpg',
@@ -42,7 +42,7 @@ export const projects: Project[] = [
   },
   {
     title: same('Élan'),
-    subtitle: { fr: '2026 — Grand public, montre connectée et iOS', en: '2026 — Consumer, smartwatch and iOS' },
+    subtitle: { fr: '2026 — Montre connectée et iOS', en: '2026 — Smartwatch and iOS' },
     image: '/elan/cover-v2.jpg',
     size: [1667, 1250],
     hover: '/elan/cover.jpg',
@@ -51,7 +51,7 @@ export const projects: Project[] = [
   },
   {
     title: same('Soutrame'),
-    subtitle: { fr: '2026 — Marque et e-commerce, site en ligne', en: '2026 — Brand and e-commerce, live site' },
+    subtitle: { fr: '2026 — E-commerce', en: '2026 — E-commerce' },
     image: '/soutrame-case/cover-v2.jpg',
     size: [1667, 1250],
     hover: '/soutrame-case/cover-hover.jpg',
@@ -60,7 +60,7 @@ export const projects: Project[] = [
   },
   {
     title: same('Shu Uemura AI:tutor'),
-    subtitle: { fr: '2025 — OKCC × Shu Uemura, coach beauté IA', en: '2025 — OKCC × Shu Uemura, AI beauty tutor' },
+    subtitle: { fr: '2025 — Coach beauté IA, OKCC', en: '2025 — AI beauty tutor, OKCC' },
     image: '/shu-cover-v7.jpg',
     size: [1667, 1250],
     link: '/shu-uemura',
@@ -68,7 +68,7 @@ export const projects: Project[] = [
   },
   {
     title: same('Hennessy X.O Second Skin'),
-    subtitle: { fr: '2025 — OKCC × Hennessy, UI et 3D', en: '2025 — OKCC × Hennessy, UI and 3D' },
+    subtitle: { fr: '2025 — UI et 3D, OKCC', en: '2025 — UI and 3D, OKCC' },
     image: '/hennessy.webp',
     size: [3000, 1688],
     link: '/hennessy',
@@ -76,7 +76,7 @@ export const projects: Project[] = [
   },
   {
     title: same('Dailies'),
-    subtitle: { fr: '2026 — Concept SaaS, production vidéo IA', en: '2026 — SaaS concept, AI video production' },
+    subtitle: { fr: '2026 — Production vidéo IA', en: '2026 — AI video production' },
     image: '/dailies/cover.jpg',
     size: [1667, 1250],
     hover: '/dailies/cover-hover.jpg',
@@ -85,7 +85,7 @@ export const projects: Project[] = [
   },
   {
     title: same('Foil'),
-    subtitle: { fr: '2026 — Concept iOS, collection de cartes', en: '2026 — iOS concept, card collection' },
+    subtitle: { fr: '2026 — Collection de cartes, iOS', en: '2026 — Card collection, iOS' },
     image: '/foil/cover-v2.jpg',
     size: [1667, 1250],
     hover: '/foil/cover-hover-v2.jpg',
@@ -94,7 +94,7 @@ export const projects: Project[] = [
   },
   {
     title: same('Serena'),
-    subtitle: { fr: '2025 — Projet d’école, recherche et UI', en: '2025 — School project, research and UI' },
+    subtitle: { fr: '2025 — Recherche et UI', en: '2025 — Research and UI' },
     image: '/serena-cover-v7.jpg',
     size: [1667, 1250],
     link: '/serena',
@@ -102,7 +102,7 @@ export const projects: Project[] = [
   },
   {
     title: same('HIGAN'),
-    subtitle: { fr: '2026 — Design de flacon, 3D & direction artistique', en: '2026 — Bottle design, 3D & art direction' },
+    subtitle: { fr: '2026 — Flacon, 3D', en: '2026 — Bottle, 3D' },
     image: '/higan/silhouette.jpg',
     size: [1797, 2248],
     link: '/higan',
@@ -110,7 +110,7 @@ export const projects: Project[] = [
   },
   {
     title: same('Post Archive Faction'),
-    subtitle: { fr: '2025 — Direction créative, UI & motion', en: '2025 — Creative direction, UI & motion' },
+    subtitle: { fr: '2025 — Direction créative', en: '2025 — Creative direction' },
     image: '/paf-cover-v2.jpg',
     size: [1667, 1250],
     link: '/post-archive-faction',
@@ -118,7 +118,7 @@ export const projects: Project[] = [
   },
   {
     title: { fr: 'Recherche visuelle IA', en: 'AI Visual Research' },
-    subtitle: { fr: '2025 — Motion, direction artistique IA', en: '2025 — Motion, AI art direction' },
+    subtitle: { fr: '2025 — Motion IA', en: '2025 — AI motion' },
     image: '/f1-cover.webp',
     size: [1800, 1008],
     link: '/ai-research',

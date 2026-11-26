@@ -107,14 +107,9 @@ export default function Home() {
           transition={{ duration: 1, delay: 0.4 }}
         >
           <p className="md:col-span-2 md:max-w-[480px]">
-            {t(
-              'Je conçois des produits où l’interface doit tenir sous la contrainte : le cockpit d’un tunnelier, un agent IA qui agit pour vous, une montre qu’on lit en courant.',
-              'I design products whose interface has to hold up under pressure: the cockpit of a tunnel boring machine, an AI agent that acts for you, a watch you read while running.'
-            )}
+            {t('Précédemment OKCC, studio créatif — ', 'Previously OKCC, creative studio — ')}Hennessy, Shu Uemura, Louis Vuitton, L&apos;Oréal, YSL Beauty, HOKA.
           </p>
-          <p className="text-black/50 md:col-span-1">
-            {t('Un an chez OKCC, studio créatif, pour', 'One year at OKCC, creative studio, for')} Hennessy, Shu Uemura, Louis Vuitton, L&apos;Oréal, YSL Beauty, HOKA.
-          </p>
+          <p className="text-black/50 md:col-span-1">{t('Disponible — CDI, Paris ou remote', 'Available — full-time, Paris or remote')}</p>
           <a href="#work" className="hover:underline md:text-right">
             {t('Voir les projets', 'See the work')} ↓
           </a>
@@ -131,7 +126,7 @@ export default function Home() {
           ))}
         </div>
 
-        <GroupLabel count={more.length}>{t('Autres projets — clients OKCC et concepts', 'More work — OKCC clients and concepts')}</GroupLabel>
+        <GroupLabel count={more.length}>{t('Autres projets', 'More work')}</GroupLabel>
         <div className="grid grid-cols-1 gap-x-3 gap-y-12 md:grid-cols-3 md:gap-y-14">
           {more.map((project, i) => (
             <ProjectCard key={project.link} project={project} index={featured.length + i} small />
@@ -139,7 +134,7 @@ export default function Home() {
           {more.length % 3 !== 0 && contactCard}
         </div>
 
-        <GroupLabel count={explorations.length}>{t('Explorations visuelles — direction artistique, 3D, marque', 'Visual explorations — art direction, 3D, brand')}</GroupLabel>
+        <GroupLabel count={explorations.length}>{t('Explorations', 'Explorations')}</GroupLabel>
         <div className="grid grid-cols-1 gap-x-3 gap-y-12 md:grid-cols-3 md:gap-y-14">
           {explorations.map((project, i) => (
             <ProjectCard key={project.link} project={project} index={featured.length + more.length + i} small />

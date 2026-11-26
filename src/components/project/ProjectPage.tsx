@@ -283,3 +283,17 @@ export function Chapter({ title, n, lede, children }: { title: string; n?: numbe
     </motion.div>
   );
 }
+
+/** The 30-second read: three short statements under the hero image. */
+export function Summary({ items }: { items: { k: string; v: string }[] }) {
+  return (
+    <div className="grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-8 border-t border-black/15 pt-5">
+      {items.map((x) => (
+        <div key={x.k}>
+          <span className="block text-[13px] text-black/55">{x.k}</span>
+          <p className="mt-2 text-[15px] leading-[1.5]">{x.v}</p>
+        </div>
+      ))}
+    </div>
+  );
+}

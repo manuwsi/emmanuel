@@ -1,7 +1,7 @@
 'use client';
 
 import Link from 'next/link';
-import { ProjectPage, Media, Row, Chapter } from '@/components/project/ProjectPage';
+import { ProjectPage, Media, Row, Chapter, Summary } from '@/components/project/ProjectPage';
 import { useT } from '@/components/i18n';
 
 type T = <V,>(fr: V, en: V) => V;
@@ -67,7 +67,8 @@ export default function Page() {
         tools: 'Figma, Midjourney, Next.js, Claude',
       }}
       hero={
-        <>
+        <div className="space-y-8 md:space-y-10">
+          <>
       <Media src="/soutrame-case/campaign.jpg" alt={t('Soutrame — ouverture du site', 'Soutrame — site opening')} width={2400} height={1500} priority />
           <p className="text-[13px] text-black/50 pt-2">
             <Link href="/soutrame" className="underline underline-offset-2 hover:text-black">
@@ -76,6 +77,14 @@ export default function Page() {
             — {t('le site est en ligne.', 'the site is live.')}
           </p>
         </>
+          <Summary
+            items={[
+              { k: t('Le problème', 'The problem'), v: t('Vendre en précommande la première capsule d’une marque inconnue, sans budget, à des visiteurs qui arrivent d’Instagram.', 'Sell the first capsule of an unknown brand on pre-order, with no budget, to visitors coming from Instagram.') },
+              { k: t('Ce que j’ai conçu', 'What I designed'), v: t('Une boutique sur mesure, de la retouche des photos au parcours d’achat, en ligne sur soutrame.com.', 'A custom shop, from photo retouching to the purchase flow, live at soutrame.com.') },
+              { k: t('Le parti pris', 'The stance'), v: t('Le vêtement d’abord : l’univers de la marque tient en un seul chapitre, tout le reste sert à vendre.', 'The garment first: the brand’s universe fits in one chapter, everything else is there to sell.') },
+            ]}
+          />
+        </div>
       }
       intro={t(
         <>

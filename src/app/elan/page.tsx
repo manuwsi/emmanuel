@@ -1,7 +1,7 @@
 'use client';
 
 import Image from 'next/image';
-import { ProjectPage, Media, Chapter } from '@/components/project/ProjectPage';
+import { ProjectPage, Media, Chapter, Summary } from '@/components/project/ProjectPage';
 import { useT } from '@/components/i18n';
 import styles from './elan.module.css';
 
@@ -247,7 +247,8 @@ export default function Page() {
         tools: 'Figma, Blender, Claude',
       }}
       hero={
-        <Media
+        <div className="space-y-8 md:space-y-10">
+          <Media
           src="/elan/hero.jpg"
           alt={t(
             'Rendu 3D de la montre : écran d’effort, 320 mètres restants, allure 4:02 au kilomètre',
@@ -257,25 +258,33 @@ export default function Page() {
           height={1250}
           priority
         />
+          <Summary
+            items={[
+              { k: t('Le problème', 'The problem'), v: t('Pour les coureurs qui font du fractionné seuls : en plein effort, un coup d’œil dure une seconde, et les montres affichent tout à la fois.', 'For runners who do intervals on their own: mid-effort, a glance lasts a second, and watches show everything at once.') },
+              { k: t('Ce que j’ai conçu', 'What I designed'), v: t('Une appli montre et iPhone : préparer la séance d’un geste, une seule information par écran en courant, un verdict à la fin.', 'A watch and iPhone app: set up the session in one gesture, one piece of information per screen while running, a verdict at the end.') },
+              { k: t('Le parti pris', 'The stance'), v: t('Une lecture en trois temps, la teinte, le mot, le chiffre : on sait où on en est avant même de lire.', 'A three-step read, tint, word, figure: you know where you are before you even read.') },
+            ]}
+          />
+        </div>
       }
       intro={t(
         <>
-          <p>Élan est une appli de fractionné pour montre et iPhone. En plein effort, un coup d’œil dure une à deux secondes : tout est pensé pour ce temps-là.</p>
+          <p className="text-black/60">Projet personnel. Un premier échange avec un coureur a orienté les choix ; le test sur piste est la prochaine étape.</p>
         </>,
         <>
-          <p>Élan is an interval-training app for watch and iPhone. Mid-effort, a glance lasts one to two seconds: everything is designed for that moment.</p>
+          <p className="text-black/60">Personal project. A first conversation with a runner shaped the choices; the track test is the next step.</p>
         </>
       )}
     >
 
 
       {/* PROBLEM */}
-      <Chapter title={t('Le problème', 'The problem')}>
+      <Chapter n={1} title={t('Le problème', 'The problem')} lede={t('Trois questions, une seconde pour y répondre.', 'Three questions, one second to answer them.')}>
         <p>
           {t('En fractionné, on se pose trois questions : où j’en suis, suis-je à la bonne allure, quand ça change. Les montres de sport, elles, affichent tout en même temps.', 'In interval training you ask three questions: where am I, am I on pace, when does it change. Sports watches show everything at once.')}
         </p>
         <p>
-          {t('J’ai comparé Garmin, Apple Watch, Runna et Strava. Un premier retour de terrain a confirmé l’essentiel : en courant, on ne regarde que la distance restante et l’allure.', 'I compared Garmin, Apple Watch, Runna and Strava. Early feedback from the field confirmed the essentials: while running, you only look at distance left and pace.')}
+          {t('J’ai comparé Garmin, Apple Watch, Runna et Strava. Un premier échange avec un coureur qui pratique le fractionné a confirmé l’essentiel : en courant, il ne regarde que la distance restante et l’allure.', 'I compared Garmin, Apple Watch, Runna and Strava. A first conversation with a runner who does intervals confirmed the essentials: while running, he only looks at distance left and pace.')}
         </p>
       </Chapter>
       <ol className="grid grid-cols-1 md:grid-cols-3 gap-px bg-black/15 border border-black/15">
@@ -289,7 +298,7 @@ export default function Page() {
       </ol>
 
       {/* CONCEPT */}
-      <Chapter title={t('Le concept', 'The concept')}>
+      <Chapter n={2} title={t('Le concept', 'The concept')} lede={t('Le téléphone prépare et relit, la montre ne garde que ce qui se lit en courant.', 'The phone prepares and reviews, the watch keeps only what can be read while running.')}>
         <p>
           {t(
             'Le téléphone sert à préparer la séance et à la relire. La montre ne garde que ce qui se lit en courant.',
@@ -319,7 +328,7 @@ export default function Page() {
       </ol>
 
       {/* PRINCIPLE */}
-      <Chapter title={t('Le principe', 'The principle')}>
+      <Chapter n={3} title={t('Le principe', 'The principle')} lede={t('Une lecture en trois temps : la teinte, le mot, le chiffre.', 'A three-step read: tint, word, figure.')}>
         <p>
           {t('En une seconde, on lit une partie d’écran, toujours dans le même ordre. La montre est conçue pour cette lecture en trois temps.', 'In one second you read part of a screen, always in the same order. The watch is built for that three-step reading.')}
         </p>
@@ -382,7 +391,7 @@ export default function Page() {
       </div>
 
       {/* WATCH */}
-      <Chapter title={t('La montre', 'The watch')}>
+      <Chapter n={4} title={t('La montre', 'The watch')} lede={t('Un écran, une question.', 'One screen, one question.')}>
         <p>
           {t('La teinte du verre change, jamais la mise en page : bleuté en récupération, neutre en effort, rosé hors cible.', 'The glass tint changes, never the layout: bluish in recovery, neutral in effort, pink off target.')}
         </p>
@@ -488,7 +497,7 @@ export default function Page() {
       </div>
 
       {/* DRAWN DATA */}
-      <Chapter title={t('Les données en points', 'Data in dots')}>
+      <Chapter n={5} title={t('Les données en points', 'Data in dots')} lede={t('On reconnaît la forme avant de lire le chiffre.', 'You recognise the shape before reading the figure.')}>
         <p>
           {t(
             'Du blanc, du verre fumé et des points. Chaque illustration représente une mesure, donc on reconnaît la forme avant de lire le chiffre.',
@@ -538,7 +547,7 @@ export default function Page() {
       </div>
 
       {/* PHONE */}
-      <Chapter title={t('Le téléphone', 'The phone')}>
+      <Chapter n={6} title={t('Le téléphone', 'The phone')} lede={t('Un verdict d’abord, le détail ensuite.', 'A verdict first, the detail after.')}>
         <p>
           {t(
             'La séance s’écrit comme une phrase : huit fois 400 mètres à 4:00, une minute de récupération. On touche une valeur pour la modifier.',
@@ -578,7 +587,7 @@ export default function Page() {
       </ol>
 
       {/* NEXT */}
-      <Chapter title={t('La suite', 'What’s next')}>
+      <Chapter n={7} title={t('La suite', 'What’s next')}>
         <p>
           {t('Prochaine étape : un test de lisibilité en mouvement pour fixer la taille des chiffres, puis le prototype sur piste avec des coureurs.', 'Next step: a legibility test in motion to set the figure size, then the prototype on the track with runners.')}
         </p>

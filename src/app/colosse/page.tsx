@@ -4,7 +4,7 @@ import { ReactNode } from 'react';
 import Link from 'next/link';
 import { motion } from 'framer-motion';
 import Header from '@/components/Header';
-import { Media } from '@/components/project/ProjectPage';
+import { Media, Summary } from '@/components/project/ProjectPage';
 import { nextProject } from '@/components/projects';
 import { useT } from '@/components/i18n';
 import Cutter from '@/components/colosse/Cutter';
@@ -200,6 +200,15 @@ export default function Colosse() {
             )}
           </figcaption>
         </figure>
+        <div className="mt-10 md:mt-14">
+          <Summary
+            items={[
+              { k: t('Le problème', 'The problem'), v: t('Le pilote surveille la pression, le terrain et les bâtiments dans des cases séparées, et fait les liens de tête, souvent la nuit.', 'The driver watches pressure, ground and buildings in separate boxes, and makes the links in his head, often at night.') },
+              { k: t('Ce que j’ai conçu', 'What I designed'), v: t('Un poste de pilotage qui dessine le sous-sol comme un plan : chaque information à sa place réelle, jour et nuit, avec un prototype codé.', 'A cockpit that draws the underground like a plan: every piece of information in its real place, day and night, with a coded prototype.') },
+              { k: t('Le parti pris', 'The stance'), v: t('L’écran ne décide jamais : il montre l’effet de chaque option en surface, et un humain choisit.', 'The screen never decides: it shows the effect of each option at the surface, and a human chooses.') },
+            ]}
+          />
+        </div>
       </div>
 
       {/* 01 — SCALE */}

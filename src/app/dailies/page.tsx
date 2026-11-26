@@ -1,6 +1,6 @@
 'use client';
 
-import { ProjectPage, Media, Row, Chapter } from '@/components/project/ProjectPage';
+import { ProjectPage, Media, Row, Chapter, Summary } from '@/components/project/ProjectPage';
 import { useT } from '@/components/i18n';
 import { DailiesSystem } from '@/components/project/DesignSystem';
 
@@ -126,7 +126,8 @@ export default function Page() {
         tools: t('HTML/CSS avec Claude', 'HTML/CSS with Claude'),
       }}
       hero={
-        <>
+        <div className="space-y-8 md:space-y-10">
+          <>
       <Media src="/dailies/01-projet.webp" alt={t('Dailies — le projet et ses huit plans', 'Dailies — the project and its eight shots')} {...W} priority />
           <p className="text-[13px] text-black/50 pt-2">
             <a href="/dailies/prototype/index.html" className="underline underline-offset-2 hover:text-black">
@@ -135,6 +136,14 @@ export default function Page() {
             — {t('à voir sur ordinateur.', 'best on a computer.')}
           </p>
         </>
+          <Summary
+            items={[
+              { k: t('Le problème', 'The problem'), v: t('Des centaines de générations IA par film : on perd la bonne version, son coût et son historique.', 'Hundreds of AI generations per film: the right version, its cost and its history get lost.') },
+              { k: t('Ce que j’ai conçu', 'What I designed'), v: t('Un outil web pour studios : chaque plan garde ses versions, leur prompt et leur coût, et le client valide une seule version.', 'A web tool for studios: each shot keeps its versions, their prompt and cost, and the client approves a single version.') },
+              { k: t('Le parti pris', 'The stance'), v: t('Afficher le coût avant de générer, jamais après.', 'Show the cost before generating, never after.') },
+            ]}
+          />
+        </div>
       }
       intro={t(
         <>

@@ -20,6 +20,7 @@ export function ProjectPage({
   meta,
   intro,
   lede,
+  hero,
   children,
 }: {
   title: string;
@@ -28,6 +29,8 @@ export function ProjectPage({
   intro: ReactNode;
   /** One plain sentence saying what the project is, shown large under the title (as on Foil). */
   lede?: string;
+  /** Optional visual + summary shown right under the title, before the meta block. */
+  hero?: ReactNode;
   children: ReactNode;
 }) {
   const t = useT();
@@ -57,7 +60,7 @@ export function ProjectPage({
           <h1 className="text-[13vw] md:text-[7vw] font-medium leading-[0.9] tracking-[-0.045em]">
             {title}
           </h1>
-          <h2 className="text-[13px] leading-[1.35] text-black/50">
+          <h2 className="text-[13px] leading-[1.35] text-black/60">
             {subtitle}
           </h2>
           {lede && (
@@ -66,6 +69,12 @@ export function ProjectPage({
             </p>
           )}
         </motion.div>
+
+        {hero && (
+          <motion.div initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 1, delay: 0.15 }} className="mt-12 md:mt-16">
+            {hero}
+          </motion.div>
+        )}
 
         {/* META + INTRO */}
         <motion.div
@@ -77,7 +86,7 @@ export function ProjectPage({
           <dl className="md:col-span-4 grid grid-cols-2 md:grid-cols-1 gap-6 content-start">
             {metaRows.map((m) => (
               <div key={m.label} className="space-y-1">
-                <dt className="text-[13px] text-black/45">{m.label}</dt>
+                <dt className="text-[13px] text-black/55">{m.label}</dt>
                 <dd className="text-[13px] leading-[1.35]">{m.value}</dd>
               </div>
             ))}

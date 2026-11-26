@@ -24,7 +24,7 @@ function Label({ children, className = '' }: { children: ReactNode; className?: 
 
 /* ───────────────────────── PROXY — a specimen sheet in dots ───────────────────────── */
 
-const P = { paper: '#ffffff', ink: '#121212', grey: '#868b90', line: '#e5e7e9', off: '#d8dbde', warn: '#c9461f' };
+const P = { paper: '#ffffff', ink: '#121212', grey: '#6c7176', line: '#e5e7e9', off: '#d8dbde', warn: '#c9461f' };
 
 /** A 5×5 grid where the number of lit dots says how much of a screen the colour takes. */
 function Dose({ n, color }: { n: number; color: string }) {

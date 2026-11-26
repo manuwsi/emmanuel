@@ -9,40 +9,40 @@
 @font-face{font-family:GM;font-weight:500;src:url('fonts/geist-mono-latin-500-normal.woff2')}
 
 *{box-sizing:border-box;margin:0;padding:0}
-html,body{background:#e9e7e2}
+html,body{background:#eceef0}
 body{font-family:GS;font-size:13px;line-height:1.38;color:#121212;-webkit-font-smoothing:antialiased}
-#stage{width:1440px;height:900px;position:relative;overflow:hidden;background:#f7f6f3}
+#stage{width:1440px;height:900px;position:relative;overflow:hidden;background:#ffffff}
 a{color:inherit;text-decoration:none}
 .row{display:flex;align-items:center}.col{display:flex;flex-direction:column}.sp{flex:1}
-.mut{color:#7b7a76}.dim{color:#a9a7a1}
+.mut{color:#6c7176}.dim{color:#a3a8ad}
 .mono{font-family:GM;font-size:11.5px;letter-spacing:.01em}
 .serif{font-family:NR;font-weight:400;letter-spacing:-.01em}
-.hair{border:1px solid #dcd9d2}
-.hb{border-bottom:1px solid #e3e0d9}.ht{border-top:1px solid #e3e0d9}.hl{border-left:1px solid #e3e0d9}.hr{border-right:1px solid #e3e0d9}
+.hair{border:1px solid #dcdfe2}
+.hb{border-bottom:1px solid #e5e7e9}.ht{border-top:1px solid #e5e7e9}.hl{border-left:1px solid #e5e7e9}.hr{border-right:1px solid #e5e7e9}
 .btn{display:inline-flex;align-items:center;gap:8px;height:34px;padding:0 14px;border:1px solid #121212;font-weight:500;white-space:nowrap;cursor:pointer;background:transparent}
-.btn.k{background:#121212;color:#f7f6f3}
-.btn.g{border-color:#dcd9d2;color:#3b3a37}
-.tag{display:inline-flex;align-items:center;gap:6px;height:22px;padding:0 8px;border:1px solid #dcd9d2;font-size:11.5px;color:#55534f;white-space:nowrap}
-.tag.k{background:#121212;color:#f7f6f3;border-color:#121212}
+.btn.k{background:#121212;color:#ffffff}
+.btn.g{border-color:#dcdfe2;color:#34383c}
+.tag{display:inline-flex;align-items:center;gap:6px;height:22px;padding:0 8px;border:1px solid #dcdfe2;font-size:11.5px;color:#4c5156;white-space:nowrap}
+.tag.k{background:#121212;color:#ffffff;border-color:#121212}
 .tag.w{border-color:#c9461f;color:#c9461f}
-.lab{font-size:11px;text-transform:uppercase;letter-spacing:.08em;color:#8d8b85}
+.lab{font-size:11px;text-transform:uppercase;letter-spacing:.08em;color:#868b90}
 
 /* top bar */
 .top{height:56px;padding:0 28px;gap:22px}
 .logo{gap:10px;font-weight:600;letter-spacing:-.01em;font-size:14px}
-.nav a{color:#7b7a76;margin-right:20px}.nav a.on{color:#121212}
-.av{width:26px;height:26px;border-radius:50%;background:#cfcac0;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:600;color:#3b3a37}
+.nav a{color:#6c7176;margin-right:20px}.nav a.on{color:#121212}
+.av{width:26px;height:26px;border-radius:50%;background:#d3d7da;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:600;color:#34383c}
 
 /* dot matrix: the agent's presence */
 .dm{display:grid;gap:3px}
-.dm i{display:block;width:5px;height:5px;border-radius:50%;background:#d6d3cc}
-.dm i.a{background:#121212}.dm i.h{background:#8d8b85}.dm i.w{background:#c9461f}
+.dm i{display:block;width:5px;height:5px;border-radius:50%;background:#d8dbde}
+.dm i.a{background:#121212}.dm i.h{background:#868b90}.dm i.w{background:#c9461f}
 .dm.big{gap:7px}.dm.big i{width:11px;height:11px}
 .dm.xl{gap:10px}.dm.xl i{width:16px;height:16px}
 
 /* autonomy scale */
 .scale{display:grid;grid-template-columns:repeat(4,1fr);gap:0}
-.scale span{height:6px;background:#e3e0d9;margin-right:3px}
+.scale span{height:6px;background:#e5e7e9;margin-right:3px}
 .scale span.a{background:#121212}
 
 #bar{position:fixed;left:0;right:0;bottom:0;display:flex;gap:16px;align-items:center;padding:10px 16px;font:13px/1.3 GS,sans-serif;color:#ddd;background:#121212e6;z-index:9}

@@ -1,6 +1,6 @@
 import type { Metadata } from 'next';
 
-const description = 'Proxy, un concept d’interface pour superviser un agent IA personnel : niveaux d’autonomie, validation, journal et arrêt de sécurité.';
+const description = 'Proxy, un concept d’application pour superviser un agent IA personnel : permissions, niveaux d’autonomie par domaine, validation, journal, pause de sécurité et gestion des erreurs.';
 
 export const metadata: Metadata = {
   title: 'Proxy',

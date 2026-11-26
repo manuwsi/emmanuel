@@ -24,14 +24,14 @@ function Label({ children, className = '' }: { children: ReactNode; className?: 
 
 /* ───────────────────────── PROXY — a specimen sheet in dots ───────────────────────── */
 
-const P = { paper: '#f7f6f3', ink: '#121212', grey: '#8d8b85', line: '#e3e0d9', off: '#d6d3cc', warn: '#c9461f' };
+const P = { paper: '#ffffff', ink: '#121212', grey: '#868b90', line: '#e5e7e9', off: '#d8dbde', warn: '#c9461f' };
 
 /** A 5×5 grid where the number of lit dots says how much of a screen the colour takes. */
 function Dose({ n, color }: { n: number; color: string }) {
   return (
     <div className="grid grid-cols-5 gap-[5px] w-fit">
       {Array.from({ length: 25 }).map((_, i) => (
-        <span key={i} className="block w-[7px] h-[7px] rounded-full" style={{ background: i < n ? color : 'transparent', boxShadow: i < n && color === P.paper ? `inset 0 0 0 1px ${P.off}` : `inset 0 0 0 1px ${i < n ? color : P.line}` }} />
+        <span key={i} className="block w-[7px] h-[7px] rounded-full" style={{ background: i < n ? color : 'transparent', boxShadow: i < n && (color === P.paper || color === '#f4f5f6') ? `inset 0 0 0 1px ${P.off}` : `inset 0 0 0 1px ${i < n ? color : P.line}` }} />
       ))}
     </div>
   );
@@ -57,15 +57,15 @@ export function Presence({ k, size = 8 }: { k: string; size?: number }) {
 export function ProxySystem() {
   const t = useT() as T;
   const colours = [
-    { name: t('Papier', 'Paper'), hex: P.paper, n: 25, role: t('Fond de tous les écrans', 'Background of every screen') },
+    { name: t('Blanc', 'White'), hex: P.paper, n: 25, role: t('Fond des écrans', 'Screen background') },
+    { name: t('Panneau', 'Panel'), hex: '#f4f5f6', n: 8, role: t('Le contexte, à droite', 'Context, on the right') },
     { name: t('Encre', 'Ink'), hex: P.ink, n: 9, role: t('Texte, action principale', 'Text, primary action') },
     { name: t('Gris', 'Grey'), hex: P.grey, n: 6, role: t('Ce qui est secondaire', 'What is secondary') },
-    { name: t('Filet', 'Hairline'), hex: P.line, n: 4, role: t('Séparer, jamais encadrer', 'Separate, never box in') },
-    { name: t('Éteint', 'Off'), hex: P.off, n: 3, role: t('Points au repos', 'Dots at rest') },
-    { name: t('Alerte', 'Alert'), hex: P.warn, n: 1, role: t('L’irréversible, la pause. Une fois par écran.', 'The irreversible, the pause. Once per screen.') },
+    { name: t('Filet', 'Hairline'), hex: P.line, n: 4, role: t('Séparer sans encadrer', 'Separate without boxing') },
+    { name: t('Alerte', 'Alert'), hex: P.warn, n: 1, role: t('L’irréversible et la pause, une fois par écran', 'The irreversible and the pause, once per screen') },
   ];
   return (
-    <section className="mt-6" style={{ background: P.paper, color: P.ink }}>
+    <section className="mt-6 border" style={{ background: P.paper, color: P.ink, borderColor: P.line }}>
       <Fonts />
       {/* header strip */}
       <div className="flex items-center justify-between px-5 md:px-8 py-4 border-b" style={{ borderColor: P.line }}>
@@ -74,7 +74,7 @@ export function ProxySystem() {
           <span className="text-[13px] font-medium">Proxy</span>
           <span className="text-[13px]" style={{ color: P.grey }}>{t('— système', '— system')}</span>
         </div>
-        <span className="text-[11px]" style={{ ...GM, color: P.grey }}>v1 · 6 {t('couleurs', 'colours')} · 3 {t('familles', 'families')} · 0 px {t('de rayon', 'radius')}</span>
+        <span className="text-[11px]" style={{ ...GM, color: P.grey }}>6 {t('couleurs', 'colours')} · 3 {t('familles', 'families')} · 0 px {t('de rayon', 'radius')}</span>
       </div>
 
       {/* colours: each one a dose */}

@@ -10,8 +10,9 @@ type T = <V,>(fr: V, en: V) => V;
 type State = 'idle' | 'work' | 'wait' | 'stop' | 'done';
 
 const W = { width: 2000, height: 1250 };
-const GM = { fontFamily: 'DSGM, ui-monospace, monospace' } as const;
-const NR = { fontFamily: 'DSNR, Georgia, serif', letterSpacing: '-0.015em' } as const;
+/** The case study speaks in the site's own type; Proxy's typefaces stay inside the product. */
+const GM = { fontVariantNumeric: 'tabular-nums' } as const;
+const NR = { fontFamily: 'var(--font-general-sans), Inter, sans-serif', fontWeight: 500, letterSpacing: '-0.03em' } as const;
 const WARN = '#c9461f';
 const INK = '#121212';
 
@@ -49,7 +50,7 @@ function Beat({ m, title, children, showDay = false }: { m: Moment; title: strin
         <span className="text-[13px] text-black/55">{m.doing}</span>
         <span className="md:hidden ml-auto"><Presence k={m.state} size={5} /></span>
       </div>
-      <h3 className="mt-5 md:mt-6 max-w-[900px] text-[30px] md:text-[54px] leading-[1.06] md:leading-[1.04]" style={NR}>
+      <h3 className="mt-5 md:mt-6 max-w-[900px] text-[28px] md:text-[44px] leading-[1.1]" style={NR}>
         {title}
       </h3>
       <div className="mt-8 md:mt-12 space-y-10 md:space-y-12">{children}</div>
@@ -63,16 +64,19 @@ function Text({ children }: { children: ReactNode }) {
 function Note({ children }: { children: ReactNode }) {
   return <p className="text-[13px] text-black/60 leading-relaxed max-w-[640px] -mt-6 md:-mt-8">{children}</p>;
 }
-/** On a phone, a desktop screen is too small to read: it becomes a strip you can swipe through. */
+/**
+ * Desktop screens break out of the story column to the full page width on desktop (the pinned
+ * column fades out while they pass). On a phone they become a strip you can swipe through.
+ */
 function Screen({ src, alt, priority = false }: { src: string; alt: string; priority?: boolean }) {
   return (
-    <figure className="-mx-2 md:mx-0">
+    <figure data-wide className="-mx-2 md:mx-0 md:w-[calc((100%_+_4rem)/0.75)] md:ml-[calc(-1*((100%_+_4rem)/3_+_4rem))] relative z-10">
       <div className="overflow-x-auto md:overflow-visible [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
-        <div className="w-[230%] md:w-full border border-black/10">
+        <div className="w-[230%] md:w-full border border-black/10 bg-white">
           <Media src={src} alt={alt} {...W} priority={priority} />
         </div>
       </div>
-      <figcaption className="md:hidden mt-2 px-2 text-[12px] text-black/40" style={GM}>← →</figcaption>
+      <figcaption className="md:hidden mt-2 px-2 text-[12px] text-black/40">← →</figcaption>
     </figure>
   );
 }
@@ -84,14 +88,14 @@ function Scene({ src, alt }: { src: string; alt: string }) {
   );
 }
 
-/** A readable close-up of part of a screen, with its caption on the left on desktop. */
+/** A readable close-up of part of a screen, shown large, with its caption underneath. */
 function Zoom({ src, w, h, alt, children }: { src: string; w: number; h: number; alt: string; children: ReactNode }) {
   return (
-    <figure className="grid grid-cols-1 md:grid-cols-12 gap-3 md:gap-8 items-end">
-      <figcaption className="md:col-span-4 order-2 md:order-1 text-[13px] text-black/60 leading-relaxed">{children}</figcaption>
-      <div className="md:col-span-8 order-1 md:order-2 border border-black/10 -mx-2 md:mx-0">
+    <figure>
+      <div className="border border-black/10 -mx-2 md:mx-0">
         <Media src={src} alt={alt} width={w} height={h} />
       </div>
+      <figcaption className="mt-3 text-[13px] text-black/60 leading-relaxed max-w-[640px]">{children}</figcaption>
     </figure>
   );
 }
@@ -174,6 +178,19 @@ export default function Page() {
     { id: 'apres', day: t('Après', 'After'), time: t('Après', 'After'), state: 'idle', doing: t('MVP et tests', 'MVP and testing') },
   ];
   const active = useActive(moments.map((m) => m.id));
+  const [wideInView, setWideInView] = useState(false);
+  useEffect(() => {
+    const seen = new Set<Element>();
+    const io = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((e) => (e.isIntersecting ? seen.add(e.target) : seen.delete(e.target)));
+        setWideInView(seen.size > 0);
+      },
+      { rootMargin: '-20% 0px -20% 0px' }
+    );
+    document.querySelectorAll('[data-wide]').forEach((el) => io.observe(el));
+    return () => io.disconnect();
+  }, []);
   const cur = moments.find((m) => m.id === active) ?? moments[0];
   const M = Object.fromEntries(moments.map((m) => [m.id, m])) as Record<string, Moment>;
   const stateLabel: Record<State, string> = {
@@ -235,11 +252,11 @@ export default function Page() {
       <div className="grid grid-cols-1 md:grid-cols-12 gap-0 md:gap-8 pt-10 md:pt-16">
         {/* PINNED PRESENCE (desktop) */}
         <aside className="hidden md:block md:col-span-3">
-          <div className="sticky top-32 space-y-6">
+          <div className={`sticky top-32 space-y-6 transition-opacity duration-500 ${wideInView ? 'opacity-0 pointer-events-none' : 'opacity-100'}`}>
             <Presence k={cur.state} size={18} />
             <div>
               <div className="text-[13px] text-black/55 h-[18px]" style={GM}>{cur.day !== cur.time ? cur.day : ''}</div>
-              <div className="mt-2 text-[40px] leading-none tabular-nums" style={{ ...GM, color: cur.state === 'stop' ? WARN : INK }}>
+              <div className="mt-2 text-[40px] leading-none tabular-nums font-medium tracking-[-0.03em]" style={{ ...GM, color: cur.state === 'stop' ? WARN : INK }}>
                 {cur.time}
               </div>
               <div className="mt-3 text-[13px]" style={{ color: cur.state === 'stop' ? WARN : 'rgba(0,0,0,.5)' }}>
@@ -352,17 +369,23 @@ export default function Page() {
           {/* 10:40 */}
           <Beat m={M.m1040} title={t('Un train à 89 €, au-dessus de sa limite de 60 €.', 'An €89 train, above her €60 limit.')}>
             <Text>
-              <p>{t('Cet écran doit se lire en quelques secondes : les étapes dans l’ordre d’exécution, une seule en orange (le paiement), et à droite la raison, citée telle quelle, avec les trains écartés.', 'This screen has to read in seconds: the steps in the order they run, only one in orange (the payment), and on the right the reason, quoted as is, with the trains ruled out.')}</p>
+              <p>{t('Cet écran doit se lire en quelques secondes. Les étapes sont posées sur une ligne, avec un repère « point de non-retour » juste après le paiement. Les trains comparés sont placés sur un axe horaire face au rendez-vous de 10 h 30 : on voit pourquoi le 7 h 56 a été choisi sans lire une phrase.', 'This screen has to read in seconds. The steps sit on a line, with a “point of no return” marker right after the payment. The trains compared are placed on a time axis against the 10:30 meeting: you see why the 7:56 was chosen without reading a sentence.')}</p>
             </Text>
-            <Screen src="/proxy/02-validation.webp" alt={t('Proxy, demande de validation pour un train', 'Proxy, approval request for a train')} />
+            <Screen src="/proxy/02-validation-v3.webp" alt={t('Proxy, demande de validation pour un train', 'Proxy, approval request for a train')} />
+            <Zoom src="/proxy/z-steps-v3.webp" w={1880} h={360} alt={t('Détail : les étapes et le point de non-retour', 'Detail: the steps and the point of no return')}>
+              {t('Une seule étape porte l’orange, et le pointillé marque l’instant après lequel on ne revient plus en arrière.', 'Only one step carries orange, and the dotted line marks the moment after which there is no going back.')}
+            </Zoom>
             <ZoomPair
-              a={{ src: '/proxy/z-steps.webp', w: 1880, h: 490, alt: t('Détail : les étapes dans l’ordre', 'Detail: the steps in order'), cap: t('Les étapes dans l’ordre d’exécution. Une seule porte l’orange : celle qu’on ne peut pas défaire.', 'The steps in the order they run. Only one carries orange: the one that can’t be undone.') }}
-              b={{ src: '/proxy/z-why.webp', w: 840, h: 660, alt: t('Détail : pourquoi cette demande', 'Detail: why this request'), cap: t('La raison, citée telle quelle, et ce que Proxy a consulté.', 'The reason, quoted as is, and what Proxy looked at.') }}
+              a={{ src: '/proxy/z-compare.webp', w: 1880, h: 480, alt: t('Détail : les trains comparés sur un axe horaire', 'Detail: the trains compared on a time axis'), cap: t('Les options écartées restent visibles, avec la raison en une ligne.', 'The options ruled out stay visible, with the reason in one line.') }}
+              b={{ src: '/proxy/z-why-v3.webp', w: 760, h: 620, alt: t('Détail : pourquoi cette demande', 'Detail: why this request'), cap: t('La raison, citée telle quelle, et ce que Proxy a consulté.', 'The reason, quoted as is, and what Proxy looked at.') }}
             />
             <Text>
-              <p>{t('Essayez ci-dessous : validez, puis annulez l’ajout à l’agenda ou demandez le remboursement.', 'Try it below: approve, then undo the calendar entry or request the refund.')}</p>
+              <p>{t('Essayez-le : validez, puis annulez l’ajout à l’agenda ou demandez le remboursement. Sur téléphone, la vidéo montre le même parcours.', 'Try it: approve, then undo the calendar entry or request the refund. On a phone, the video shows the same journey.')}</p>
             </Text>
-            <LiveRequest />
+            <div className="hidden md:block"><LiveRequest /></div>
+            <figure className="md:hidden -mx-2 border border-black/15">
+              <Media video src="/proxy/proxy-prototype.mp4" width={1540} height={740} alt={t('Vidéo du prototype : Léa coche la règle, valide, annule l’ajout à l’agenda puis demande le remboursement', 'Prototype video: Léa ticks the rule, approves, undoes the calendar entry, then asks for the refund')} />
+            </figure>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6 -mx-2 md:mx-0">
               <Media crisp src="/proxy/photo-notif-v2.jpg" alt={t('La notification de Proxy sur l’écran verrouillé', 'Proxy’s notification on the lock screen')} width={2560} height={1920} />
               <Media crisp src="/proxy/photo-validation-v2.jpg" alt={t('La demande de validation ouverte sur le téléphone', 'The approval request opened on the phone')} width={2560} height={1920} />
@@ -376,9 +399,12 @@ export default function Page() {
           {/* 10:41 */}
           <Beat m={M.m1041} title={t('Le billet est réservé, et tout est écrit dans le journal.', 'The ticket is booked, and everything is written in the log.')}>
             <Text>
-              <p>{t('Chaque ligne dit ce qui a été fait, ce qui l’a déclenché et jusqu’à quand on peut l’annuler. On répond à « pourquoi il a fait ça ? » sans ouvrir de menu.', 'Each line says what was done, what triggered it and until when it can be undone. “Why did it do that?” gets answered without opening a menu.')}</p>
+              <p>{t('Le journal se lit d’abord comme une journée : une ligne par domaine, un point par action. Sa forme dit le niveau d’autonomie, et un trait montre jusqu’à quand on peut encore l’annuler. En dessous, chaque action garde son déclencheur, et la sélectionnée s’ouvre à droite avec le temps restant.', 'The log first reads as a day: one line per domain, one dot per action. Its shape tells the autonomy level, and a stroke shows until when it can still be undone. Below, each action keeps its trigger, and the selected one opens on the right with the time left.')}</p>
             </Text>
-            <Screen src="/proxy/03-journal.webp" alt={t('Proxy, le journal de la journée', 'Proxy, the day’s log')} />
+            <Screen src="/proxy/03-journal-v3.webp" alt={t('Proxy, le journal de la journée', 'Proxy, the day’s log')} />
+            <Zoom src="/proxy/z-journal.webp" w={2780} h={630} alt={t('Détail : la journée de Proxy sur un axe horaire', 'Detail: Proxy’s day on a time axis')}>
+              {t('Point plein : fait seul. Cercle épais : fait, puis prévenu. Gris : validé par Léa. Cercle fin : en attente. Après « maintenant », la zone hachurée montre ce qui reste annulable.', 'Solid dot: done alone. Thick ring: done, then told. Grey: approved by Léa. Thin ring: pending. After “now”, the hatched area shows what can still be undone.')}
+            </Zoom>
             <Scene src="/proxy/mock-mobile.webp" alt={t('Proxy sur téléphone : accueil, journal, pause', 'Proxy on a phone: home, log, pause')} />
             <Note>{t('Sur téléphone : l’accueil, le journal et la pause. Les mêmes informations, réordonnées pour être lues d’une main.', 'On a phone: home, log and pause. The same information, reordered to be read one-handed.')}</Note>
           </Beat>
@@ -415,12 +441,12 @@ export default function Page() {
           {/* FRIDAY */}
           <Beat m={M.v1800} showDay title={t('Le vendredi, Proxy fait le point avec Léa.', 'On Friday, Proxy goes over the week with Léa.')}>
             <Text>
-              <p>{t('Le bilan rassemble ce qu’on ne voit pas au jour le jour : actions, demandes validées telles quelles, annulations, l’erreur de mercredi. Il montre aussi ce que Proxy a retenu, chaque ligne pouvant être oubliée. Une préférence déduite sert à préremplir, jamais à décider.', 'The review gathers what you don’t see day to day: actions, requests approved as they were, undos, Wednesday’s mistake. It also shows what Proxy has learned, each line forgettable. An inferred preference is used to prefill, never to decide.')}</p>
+              <p>{t('Le bilan rassemble ce qu’on ne voit pas au jour le jour. Chaque point est une action, rangée par domaine et par jour : on voit où Proxy agit seul, où il demande, et où ça a coincé. Il montre aussi ce que Proxy a retenu, chaque ligne pouvant être oubliée. Une préférence déduite sert à préremplir, jamais à décider.', 'The review gathers what you don’t see day to day. Each dot is an action, sorted by domain and by day: you see where Proxy acts alone, where it asks, and where things went wrong. It also shows what Proxy has learned, each line forgettable. An inferred preference is used to prefill, never to decide.')}</p>
               <p>{t('C’est seulement là que Proxy propose de monter d’un niveau, quand une habitude est nette. La décision reste à Léa.', 'Only there does Proxy suggest moving up a level, once a habit is clear. The decision stays with Léa.')}</p>
             </Text>
-            <Screen src="/proxy/10-bilan.webp" alt={t('Proxy, le bilan de la semaine', 'Proxy, the weekly review')} />
-            <Zoom src="/proxy/z-learn.webp" w={1860} h={520} alt={t('Détail : ce qu’il a retenu', 'Detail: what it learned')}>
-              {t('Chaque chose retenue dit d’où elle vient, et peut être oubliée.', 'Each thing it learned says where it comes from, and can be forgotten.')}
+            <Screen src="/proxy/10-bilan-v3.webp" alt={t('Proxy, le bilan de la semaine', 'Proxy, the weekly review')} />
+            <Zoom src="/proxy/z-learn-v3.webp" w={1920} h={660} alt={t('Détail : la semaine, une action par point', 'Detail: the week, one action per dot')}>
+              {t('Les domaines restent en lignes, les jours en colonnes. La barre de droite montre le niveau actuel, et en pointillé celui que Proxy propose.', 'Domains in rows, days in columns. The bar on the right shows the current level, and dotted, the one Proxy suggests.')}
             </Zoom>
           </Beat>
 

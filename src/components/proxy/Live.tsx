@@ -252,7 +252,7 @@ export function DecisionModel() {
       <div className="grid grid-cols-1 md:grid-cols-4">
         {cols.map((c, ci) => (
           <div key={c.h} className={`relative py-5 md:py-0 md:pr-6 ${ci > 0 ? 'border-t md:border-t-0 border-black/15' : ''}`}>
-            <span className="block text-[12px] text-black/55 pb-3 md:border-b border-black/15" style={GM}>
+            <span className="block text-[12px] text-black/55 pb-3 md:border-b border-black/15" >
               {String(ci + 1).padStart(2, '0')} · {c.h}
             </span>
             <ul className="mt-3 space-y-[10px]">

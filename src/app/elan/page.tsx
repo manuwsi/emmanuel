@@ -201,10 +201,7 @@ function HapticScore({ t }: { t: T }) {
       viewBox="0 0 1000 200"
       className="w-full h-auto min-w-[640px]"
       role="img"
-      aria-label={t(
-        'Partition des vibrations : une longue au départ, deux rapides si hors cible, trois courtes 50 mètres avant la fin, une longue au changement, trois courtes 5 secondes avant la reprise, une longue au départ suivant.',
-        'Vibration score: one long at the start, two quick if off target, three short 50 metres before the end, one long at the switch, three short 5 seconds before restarting, one long at the next start.'
-      )}
+      aria-label={t('Partition des vibrations : une longue au départ, deux rapides hors cible, trois courtes avant chaque changement.', 'Vibration score: one long at the start, two quick ones off target, three short ones before each change.')}
     >
       {dotsLine.map((x) => (
         <circle key={x} cx={x} cy={y} r={1.6} fill="#0a0a0a" fillOpacity={0.4} />
@@ -249,55 +246,36 @@ export default function Page() {
         role: t('Recherche, concept, UX/UI, direction artistique, 3D', 'Research, concept, UX/UI, art direction, 3D'),
         tools: 'Figma, Blender, Claude',
       }}
+      hero={
+        <Media
+          src="/elan/hero.jpg"
+          alt={t(
+            'Rendu 3D de la montre : écran d’effort, 320 mètres restants, allure 4:02 au kilomètre',
+            '3D render of the watch: effort screen, 320 metres left, pace 4:02 per kilometre'
+          )}
+          width={2000}
+          height={1250}
+          priority
+        />
+      }
       intro={t(
         <>
-          <p>
-            Élan est un concept d&apos;appli de course pour le fractionné : on alterne des efforts courts et des récupérations, montre au poignet, souvent seul.
-          </p>
-          <p>
-            En plein effort, un coup d&apos;œil à la montre dure une à deux secondes. J&apos;ai cherché à y faire tenir l&apos;essentiel, puis à simplifier ce qui se passe avant et après, sur le téléphone.
-          </p>
-          <p>
-            Le concept va de la préparation de la séance sur iPhone au résumé, avec seize états de montre pendant la course. La prochaine étape est un test sur piste, avec des coureurs.
-          </p>
+          <p>Élan est une appli de fractionné pour montre et iPhone. En plein effort, un coup d’œil dure une à deux secondes : tout est pensé pour ce temps-là.</p>
         </>,
         <>
-          <p>
-            Élan is a concept for a running app for interval training: you alternate short efforts and recoveries, watch on your wrist, often alone.
-          </p>
-          <p>
-            Mid-effort, a glance at the watch lasts one to two seconds. I tried to fit what matters into that glance, then to simplify what happens before and after, on the phone.
-          </p>
-          <p>
-            The concept goes from setting up the session on iPhone to the summary, with sixteen watch states during the run. The next step is a test on the track, with runners.
-          </p>
+          <p>Élan is an interval-training app for watch and iPhone. Mid-effort, a glance lasts one to two seconds: everything is designed for that moment.</p>
         </>
       )}
     >
-      <Media
-        src="/elan/hero.jpg"
-        alt={t(
-          'Rendu 3D de la montre : écran d’effort, 320 mètres restants, allure 4:02 au kilomètre',
-          '3D render of the watch: effort screen, 320 metres left, pace 4:02 per kilometre'
-        )}
-        width={2000}
-        height={1250}
-        priority
-      />
+
 
       {/* PROBLEM */}
       <Chapter title={t('Le problème', 'The problem')}>
         <p>
-          {t(
-            'Pendant un fractionné, on se pose toujours les mêmes trois questions : où j’en suis, est-ce que je suis à la bonne allure, et quand est-ce que ça change. Les montres de sport répondent en affichant tout en même temps.',
-            'During intervals you ask yourself the same three questions: where am I, am I at the right pace, and when does it change. Sports watches answer by showing everything at the same time.'
-          )}
+          {t('En fractionné, on se pose trois questions : où j’en suis, suis-je à la bonne allure, quand ça change. Les montres de sport, elles, affichent tout en même temps.', 'In interval training you ask three questions: where am I, am I on pace, when does it change. Sports watches show everything at once.')}
         </p>
         <p>
-          {t(
-            'J’ai comparé Garmin, Apple Watch, Runna et Strava. Un premier retour de terrain m’a aussi orienté : on ne regarde que deux informations, la distance restante et l’allure, programmer une séance est pénible, et le temps de repos frustre.',
-            'I compared Garmin, Apple Watch, Runna and Strava. A first piece of field feedback also steered me: people only look at two things, distance left and pace, setting up a session is a chore, and rest time is frustrating.'
-          )}
+          {t('J’ai comparé Garmin, Apple Watch, Runna et Strava. Un premier retour de terrain a confirmé l’essentiel : en courant, on ne regarde que la distance restante et l’allure.', 'I compared Garmin, Apple Watch, Runna and Strava. Early feedback from the field confirmed the essentials: while running, you only look at distance left and pace.')}
         </p>
       </Chapter>
       <ol className="grid grid-cols-1 md:grid-cols-3 gap-px bg-black/15 border border-black/15">
@@ -343,10 +321,7 @@ export default function Page() {
       {/* PRINCIPLE */}
       <Chapter title={t('Le principe', 'The principle')}>
         <p>
-          {t(
-            'En une seconde, on ne lit pas un écran entier, mais on peut en lire une partie, toujours dans le même ordre. L’interface de la montre est faite pour cette lecture en trois temps.',
-            'In one second you cannot read a whole screen, but you can read part of it, always in the same order. The watch interface is made for that three-step read.'
-          )}
+          {t('En une seconde, on lit une partie d’écran, toujours dans le même ordre. La montre est conçue pour cette lecture en trois temps.', 'In one second you read part of a screen, always in the same order. The watch is built for that three-step reading.')}
         </p>
       </Chapter>
       <div className="space-y-3">
@@ -409,10 +384,7 @@ export default function Page() {
       {/* WATCH */}
       <Chapter title={t('La montre', 'The watch')}>
         <p>
-          {t(
-            'Le verre change de teinte, mais la mise en page ne bouge pas : le mot en haut, le chiffre au centre, le détail en dessous. Bleuté en récupération, neutre en effort, rosé hors cible.',
-            'The glass changes tint, but the layout does not move: the word on top, the number in the centre, the detail below. Bluish in recovery, neutral in effort, rose when off target.'
-          )}
+          {t('La teinte du verre change, jamais la mise en page : bleuté en récupération, neutre en effort, rosé hors cible.', 'The glass tint changes, never the layout: bluish in recovery, neutral in effort, pink off target.')}
         </p>
         <p>
           {t(
@@ -608,10 +580,7 @@ export default function Page() {
       {/* NEXT */}
       <Chapter title={t('La suite', 'What’s next')}>
         <p>
-          {t(
-            'Prochaine étape : le montrer à des coureurs. D’abord un test de lisibilité en mouvement pour fixer la taille des chiffres, puis un test du prototype sur piste. Ensuite, une version pour montre rectangulaire.',
-            'Next step: show it to runners. First a legibility test in motion to settle the size of the numbers, then a prototype test on the track. After that, a version for rectangular watches.'
-          )}
+          {t('Prochaine étape : un test de lisibilité en mouvement pour fixer la taille des chiffres, puis le prototype sur piste avec des coureurs.', 'Next step: a legibility test in motion to set the figure size, then the prototype on the track with runners.')}
         </p>
       </Chapter>
     </ProjectPage>

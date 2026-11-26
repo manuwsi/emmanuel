@@ -178,17 +178,11 @@ export default function Colosse() {
           </dl>
           <div className="md:col-span-8 space-y-5 text-[15px] md:text-[17px] leading-[1.55] max-w-2xl">
             <p>
-              {t(
-                'Les tunneliers du Grand Paris Express font une dizaine de mètres de diamètre, plus de cent mètres de long, et avancent d’une douzaine de mètres par jour. Chacun reçoit le prénom de sa marraine avant de partir.',
-                'Grand Paris Express tunnel boring machines are about ten metres across, over a hundred metres long, and move forward about twelve metres a day. Each one is given its godmother’s first name before it starts.'
-              )}
+              {t('Les tunneliers du Grand Paris Express font une dizaine de mètres de diamètre et avancent d’une douzaine de mètres par jour. Chacun porte le prénom de sa marraine.', 'The Grand Paris Express tunnel boring machines are about ten metres wide and advance a dozen metres a day. Each one bears its godmother’s first name.')}
               <Src n={1} /><Src n={2} />
             </p>
             <p>
-              {t(
-                'Colosse est un concept : le poste de pilotage d’un tunnelier fictif, Ysée. Je ne suis jamais entré dans une cabine. Tout part de documents publics, et c’est justement la suite du projet.',
-                'Colosse is a concept: the cockpit of a fictional machine, Ysée. I’ve never been inside a cab. Everything comes from public documents, and that’s exactly where the project goes next.'
-              )}
+              {t('Colosse est le poste de pilotage d’un tunnelier fictif, Ysée, construit à partir de documents publics.', 'Colosse is the cockpit of a fictional tunnel boring machine, Ysée, built from public documents.')}
             </p>
             <p>
               <a href="/colosse/prototype/index.html" className="underline underline-offset-2">
@@ -225,10 +219,7 @@ export default function Colosse() {
           )}
         >
           <p>
-            {t(
-              'Le pilote surveille tout ça en même temps, pendant de longs postes, souvent la nuit. Mon hypothèse : si chaque valeur vit dans sa propre case, c’est à lui de faire tous les liens de tête.',
-              'The driver watches all of this at once, over long shifts, often at night. My assumption: if every value lives in its own box, he has to make all the connections in his head.'
-            )}
+            {t('Le pilote surveille tout en même temps, pendant de longs postes de nuit. Si chaque valeur vit dans sa case, c’est à lui de faire tous les liens de tête.', 'The driver watches everything at once, through long night shifts. If each value lives in its own box, he has to make every link in his head.')}
           </p>
           <p>{t('Je voulais un écran qui fasse ces liens avec lui.', 'I wanted a screen that makes those connections with him.')}</p>
         </Chap>
@@ -241,10 +232,7 @@ export default function Colosse() {
           lede={t('Les ingénieurs lisent déjà des coupes, des hachures et des cotes. Alors l’écran parle leur langue.', 'Engineers already read sections, hatches and dimensions. So the screen speaks their language.')}
         />
         <p className="max-w-3xl pb-12 text-[17px] leading-[1.55] text-black/75">
-          {t(
-            'Pas d’écran façon science-fiction. C’est un poste de nuit, de 22 h à 6 h, où une décision peut faire tasser une école : à 2 h du matin, le pilote doit comprendre l’écran sans effort. Donc pas d’effets ni de néons, du noir et blanc, et le rouge réservé à ce qui demande une décision. Si tout clignote, plus rien n’alerte. Le mode cabine existe pour la même raison : l’écran ne doit pas éblouir dans le noir. L’originalité est dans la façon de montrer le sol, pas dans l’habillage.',
-            'No sci-fi screen. It’s a night shift, 10 pm to 6 am, where one decision can make a school sink: at 2 am, the driver must understand the screen without effort. So no effects and no neon, black and white, and red kept for what needs a decision. If everything flashes, nothing alerts anymore. Cab mode exists for the same reason: the screen must not dazzle in the dark. The originality is in how the ground is shown, not in the styling.'
-          )}
+          {t('Pas d’écran de science-fiction : à 2 h du matin, une décision peut faire tasser une école. Donc ni effets ni néons, du noir et blanc, et le rouge réservé à ce qui demande une décision.', 'No sci-fi screen: at 2 am, a decision can make a school subside. So no effects or neon, black and white, and red kept for what calls for a decision.')}
         </p>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8 md:gap-10 pb-16">
           {principles.map((p, i) => (
@@ -262,10 +250,7 @@ export default function Colosse() {
         <div className="mt-16 md:mt-24 space-y-3">
           <Media src="/colosse/1-pilotage.webp" alt={t('Pilotage : la coupe du terrain en direct', 'Driving: the live section of the ground')} {...W} />
           <p className="text-[13px] text-black/50 max-w-3xl">
-            {t(
-              'En haut, la coupe : les immeubles, les couches de sol, la nappe, le métro existant à 3,4 m. La ligne noire, c’est maintenant. En bas, trois vues comme sur un plan : la roue de face (chaque trait est une molette, sa longueur montre l’usure), la rue vue du dessus, l’avancée de la nuit.',
-              'At the top, the section: buildings, ground layers, groundwater, the existing metro 3.4 m away. The black line is now. Below, three views as on a drawing: the wheel from the front (each tick is a cutter, its length shows wear), the street from above, the night’s progress.'
-            )}
+            {t('En haut, la coupe : immeubles, couches de sol, nappe, métro à 3,4 m, et la ligne noire du présent. En bas, trois vues comme sur un plan : la roue, la rue vue du dessus, l’avancée de la nuit.', 'At the top, the section: buildings, ground layers, water table, metro at 3.4 m, and the black line of the present. Below, three views as on a plan: the wheel, the street from above, the night’s progress.')}
           </p>
         </div>
 
@@ -290,17 +275,11 @@ export default function Colosse() {
           <div className="mt-10 md:mt-14 grid grid-cols-1 md:grid-cols-12 gap-6">
             <div className="md:col-start-5 md:col-span-8 text-[15px] md:text-[17px] leading-[1.55] max-w-2xl space-y-4">
               <p>
-                {t(
-                  'Ce n’est pas de la science-fiction : Paris a d’anciennes carrières de calcaire grossier sous plusieurs arrondissements, et la Ville a un service dédié pour les surveiller.',
-                  'This isn’t science fiction: Paris has old coarse-limestone quarries under several districts, and the City has a dedicated service to monitor them.'
-                )}
+                {t('Paris a réellement d’anciennes carrières sous plusieurs arrondissements, surveillées par un service dédié de la Ville.', 'Paris really has old quarries under several districts, monitored by a dedicated city service.')}
                 <Src n={3} /><Src n={4} />
               </p>
               <p>
-                {t(
-                  'L’écran ne décide pas à la place de l’humain. Il propose trois options, avec ce que chacune ferait en surface : le tassement estimé sous l’école, en millimètres. L’ingénieur choisit, et son choix est enregistré avec ce qu’il savait à ce moment-là.',
-                  'The screen doesn’t decide for the human. It offers three options, with what each would do at the surface: the estimated settlement under the school, in millimetres. The engineer chooses, and the choice is recorded with what was known at that moment.'
-                )}
+                {t('L’écran ne décide pas : il propose trois options avec leur effet en surface, le tassement estimé sous l’école. L’ingénieur choisit, et son choix est enregistré avec ce qu’il savait à ce moment-là.', 'The screen doesn’t decide: it offers three options with their effect at the surface, the estimated settlement under the school. The engineer chooses, and the choice is logged with what he knew at that moment.')}
               </p>
             </div>
           </div>
@@ -328,10 +307,7 @@ export default function Colosse() {
           lede={t('À 6 h, l’équipe du matin arrive. La nuit est dessinée le long du tunnel.', 'At 6 am, the morning crew arrives. The night is drawn along the tunnel.')}
         >
           <p>
-            {t(
-              'Au lieu d’une liste d’heures, chaque événement est épinglé à l’endroit où il s’est passé, sur les anneaux posés pendant la nuit. Ce qui change pour le poste suivant est barré et remplacé, et la relève se signe comme un plan, dans un cartouche.',
-              'Instead of a list of times, each event is pinned where it happened, on the rings built during the night. What changes for the next shift is crossed out and replaced, and the handover is signed like a drawing, in a title block.'
-            )}
+            {t('Chaque événement de la nuit est épinglé là où il s’est passé, sur les anneaux posés.', 'Each event of the night is pinned where it happened, on the rings laid.')}
           </p>
         </Chap>
         <Media src="/colosse/3-releve.webp" alt={t('Relève : la nuit dessinée le long du tunnel', 'Handover: the night drawn along the tunnel')} {...W} />
@@ -352,10 +328,7 @@ export default function Colosse() {
           lede={t('Derrière la roue, la machine construit le tunnel elle-même, anneau par anneau.', 'Behind the wheel, the machine builds the tunnel itself, ring by ring.')}
         >
           <p>
-            {t(
-              'Chaque anneau est fait de pièces de béton posées par un bras, l’érecteur. L’écran montre l’anneau de face : les pièces posées sont hachurées, celle en cours est tracée en gras, les suivantes en pointillés. À droite, les tolérances à tenir.',
-              'Each ring is made of concrete segments placed by an arm, the erector. The screen shows the ring from the front: placed segments are hatched, the current one is drawn in bold, the next ones dotted. On the right, the tolerances to hold.'
-            )}
+            {t('Chaque anneau est fait de pièces de béton posées par un bras. Posées en hachures, en cours en gras, suivantes en pointillés ; à droite, les tolérances à tenir.', 'Each ring is made of concrete segments placed by an arm. Placed ones hatched, the current one bold, the next ones dotted; on the right, the tolerances to hold.')}
           </p>
         </Chap>
         <Media src="/colosse/4-voussoirs.webp" alt={t('Voussoirs : l’anneau en construction', 'Segments: the ring being built')} {...W} />
@@ -368,10 +341,7 @@ export default function Colosse() {
           lede={t('Pour changer une molette usée, des techniciens entrent dans la chambre, devant la roue, sous pression.', 'To change a worn cutter, technicians go into the chamber in front of the wheel, under pressure.')}
         >
           <p>
-            {t(
-              'Ces interventions sont encadrées par la charte de sécurité des chantiers du Grand Paris Express. Après le travail, il faut ressortir par paliers. L’écran suit l’équipe, le temps passé sous pression et l’heure de sortie à ne pas dépasser, avec un bouton pour la rappeler.',
-              'These interventions are covered by the Grand Paris Express site safety charter. After the work, the crew has to come out in stages. The screen follows the team, the time spent under pressure and the latest exit time, with a button to call them back.'
-            )}
+            {t('Après une intervention sous pression, il faut ressortir par paliers. L’écran suit l’équipe, le temps passé et l’heure de sortie à ne pas dépasser.', 'After working under pressure, the crew must come out in stages. The screen tracks the team, the time spent and the exit time not to exceed.')}
             <Src n={5} />
           </p>
         </Chap>
@@ -406,10 +376,7 @@ export default function Colosse() {
         {/* 09 — SYSTEM */}
         <Chap n={9} title={t('Le système', 'The system')} depth="−22 m" lede={t('Six tokens, deux jeux de valeurs. Essaie le mode cabine.', 'Six tokens, two sets of values. Try cab mode.')}>
           <p>
-            {t(
-              'Chaque couleur a un seul sens : le présent, l’alarme, l’attention, l’eau. Les écrans n’utilisent que ces noms, jamais une valeur. C’est ce qui permet d’avoir tout le produit en mode nuit sans redessiner un seul composant.',
-              'Each colour has a single meaning: the present, alarm, caution, water. Screens only use these names, never a value. That is what makes the whole product available at night without redrawing a single component.'
-            )}
+            {t('Chaque couleur a un seul sens : le présent, l’alarme, l’attention, l’eau. Les écrans n’utilisent que ces noms : tout le produit passe en mode nuit sans redessiner un composant.', 'Each colour has one meaning: the present, alarm, caution, water. Screens only use these names: the whole product switches to night mode without redrawing a component.')}
           </p>
         </Chap>
         <ColosseSystem />
@@ -434,19 +401,13 @@ export default function Colosse() {
           n={11}
           title={t('Ce qu’il reste à prouver', 'What’s left to prove')}
           depth={t('Arrivée', 'Arrived')}
-          lede={t('Je n’ai encore montré ces écrans à aucun pilote de tunnelier.', 'I haven’t shown these screens to a single TBM driver yet.')}
+          lede={t('Ce qui vient ensuite.', 'What comes next.')}
         >
           <p>
-            {t(
-              'Les chiffres d’échelle et le contexte viennent de documents publics. Le reste, les écrans, les seuils et l’histoire de la nuit, ce sont mes hypothèses.',
-              'The scale figures and the context come from public documents. The rest, the screens, the thresholds and the story of the night, are my assumptions.'
-            )}
+            {t('Les ordres de grandeur viennent de documents publics ; les écrans, les seuils et le scénario de la nuit sont mes choix de conception.', 'The orders of magnitude come from public documents; the screens, thresholds and night scenario are my design choices.')}
           </p>
           <p>
-            {t(
-              'La suite : montrer le prototype à des gens qui travaillent sur ces chantiers et corriger tout ce qui sonne faux. Si c’est ton métier, écris-moi.',
-              'Next: show the prototype to people who work on these sites and fix everything that rings false. If this is your job, write to me.'
-            )}
+            {t('Prochaine étape : confronter le prototype à des équipes de chantier. Si c’est ton métier, écris-moi.', 'Next step: put the prototype in front of site crews. If this is your job, write to me.')}
           </p>
         </Chap>
 

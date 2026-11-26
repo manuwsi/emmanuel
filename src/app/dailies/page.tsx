@@ -121,57 +121,36 @@ export default function Page() {
       )}
       meta={{
         year: '2026',
-        context: t('Projet indépendant, en cours', 'Independent product design case study, in progress'),
+        context: t('Projet personnel, concept', 'Personal project, concept'),
         role: t('Cadrage, UX/UI, prototype codé', 'Framing, UX/UI, coded prototype'),
         tools: t('HTML/CSS avec Claude', 'HTML/CSS with Claude'),
       }}
+      hero={
+        <>
+      <Media src="/dailies/01-projet.webp" alt={t('Dailies — le projet et ses huit plans', 'Dailies — the project and its eight shots')} {...W} priority />
+          <p className="text-[13px] text-black/50 pt-2">
+            <a href="/dailies/prototype/index.html" className="underline underline-offset-2 hover:text-black">
+              {t('Ouvrir le prototype cliquable', 'Open the clickable prototype')}
+            </a>{' '}
+            — {t('à voir sur ordinateur.', 'best on a computer.')}
+          </p>
+        </>
+      }
       intro={t(
         <>
-          <p>
-            Une vidéo IA de 30 secondes pour une marque, c&apos;est des dizaines de plans et des
-            centaines de générations, réparties entre plusieurs outils. À la fin, il faut retrouver la
-            bonne version, savoir ce qu&apos;elle a coûté, et la faire valider par un client qui
-            n&apos;a pas suivi le détail.
-          </p>
-          <p>
-            Dailies est un outil web pour ces studios. Le nom vient du cinéma : les dailies sont les
-            rushes qu&apos;on revoit chaque jour pour décider quoi garder.
-          </p>
-          <p className="text-black/60">
-            Le studio, le client et le film sont fictifs. Les images viennent de mon projet Higan.
-          </p>
+          <p>Une vidéo IA de 30 secondes, c&apos;est des centaines de générations réparties entre plusieurs outils. Dailies aide les studios à retrouver la bonne version, à savoir ce qu&apos;elle a coûté et à la faire valider par le client.</p>
+          <p className="text-black/60">Le studio, le client et le film sont fictifs.</p>
         </>,
         <>
-          <p>
-            A 30-second AI video for a brand means dozens of shots and hundreds of generations, spread
-            across several tools. At the end, someone has to find the right version, know what it cost,
-            and get it approved by a client who didn&apos;t follow the details.
-          </p>
-          <p>
-            Dailies is a web tool for those studios. The name comes from film: dailies are the rushes
-            you review every day to decide what to keep.
-          </p>
-          <p className="text-black/60">
-            The studio, client and film are fictional. The images come from my Higan project.
-          </p>
+          <p>A 30-second AI video means hundreds of generations spread across tools. Dailies helps studios find the right version, know what it cost and get it approved by the client.</p>
+          <p className="text-black/60">The studio, client and film are fictional.</p>
         </>
       )}
     >
-      <Media src="/dailies/01-projet.webp" alt={t('Dailies — le projet et ses huit plans', 'Dailies — the project and its eight shots')} {...W} priority />
-      <p className="text-[13px] text-black/50 pt-2">
-        <a href="/dailies/prototype/index.html" className="underline underline-offset-2 hover:text-black">
-          {t('Ouvrir le prototype cliquable', 'Open the clickable prototype')}
-        </a>{' '}
-        — {t('à voir sur ordinateur.', 'best on a computer.')}
-      </p>
-
       {/* PROBLEM */}
       <Chapter n={1} title={t('Le problème', 'The problem')} lede={t('Trop de versions, pas assez de traces.', 'Too many versions, not enough trace.')}>
         <p>
-          {t(
-            'Cinq hypothèses de départ, que je dois encore confirmer en parlant à des gens qui produisent de la vidéo IA en studio.',
-            'Five starting assumptions, which I still need to confirm by talking to people who make AI video in studios.'
-          )}
+          {t('Cinq hypothèses de départ, à confronter à des studios qui produisent de la vidéo IA.', 'Five starting assumptions, to check with studios that make AI video.')}
         </p>
       </Chapter>
       <ol className="grid grid-cols-1 md:grid-cols-5 gap-px bg-black/15 border border-black/15">
@@ -187,16 +166,10 @@ export default function Page() {
       {/* EXISTING */}
       <Chapter n={2} title={t('L’existant', 'What exists')} lede={t('Les outils de revue ne savent pas d’où vient une image. Les plateformes de génération parlent peu du client.', 'Review tools don’t know where an image comes from. Generation platforms say little about the client.')}>
         <p>
-          {t(
-            'Frame.io est la référence de la revue vidéo : commentaires au timecode, versions empilées, statuts de validation. Mais il reçoit des fichiers finis, sans le prompt ni le coût derrière. Preview, une plateforme de production IA récente, garde l’origine de chaque image et fonctionne avec tous les modèles ; sa page ne détaille ni la revue client ni les coûts.',
-            'Frame.io is the reference for video review: timecoded comments, stacked versions, approval statuses. But it receives finished files, without the prompt or cost behind them. Preview, a recent AI production platform, keeps the origin of every image and works with any model; its page doesn’t detail client review or costs.'
-          )}
+          {t('Frame.io est la référence de la revue vidéo, mais il reçoit des fichiers finis, sans le prompt ni le coût. Preview, côté production IA, garde l’origine de chaque image mais parle peu de la revue client.', 'Frame.io is the reference for video review, but it receives finished files, without the prompt or the cost. Preview, on the AI production side, keeps where each image comes from but says little about client review.')}
         </p>
         <p>
-          {t(
-            'Dailies prend la revue de l’un et la traçabilité de l’autre, et ajoute ce qu’aucun des deux ne met en avant : le coût avant de générer.',
-            'Dailies takes review from one and traceability from the other, and adds what neither puts forward: the cost before generating.'
-          )}
+          {t('Dailies prend la revue de l’un, la traçabilité de l’autre, et ajoute le coût avant de générer.', 'Dailies takes the review of one, the traceability of the other, and adds the cost before generating.')}
         </p>
       </Chapter>
       <div className="overflow-x-auto">
@@ -222,7 +195,7 @@ export default function Page() {
         </table>
       </div>
       <Caption>
-        {t('D’après leurs pages publiques, novembre 2026. « Non précisé » : la page n’en parle pas, ce qui ne veut pas dire que la fonction n’existe pas.', 'Based on their public pages, November 2026. “Not specified”: the page doesn’t mention it, which doesn’t mean the feature doesn’t exist.')}
+        {t('D’après leurs pages publiques, novembre 2026.', 'From their public pages, November 2026.')}
       </Caption>
 
       {/* USERS */}
@@ -263,19 +236,13 @@ export default function Page() {
       {/* STUDIO */}
       <Chapter n={5} title={t('Côté studio', 'Studio side')} lede={t('Chaque génération garde son prompt, son modèle et son coût.', 'Every generation keeps its prompt, model and cost.')}>
         <p>
-          {t(
-            'Sur la page d’un plan, l’artiste voit les variantes gardées et, pour celle choisie, tout ce qui permet de la refaire : prompt, modèle, image de départ, graine, coût. Le prompt se modifie au même endroit avant de régénérer.',
-            'On a shot’s page, the artist sees the variants kept and, for the chosen one, everything needed to redo it: prompt, model, source image, seed, cost. The prompt can be edited in place before regenerating.'
-          )}
+          {t('Sur la page d’un plan, l’artiste voit les variantes gardées et tout ce qui permet de refaire la bonne : prompt, modèle, image de départ, graine, coût.', 'On a shot page, the artist sees the kept variants and everything needed to redo the right one: prompt, model, source image, seed, cost.')}
         </p>
       </Chapter>
       <Media src="/dailies/02-plan.webp" alt={t('Dailies — un plan et ses variantes', 'Dailies — a shot and its variants')} {...W} />
       <Chapter title={t('Comparer avant d’envoyer', 'Compare before sending')}>
         <p>
-          {t(
-            'Deux versions côte à côte, lues en même temps. Les mots qui changent dans le prompt sont surlignés : on voit d’où vient la différence d’image.',
-            'Two versions side by side, played in sync. The words that change in the prompt are highlighted, so you see where the visual difference comes from.'
-          )}
+          {t('Deux versions côte à côte. Les mots qui changent dans le prompt sont surlignés : on voit d’où vient la différence.', 'Two versions side by side. The words that change in the prompt are highlighted: you see where the difference comes from.')}
         </p>
       </Chapter>
       <Media src="/dailies/03-comparer.webp" alt={t('Dailies — comparer la v3 et la v4', 'Dailies — comparing v3 and v4')} {...W} />
@@ -283,10 +250,7 @@ export default function Page() {
       {/* CLIENT */}
       <Chapter n={6} title={t('Côté client', 'Client side')} lede={t('Le client ne voit qu’une version, et commente au bon endroit.', 'The client sees one version, and comments in the right place.')}>
         <p>
-          {t(
-            'Chaque commentaire est rattaché à un plan et à un timecode. En haut, ce qui a changé depuis la version précédente, pour ne pas tout revoir.',
-            'Each comment is tied to a shot and a timecode. At the top, what changed since the previous version, so there’s no need to rewatch everything.'
-          )}
+          {t('Chaque commentaire est rattaché à un plan et à un timecode, et le client voit d’abord ce qui a changé.', 'Each comment is tied to a shot and a timecode, and the client first sees what changed.')}
         </p>
       </Chapter>
       <Media src="/dailies/04-revue.webp" alt={t('Dailies — la revue client', 'Dailies — client review')} {...W} />
@@ -304,10 +268,7 @@ export default function Page() {
       </Row>
       <Chapter title={t('Le retour au studio', 'Back to the studio')}>
         <p>
-          {t(
-            'Côté studio, chaque commentaire devient une tâche sur le bon plan, avec son coût estimé. On peut régénérer directement depuis le retour.',
-            'On the studio side, each comment becomes a task on the right shot, with its estimated cost. You can regenerate straight from the feedback.'
-          )}
+          {t('Côté studio, chaque commentaire devient une tâche sur le bon plan, avec son coût estimé.', 'On the studio side, each comment becomes a task on the right shot, with its estimated cost.')}
         </p>
       </Chapter>
       <Media src="/dailies/06-retours.webp" alt={t('Dailies — retours à traiter', 'Dailies — feedback to handle')} {...W} />
@@ -315,10 +276,7 @@ export default function Page() {
       {/* PERSONAS */}
       <Chapter n={7} title={t('Revue par personas', 'Persona review')} lede={t('Avant de montrer l’outil à de vraies personnes, je l’ai parcouru avec trois profils.', 'Before showing the tool to real people, I walked through it as three profiles.')}>
         <p>
-          {t(
-            'Ce n’est pas un test utilisateur : chaque profil avait une tâche précise, et j’ai noté où le parcours bloquait. Ça a déjà changé quatre écrans. Les écrans et le prototype sont codés directement en HTML/CSS : une correction se republie en quelques minutes.',
-            'This isn’t user testing: each profile had a specific task, and I noted where the flow got stuck. It already changed four screens. The screens and prototype are coded directly in HTML/CSS, so a fix can be republished in minutes.'
-          )}
+          {t('Chaque profil avait une tâche précise ; j’ai noté où le parcours bloquait. Ce n’est pas un test utilisateur, mais ça a déjà changé quatre écrans.', 'Each profile had a precise task; I noted where the flow got stuck. It isn’t a user test, but it already changed four screens.')}
         </p>
       </Chapter>
       <div className="grid grid-cols-1 md:grid-cols-3 gap-px bg-black/15 border border-black/15">
@@ -345,10 +303,7 @@ export default function Page() {
       {/* EDGE CASES */}
       <Chapter n={8} title={t('Quand ça se passe mal', 'When things go wrong')} lede={t('Prévenir avant de dépenser, jamais après.', 'Warn before spending, never after.')}>
         <p>
-          {t(
-            'Trois cas que le parcours idéal ne montre pas : le budget qui ne suffit plus, une génération qui échoue, et un client qui ouvre un ancien lien sur son téléphone.',
-            'Three cases the happy path doesn’t show: a budget that no longer covers the work, a generation that fails, and a client opening an old link on their phone.'
-          )}
+          {t('Trois cas que le parcours idéal ne montre pas : le budget qui ne suffit plus, une génération qui échoue, un ancien lien ouvert sur téléphone.', 'Three cases the ideal flow doesn’t show: a budget that runs out, a failed generation, an old link opened on a phone.')}
         </p>
       </Chapter>
       <Media src="/dailies/07-budget.webp" alt={t('Dailies — budget dépassé', 'Dailies — over budget')} {...W} />
@@ -364,32 +319,20 @@ export default function Page() {
       {/* FEASIBILITY */}
       <Chapter n={9} title={t('Est-ce faisable ?', 'Is it feasible?')} lede={t('Oui, si les générations passent par Dailies.', 'Yes, if generations go through Dailies.')}>
         <p>
-          {t(
-            'Runway et Kling proposent des API. Une génération y est une tâche : on l’envoie avec un prompt et une image de départ, elle passe par « en cours », puis « réussie » ou « échouée », et l’outil est prévenu à chaque changement. Dailies peut donc enregistrer le prompt, le modèle, l’image de départ et le statut de chaque génération, et afficher l’écran « en cours » ou « échec » au bon moment.',
-            'Runway and Kling offer APIs. A generation there is a task: you send it with a prompt and a source image, it goes through “processing”, then “succeeded” or “failed”, and the tool is notified at each change. Dailies can therefore store the prompt, model, source image and status of every generation, and show the “processing” or “failed” screen at the right time.'
-          )}
+          {t('Runway et Kling proposent des API où chaque génération est une tâche avec un statut. Dailies peut donc enregistrer le prompt, le modèle et le statut de chaque génération.', 'Runway and Kling offer APIs where each generation is a task with a status. So Dailies can record the prompt, model and status of every generation.')}
         </p>
         <p>
-          {t(
-            'Le coût se calcule avant de lancer : chez Runway, chaque modèle coûte un nombre fixe de crédits par seconde de vidéo. Durée × tarif du modèle donne l’estimation affichée sur le bouton.',
-            'Cost can be worked out before launching: at Runway, each model costs a fixed number of credits per second of video. Duration × model rate gives the estimate shown on the button.'
-          )}
+          {t('Le coût se calcule avant de lancer : chaque modèle coûte un nombre fixe de crédits par seconde. Durée × tarif donne l’estimation du bouton.', 'The cost is known before launching: each model costs a fixed number of credits per second. Duration × rate gives the button’s estimate.')}
         </p>
         <p className="text-black/60">
-          {t(
-            'Ne pas compter une génération ratée dans le budget est un choix produit : selon le fournisseur, elle peut quand même être facturée au studio. La limite : une génération faite directement dans l’appli Runway, hors de Dailies, n’est pas captée. Il faut donc un import manuel, où l’artiste dépose le fichier et colle le prompt. Et les vidéos renvoyées par certaines API expirent : Dailies doit les copier tout de suite.',
-            'Not counting a failed generation in the budget is a product choice: depending on the provider, the studio may still be billed for it. The limit: a generation made directly in the Runway app, outside Dailies, isn’t captured. So there has to be a manual import, where the artist drops the file and pastes the prompt. And videos returned by some APIs expire: Dailies has to copy them right away.'
-          )}
+          {t('La limite : une génération faite hors de Dailies n’est pas captée. Un import manuel la rattache au bon plan.', 'The limit: a generation made outside Dailies isn’t captured. A manual import attaches it to the right shot.')}
         </p>
       </Chapter>
 
       {/* PRINCIPLES */}
       <Chapter n={10} title={t('Le système', 'The system')} lede={t('Deux modes, une seule grammaire.', 'Two modes, one grammar.')}>
         <p>
-          {t(
-            'Le studio passe ses journées sur des images : son interface est sombre et dense. Le client vient valider : la sienne est claire et calme. Les deux partagent les mêmes composants, et cinq statuts qui ne changent jamais de couleur.',
-            'The studio spends its days looking at images: its interface is dark and dense. The client comes to approve: theirs is light and calm. Both share the same components, and five statuses that never change colour.'
-          )}
+          {t('Le studio passe ses journées sur des images : interface sombre et dense. Le client vient valider : interface claire et calme. Mêmes composants, cinq statuts qui ne changent jamais de couleur.', 'The studio spends its days on images: a dark, dense interface. The client comes to approve: a light, calm one. Same components, five statuses that never change colour.')}
         </p>
       </Chapter>
       <DailiesSystem />
@@ -415,10 +358,7 @@ export default function Page() {
       {/* METRICS */}
       <Chapter n={12} title={t('Comment savoir si ça marche', 'How to know it works')}>
         <p>
-          {t(
-            'Cinq mesures, une par hypothèse. Je n’ai pas encore de chiffres : ce sont elles que les premiers tests devront remplir.',
-            'Five measures, one per assumption. I don’t have figures yet: these are what the first tests will have to fill in.'
-          )}
+          {t('Cinq mesures, une par hypothèse, que les premiers tests rempliront.', 'Five measures, one per assumption, that the first tests will fill in.')}
         </p>
       </Chapter>
       <div className="grid grid-cols-1 md:grid-cols-5 gap-px bg-black/15 border border-black/15">
@@ -434,10 +374,7 @@ export default function Page() {
       {/* NEXT */}
       <Chapter n={13} title={t('La suite', 'What’s next')}>
         <p>
-          {t(
-            'Confronter les cinq hypothèses à des personnes qui produisent de la vidéo IA en studio, puis leur faire tester le parcours revue → validation avec le prototype. Ce qu’elles diront remplacera la revue par personas.',
-            'Check the five assumptions with people who make AI video in studios, then have them test the review → approval flow with the prototype. What they say will replace the persona review.'
-          )}
+          {t('Prochaine étape : faire tester le parcours revue → validation à des studios qui produisent de la vidéo IA.', 'Next step: have studios that make AI video test the review → approval flow.')}
         </p>
         <p>
           <a href="/dailies/prototype/index.html" className="underline underline-offset-2">

@@ -66,49 +66,26 @@ export default function Page() {
         role: t('Direction artistique, retouche photo, UX/UI, motion, intégration', 'Art direction, photo retouching, UX/UI, motion, front-end'),
         tools: 'Figma, Midjourney, Next.js, Claude',
       }}
+      hero={
+        <>
+      <Media src="/soutrame-case/campaign.jpg" alt={t('Soutrame — ouverture du site', 'Soutrame — site opening')} width={2400} height={1500} priority />
+          <p className="text-[13px] text-black/50 pt-2">
+            <Link href="/soutrame" className="underline underline-offset-2 hover:text-black">
+              soutrame.com
+            </Link>{' '}
+            — {t('le site est en ligne.', 'the site is live.')}
+          </p>
+        </>
+      }
       intro={t(
         <>
-          <p>
-            Soutrame est ma marque de vêtements. Sa première capsule, Chimera School, est un ensemble
-            en deux pièces : une veste de survêtement courte et un pantalon dont les jambes se
-            détachent.
-          </p>
-          <p>
-            Il fallait un site pour la vendre. Pas une page vitrine, une vraie boutique : comprendre
-            ce qu&apos;on achète, choisir sa pièce, précommander. Avec une contrainte de taille : une
-            marque que personne ne connaît encore, et un budget proche de zéro.
-          </p>
-          <p>
-            J&apos;ai tout mené seul, de la retouche des photos du shooting à la mise en ligne, en
-            utilisant l&apos;IA comme outil de production pour le film d&apos;intro et le
-            développement.
-          </p>
+          <p>Soutrame est ma marque de vêtements. Pour sa première capsule, Chimera School, il fallait une vraie boutique, pas une vitrine, pour une marque inconnue et un budget proche de zéro. J&apos;ai tout mené seul, de la retouche des photos à la mise en ligne.</p>
         </>,
         <>
-          <p>
-            Soutrame is my clothing label. Its first capsule, Chimera School, is a two-piece set: a
-            cropped track jacket and trousers whose legs zip off.
-          </p>
-          <p>
-            It needed a site to sell it. Not a showcase page, a real shop: understand what you are
-            buying, choose your piece, pre-order. With one big constraint: a brand nobody knows yet,
-            and a budget close to zero.
-          </p>
-          <p>
-            I led everything on my own, from retouching the shoot to going live, using AI as a
-            production tool for the intro film and the development.
-          </p>
+          <p>Soutrame is my clothing label. Its first capsule, Chimera School, needed a real shop, not a showcase, for an unknown brand on a near-zero budget. I led everything on my own, from photo retouching to launch.</p>
         </>
       )}
     >
-      <Media src="/soutrame-case/campaign.jpg" alt={t('Soutrame — ouverture du site', 'Soutrame — site opening')} width={2400} height={1500} priority />
-      <p className="text-[13px] text-black/50 pt-2">
-        <Link href="/soutrame" className="underline underline-offset-2 hover:text-black">
-          soutrame.com
-        </Link>{' '}
-        — {t('le site est en ligne.', 'the site is live.')}
-      </p>
-
       {/* CONSTRAINTS */}
       <Chapter n={1} title={t('Les contraintes', 'The constraints')} lede={t('Pas de page blanche : quatre limites très concrètes, et chaque choix du site en découle.', 'No blank page: four very concrete limits, and every choice on the site follows from them.')}>
       </Chapter>
@@ -125,10 +102,7 @@ export default function Page() {
       {/* PHOTOGRAPHY */}
       <Chapter n={2} title={t('Rendre les photos vendables', 'Making the photos sell')}>
         <p>
-          {t(
-            'Les photos du shooting avaient un fond inégal, une teinte jaune et les pieds de lumière dans le cadre. Avant de dessiner le site, je les ai retravaillées : fond uniformisé et neutre, matériel de studio effacé, format 4:5 pour les fiches produit, puis modèle détouré sur un fond propre avec une ombre au sol.',
-            'The shoot photos had an uneven backdrop, a yellow cast and light stands in frame. Before designing the site, I reworked them: an even, neutral backdrop, studio gear removed, a 4:5 format for product pages, then the model cut out onto a clean ground with a floor shadow.'
-          )}
+          {t('Avant de dessiner le site, j’ai retravaillé les photos du shooting : fond uniformisé, matériel effacé, format 4:5, modèle détouré avec une ombre au sol.', 'Before designing the site, I reworked the shoot photos: even background, gear removed, 4:5 format, model cut out with a floor shadow.')}
         </p>
         <p>
           {t(
@@ -142,10 +116,7 @@ export default function Page() {
       {/* DIRECTION */}
       <Chapter n={3} title={t('La direction', 'The direction')}>
         <p>
-          {t(
-            'Je suis parti des boutiques de marques indépendantes que j’aime bien, parce qu’elles vendent sans en faire trop. J’ai repris leur façon d’organiser une boutique, pas leur style, et j’ai ajouté ce qui est propre à Soutrame.',
-            'I started from the shops of independent labels I like, because they sell without overdoing it. I kept how they organise a shop, not their style, and added what is specific to Soutrame.'
-          )}
+          {t('Je suis parti des boutiques de marques indépendantes qui vendent sans en faire trop : j’ai repris leur organisation, pas leur style.', 'I started from independent label shops that sell without overdoing it: I took their structure, not their style.')}
         </p>
       </Chapter>
       <div className="grid grid-cols-1 md:grid-cols-3 gap-px bg-black/15 border border-black/15">
@@ -163,10 +134,7 @@ export default function Page() {
       {/* ITERATIONS */}
       <Chapter n={4} title={t('Itérations', 'Iterations')}>
         <p>
-          {t(
-            'La première version mettait l’univers au premier plan : grands titres, neige animée partout, fond beige. En la testant, un problème est vite apparu : on ne savait pas ce qu’on regardait. La campagne, la veste ou l’ensemble ? Toutes les photos montraient la même tenue portée.',
-            'The first version put the universe up front: big titles, animated snow everywhere, a beige background. Testing it, one problem came up fast: you couldn’t tell what you were looking at. The campaign, the jacket or the set? Every photo showed the same outfit, worn.'
-          )}
+          {t('La première version mettait l’univers au premier plan : grands titres, neige animée, fond beige. En la testant, un problème est apparu : on ne savait pas ce qui était à vendre.', 'The first version put the universe first: big titles, animated snow, beige background. Testing it, one problem showed up: you couldn’t tell what was for sale.')}
         </p>
       </Chapter>
       <Row cols={2}>
@@ -181,16 +149,10 @@ export default function Page() {
       </Row>
       <Chapter title={t('Ce qui a changé', 'What changed')}>
         <p>
-          {t(
-            'Une vraie section boutique, avec une phrase qui dit ce qu’on vend : la veste et le pantalon, séparément ou en ensemble. Chaque carte montre une photo recadrée sur la pièce vendue, et la tenue complète apparaît au survol. Le pantalon passe de la version longue à la version short : on comprend sans lire qu’il se transforme.',
-            'A real shop section, with one line saying what is for sale: the jacket and the trousers, separately or as a set. Each card shows a photo cropped onto the piece for sale, with the full outfit on hover. The trousers switch from long to shorts: you understand they convert without reading a word.'
-          )}
+          {t('Une vraie boutique : une phrase dit ce qu’on vend, chaque carte cadre la pièce et montre la tenue au survol. Le pantalon passe du long au short : on comprend sans lire qu’il se transforme.', 'A real shop: one line says what is sold, each card frames the piece and shows the outfit on hover. The trousers switch from long to shorts: you get that they convert without reading.')}
         </p>
         <p>
-          {t(
-            'Les grands titres ont disparu au profit d’une seule petite ligne, et la neige a été remplacée par le visuel de la chimère, cantonné à un seul chapitre.',
-            'The big titles gave way to a single small line, and the snow was replaced by the chimera visual, kept to a single chapter.'
-          )}
+          {t('Les grands titres et la neige ont disparu ; la chimère n’occupe plus qu’un seul chapitre.', 'The big titles and the snow are gone; the chimera now lives in a single chapter.')}
         </p>
       </Chapter>
       <Row cols={2}>
@@ -207,16 +169,10 @@ export default function Page() {
       {/* PURCHASE FLOW */}
       <Chapter n={5} title={t('Le parcours d’achat', 'The purchase flow')}>
         <p>
-          {t(
-            'La fiche produit reprend les codes d’une boutique : les photos défilent à gauche, les informations d’achat restent fixes à droite. Taille, prix, description, guide des tailles et conditions de précommande sont au même endroit. Une section « Compléter la silhouette » propose l’autre pièce de l’ensemble.',
-            'The product page follows shop conventions: photos scroll on the left, buying information stays pinned on the right. Size, price, description, size guide and pre-order terms sit in one place. A “Complete the look” section offers the other piece of the set.'
-          )}
+          {t('La fiche produit reprend les codes d’une boutique : photos qui défilent à gauche, achat fixe à droite, et l’autre pièce de l’ensemble proposée en dessous.', 'The product page follows shop conventions: photos scrolling on the left, purchase fixed on the right, and the other piece of the set offered below.')}
         </p>
         <p>
-          {t(
-            'Tant que le paiement n’est pas ouvert, le bouton affiche « Bientôt disponible » et les tailles restent visibles mais inactives. Le parcours est complet et testable, sans jamais promettre une commande impossible.',
-            'Until payment opens, the button reads “Coming soon” and sizes stay visible but inactive. The flow is complete and testable without ever promising an order that can’t go through.'
-          )}
+          {t('Tant que le paiement n’est pas ouvert, le bouton affiche « Bientôt disponible » : le parcours est complet, sans promettre une commande impossible.', 'Until payment opens, the button reads “Coming soon”: the flow is complete, without promising an impossible order.')}
         </p>
       </Chapter>
       <Media src="/soutrame-case/flow.jpg" alt={t('Parcours d’achat, d’Instagram à la précommande', 'Purchase journey, from Instagram to pre-order')} width={2400} height={825} />
@@ -236,16 +192,10 @@ export default function Page() {
       {/* MOTION */}
       <Chapter n={6} title={t('Le mouvement', 'Motion')}>
         <p>
-          {t(
-            'Le site s’ouvre sur un court film en noir et blanc : un cocon, un papillon qui en sort, des fils tissés, le tissu de la veste. Les plans ont été générés avec Midjourney, puis montés et étalonnés. Leur définition étant faible, le film est présenté à sa taille réelle, comme une projection, plutôt qu’étiré en plein écran.',
-            'The site opens on a short black-and-white film: a cocoon, a moth emerging, woven threads, the jacket’s fabric. The shots were generated with Midjourney, then edited and graded. Since their resolution is low, the film is shown at its real size, like a projection, rather than stretched full screen.'
-          )}
+          {t('Le site s’ouvre sur un court film noir et blanc, généré avec Midjourney puis monté et étalonné. Il est montré à sa taille réelle, comme une projection, plutôt qu’étiré.', 'The site opens on a short black-and-white film, generated with Midjourney then edited and graded. It is shown at its real size, like a projection, rather than stretched.')}
         </p>
         <p>
-          {t(
-            'Le logo, une grappe de cercles, prend une matière liquide à l’ouverture du site et d’une pièce : les satellites se détachent du cercle central, et un point parcourt la grappe. Le mouvement reste réservé à ces moments ; la grille, elle, ne bouge pas.',
-            'The logo, a cluster of circles, takes on a liquid material when the site and a piece open: the satellites peel away from the central circle, and a dot travels round the cluster. Motion is kept to these moments; the grid itself stays still.'
-          )}
+          {t('À l’ouverture, le logo prend une matière liquide. Le mouvement reste réservé à ces moments ; la grille, elle, ne bouge pas.', 'On opening, the logo turns liquid. Motion is kept for those moments; the grid itself never moves.')}
         </p>
       </Chapter>
       <Row cols={2} align="center">
@@ -256,10 +206,7 @@ export default function Page() {
       {/* MOBILE */}
       <Chapter n={7} title={t('Sur mobile', 'On mobile')}>
         <p>
-          {t(
-            'Les visiteurs arrivent d’Instagram, donc sur téléphone. Sur mobile, la navigation garde les mêmes coins, les cartes passent sur une colonne, les photos d’une fiche se font défiler au doigt et le chapitre de la capsule repasse en lecture verticale.',
-            'Visitors come from Instagram, so on their phones. On mobile, navigation keeps the same corners, cards drop to a single column, product photos swipe sideways and the capsule chapter switches to a vertical read.'
-          )}
+          {t('Les visiteurs arrivent d’Instagram, donc sur téléphone : une colonne, les photos au doigt, la capsule en lecture verticale.', 'Visitors come from Instagram, so on a phone: one column, photos by swipe, the capsule read vertically.')}
         </p>
       </Chapter>
       <Row cols={4} mobileCols={2} align="end">
@@ -272,10 +219,7 @@ export default function Page() {
       {/* UNIVERSE */}
       <Chapter n={8} title={t('La chimère', 'The chimera')}>
         <p>
-          {t(
-            'La chimère brodée sur l’ensemble devient un visuel en nacre, présenté dans un seul chapitre noir aux côtés d’une courte note de collection. C’est la seule couleur du site, et elle n’apparaît qu’une fois.',
-            'The chimera embroidered on the set becomes a mother-of-pearl visual, shown in a single black chapter next to a short collection note. It is the only colour on the site, and it appears only once.'
-          )}
+          {t('La chimère brodée devient un visuel en nacre, dans un seul chapitre noir. C’est la seule couleur du site.', 'The embroidered chimera becomes a mother-of-pearl visual, in a single black chapter. It is the only colour on the site.')}
         </p>
       </Chapter>
       <Media src="/soutrame-case/capsule.jpg" alt={t('Chapitre Chimera School', 'Chimera School chapter')} width={2400} height={1500} />
@@ -283,10 +227,7 @@ export default function Page() {
       {/* NEXT */}
       <Chapter n={9} title={t('La suite', 'What’s next')}>
         <p>
-          {t(
-            'Le site est en ligne sur soutrame.com. Prochaines étapes : brancher le paiement, publier les pages légales, et ouvrir les précommandes. Ce sont les premières commandes qui diront si les choix de ce site tiennent face à de vrais clients.',
-            'The site is live at soutrame.com. Next steps: connect payment, publish the legal pages, and open pre-orders. The first orders will tell whether the choices on this site hold up with real customers.'
-          )}
+          {t('Le site est en ligne sur soutrame.com. Prochaine étape : ouvrir le paiement et les précommandes.', 'The site is live at soutrame.com. Next step: open payment and pre-orders.')}
         </p>
       </Chapter>
     </ProjectPage>

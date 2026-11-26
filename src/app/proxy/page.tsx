@@ -198,7 +198,7 @@ export default function Page() {
       hero={
         <div className="space-y-8 md:space-y-10">
           <div className="-mx-2 md:mx-0">
-            <Media crisp src="/proxy/photo-laptop.jpg" alt={t('Proxy sur un ordinateur portable, l’écran Aujourd’hui', 'Proxy on a laptop, the Today screen')} width={2560} height={1920} priority />
+            <Media crisp src="/proxy/photo-laptop-v2.jpg" alt={t('Proxy sur un ordinateur portable, l’écran Aujourd’hui', 'Proxy on a laptop, the Today screen')} width={2560} height={1920} priority />
           </div>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-8 border-t border-black/15 pt-5">
             {[
@@ -364,8 +364,8 @@ export default function Page() {
             </Text>
             <LiveRequest />
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6 -mx-2 md:mx-0">
-              <Media crisp src="/proxy/photo-notif.jpg" alt={t('La notification de Proxy sur l’écran verrouillé', 'Proxy’s notification on the lock screen')} width={2560} height={1920} />
-              <Media crisp src="/proxy/photo-validation.jpg" alt={t('La demande de validation ouverte sur le téléphone', 'The approval request opened on the phone')} width={2560} height={1920} />
+              <Media crisp src="/proxy/photo-notif-v2.jpg" alt={t('La notification de Proxy sur l’écran verrouillé', 'Proxy’s notification on the lock screen')} width={2560} height={1920} />
+              <Media crisp src="/proxy/photo-validation-v2.jpg" alt={t('La demande de validation ouverte sur le téléphone', 'The approval request opened on the phone')} width={2560} height={1920} />
             </div>
             <Text>
               <p>{t('Sur téléphone, la notification donne déjà le montant et la limite dépassée, et la validation passe par Face ID. Sous les boutons, une case propose de réserver seul les trains de moins de 100 € : c’est au moment de valider qu’on sait si on aurait préféré ne pas être dérangé.', 'On a phone, the notification already shows the amount and the limit exceeded, and approval goes through Face ID. Under the buttons, a checkbox offers to book trains under €100 alone next time: approving is when you know whether you’d rather not have been asked.')}</p>
@@ -390,7 +390,7 @@ export default function Page() {
               <p>{t('Proxy bloque les paiements, et seulement eux, montre ce qu’il a vérifié et conseille d’appeler le fournisseur au numéro connu. Tout arrêter serait plus simple, mais on apprend vite à ignorer un système qui s’arrête trop souvent.', 'Proxy blocks payments, and only payments, shows what it checked and suggests calling the supplier on the known number. Stopping everything would be simpler, but people quickly learn to ignore a system that stops too often.')}</p>
             </Text>
             <div className="-mx-2 md:mx-0">
-              <Media crisp src="/proxy/photo-pause.jpg" alt={t('Proxy en pause sur le téléphone, après un courriel suspect', 'Proxy paused on the phone, after a suspicious email')} width={2560} height={1920} />
+              <Media crisp src="/proxy/photo-pause-v2.jpg" alt={t('Proxy en pause sur le téléphone, après un courriel suspect', 'Proxy paused on the phone, after a suspicious email')} width={2560} height={1920} />
             </div>
             <Zoom src="/proxy/z-check.webp" w={1860} h={800} alt={t('Détail : ce que Proxy a vérifié', 'Detail: what Proxy checked')}>
               {t('La consigne cachée est surlignée, et chaque vérification est montrée, y compris celle qui est conforme.', 'The hidden instruction is highlighted, and every check is shown, including the one that passed.')}

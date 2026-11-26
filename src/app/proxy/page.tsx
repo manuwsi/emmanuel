@@ -198,9 +198,9 @@ export default function Page() {
             <Text>
               <p>{t('Pas de mascotte : un personnage sympathique pousse à faire confiance trop vite. À la place, une petite grille de points, reprise de ma DA, qui change de forme selon ce que fait Proxy. Toujours accompagnée d’une phrase : ce qu’il fait, et ce qui l’a lancé.', 'No mascot: a friendly character makes people trust too fast. Instead, a small grid of dots, taken from my visual identity, that changes shape with what Proxy is doing. Always paired with a sentence: what it’s doing, and what started it.')}</p>
             </Text>
-            <div className="grid grid-cols-3 border-t border-b border-black/15 max-w-[920px]">
-              {(['work', 'wait', 'stop'] as const).map((k, i) => (
-                <div key={k} className={`py-8 md:py-10 flex flex-col items-start gap-5 ${i > 0 ? 'pl-4 md:pl-8 border-l border-black/15' : ''}`}>
+            <div className="flex flex-wrap gap-x-16 gap-y-8 py-4">
+              {(['work', 'wait', 'stop'] as const).map((k) => (
+                <div key={k} className="flex flex-col items-start gap-4">
                   <Presence k={k} size={12} />
                   <span className="text-[15px]" style={k === 'stop' ? { color: WARN } : undefined}>{stateLabel[k]}</span>
                 </div>
@@ -244,21 +244,16 @@ export default function Page() {
             <Text>
               <p>{t('La confiance ne monte jamais seule. Proxy remarque une habitude et propose de passer un domaine au niveau suivant ; seule Léa peut l’accorder. Pour savoir si tout ça marche, cinq mesures, que les premiers tests devront remplir.', 'Trust never rises on its own. Proxy notices a habit and offers to move a domain up a level; only Léa can grant it. To know whether it works, five measures, which the first tests will have to fill in.')}</p>
             </Text>
-            <div className="grid grid-cols-2 md:grid-cols-5 border-t border-black/15 max-w-[920px]">
-              {[
-                t('Demandes validées sans modification', 'Requests approved unchanged'),
-                t('Secondes pour décider', 'Seconds to decide'),
-                t('Actions annulées', 'Actions undone'),
-                t('Domaines montés d’un niveau', 'Domains moved up a level'),
-                t('Pauses justifiées', 'Justified pauses'),
-              ].map((m, i) => (
-                <div key={m} className={`pt-4 pb-6 pr-4 ${i > 0 ? 'md:pl-4 md:border-l border-black/15' : ''}`}>
-                  <span className="block text-[40px] leading-none text-black/20" style={GM}>—</span>
-                  <span className="block mt-3 text-[13px] text-black/60 leading-snug">{m}</span>
-                </div>
-              ))}
-            </div>
-            <Note>{t('Les tirets sont volontaires : je n’invente pas de chiffres.', 'The dashes are deliberate: I don’t make up figures.')}</Note>
+            <Ledger
+              items={[
+                { k: '—', title: t('Validées sans modification', 'Approved unchanged'), text: t('Trop haut sur un domaine : il peut monter d’un niveau.', 'Too high on a domain: it can move up a level.') },
+                { k: '—', title: t('Secondes pour décider', 'Seconds to decide'), text: t('Une demande se lit vite, ou elle est mal construite.', 'A request reads fast, or it is badly built.') },
+                { k: '—', title: t('Actions annulées', 'Actions undone'), text: t('Chaque annulation dit où l’agent s’est trompé.', 'Every undo says where the agent got it wrong.') },
+                { k: '—', title: t('Domaines montés d’un niveau', 'Domains moved up a level'), text: t('La confiance se construit, à l’initiative de Léa.', 'Trust is building, on Léa’s initiative.') },
+                { k: '—', title: t('Pauses justifiées', 'Justified pauses'), text: t('Rares et utiles, sinon on apprend à les ignorer.', 'Rare and useful, or people learn to ignore them.') },
+              ]}
+            />
+            <Note>{t('Pas encore de chiffres : les tirets attendent les premiers tests.', 'No figures yet: the dashes are waiting for the first tests.')}</Note>
           </Beat>
 
           <Beat m={M.msys} title={t('Six couleurs, trois familles, aucun rayon.', 'Six colours, three type families, no radius.')}>

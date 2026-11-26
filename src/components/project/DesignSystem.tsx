@@ -81,9 +81,9 @@ export function ProxySystem() {
       <div className="px-5 md:px-8 pt-8 pb-3">
         <Label className="text-black/45">{t('Couleur · le nombre de points dit la place qu’elle prend', 'Colour · the number of dots says how much room it takes')}</Label>
       </div>
-      <div className="grid grid-cols-2 md:grid-cols-6 border-t" style={{ borderColor: P.line }}>
+      <div className="grid grid-cols-2 md:grid-cols-6 px-5 md:px-8 border-t" style={{ borderColor: P.line }}>
         {colours.map((c, i) => (
-          <div key={c.hex} className={`p-5 md:p-6 flex flex-col gap-5 border-b md:border-b-0 ${i % 2 === 0 ? 'border-r' : 'md:border-r'} ${i === 5 ? 'md:border-r-0' : ''}`} style={{ borderColor: P.line }}>
+          <div key={c.hex} className="py-6 pr-4 flex flex-col gap-5">
             <Dose n={c.n} color={c.hex} />
             <div className="space-y-1">
               <span className="block text-[13px] font-medium" style={i === 5 ? { color: P.warn } : undefined}>{c.name}</span>
@@ -96,18 +96,18 @@ export function ProxySystem() {
 
       {/* type */}
       <div className="grid grid-cols-1 md:grid-cols-12 border-t" style={{ borderColor: P.line }}>
-        <div className="md:col-span-6 p-5 md:p-8 md:border-r" style={{ borderColor: P.line }}>
+        <div className="md:col-span-6 p-5 md:p-8" style={{ borderColor: P.line }}>
           <div className="flex justify-between text-[11px]" style={{ ...GM, color: P.grey }}><span>Newsreader 400</span><span>40 / 1.08</span></div>
           <p className="mt-6 text-[34px] md:text-[48px] leading-[1.06]" style={NR}>{t('Réserver Paris → Lyon, jeudi 7\u00a0h\u00a056.', 'Book Paris → Lyon, Thursday\u00a07:56.')}</p>
           <p className="mt-4 text-[12px]" style={{ color: P.grey }}>{t('Pour ce que Proxy va faire, ou te demande. Une phrase, jamais un titre de rubrique.', 'For what Proxy is about to do, or asks you. A sentence, never a section heading.')}</p>
         </div>
-        <div className="md:col-span-3 p-5 md:p-8 border-t md:border-t-0 md:border-r" style={{ borderColor: P.line }}>
+        <div className="md:col-span-3 p-5 md:p-8" style={{ borderColor: P.line }}>
           <div className="flex justify-between text-[11px]" style={{ ...GM, color: P.grey }}><span>General Sans</span><span>14 / 1.45</span></div>
           <p className="mt-6 text-[15px] leading-[1.45]">{t('Payer 89 € avec ta carte pro.', 'Pay €89 with your work card.')}</p>
           <p className="mt-2 text-[15px] leading-[1.45]" style={{ color: P.grey }}>{t('Réversible jusqu’au départ', 'Reversible until departure')}</p>
           <p className="mt-4 text-[12px]" style={{ color: P.grey }}>{t('L’interface et les étapes.', 'Interface and steps.')}</p>
         </div>
-        <div className="md:col-span-3 p-5 md:p-8 border-t md:border-t-0" style={{ borderColor: P.line }}>
+        <div className="md:col-span-3 p-5 md:p-8" style={{ borderColor: P.line }}>
           <div className="flex justify-between text-[11px]" style={{ ...GM, color: P.grey }}><span>Geist Mono</span><span>11</span></div>
           <p className="mt-6 text-[13px] leading-[1.9]" style={GM}>10:41 · 89 €<br />142 € / 300 €<br />•••• 4417</p>
           <p className="mt-4 text-[12px]" style={{ color: P.grey }}>{t('Heures, montants, traces. Ce qu’on vérifie.', 'Times, amounts, traces. What you check.')}</p>
@@ -116,7 +116,7 @@ export function ProxySystem() {
 
       {/* components */}
       <div className="grid grid-cols-1 md:grid-cols-3 border-t" style={{ borderColor: P.line }}>
-        <div className="p-5 md:p-8 md:border-r space-y-5" style={{ borderColor: P.line }}>
+        <div className="p-5 md:p-8 space-y-5" style={{ borderColor: P.line }}>
           <Label className="text-black/45">{t('Actions', 'Actions')}</Label>
           <div className="flex flex-wrap gap-2 text-[13px]">
             <span className="px-4 py-[10px] font-medium" style={{ background: P.ink, color: P.paper }}>{t('Valider', 'Approve')}</span>
@@ -130,7 +130,7 @@ export function ProxySystem() {
           </div>
           <p className="text-[12px]" style={{ color: P.grey }}>{t('Trois poids : plein, filet noir, filet clair. Le refus n’est jamais rouge.', 'Three weights: filled, black hairline, light hairline. Declining is never red.')}</p>
         </div>
-        <div className="p-5 md:p-8 md:border-r border-t md:border-t-0 space-y-4" style={{ borderColor: P.line }}>
+        <div className="p-5 md:p-8 space-y-4" style={{ borderColor: P.line }}>
           <Label className="text-black/45">{t('Autonomie', 'Autonomy')}</Label>
           {[t('Observer', 'Observe'), t('Proposer', 'Propose'), t('Agir, puis prévenir', 'Act, then tell'), t('Agir seul', 'Act alone')].map((l, i) => (
             <div key={l} className="grid grid-cols-[1fr_120px] items-center gap-4">
@@ -147,7 +147,7 @@ export function ProxySystem() {
             <span className="h-[5px]" style={{ background: `repeating-linear-gradient(90deg, ${P.grey} 0 2px, transparent 2px 5px)` }} />
           </div>
         </div>
-        <div className="p-5 md:p-8 border-t md:border-t-0 space-y-5" style={{ borderColor: P.line }}>
+        <div className="p-5 md:p-8 space-y-5" style={{ borderColor: P.line }}>
           <Label className="text-black/45">{t('Présence', 'Presence')}</Label>
           <div className="flex gap-8">
             {(['work', 'wait', 'stop'] as const).map((k) => (

@@ -4,7 +4,6 @@ import { ReactNode } from 'react';
 import { motion } from 'framer-motion';
 import Header from '@/components/Header';
 import NextProject from '@/components/dot/NextProject';
-import DotText from '@/components/dot/DotText';
 import { Media, Summary } from '@/components/project/ProjectPage';
 import { useT } from '@/components/i18n';
 import Cutter from '@/components/colosse/Cutter';
@@ -43,7 +42,7 @@ function Chap({ n, title, depth, lede, children }: { n: number; title: string; d
     >
       <div className="flex items-baseline justify-between border-t border-black/15 pt-3">
         <h3 className="text-[13px] text-black/45">
-          <DotText text={`${String(n).padStart(2, '0')} → ${title}`} play="view" />
+          {String(n).padStart(2, '0')} → {title}
         </h3>
         <span className="text-[13px] tabular-nums">{depth}</span>
       </div>

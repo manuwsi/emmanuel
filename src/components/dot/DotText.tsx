@@ -83,9 +83,10 @@ export default function DotText({
     raf.current = requestAnimationFrame(tick);
   }, []);
 
-  // mount / text change
+  // mount / text change; 'intro' only while the first-visit slate is on screen (never on later pages)
   useEffect(() => {
-    if (play.includes('mount')) run(delay + introWait(), true);
+    const wait = introWait();
+    if (play.includes('mount') || (play.includes('intro') && wait > 0)) run(delay + wait, true);
     return () => cancelAnimationFrame(raf.current);
   }, [text, play, delay, run]);
 

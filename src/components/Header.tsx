@@ -23,9 +23,9 @@ export default function Header({ active, crumb }: { active?: 'work' | 'about'; c
     <>
       <div className={`${corner} left-0 top-0 py-1.5`}>
         <Link href="/" className="hover:underline underline-offset-2">
-          <DotText text="Emmanuel Ijjou" play="mount hover" />
+          <DotText text="Emmanuel Ijjou" play="intro" />
         </Link>{' '}
-        → <DotText text={here} play="mount" delay={120} />
+        → <DotText text={here} play="intro" delay={120} />
         {crumb && <ReadProgress />}
       </div>
 
@@ -42,24 +42,24 @@ export default function Header({ active, crumb }: { active?: 'work' | 'about'; c
 
       <Link href="/" className={`${corner} bottom-0 left-0 flex items-end gap-2 pb-1`} aria-label={t('Accueil', 'Home')}>
         <span className="block text-[15px] font-bold uppercase leading-none tracking-[-0.045em] min-[380px]:text-[17px] sm:text-[20px] md:text-[24px]">
-          <DotText text="Emmanuel Ijjou" play="mount hover" delay={200} />
+          <DotText text="Emmanuel Ijjou" play="intro" delay={200} />
         </span>
         <span className="mb-[1px]"><ProjectMark /></span>
       </Link>
 
       <nav className={`${corner} bottom-0 right-0 flex gap-3 pb-1.5 sm:gap-4`}>
         <Link href="/" className={`${link(active === 'work')} hidden sm:inline`}>
-          <DotText text={t('Travaux', 'Work')} play="mount hover" delay={260} />
+          <DotText text={t('Travaux', 'Work')} play="intro" delay={260} />
         </Link>
         <Link href="/about" className={link(active === 'about')}>
-          <DotText text={t('À propos', 'About')} play="mount hover" delay={320} />
+          <DotText text={t('À propos', 'About')} play="intro" delay={320} />
         </Link>
         <Link href="/soutrame" className={link(false)}>
-          <DotText text="Soutrame" play="mount hover" delay={380} />
+          <DotText text="Soutrame" play="intro" delay={380} />
           <ArrowOut />
         </Link>
         <a href="mailto:emmanuelijjou@gmail.com" className={link(false)}>
-          <DotText text="Contact" play="mount hover" delay={440} />
+          <DotText text="Contact" play="intro" delay={440} />
         </a>
       </nav>
     </>

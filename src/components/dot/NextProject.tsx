@@ -5,7 +5,6 @@ import { useEffect, useRef } from 'react';
 import { nextProject, projects } from '../projects';
 import { useT } from '../i18n';
 import { MarkFor } from '../ProjectMark';
-import DotText from './DotText';
 import { DotCanvas, reducedMotion, smooth } from './engine';
 import { loadImage } from './img';
 import { dotGo } from './Transitions';
@@ -36,7 +35,8 @@ export default function NextProject({ path }: { path: string }) {
       last = -1;
     });
     const fit = () => {
-      const r = frame.current!.getBoundingClientRect();
+      if (!frame.current) return;
+      const r = frame.current.getBoundingClientRect();
       e.resize(r.width, r.height);
       if (img) e.setImage(img);
       last = -1;
@@ -56,7 +56,11 @@ export default function NextProject({ path }: { path: string }) {
         raf = 0;
         return;
       }
-      const z = zone.current!;
+      const z = zone.current;
+      if (!z || !frame.current) {
+        raf = 0;
+        return;
+      }
       const top = z.getBoundingClientRect().top + window.scrollY;
       const range = z.offsetHeight - window.innerHeight;
       const p = Math.min(1, Math.max(0, (window.scrollY - top) / range));
@@ -68,7 +72,7 @@ export default function NextProject({ path }: { path: string }) {
         e.render(smooth(0, 0.92, 0.18 + p * 0.86), { x: 0.5, y: 1.15 }, { spread: 1.3 });
         if (p >= 0.995 && !fired.current && !reducedMotion()) {
           fired.current = true;
-          const r = frame.current!.getBoundingClientRect();
+          const r = frame.current.getBoundingClientRect();
           dotGo(np.link, { x: (r.left + r.width / 2) / innerWidth, y: (r.top + r.height / 2) / innerHeight });
         }
         if (p < 0.9) fired.current = false;
@@ -90,7 +94,7 @@ export default function NextProject({ path }: { path: string }) {
         <div className="mx-auto w-full max-w-[1400px]">
           <div className="flex items-baseline justify-between border-t-[3px] border-[#0a0a0a] pt-2 text-[13px] leading-[1.35]">
             <span className="text-black/45">
-              <DotText text={t('Projet suivant', 'Next project')} play="view" />
+              {t('Projet suivant', 'Next project')}
             </span>
             <span className="tabular-nums text-black/45">
               {String(index + 1).padStart(2, '0')} / {String(projects.length).padStart(2, '0')}
@@ -99,10 +103,8 @@ export default function NextProject({ path }: { path: string }) {
 
           <div className="mt-6 grid grid-cols-1 items-end gap-6 md:mt-8 md:grid-cols-12 md:gap-3">
             <div className="md:col-span-6">
-              <Link href={np.link} className="group inline-flex items-start gap-3" data-cursor="project" data-mark={np.link.slice(1)}>
-                <span className="text-[13vw] font-medium leading-[0.92] tracking-[-0.045em] transition-opacity group-hover:opacity-50 md:text-[5.4vw]">
-                  <DotText text={title} play="view" />
-                </span>
+              <Link href={np.link} className="inline-flex items-start gap-3">
+                <span className="text-[13vw] font-medium leading-[0.92] tracking-[-0.045em] md:text-[5.4vw]">{title}</span>
               </Link>
               <p className="mt-3 flex items-center gap-2.5 text-[13px] text-black/55">
                 <MarkFor link={np.link} />

@@ -1,65 +1,69 @@
 'use client';
 
 import { motion } from 'framer-motion';
+import Image from 'next/image';
 import Link from 'next/link';
 import { useEffect, useRef, useState } from 'react';
 import Header from '@/components/Header';
 import { useT } from '@/components/i18n';
 import { projects, type Project } from '@/components/projects';
 import { MarkFor } from '@/components/ProjectMark';
-import DotImage from '@/components/dot/DotImage';
-import DotSwap from '@/components/dot/DotSwap';
-import DotText from '@/components/dot/DotText';
 import { introWait } from '@/components/dot/engine';
+import { lenisScrollTo } from '@/components/dot/SmoothScroll';
 import '../styles/globals.css';
 
 const EASE = [0.22, 1, 0.36, 1] as const;
 const TXT = 'text-[13px] leading-[1.35]';
-const key = (p: Project) => p.link.replace(/^\//, '');
 
 /** One project: a card in a regular grid — every cover in the same 4:3 frame, then a thin caption. */
 function ProjectCard({ project, index, small = false }: { project: Project; index: number; small?: boolean }) {
   const t = useT();
-  const card = useRef<HTMLAnchorElement>(null);
   const title = t(project.title.fr, project.title.en);
+  const cols = small ? 3 : 2;
   return (
-    <motion.article initial={{ opacity: 0 }} whileInView={{ opacity: 1 }} viewport={{ once: true, margin: '-8% 0px' }} transition={{ duration: 0.6, ease: EASE }}>
-      <Link
-        ref={card}
-        href={project.link}
-        className="group block"
-        aria-label={t(`Voir le projet ${title}`, `View project ${title}`)}
-        data-cursor="project"
-        data-mark={key(project)}
-        data-label={t('Voir', 'View')}
-      >
+    <article>
+      <Link href={project.link} className="group block" aria-label={t(`Voir le projet ${title}`, `View project ${title}`)}>
         <div className="relative aspect-[4/3] w-full overflow-hidden bg-neutral-100">
-          <DotImage
-            src={project.image}
-            hover={project.hover}
-            alt={title}
-            priority={index < 2}
-            sizes={small ? '(min-width:768px) 33vw, 100vw' : '(min-width:768px) 50vw, 100vw'}
-            cell={small ? 7 : 8}
-          />
+          {/* the cover settles in once, slowly: a light fade and a very small zoom-out */}
+          <motion.div
+            className="absolute inset-0"
+            initial={{ opacity: 0, scale: 1.04 }}
+            whileInView={{ opacity: 1, scale: 1 }}
+            viewport={{ once: true, margin: '-6% 0px' }}
+            transition={{ duration: 1.8, ease: EASE, delay: (index % cols) * 0.12 }}
+          >
+            <Image
+              src={project.image}
+              alt={title}
+              fill
+              priority={index < 2}
+              sizes={small ? '(min-width:768px) 33vw, 100vw' : '(min-width:768px) 50vw, 100vw'}
+              quality={90}
+              className="object-cover"
+            />
+          </motion.div>
         </div>
         <div className="h-[2px] w-full bg-black/10">
           <div className="h-full w-0 bg-[#0a0a0a] transition-[width] duration-700 ease-[cubic-bezier(.22,1,.36,1)] group-hover:w-full" />
         </div>
-        <div className={`${TXT} flex items-start justify-between gap-4 px-2 pt-1.5 md:px-0`}>
+        <motion.div
+          className={`${TXT} flex items-start justify-between gap-4 px-2 pt-1.5 md:px-0`}
+          initial={{ opacity: 0 }}
+          whileInView={{ opacity: 1 }}
+          viewport={{ once: true, margin: '-6% 0px' }}
+          transition={{ duration: 1.2, ease: EASE, delay: 0.35 + (index % cols) * 0.12 }}
+        >
           <div>
-            <p className="font-medium">
-              <DotText text={title} play="view hover" hoverTarget={card} />
-            </p>
+            <p className="font-medium">{title}</p>
             <p className="text-black/50">{t(project.subtitle.fr, project.subtitle.en)}</p>
           </div>
-          <span className="flex shrink-0 items-center gap-2.5 tabular-nums text-black/55 transition-colors group-hover:text-black">
+          <span className="flex shrink-0 items-center gap-2.5 tabular-nums text-black/55">
             <MarkFor link={project.link} />
             {String(index + 1).padStart(2, '0')}
           </span>
-        </div>
+        </motion.div>
       </Link>
-    </motion.article>
+    </article>
   );
 }
 
@@ -87,8 +91,8 @@ function ViewToggle({ view, setView }: { view: View; setView: (v: View) => void 
       {opts.map(([v, label], i) => (
         <span key={v}>
           {i > 0 && <span className="text-black/30"> / </span>}
-          <button type="button" onClick={() => setView(v)} aria-pressed={view === v} className={view === v ? '' : 'text-black/40 transition-colors hover:text-black'}>
-            <DotText text={label} play="hover" />
+          <button type="button" onClick={() => setView(v)} aria-pressed={view === v} className={view === v ? '' : 'text-black/40'}>
+            {label}
           </button>
         </span>
       ))}
@@ -97,27 +101,19 @@ function ViewToggle({ view, setView }: { view: View; setView: (v: View) => void 
 }
 
 /**
- * The Index: every project as one line of type. The one you point at (or the one in the middle of the
- * screen when you just scroll) lights up, its neighbours fade with distance, and its cover spreads in dots.
+ * The Index: every project as one line of type. The line in the middle of the screen is the active one,
+ * its neighbours fade with distance, and its cover takes over the frame with a slow cross-fade.
  */
 function IndexView() {
   const t = useT();
-  const list = useRef<HTMLDivElement>(null);
   const rows = useRef<HTMLAnchorElement[]>([]);
-  const frame = useRef<HTMLDivElement>(null);
-  const hovering = useRef(false);
   const [active, setActive] = useState(0);
-  const [origin, setOrigin] = useState({ x: 0, y: 0.5 });
-  const srcs = useRef(projects.map((p) => p.image)).current;
 
-  // without a pointer on the list, the line nearest the reading point is the active one
   useEffect(() => {
     let raf = 0;
     const pick = () => {
       raf = 0;
-      if (hovering.current) return;
-      const mobile = innerWidth < 768;
-      const target = innerHeight * (mobile ? 0.72 : 0.5);
+      const target = innerHeight * (innerWidth < 768 ? 0.72 : 0.5);
       let best = 0;
       let bd = Infinity;
       rows.current.forEach((r, i) => {
@@ -136,35 +132,39 @@ function IndexView() {
     };
     pick();
     window.addEventListener('scroll', onScroll, { passive: true });
+    window.addEventListener('resize', onScroll);
     return () => {
       window.removeEventListener('scroll', onScroll);
+      window.removeEventListener('resize', onScroll);
       cancelAnimationFrame(raf);
     };
   }, []);
 
-  const activate = (i: number) => {
-    const r = rows.current[i]?.getBoundingClientRect();
-    const f = frame.current?.getBoundingClientRect();
-    if (r && f) setOrigin({ x: innerWidth < 768 ? 0.5 : 0, y: Math.min(1.1, Math.max(-0.1, (r.top + r.height / 2 - f.top) / f.height)) });
-    setActive(i);
-  };
-
   const p = projects[active];
 
   return (
-    <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.5 }} className="grid grid-cols-1 gap-3 md:grid-cols-12">
-      {/* the frame */}
-      <div className="sticky top-8 z-10 order-first bg-white pb-3 md:order-last md:col-span-5 md:col-start-8 md:self-start md:pt-[10vh]">
-        <div ref={frame}>
-          <DotSwap srcs={srcs} active={active} origin={origin} className="aspect-[16/10] w-full md:aspect-[4/3]" />
+    <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.8 }} className="grid grid-cols-1 gap-3 md:grid-cols-12">
+      {/* the frame, well apart from the titles */}
+      <div className="sticky top-8 z-10 order-first bg-white pb-4 md:order-last md:col-span-4 md:col-start-9 md:self-start md:pt-[18vh]">
+        <div className="relative aspect-[16/10] w-full overflow-hidden bg-neutral-100 md:aspect-[4/3]">
+          {projects.map((proj, i) => (
+            <Image
+              key={proj.link}
+              src={proj.image}
+              alt={i === active ? t(proj.title.fr, proj.title.en) : ''}
+              fill
+              sizes="(min-width:768px) 33vw, 100vw"
+              quality={85}
+              className="object-cover transition-opacity duration-[900ms] ease-[cubic-bezier(.4,0,.2,1)]"
+              style={{ opacity: i === active ? 1 : 0 }}
+            />
+          ))}
         </div>
         <div className={`${TXT} mt-2 flex items-start justify-between gap-4 px-2 md:px-0`}>
-          <div>
-            <p className="font-medium">
-              <DotText key={p.link} text={t(p.title.fr, p.title.en)} />
-            </p>
+          <motion.div key={p.link} initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.6 }}>
+            <p className="font-medium">{t(p.title.fr, p.title.en)}</p>
             <p className="text-black/50">{t(p.subtitle.fr, p.subtitle.en)}</p>
-          </div>
+          </motion.div>
           <span className="flex items-center gap-2.5 tabular-nums text-black/55">
             <MarkFor link={p.link} />
             {String(active + 1).padStart(2, '0')}
@@ -173,12 +173,7 @@ function IndexView() {
       </div>
 
       {/* the lines */}
-      <div
-        ref={list}
-        className="md:col-span-7 md:pb-[30vh] md:pt-[10vh]"
-        onPointerEnter={(e) => e.pointerType === 'mouse' && (hovering.current = true)}
-        onPointerLeave={() => (hovering.current = false)}
-      >
+      <div className="md:col-span-6 md:pb-[34vh] md:pt-[18vh]">
         {projects.map((proj, i) => {
           const d = Math.abs(i - active);
           return (
@@ -188,19 +183,11 @@ function IndexView() {
               ref={(el) => {
                 if (el) rows.current[i] = el;
               }}
-              onPointerEnter={(e) => e.pointerType === 'mouse' && activate(i)}
-              onFocus={() => activate(i)}
-              data-cursor="project"
-              data-mark={key(proj)}
-              data-label={t('Voir', 'View')}
-              className="grid grid-cols-[2.6ch_1fr_auto] items-baseline gap-x-3 border-t border-black/10 px-2 py-2.5 transition-opacity duration-500 md:px-0 md:py-3"
-              style={{ opacity: Math.max(0.13, 1 - d * 0.3) }}
+              className="grid grid-cols-[2.6ch_1fr] items-baseline gap-x-3 border-t border-black/10 px-2 py-2.5 transition-opacity duration-700 md:px-0 md:py-3"
+              style={{ opacity: Math.max(0.14, 1 - d * 0.28) }}
             >
               <span className={`${TXT} tabular-nums text-black/50`}>{String(i + 1).padStart(2, '0')}</span>
-              <span className="text-[9.5vw] font-medium leading-[0.95] tracking-[-0.045em] md:text-[clamp(30px,3.7vw,64px)]">
-                <DotText text={t(proj.title.fr, proj.title.en)} play="mount hover" delay={i * 40} />
-              </span>
-              <span className={`${TXT} hidden text-right text-black/50 md:block`}>{t(proj.subtitle.fr, proj.subtitle.en)}</span>
+              <span className="text-[9vw] font-medium leading-[0.95] tracking-[-0.045em] md:text-[clamp(28px,3.1vw,52px)]">{t(proj.title.fr, proj.title.en)}</span>
             </Link>
           );
         })}
@@ -228,11 +215,16 @@ export default function Home() {
     try {
       localStorage.setItem('view', v);
     } catch {}
+    // keep the reader at the top of the list instead of wherever the switch left the page
+    requestAnimationFrame(() => {
+      const el = document.getElementById('work');
+      if (el) lenisScrollTo(el.getBoundingClientRect().top + window.scrollY - 24);
+    });
   };
 
   const contactCard = (
     <motion.div initial={{ opacity: 0, y: 16 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true, margin: '-8% 0px' }} transition={{ duration: 1, ease: EASE, delay: 0.16 }}>
-      <a href="mailto:emmanuelijjou@gmail.com" className="group block" data-cursor="label" data-label={t('Écrire', 'Write')}>
+      <a href="mailto:emmanuelijjou@gmail.com" className="group block">
         <div className="relative flex aspect-[4/3] w-full flex-col justify-between bg-[#0a0a0a] p-5 text-white md:p-6">
           <p className={TXT + ' text-white/55'}>{t('Disponible — CDI, Paris ou remote', 'Available — full-time, Paris or remote')}</p>
           <p className="text-[9vw] font-medium leading-[0.95] tracking-[-0.04em] md:text-[2.4vw]">

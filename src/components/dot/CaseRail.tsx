@@ -84,7 +84,9 @@ export default function CaseRail() {
     return () => cancelAnimationFrame(raf);
   }, [isCase, blocks, H, scale, doc]);
 
-  if (!isCase || blocks.length < 3) return null;
+  // only where there is a free margin on the right: never over a picture
+  const right = blocks.reduce((m, b) => Math.max(m, b.x + b.w), 0);
+  if (!isCase || blocks.length < 3 || doc.vw - right < 44) return null;
 
   return (
     <div
@@ -92,8 +94,6 @@ export default function CaseRail() {
       className="fixed right-2 top-1/2 z-40 hidden -translate-y-1/2 text-white mix-blend-difference transition-opacity duration-500 md:block"
       style={{ width: W, height: H }}
       data-rail-skip
-      data-cursor="label"
-      data-label="↕"
       role="navigation"
       aria-label="Minimap"
       onClick={(e) => {

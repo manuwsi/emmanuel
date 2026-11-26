@@ -215,8 +215,8 @@ export default function SecondSkin() {
         <AnimatePresence mode="wait">
           <motion.h4
             key={head}
-            initial={{ opacity: 0, y: 8 }}
-            animate={{ opacity: 1, y: 0 }}
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
             exit={{ opacity: 0, y: -8 }}
             transition={{ duration: 0.3 }}
             className="mt-4 text-[22px] md:text-[26px] leading-[1.1]"

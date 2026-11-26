@@ -58,7 +58,7 @@ export default function TabletStrip({ items, hint }: { items: { src: string; n: 
       <div className="px-2 md:px-3 pt-3 grid grid-cols-1 md:grid-cols-12 gap-3 min-h-[92px]">
         <div className="md:col-span-8">
           <AnimatePresence mode="wait">
-            <motion.div key={at} initial={{ opacity: 0, y: 6 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0 }} transition={{ duration: 0.25 }} className="grid grid-cols-[32px_1fr] gap-x-2 text-[13px] leading-[1.45]">
+            <motion.div key={at} initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} transition={{ duration: 0.25 }} className="grid grid-cols-[32px_1fr] gap-x-2 text-[13px] leading-[1.45]">
               <span className="text-black/45 tabular-nums">{items[at].n}</span>
               <span><span className="font-medium">{items[at].title}</span> <span className="text-black/60">{items[at].text}</span></span>
             </motion.div>

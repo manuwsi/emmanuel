@@ -49,8 +49,8 @@ export function ProjectPage({
       <div className="pt-28 md:pt-36 px-2 md:px-3 w-full max-w-[1400px] mx-auto flex-grow">
         {/* TITLE */}
         <motion.div
-          initial={{ opacity: 0, y: 40 }}
-          animate={{ opacity: 1, y: 0 }}
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
           transition={{ duration: 1 }}
           className="space-y-4"
         >
@@ -68,15 +68,15 @@ export function ProjectPage({
         </motion.div>
 
         {hero && (
-          <motion.div initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 1, delay: 0.15 }} className="mt-12 md:mt-16">
+          <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 1, delay: 0.15 }} className="mt-12 md:mt-16">
             {hero}
           </motion.div>
         )}
 
         {/* META + INTRO */}
         <motion.div
-          initial={{ opacity: 0, y: 30 }}
-          animate={{ opacity: 1, y: 0 }}
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
           transition={{ duration: 1, delay: 0.2 }}
           className="mt-14 md:mt-20 grid grid-cols-1 md:grid-cols-12 gap-10 md:gap-8 border-t border-black/15 pt-6"
         >
@@ -125,8 +125,8 @@ export function Media({
 }) {
   return (
     <motion.div
-      initial={{ opacity: 0, y: 24 }}
-      whileInView={{ opacity: 1, y: 0 }}
+      initial={{ opacity: 0 }}
+      whileInView={{ opacity: 1 }}
       transition={{ duration: 0.8, ease: 'easeOut' }}
       viewport={{ once: true, margin: '-60px' }}
       className={`w-full ${className}`}

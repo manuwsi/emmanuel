@@ -114,8 +114,8 @@ export default function Page() {
           {explorations.map((v) => (
             <motion.figure
               key={v.n}
-              initial={{ opacity: 0, y: 24 }}
-              whileInView={{ opacity: 1, y: 0 }}
+              initial={{ opacity: 0 }}
+              whileInView={{ opacity: 1 }}
               viewport={{ once: true, margin: '-60px' }}
               transition={{ duration: 0.8, delay: (v.n % 2) * 0.08 }}
             >
@@ -163,8 +163,8 @@ export default function Page() {
             <span className="text-[13px]">VivaTech 2025</span>
           </div>
           <motion.div
-            initial={{ opacity: 0, scale: 0.94 }}
-            whileInView={{ opacity: 1, scale: 1 }}
+            initial={{ opacity: 0 }}
+            whileInView={{ opacity: 1 }}
             transition={{ duration: 0.9, ease: 'easeOut' }}
             viewport={{ once: true, margin: '-100px' }}
             className="mt-6 text-[40vw] md:text-[26vw] leading-[0.78] tracking-[-0.07em] font-medium tabular-nums"

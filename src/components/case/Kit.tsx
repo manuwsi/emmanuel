@@ -12,7 +12,7 @@ export const WRAP = 'px-2 md:px-3 w-full max-w-[1400px] mx-auto';
 
 export function Title({ title, kicker, subtitle }: { title: string; kicker?: string; subtitle: string }) {
   return (
-    <motion.div initial={{ opacity: 0, y: 40 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 1 }} className="space-y-4">
+    <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 1 }} className="space-y-4">
       <h1 className="text-[16vw] md:text-[9.5vw] font-medium leading-[0.84] tracking-[-0.055em]">
         {title}
         {kicker && <span className="block text-black/30">{kicker}</span>}
@@ -94,7 +94,7 @@ export function Bleed({ src, alt, aspect, mobileAspect, caption, position = 'cen
   return (
     <figure className="w-full">
       <div className="relative w-full overflow-hidden [aspect-ratio:var(--am)] md:[aspect-ratio:var(--ad)]" style={{ ['--ad' as string]: aspect, ['--am' as string]: mobileAspect ?? aspect, background: bg }}>
-        <motion.div className="absolute inset-0" initial={{ scale: 1.06, opacity: 0 }} whileInView={{ scale: 1, opacity: 1 }} viewport={{ once: true, margin: '-60px' }} transition={{ duration: 1.6, ease: [0.22, 1, 0.36, 1] }}>
+        <motion.div className="absolute inset-0" initial={{ opacity: 0 }} whileInView={{ opacity: 1 }} viewport={{ once: true, margin: '-60px' }} transition={{ duration: 1.6, ease: [0.22, 1, 0.36, 1] }}>
           <Image src={src} alt={alt} fill priority={priority} sizes="100vw" quality={90} className="object-cover" style={{ objectPosition: position }} />
         </motion.div>
       </div>

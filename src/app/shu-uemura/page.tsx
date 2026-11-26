@@ -135,7 +135,7 @@ export default function Page() {
               { f: '06-brow-shape', k: 'B', fr: 'La forme.', en: 'The shape.', d: t('Une forme recommandée, et les autres à côté.', 'One recommended shape, the others next to it.') },
               { f: '07-pencil', k: 'C', fr: 'Le geste.', en: 'The technique.', d: t('Le produit en main, avec ses repères.', 'The product in hand, with its guides.') },
             ].map((s, i) => (
-              <motion.figure key={s.f} initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true, margin: '-60px' }} transition={{ duration: 0.8, delay: i * 0.1 }}>
+              <motion.figure key={s.f} initial={{ opacity: 0 }} whileInView={{ opacity: 1 }} viewport={{ once: true, margin: '-60px' }} transition={{ duration: 0.8, delay: i * 0.1 }}>
                 <Phone src={S(s.f)} alt={`Shu Uemura — ${t(s.fr, s.en)}`} />
                 <figcaption className="mt-3 hidden md:grid grid-cols-[22px_1fr] gap-x-2 text-[13px] leading-[1.45]">
                   <span className="text-black/45">{s.k}</span>

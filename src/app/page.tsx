@@ -27,8 +27,8 @@ function ProjectCard({ project, index, small = false }: { project: Project; inde
           {/* the cover settles in once, slowly: a light fade and a very small zoom-out */}
           <motion.div
             className="absolute inset-0"
-            initial={{ opacity: 0, scale: 1.04 }}
-            whileInView={{ opacity: 1, scale: 1 }}
+            initial={{ opacity: 0 }}
+            whileInView={{ opacity: 1 }}
             viewport={{ once: true, margin: '-6% 0px' }}
             transition={{ duration: 1.8, ease: EASE, delay: (index % cols) * 0.12 }}
           >
@@ -107,13 +107,15 @@ function ViewToggle({ view, setView }: { view: View; setView: (v: View) => void 
 function IndexView() {
   const t = useT();
   const rows = useRef<HTMLAnchorElement[]>([]);
+  const pointerY = useRef<number | null>(null);
+  const listRef = useRef<HTMLDivElement>(null);
   const [active, setActive] = useState(0);
 
   useEffect(() => {
     let raf = 0;
     const pick = () => {
       raf = 0;
-      const target = innerHeight * (innerWidth < 768 ? 0.72 : 0.5);
+      const target = pointerY.current ?? innerHeight * (innerWidth < 768 ? 0.72 : 0.5);
       let best = 0;
       let bd = Infinity;
       rows.current.forEach((r, i) => {
@@ -130,12 +132,25 @@ function IndexView() {
     const onScroll = () => {
       if (!raf) raf = requestAnimationFrame(pick);
     };
+    const list = listRef.current!;
+    const move = (e: PointerEvent) => {
+      if (e.pointerType !== 'mouse') return;
+      pointerY.current = e.clientY;
+      onScroll();
+    };
+    const leave = () => {
+      pointerY.current = null;
+    };
     pick();
     window.addEventListener('scroll', onScroll, { passive: true });
     window.addEventListener('resize', onScroll);
+    list.addEventListener('pointermove', move, { passive: true });
+    list.addEventListener('pointerleave', leave);
     return () => {
       window.removeEventListener('scroll', onScroll);
       window.removeEventListener('resize', onScroll);
+      list.removeEventListener('pointermove', move);
+      list.removeEventListener('pointerleave', leave);
       cancelAnimationFrame(raf);
     };
   }, []);
@@ -155,13 +170,13 @@ function IndexView() {
               fill
               sizes="(min-width:768px) 33vw, 100vw"
               quality={85}
-              className="object-cover transition-opacity duration-[900ms] ease-[cubic-bezier(.4,0,.2,1)]"
+              className="object-cover transition-opacity duration-500 ease-[cubic-bezier(.4,0,.2,1)]"
               style={{ opacity: i === active ? 1 : 0 }}
             />
           ))}
         </div>
         <div className={`${TXT} mt-2 flex items-start justify-between gap-4 px-2 md:px-0`}>
-          <motion.div key={p.link} initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.6 }}>
+          <motion.div key={p.link} initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.35 }}>
             <p className="font-medium">{t(p.title.fr, p.title.en)}</p>
             <p className="text-black/50">{t(p.subtitle.fr, p.subtitle.en)}</p>
           </motion.div>
@@ -173,7 +188,7 @@ function IndexView() {
       </div>
 
       {/* the lines */}
-      <div className="md:col-span-6 md:pb-[34vh] md:pt-[18vh]">
+      <div ref={listRef} className="md:col-span-6 md:pb-[34vh] md:pt-[18vh]">
         {projects.map((proj, i) => {
           const d = Math.abs(i - active);
           return (
@@ -183,7 +198,7 @@ function IndexView() {
               ref={(el) => {
                 if (el) rows.current[i] = el;
               }}
-              className="grid grid-cols-[2.6ch_1fr] items-baseline gap-x-3 border-t border-black/10 px-2 py-2.5 transition-opacity duration-700 md:px-0 md:py-3"
+              className="grid grid-cols-[2.6ch_1fr] items-baseline gap-x-3 border-t border-black/10 px-2 py-2.5 transition-opacity duration-300 md:px-0 md:py-3"
               style={{ opacity: Math.max(0.14, 1 - d * 0.28) }}
             >
               <span className={`${TXT} tabular-nums text-black/50`}>{String(i + 1).padStart(2, '0')}</span>
@@ -223,7 +238,7 @@ export default function Home() {
   };
 
   const contactCard = (
-    <motion.div initial={{ opacity: 0, y: 16 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true, margin: '-8% 0px' }} transition={{ duration: 1, ease: EASE, delay: 0.16 }}>
+    <motion.div initial={{ opacity: 0 }} whileInView={{ opacity: 1 }} viewport={{ once: true, margin: '-8% 0px' }} transition={{ duration: 1, ease: EASE, delay: 0.16 }}>
       <a href="mailto:emmanuelijjou@gmail.com" className="group block">
         <div className="relative flex aspect-[4/3] w-full flex-col justify-between bg-[#0a0a0a] p-5 text-white md:p-6">
           <p className={TXT + ' text-white/55'}>{t('Disponible — CDI, Paris ou remote', 'Available — full-time, Paris or remote')}</p>
@@ -255,21 +270,15 @@ export default function Home() {
 
       {/* statement */}
       <section className="flex min-h-[78svh] flex-col justify-end px-2 pb-6 md:px-3">
-        <h1 key={headline} className="max-w-[14ch] text-[13vw] font-medium leading-[0.9] tracking-[-0.045em] md:text-[min(6vw,96px)]">
-          {headline.split(' ').map((w, i) => (
-            <span key={i} className="inline-block overflow-hidden pb-[0.08em] align-top">
-              <motion.span
-                className="inline-block"
-                initial={{ y: '105%' }}
-                animate={{ y: 0 }}
-                transition={{ duration: 1.1, ease: EASE, delay: lead + 0.25 + i * 0.07 }}
-              >
-                {w}
-                {i < headline.split(' ').length - 1 ? ' ' : ''}
-              </motion.span>
-            </span>
-          ))}
-        </h1>
+        <motion.h1
+          key={headline}
+          className="max-w-[14ch] text-[13vw] font-medium leading-[0.9] tracking-[-0.045em] md:text-[min(6vw,96px)]"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ duration: 1.4, ease: EASE, delay: lead + 0.2 }}
+        >
+          {headline}
+        </motion.h1>
         <motion.div
           className={`${TXT} mt-8 grid grid-cols-1 gap-4 md:grid-cols-4`}
           initial={{ opacity: 0 }}

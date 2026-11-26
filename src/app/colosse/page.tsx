@@ -145,7 +145,7 @@ export default function Colosse() {
       <section className="relative h-[100svh] min-h-[640px] overflow-hidden">
         <div className="absolute inset-0 [background-image:radial-gradient(circle,rgba(10,10,10,.10)_1px,transparent_1.6px)] [background-size:20px_20px]" />
         <Cutter className="absolute right-[-38vw] md:right-[-14vw] top-1/2 -translate-y-1/2 w-[120vw] h-[120vw] md:w-[78vw] md:h-[78vw]" />
-        <motion.div initial={{ opacity: 0, y: 40 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 1 }} className="absolute left-2 md:left-3 top-28 md:top-36 space-y-4">
+        <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 1 }} className="absolute left-2 md:left-3 top-28 md:top-36 space-y-4">
           <h1 className="text-[19vw] md:text-[11vw] font-medium leading-[0.82] tracking-[-0.055em]">Colosse</h1>
           <h2 className="text-[13px] leading-[1.35] text-black/50"><span className="bg-white">{t('2026 — Concept UX/UI, poste de pilotage d’un tunnelier', '2026 — UX/UI concept, tunnel boring machine cockpit')}</span></h2>
         </motion.div>
@@ -268,8 +268,8 @@ export default function Colosse() {
             <span className="text-[13px] tabular-nums">−14 m</span>
           </div>
           <motion.div
-            initial={{ opacity: 0, scale: 0.92 }}
-            whileInView={{ opacity: 1, scale: 1 }}
+            initial={{ opacity: 0 }}
+            whileInView={{ opacity: 1 }}
             transition={{ duration: 0.9, ease: 'easeOut' }}
             viewport={{ once: true, margin: '-100px' }}
             className="mt-6 text-[34vw] md:text-[24vw] leading-[0.8] tracking-[-0.06em] font-medium tabular-nums text-[#e3382a]"

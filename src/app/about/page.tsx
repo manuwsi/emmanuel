@@ -19,8 +19,8 @@ const clients = [
 function Section({ title, children }: { title: string; children: ReactNode }) {
   return (
     <motion.section
-      initial={{ opacity: 0, y: 20 }}
-      whileInView={{ opacity: 1, y: 0 }}
+      initial={{ opacity: 0 }}
+      whileInView={{ opacity: 1 }}
       transition={{ duration: 0.8 }}
       viewport={{ once: true }}
       className="grid grid-cols-1 md:grid-cols-12 gap-6 md:gap-8 border-t border-black/15 pt-10"
@@ -90,8 +90,8 @@ export default function AboutPage() {
       <div className="pt-32 md:pt-40 px-6 md:px-10 w-full max-w-6xl mx-auto flex-grow">
         {/* HERO */}
         <motion.div
-          initial={{ opacity: 0, y: 30 }}
-          animate={{ opacity: 1, y: 0 }}
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
           transition={{ duration: 1 }}
           className="space-y-8 md:space-y-10"
         >

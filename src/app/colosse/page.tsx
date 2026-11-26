@@ -195,8 +195,8 @@ export default function Colosse() {
           <Media src="/colosse/2-anomalie.webp" alt={t('Anomalie : un vide devant la roue, sous une école', 'Anomaly: a void ahead of the wheel, under a school')} priority {...W} />
           <figcaption className="mt-3 max-w-3xl text-[13px] text-black/50">
             {t(
-              '02:09. La sonde détecte un vide sous une école. L’écran le dessine à sa place dans le sol et propose trois options au pilote.',
-              '02:09. The probe picks up a void under a school. The screen draws it where it is in the ground and gives the driver three options.'
+              '02:09. La sonde détecte un vide sous une école. L’écran le dessine à sa place dans le sol et propose trois options à l’ingénieur de quart.',
+              '02:09. The probe picks up a void under a school. The screen draws it where it is in the ground and gives the shift engineer three options.'
             )}
           </figcaption>
         </figure>
@@ -279,7 +279,7 @@ export default function Colosse() {
                 <Src n={3} /><Src n={4} />
               </p>
               <p>
-                {t('L’écran ne décide pas : il propose trois options avec leur effet en surface, le tassement estimé sous l’école. L’ingénieur choisit, et son choix est enregistré avec ce qu’il savait à ce moment-là.', 'The screen doesn’t decide: it offers three options with their effect at the surface, the estimated settlement under the school. The engineer chooses, and the choice is logged with what he knew at that moment.')}
+                {t('L’écran ne décide pas : il propose trois options avec leur effet en surface, le tassement estimé sous l’école. L’ingénieur de quart, qui supervise le pilote, choisit, et son choix est enregistré avec ce qu’il savait à ce moment-là.', 'The screen doesn’t decide: it offers three options with their effect at the surface, the estimated settlement under the school. The shift engineer, who supervises the driver, chooses, and the choice is logged with what he knew at that moment.')}
               </p>
             </div>
           </div>
@@ -399,7 +399,7 @@ export default function Colosse() {
         {/* 11 — WHAT'S LEFT */}
         <Chap
           n={11}
-          title={t('Ce qu’il reste à prouver', 'What’s left to prove')}
+          title={t('La suite', 'What’s next')}
           depth={t('Arrivée', 'Arrived')}
           lede={t('Ce qui vient ensuite.', 'What comes next.')}
         >

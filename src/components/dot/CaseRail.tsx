@@ -18,6 +18,8 @@ function thumbOf(el: HTMLElement): string | undefined {
     src = u;
   }
   if (!src.startsWith('/')) return undefined;
+  // vector files are served as they are (the image optimizer refuses them)
+  if (/\.svg$/i.test(src)) return src;
   return optimized(src, 96, 60);
 }
 

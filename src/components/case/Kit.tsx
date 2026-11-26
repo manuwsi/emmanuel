@@ -4,10 +4,9 @@
 
 import { ReactNode } from 'react';
 import Image from 'next/image';
-import Link from 'next/link';
 import { motion } from 'framer-motion';
-import { nextProject } from '@/components/projects';
-import { useT } from '@/components/i18n';
+import NextProject from '@/components/dot/NextProject';
+import DotText from '@/components/dot/DotText';
 
 export const DISPLAY = { fontFamily: 'var(--font-general-sans), Inter, sans-serif', fontWeight: 500, letterSpacing: '-0.03em' } as const;
 export const WRAP = 'px-2 md:px-3 w-full max-w-[1400px] mx-auto';
@@ -59,7 +58,7 @@ export function Chap({ n, title, aside, lede, children }: { n: number; title: st
     >
       <div className="flex items-baseline justify-between border-t border-black/15 pt-3">
         <h3 className="text-[13px] text-black/45">
-          {String(n).padStart(2, '0')} → {title}
+          <DotText text={`${String(n).padStart(2, '0')} → ${title}`} play="view" />
         </h3>
         {aside && <span className="text-[13px] tabular-nums">{aside}</span>}
       </div>
@@ -106,23 +105,5 @@ export function Bleed({ src, alt, aspect, mobileAspect, caption, position = 'cen
 }
 
 export function Next({ path }: { path: string }) {
-  const t = useT();
-  const np = nextProject(path);
-  return (
-    <div className={WRAP}>
-      <motion.div
-        initial={{ opacity: 0, y: 50 }}
-        whileInView={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.6 }}
-        viewport={{ once: true }}
-        className="mt-40 border-t-[3px] border-[#0a0a0a] pt-2 flex flex-col items-start gap-6"
-      >
-        <span className="text-[13px] text-black/45">{t('Projet suivant', 'Next project')}</span>
-        <Link href={np.link} className="group">
-          <span className="text-[9vw] md:text-[5vw] font-medium leading-[0.95] tracking-[-0.04em] group-hover:opacity-50 transition">{t(np.title.fr, np.title.en)} →</span>
-        </Link>
-      </motion.div>
-      <footer className="mt-24 mb-12 text-[13px] text-black/40">© {new Date().getFullYear()} Emmanuel</footer>
-    </div>
-  );
+  return <NextProject path={path} />;
 }

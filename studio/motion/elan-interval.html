@@ -1,0 +1,46 @@
+<!doctype html>
+<html><head><meta charset="utf-8">
+<style>html,body{margin:0;background:#0a0a0a;overflow:hidden}canvas{display:block}</style></head>
+<body><canvas id="c"></canvas>
+<script src="lib.js"></script>
+<script>
+/* Élan — three watches, one session. Each face moves on to its next screen through a ripple of dots,
+   out of step with its neighbours, like three runners on the same track. */
+window.T = 10;
+const WATCHES = [
+  { x: 470, d: 400, phase: 0.0, list: ['02-pret', '03-echauf', '15-calme', '16-resume', '01-jour'] },
+  { x: 960, d: 520, phase: 0.7, list: ['04-effort', '05-vite', '09-recup', '11-go', '12-derniere'] },
+  { x: 1450, d: 400, phase: 1.4, list: ['06-lent', '08-chrecup', '13-pause', '17-coeur', '07-fin'] },
+];
+const STEP = 2; // seconds per screen
+let imgs = {};
+
+window.setup = async () => {
+  const names = [...new Set(WATCHES.flatMap((w) => w.list))];
+  const loaded = await loadAll(names.map((n) => `pub/elan/w/${n}.webp`));
+  names.forEach((n, i) => (imgs[n] = loaded[i]));
+};
+
+window.draw = (t) => {
+  ctx.setTransform(1, 0, 0, 1, 0, 0);
+  ctx.fillStyle = '#0a0a0a'; ctx.fillRect(0, 0, W, H);
+  dotField(ctx, 'rgba(255,255,255,0.07)', 40, 1.4);
+
+  for (const w of WATCHES) {
+    const n = w.list.length;
+    const tl = mod(t - w.phase, T);
+    const k = Math.floor(tl / STEP);
+    const local = tl - k * STEP;
+    const cur = imgs[w.list[k % n]];
+    const next = imgs[w.list[(k + 1) % n]];
+    const x = w.x - w.d / 2, y = H / 2 - w.d / 2;
+    const circle = (c) => { c.beginPath(); c.arc(w.x, H / 2, w.d / 2, 0, 6.2832); };
+    ctx.save(); circle(ctx); ctx.clip();
+    ctx.drawImage(cur, x, y, w.d, w.d);
+    ctx.restore();
+    // the last 0.8 s of each step: the next screen arrives from the top of the dial
+    const p = eio(prog(local, STEP - 0.8, STEP));
+    if (p > 0) bloom(ctx, next, x, y, w.d, w.d, p, { origin: [0.5, 0.0], cell: 9, spread: 1.3, ink: 'light', band: 0.32, clip: circle });
+  }
+};
+</script></body></html>

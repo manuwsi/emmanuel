@@ -1,11 +1,11 @@
 'use client';
 
 import Image from 'next/image';
-import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { nextProject } from '@/components/projects';
 import { Chrome, Plate, Reveal, Row, Strip, Weave, DISPLAY, TXT, usePhone } from './Kit';
 import { useT } from '@/components/i18n';
+import NextProject from '@/components/dot/NextProject';
+import { Media } from '@/components/project/ProjectPage';
 import HoloCard from './HoloCard';
 import Constellation from './Constellation';
 import Story from './Story';
@@ -84,7 +84,6 @@ export default function Page() {
   const t = useT();
   const phone = usePhone();
   const pathname = usePathname();
-  const np = nextProject(pathname);
 
   const chapters = [
     { id: 'probleme', label: t('Le problème', 'The problem') },
@@ -257,6 +256,9 @@ export default function Page() {
         <div>
           <Strip items={screens} label={t('Les écrans', 'The screens')} hint={t('Faire glisser', 'Drag')} />
         </div>
+        <div className="mt-3">
+          <Media video src="/motion/foil-rows.mp4" width={1920} height={1080} alt={t('Animation : les quinze écrans défilent sur deux rails, en points loin du centre et nets au milieu', 'Animation: the fifteen screens slide on two rails, in dots away from the centre and sharp in the middle')} />
+        </div>
       </section>
 
       <Plate
@@ -315,14 +317,7 @@ export default function Page() {
         </div>
       </section>
 
-      <section className="border-t-[3px] border-[#0a0a0a] px-2 pb-28 pt-2 md:px-3 md:pb-32">
-        <span className={`${TXT} text-black/45`}>{t('Projet suivant', 'Next project')}</span>
-        <div className="mt-4">
-          <Link href={np.link} className="group">
-            <span className="text-[11vw] leading-[0.95] transition group-hover:opacity-50 md:text-[5vw]" style={DISPLAY}>{t(np.title.fr, np.title.en)} →</span>
-          </Link>
-        </div>
-      </section>
+      <NextProject path={pathname} />
     </div>
   );
 }

@@ -105,3 +105,38 @@ main {
 }
 
 
+
+/* ── DOT motion system ─────────────────────────────────────────── */
+
+/* letters set in braille dots before they turn solid (DotText) */
+.dt .dc { position: relative; }
+.dt .dc[data-h] { visibility: hidden; }
+.dt .dc[data-b] { -webkit-text-fill-color: transparent; }
+.dt .dc[data-b]::after {
+  content: attr(data-b);
+  position: absolute;
+  left: 50%;
+  top: 0;
+  transform: translateX(-50%);
+  -webkit-text-fill-color: currentColor;
+  font-family: 'Apple Braille', 'Segoe UI Symbol', 'DejaVu Sans', 'Noto Sans Symbols 2', sans-serif;
+  font-weight: 400;
+  pointer-events: none;
+}
+
+/* the custom cursor replaces the system one on desktop */
+html.has-cursor, html.has-cursor * { cursor: none !important; }
+html.has-cursor iframe { cursor: auto !important; }
+
+/* first visit: solid ink until the slate opens (safety: it goes away on its own) */
+html[data-intro='1'] #dot-veil { display: block; animation: dotveil 0.3s ease 3.4s forwards; }
+@keyframes dotveil { to { opacity: 0; visibility: hidden; } }
+
+/* Lenis */
+html.lenis, html.lenis body { height: auto; }
+.lenis.lenis-smooth { scroll-behavior: auto !important; }
+.lenis.lenis-smooth [data-lenis-prevent] { overscroll-behavior: contain; }
+.lenis.lenis-stopped { overflow: hidden; }
+
+/* a field of dots, used as texture in the minimap */
+.dotfill { background-image: radial-gradient(circle, currentColor 0.7px, transparent 0.9px); background-size: 3px 3px; }

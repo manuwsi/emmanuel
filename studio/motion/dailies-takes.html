@@ -1,0 +1,56 @@
+<!doctype html>
+<html><head><meta charset="utf-8">
+<style>html,body{margin:0;background:#e9e9e7;overflow:hidden}canvas{display:block}</style></head>
+<body><canvas id="c"></canvas>
+<script src="lib.js"></script>
+<script>
+/* Dailies — one take among the takes. The screens advance like a reel on an editing table;
+   the one that stops in the middle is the only one in focus, the others stay as dots. */
+window.T = 12;
+const SCREENS = ['01-projet', '02-plan', '03-comparer', '04-revue', '05-validation', '06-retours', '07-budget', '08-echec', '10-valide', '04-revue-v1'];
+const FW = 720, FH = 450, GAP = 44, STRIDE = FW + GAP;
+const N = SCREENS.length, LEN = N * STRIDE, STEP = T / N;
+let imgs = [];
+
+window.setup = async () => {
+  imgs = await loadAll(SCREENS.map((s) => `pub/dailies/${s}.webp`));
+};
+
+window.draw = (t) => {
+  ctx.setTransform(1, 0, 0, 1, 0, 0);
+  ctx.fillStyle = '#e9e9e7'; ctx.fillRect(0, 0, W, H);
+  dotField(ctx, 'rgba(10,10,10,0.10)', 40, 1.5);
+
+  // stop-and-go: each step slides one frame along, then holds
+  const k = Math.floor(t / STEP), f = t / STEP - k;
+  const pos = (k + eio5(prog(f, 0.0, 0.42))) * STRIDE;
+  const y = (H - FH) / 2;
+
+  // the perforations of the strip
+  ctx.fillStyle = 'rgba(10,10,10,0.16)';
+  for (let x = mod(-pos, 40) - 40; x < W + 40; x += 40) {
+    ctx.fillRect(x, y - 54, 18, 10);
+    ctx.fillRect(x, y + FH + 44, 18, 10);
+  }
+
+  for (let i = 0; i < N; i++) {
+    let x = mod(i * STRIDE - pos + W / 2 - FW / 2 + STRIDE * 2, LEN) - STRIDE * 2;
+    for (let rep = 0; rep < 2; rep++, x += LEN) {
+      if (x < -FW || x > W) continue;
+      const img = imgs[i];
+      const dx = x + FW / 2 - W / 2;
+      const focus = 1 - sm(40, STRIDE * 0.75, Math.abs(dx));
+      const s = lerp(0.84, 1, focus);
+      const w = FW * s, h = FH * s, xx = x + (FW - w) / 2, yy = y + (FH - h) / 2;
+      ctx.fillStyle = '#f4f4f2'; ctx.fillRect(xx, yy, w, h);
+      halftone(ctx, img, xx, yy, w, h, { cell: 6, color: 'rgba(10,10,10,0.5)', amount: 0.62 });
+      ctx.strokeStyle = 'rgba(10,10,10,0.12)'; ctx.lineWidth = 1; ctx.strokeRect(xx + 0.5, yy + 0.5, w - 1, h - 1);
+      if (focus > 0) bloom(ctx, img, xx, yy, w, h, focus, { origin: [dx > 0 ? 0 : 1, 0.5], cell: 6, spread: 1.2, band: 0.3 });
+      if (focus > 0.9) {
+        ctx.strokeStyle = `rgba(10,10,10,${sm(0.9, 1, focus)})`; ctx.lineWidth = 2;
+        ctx.strokeRect(xx - 7, yy - 7, w + 14, h + 14);
+      }
+    }
+  }
+};
+</script></body></html>

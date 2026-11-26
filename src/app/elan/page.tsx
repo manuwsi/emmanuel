@@ -474,6 +474,8 @@ export default function Page() {
         <Caption>{t('Une séance complète : seize écrans et une option.', 'A full session: sixteen screens and one option.')}</Caption>
       </div>
 
+      <Media video src="/motion/elan-interval.mp4" width={1920} height={1080} alt={t('Animation : trois montres passent d’un écran de séance au suivant, décalées', 'Animation: three watches move from one session screen to the next, out of step')} />
+
       {/* HAPTICS */}
       <Media
         src="/elan/night.jpg"

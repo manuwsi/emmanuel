@@ -1,0 +1,46 @@
+<!doctype html>
+<html><head><meta charset="utf-8">
+<style>html,body{margin:0;background:#e9e9e7;overflow:hidden}canvas{display:block}</style></head>
+<body><canvas id="c"></canvas>
+<script src="lib.js"></script>
+<script>
+/* Colosse — the shift changes. Day screen, night falls in dots; an anomaly lights up at night;
+   morning comes back over the same anomaly; and the next day starts. */
+window.T = 10;
+let A, An, B, Bn;
+const SX = 220, SY = 78, SW = 1480, SH = 925;
+
+window.setup = async () => {
+  [A, An, B, Bn] = await loadAll(['pub/colosse/1-pilotage.webp', 'pub/colosse/1-pilotage-nuit.webp', 'pub/colosse/2-anomalie.webp', 'pub/colosse/2-anomalie-nuit.webp']);
+};
+
+// [start, end, from, to, origin, tones that grow first]
+const steps = [
+  [0.9, 2.4, () => A, () => An, [1.04, -0.06], 'dark'],
+  [3.6, 5.0, () => An, () => Bn, [0.86, 0.17], 'light'],
+  [6.2, 7.6, () => Bn, () => B, [-0.04, 1.06], 'light'],
+  [8.5, 9.85, () => B, () => A, [0.5, 0.55], 'dark'],
+];
+
+window.draw = (t) => {
+  ctx.setTransform(1, 0, 0, 1, 0, 0);
+  ctx.fillStyle = '#e9e9e7'; ctx.fillRect(0, 0, W, H);
+  dotField(ctx, 'rgba(10,10,10,0.10)', 40, 1.5);
+
+  // a very slow breath of the frame
+  const z = 1 + 0.012 * Math.sin((t / T) * Math.PI * 2);
+  ctx.save();
+  ctx.translate(W / 2, H / 2); ctx.scale(z, z); ctx.translate(-W / 2, -H / 2);
+  ctx.fillStyle = 'rgba(10,10,10,0.08)'; ctx.fillRect(SX - 1, SY - 1, SW + 2, SH + 2);
+
+  let base = A, over = null, p = 0, o = null, ink = 'dark';
+  for (const [a, b, f, to, org, k] of steps) {
+    if (t >= b) base = to();
+    else if (t >= a) { base = f(); over = to(); p = eio(prog(t, a, b)); o = org; ink = k; break; }
+    else { base = f(); break; }
+  }
+  drawCover(ctx, base, SX, SY, SW, SH);
+  if (over) bloom(ctx, over, SX, SY, SW, SH, p, { origin: o, cell: 13, spread: 1.5, ink, band: 0.3 });
+  ctx.restore();
+};
+</script></body></html>

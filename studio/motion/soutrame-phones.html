@@ -1,0 +1,47 @@
+<!doctype html>
+<html><head><meta charset="utf-8">
+<style>html,body{margin:0;background:#e9e9e7;overflow:hidden}canvas{display:block}</style></head>
+<body><canvas id="c"></canvas>
+<script src="lib.js"></script>
+<script>
+/* Soutrame — the shop in the hand. Three phones, each turning its own page of the shop
+   (shop, capsule, campaign, product sheet), never at the same moment. */
+window.T = 10;
+const PAGES = ['m-shop', 'm-capsule', 'm-campaign', 'm-sheet'];
+const PH = 880, PWID = Math.round((PH * 900) / 1948), R = 46;
+const PHONES = [
+  { x: 960 - PWID / 2 - 470, y: 130, phase: 0.0, start: 0 },
+  { x: 960 - PWID / 2, y: 70, phase: 0.85, start: 1 },
+  { x: 960 - PWID / 2 + 470, y: 130, phase: 1.7, start: 2 },
+];
+const STEP = 2.5;
+let imgs = [];
+
+window.setup = async () => {
+  imgs = await loadAll(PAGES.map((p) => `pub/soutrame-case/${p}.jpg`));
+};
+
+window.draw = (t) => {
+  ctx.setTransform(1, 0, 0, 1, 0, 0);
+  ctx.fillStyle = '#e9e9e7'; ctx.fillRect(0, 0, W, H);
+  dotField(ctx, 'rgba(10,10,10,0.10)', 40, 1.5);
+
+  for (const ph of PHONES) {
+    const tl = mod(t - ph.phase, T);
+    const k = Math.floor(tl / STEP), local = tl - k * STEP;
+    const cur = imgs[(ph.start + k) % PAGES.length];
+    const next = imgs[(ph.start + k + 1) % PAGES.length];
+    // a slow float, out of step with the others
+    const fy = Math.sin(((t + ph.phase * 2) / T) * Math.PI * 2) * 8;
+    const x = ph.x, y = ph.y + fy;
+    const shape = (c) => rrect(c, x, y, PWID, PH, R);
+    ctx.save();
+    rrect(ctx, x - 1, y - 1, PWID + 2, PH + 2, R + 1); ctx.fillStyle = 'rgba(10,10,10,0.12)'; ctx.fill();
+    shape(ctx); ctx.clip();
+    ctx.drawImage(cur, x, y, PWID, PH);
+    ctx.restore();
+    const p = eio(prog(local, STEP - 0.9, STEP));
+    if (p > 0) bloom(ctx, next, x, y, PWID, PH, p, { origin: [0.5, 1.02], cell: 9, spread: 1.3, band: 0.3, clip: shape });
+  }
+};
+</script></body></html>

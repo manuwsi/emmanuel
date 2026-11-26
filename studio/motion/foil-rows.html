@@ -1,0 +1,46 @@
+<!doctype html>
+<html><head><meta charset="utf-8">
+<style>html,body{margin:0;background:#0a0a0a;overflow:hidden}canvas{display:block}</style></head>
+<body><canvas id="c"></canvas>
+<script src="lib.js"></script>
+<script>
+/* Foil — fifteen screens on two rails, going opposite ways. Away from the middle they are only dots,
+   like cards seen from far; crossing the middle they come into focus. */
+window.T = 14;
+const SCREENS = ['accueil', 'collection', 'fiche', 'evolution', 'marches', 'scan', 'ajout', 'vitrine', 'serie', 'radar', 'repartition', 'alertes', 'vendre', 'voyage', 'constellation'];
+const SH = 452, SW = Math.round((SH * 780) / 1688), GAP = 26, R = 26;
+const STRIDE = SW + GAP, LEN = SCREENS.length * STRIDE;
+let imgs = [];
+
+window.setup = async () => {
+  imgs = await loadAll(SCREENS.map((s) => `pub/foil/p/${s}.webp`));
+};
+
+function rail(t, y, dir, offset) {
+  const shift = (t / T) * LEN * dir;
+  for (let i = 0; i < SCREENS.length; i++) {
+    let x = mod(i * STRIDE + shift + offset, LEN) - STRIDE;
+    for (let rep = 0; x < W + STRIDE && rep < 3; rep++, x += LEN) {
+      if (x < -STRIDE || x > W) continue;
+      const img = imgs[dir > 0 ? i : SCREENS.length - 1 - i];
+      const cx = x + SW / 2, dx = cx - W / 2;
+      const shape = (c) => rrect(c, x, y, SW, SH, R);
+      // far: a halftone of the screen in its own colours; near the middle: it blooms into focus
+      ctx.save(); shape(ctx); ctx.strokeStyle = 'rgba(255,255,255,0.14)'; ctx.lineWidth = 1.2; ctx.stroke(); ctx.restore();
+      halftone(ctx, img, x, y, SW, SH, { cell: 7, ink: 'light', amount: 0.9, color: 'rgba(236,238,242,0.8)', clip: shape });
+      const p = 1 - sm(150, 520, Math.abs(dx));
+      if (p > 0) {
+        ctx.save(); shape(ctx); ctx.clip(); ctx.fillStyle = '#0a0a0a'; ctx.globalAlpha = sm(0, 0.4, p); ctx.fillRect(x, y, SW, SH); ctx.restore();
+        bloom(ctx, img, x, y, SW, SH, p, { origin: [dx > 0 ? -0.05 : 1.05, 0.5], cell: 7, spread: 1.2, ink: 'light', band: 0.32, clip: shape });
+      }
+    }
+  }
+}
+
+window.draw = (t) => {
+  ctx.setTransform(1, 0, 0, 1, 0, 0);
+  ctx.fillStyle = '#0a0a0a'; ctx.fillRect(0, 0, W, H);
+  rail(t, 60, -1, 0);
+  rail(t, 60 + SH + 56, 1, STRIDE * 0.5);
+};
+</script></body></html>

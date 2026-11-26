@@ -289,6 +289,10 @@ export default function Page() {
         · {t('10 écrans, sur ordinateur', '10 screens, on a computer')}
       </p>
 
+      <div className="pt-10 md:pt-16">
+        <Media video src="/motion/proxy-fragments.mp4" width={1920} height={1080} alt={t('Animation : les fragments d’une journée de Proxy se rassemblent et deviennent le journal', 'Animation: the fragments of a day with Proxy gather and become the log')} />
+      </div>
+
       <div className="grid grid-cols-1 md:grid-cols-12 gap-0 md:gap-8 pt-10 md:pt-16">
         {/* PINNED PRESENCE (desktop) */}
         <aside className="hidden md:block md:col-span-3">

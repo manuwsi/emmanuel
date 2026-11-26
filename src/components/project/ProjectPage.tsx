@@ -2,10 +2,10 @@
 
 import { ReactNode, useEffect, useRef } from 'react';
 import { motion } from 'framer-motion';
-import Image from 'next/image';
-import Link from 'next/link';
+import DotImage from '../dot/DotImage';
+import DotText from '../dot/DotText';
 import { usePathname } from 'next/navigation';
-import { nextProject } from '../projects';
+import NextProject from '../dot/NextProject';
 import Header from '../Header';
 import { useT } from '../i18n';
 import '../../styles/globals.css';
@@ -35,8 +35,6 @@ export function ProjectPage({
 }) {
   const t = useT();
   const pathname = usePathname();
-  const np = nextProject(pathname);
-  const next = { href: np.link, title: t(np.title.fr, np.title.en) };
   const metaRows = [
     { label: t('Année', 'Year'), value: meta.year },
     { label: t('Contexte', 'Context'), value: meta.context },
@@ -99,26 +97,8 @@ export function ProjectPage({
         {/* GALLERY */}
         <div className="mt-20 md:mt-28 space-y-6 md:space-y-10">{children}</div>
 
-        {/* NEXT PROJECT */}
-        <motion.div
-          initial={{ opacity: 0, y: 50 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6 }}
-          viewport={{ once: true }}
-          className="mt-40 border-t-[3px] border-[#0a0a0a] pt-2 flex flex-col items-start gap-6"
-        >
-          <span className="text-[13px] text-black/45">{t('Projet suivant', 'Next project')}</span>
-          <Link href={next.href} className="group">
-            <span className="text-[9vw] md:text-[5vw] font-medium leading-[0.95] tracking-[-0.04em] group-hover:opacity-50 transition">
-              {next.title} →
-            </span>
-          </Link>
-        </motion.div>
-
-        <footer className="mt-24 mb-12 text-[13px] text-black/40">
-          © {new Date().getFullYear()} Emmanuel
-        </footer>
       </div>
+      <NextProject path={pathname} />
     </main>
   );
 }
@@ -146,8 +126,8 @@ export function Media({
 }) {
   return (
     <motion.div
-      initial={{ opacity: 0, y: 24 }}
-      whileInView={{ opacity: 1, y: 0 }}
+      initial={video ? { opacity: 0, y: 24 } : false}
+      whileInView={video ? { opacity: 1, y: 0 } : undefined}
       transition={{ duration: 0.8, ease: 'easeOut' }}
       viewport={{ once: true, margin: '-60px' }}
       className={`w-full ${className}`}
@@ -155,15 +135,15 @@ export function Media({
       {video ? (
         <LazyVideo src={src} width={width} height={height} alt={alt} />
       ) : (
-        <Image
+        <DotImage
           src={src}
           alt={alt}
-          width={width}
-          height={height}
+          intrinsic={{ width, height }}
           priority={priority}
           unoptimized={crisp}
           sizes="(max-width: 768px) 100vw, 1152px"
-          className="w-full h-auto block"
+          cell={11}
+          duration={1100}
         />
       )}
     </motion.div>
@@ -250,7 +230,7 @@ export function Chapter({ title, n, lede, children }: { title: string; n?: numbe
         viewport={{ once: true }}
         className="pt-24 pb-6 md:pt-36 md:pb-10"
       >
-        <h3 className="text-[13px] text-black/45 pb-3">{label}</h3>
+        <h3 className="text-[13px] text-black/45 pb-3"><DotText text={label} play="view" /></h3>
         <p className="max-w-[900px] text-[26px] md:text-[44px] leading-[1.1]" style={DISPLAY}>
           {lede}
         </p>
@@ -273,7 +253,7 @@ export function Chapter({ title, n, lede, children }: { title: string; n?: numbe
       className="pt-20 pb-6 md:pt-28 md:pb-10 grid grid-cols-1 md:grid-cols-12 gap-6"
     >
       <h3 className="md:col-span-4 text-[13px] text-black/45">
-        {label}
+        <DotText text={label} play="view" />
       </h3>
       {children && (
         <div className="md:col-span-8 text-[15px] md:text-[17px] leading-[1.5] max-w-2xl space-y-4">

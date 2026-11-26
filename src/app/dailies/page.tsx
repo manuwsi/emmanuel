@@ -242,6 +242,8 @@ export default function Page() {
         ))}
       </ol>
 
+      <Media video src="/motion/dailies-takes.mp4" width={1920} height={1080} alt={t('Animation : les écrans défilent comme une bobine, seule la prise au centre est nette', 'Animation: the screens advance like a reel, only the take in the middle is sharp')} />
+
       {/* STUDIO */}
       <Chapter n={5} title={t('Côté studio', 'Studio side')} lede={t('Chaque génération garde son prompt, son modèle et son coût.', 'Every generation keeps its prompt, model and cost.')}>
         <p>

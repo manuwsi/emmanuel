@@ -1,11 +1,11 @@
 'use client';
 
 import { ReactNode } from 'react';
-import Link from 'next/link';
 import { motion } from 'framer-motion';
 import Header from '@/components/Header';
+import NextProject from '@/components/dot/NextProject';
+import DotText from '@/components/dot/DotText';
 import { Media, Summary } from '@/components/project/ProjectPage';
-import { nextProject } from '@/components/projects';
 import { useT } from '@/components/i18n';
 import Cutter from '@/components/colosse/Cutter';
 import Depth from '@/components/colosse/Depth';
@@ -43,7 +43,7 @@ function Chap({ n, title, depth, lede, children }: { n: number; title: string; d
     >
       <div className="flex items-baseline justify-between border-t border-black/15 pt-3">
         <h3 className="text-[13px] text-black/45">
-          {String(n).padStart(2, '0')} → {title}
+          <DotText text={`${String(n).padStart(2, '0')} → ${title}`} play="view" />
         </h3>
         <span className="text-[13px] tabular-nums">{depth}</span>
       </div>
@@ -104,7 +104,6 @@ function Legend() {
 
 export default function Colosse() {
   const t = useT();
-  const np = nextProject('/colosse');
 
   const principles = [
     {
@@ -377,6 +376,10 @@ export default function Colosse() {
           ]}
         />
 
+        <div className="mt-24 md:mt-32">
+          <Media video src="/motion/colosse-shift.mp4" width={1920} height={1080} alt={t('Animation : la nuit tombe sur l’écran de pilotage, une anomalie s’allume, puis le jour revient', 'Animation: night falls on the driving screen, an anomaly lights up, then day comes back')} />
+        </div>
+
         <figure className="mt-24 md:mt-32">
           <Media crisp src="/colosse/tablette-anomalie-v2.jpg" alt={t('Mise en situation : l’écran Anomalie sur une tablette de chantier, tenue par des mains gantées', 'In context: the Anomaly screen on a rugged site tablet, held in gloved hands')} width={2560} height={1920} />
           <figcaption className="mt-3 text-[13px] text-black/50">{t('Mise en situation, sur une tablette de chantier.', 'In context, on a rugged site tablet.')}</figcaption>
@@ -435,21 +438,8 @@ export default function Colosse() {
           </ol>
         </section>
 
-        {/* NEXT */}
-        <motion.div
-          initial={{ opacity: 0, y: 50 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6 }}
-          viewport={{ once: true }}
-          className="mt-32 border-t-[3px] border-[#0a0a0a] pt-2 flex flex-col items-start gap-6"
-        >
-          <span className="text-[13px] text-black/45">{t('Projet suivant', 'Next project')}</span>
-          <Link href={np.link} className="group">
-            <span className="text-[9vw] md:text-[5vw] font-medium leading-[0.95] tracking-[-0.04em] group-hover:opacity-50 transition">{t(np.title.fr, np.title.en)} →</span>
-          </Link>
-        </motion.div>
-        <footer className="mt-24 mb-12 text-[13px] text-black/40">© {new Date().getFullYear()} Emmanuel</footer>
       </div>
+      <NextProject path="/colosse" />
     </main>
   );
 }

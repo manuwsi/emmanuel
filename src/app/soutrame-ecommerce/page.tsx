@@ -224,6 +224,7 @@ export default function Page() {
         <Media src="/soutrame-case/m-sheet.jpg" alt={t('Mobile — fiche produit', 'Mobile — product page')} width={900} height={1948} />
         <Media src="/soutrame-case/m-capsule.jpg" alt={t('Mobile — capsule', 'Mobile — capsule')} width={900} height={1948} />
       </Row>
+      <Media video src="/motion/soutrame-phones.mp4" width={1920} height={1080} alt={t('Animation : trois téléphones parcourent la boutique, la capsule, la campagne et la fiche produit', 'Animation: three phones go through the shop, the capsule, the campaign and the product page')} />
 
       {/* UNIVERSE */}
       <Chapter n={8} title={t('La chimère', 'The chimera')}>

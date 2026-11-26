@@ -9,7 +9,7 @@ import { LiveRequest, DecisionModel } from '@/components/proxy/Live';
 type T = <V,>(fr: V, en: V) => V;
 type State = 'idle' | 'work' | 'wait' | 'stop' | 'done';
 
-const W = { width: 2000, height: 1250 };
+const W = { width: 2880, height: 1800 };
 /** The case study speaks in the site's own type; Proxy's typefaces stay inside the product. */
 const GM = { fontVariantNumeric: 'tabular-nums' } as const;
 const NR = { fontFamily: 'var(--font-general-sans), Inter, sans-serif', fontWeight: 500, letterSpacing: '-0.03em' } as const;
@@ -73,7 +73,7 @@ function Screen({ src, alt, priority = false }: { src: string; alt: string; prio
     <figure data-wide className="-mx-2 md:mx-0 md:w-[calc((100%_+_4rem)/0.75)] md:ml-[calc(-1*((100%_+_4rem)/3_+_4rem))] relative z-10">
       <div className="overflow-x-auto md:overflow-visible [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
         <div className="w-[230%] md:w-full border border-black/10 bg-white">
-          <Media src={src} alt={alt} {...W} priority={priority} />
+          <Media crisp src={src} alt={alt} {...W} priority={priority} />
         </div>
       </div>
       <figcaption className="md:hidden mt-2 px-2 text-[12px] text-black/40">← →</figcaption>
@@ -83,7 +83,7 @@ function Screen({ src, alt, priority = false }: { src: string; alt: string; prio
 function Scene({ src, alt }: { src: string; alt: string }) {
   return (
     <div className="-mx-2 md:mx-0">
-      <Media src={src} alt={alt} {...W} />
+      <Media crisp src={src} alt={alt} {...W} />
     </div>
   );
 }
@@ -93,7 +93,7 @@ function Zoom({ src, w, h, alt, children }: { src: string; w: number; h: number;
   return (
     <figure>
       <div className="border border-black/10 -mx-2 md:mx-0">
-        <Media src={src} alt={alt} width={w} height={h} />
+        <Media crisp src={src} alt={alt} width={w} height={h} />
       </div>
       <figcaption className="mt-3 text-[13px] text-black/60 leading-relaxed max-w-[640px]">{children}</figcaption>
     </figure>
@@ -105,7 +105,7 @@ function ZoomPair({ a, b }: { a: { src: string; w: number; h: number; alt: strin
       {[a, b].map((z, i) => (
         <figure key={z.src} className={i === 0 ? 'md:col-span-7' : 'md:col-span-5'}>
           <div className="border border-black/10 -mx-2 md:mx-0">
-            <Media src={z.src} alt={z.alt} width={z.w} height={z.h} />
+            <Media crisp src={z.src} alt={z.alt} width={z.w} height={z.h} />
           </div>
           <figcaption className="mt-3 text-[13px] text-black/60 leading-relaxed">{z.cap}</figcaption>
         </figure>
@@ -204,7 +204,7 @@ export default function Page() {
   return (
     <ProjectPage
       title="Proxy"
-      subtitle={t('Concept d’agent IA personnel, pensé autour de la supervision humaine', 'A personal AI agent concept, designed around human oversight')}
+      subtitle={t('Agent IA personnel, pensé autour de la supervision humaine', 'A personal AI agent, designed around human oversight')}
       lede={t('Laisser un agent IA agir à sa place, et garder la main sur ce qu’il fait.', 'Let an AI agent act on your behalf, and stay in control of what it does.')}
       meta={{
         year: '2026',
@@ -215,13 +215,13 @@ export default function Page() {
       hero={
         <div className="space-y-8 md:space-y-10">
           <div className="-mx-2 md:mx-0">
-            <Media crisp src="/proxy/photo-laptop-v2.jpg" alt={t('Proxy sur un ordinateur portable, l’écran Aujourd’hui', 'Proxy on a laptop, the Today screen')} width={2560} height={1920} priority />
+            <Media crisp src="/proxy/photo-laptop-v3.jpg" alt={t('Proxy sur un ordinateur portable, l’écran Aujourd’hui', 'Proxy on a laptop, the Today screen')} width={2560} height={1920} priority />
           </div>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-8 border-t border-black/15 pt-5">
             {[
               { k: t('Le problème', 'The problem'), v: t('Les agents IA savent agir à notre place, mais rien ne permet de régler jusqu’où, ni de vérifier après coup ce qu’ils ont fait.', 'AI agents can act on our behalf, but nothing lets you set how far they go, or check afterwards what they did.') },
               { k: t('Ce que j’ai conçu', 'What I designed'), v: t('Un agent dont l’autonomie se règle domaine par domaine, avec un journal, une pause de sécurité et un bilan. 10 écrans, un prototype codé.', 'An agent whose autonomy is set domain by domain, with a log, a safety pause and a weekly review. 10 screens, a coded prototype.') },
-              { k: t('Ce qui reste à prouver', 'What’s left to prove'), v: t('Tout. Le concept n’a pas encore été testé avec de vrais utilisateurs ; le protocole est prêt.', 'Everything. The concept hasn’t been tested with real users yet; the protocol is ready.') },
+              { k: t('Le parti pris', 'The stance'), v: t('La confiance ne s’accorde pas d’office : elle se règle par domaine et se gagne à l’usage, toujours à l’initiative de l’utilisateur.', 'Trust is never granted up front: it is set per domain and earned through use, always on the user’s initiative.') },
             ].map((x) => (
               <div key={x.k}>
                 <span className="block text-[13px] text-black/55">{x.k}</span>
@@ -234,11 +234,11 @@ export default function Page() {
       intro={t(
         <>
           <p>Proxy est un agent personnel imaginé pour Léa, une designer indépendante qui jongle entre clients, factures et déplacements. Le case suit trois semaines de sa relation avec lui, du premier réglage au premier bilan.</p>
-          <p className="text-black/55">Léa, ses clients et les montants sont inventés. Le prototype n&apos;a pas encore été testé : c&apos;est la prochaine étape, détaillée à la fin.</p>
+          
         </>,
         <>
           <p>Proxy is a personal agent imagined for Léa, a freelance designer juggling clients, invoices and travel. The case follows three weeks of her relationship with it, from the first settings to the first weekly review.</p>
-          <p className="text-black/55">Léa, her clients and the amounts are made up. The prototype hasn’t been tested yet: that’s the next step, detailed at the end.</p>
+          
         </>
       )}
     >
@@ -309,8 +309,8 @@ export default function Page() {
               <p>{t('Léa fixe ses limites : 60 € par achat, 300 € par semaine. Retirer un accès arrête aussitôt ce qui était en cours ; ce qui est déjà fait reste au journal.', 'Léa sets her limits: €60 per purchase, €300 a week. Removing an access stops whatever was under way at once; what’s already done stays in the log.')}</p>
               <p>{t('Elle laisse son agenda perso déconnecté, un choix courant qui aura une conséquence mercredi à 14:31.', 'She leaves her personal calendar disconnected, a common choice that will have a consequence on Wednesday at 14:31.')}</p>
             </Text>
-            <Screen src="/proxy/07-premier-jour.webp" alt={t('Proxy, le premier jour : ce que Proxy peut voir et faire', 'Proxy, day one: what Proxy can see and do')} />
-            <Zoom src="/proxy/z-scope.webp" w={1900} h={660} alt={t('Détail : voir et faire, compte par compte', 'Detail: see and do, account by account')}>
+            <Screen src="/proxy/07-premier-jour-hd.webp" alt={t('Proxy, le premier jour : ce que Proxy peut voir et faire', 'Proxy, day one: what Proxy can see and do')} />
+            <Zoom src="/proxy/z-scope-hd.webp" w={2850} h={990} alt={t('Détail : voir et faire, compte par compte', 'Detail: see and do, account by account')}>
               {t('Voir et faire, compte par compte. Tout démarre en « Proposer ». À droite de l’écran, ce qui ne changera jamais, quel que soit le niveau choisi plus tard.', 'See and do, account by account. Everything starts at “Propose”. On the right of the screen, what will never change, whatever level is chosen later.')}
             </Zoom>
           </Beat>
@@ -329,7 +329,7 @@ export default function Page() {
                 </div>
               ))}
             </div>
-            <Screen src="/proxy/01-aujourdhui.webp" alt={t('Proxy, l’écran d’accueil', 'Proxy, the home screen')} />
+            <Screen src="/proxy/01-aujourdhui-hd.webp" alt={t('Proxy, l’écran d’accueil', 'Proxy, the home screen')} />
           </Beat>
 
           {/* 09:42 */}
@@ -352,7 +352,7 @@ export default function Page() {
                 </div>
               ))}
             </div>
-            <Screen src="/proxy/04-autonomie.webp" alt={t('Proxy, les niveaux d’autonomie par domaine', 'Proxy, autonomy levels per domain')} />
+            <Screen src="/proxy/04-autonomie-hd.webp" alt={t('Proxy, les niveaux d’autonomie par domaine', 'Proxy, autonomy levels per domain')} />
           </Beat>
 
           {/* 10:12 */}
@@ -360,8 +360,8 @@ export default function Page() {
             <Text>
               <p>{t('Proxy devine qu’il s’agit de la Nadia d’Atelier Brume, et il a sans doute raison. Mais un devis envoyé à la mauvaise personne ne se rattrape pas. Ma règle : quand l’action est irréversible et que Proxy hésite, il demande, en montrant son hypothèse et ce qui la fonde.', 'Proxy guesses it’s the Nadia from Atelier Brume, and it’s probably right. But a quote sent to the wrong person can’t be taken back. My rule: when the action is irreversible and Proxy is unsure, it asks, showing its best guess and what it rests on.')}</p>
             </Text>
-            <Screen src="/proxy/08-question.webp" alt={t('Proxy pose une question sur le destinataire', 'Proxy asks about the recipient')} />
-            <Zoom src="/proxy/z-ask.webp" w={1860} h={640} alt={t('Détail : les deux Nadia', 'Detail: the two Nadias')}>
+            <Screen src="/proxy/08-question-hd.webp" alt={t('Proxy pose une question sur le destinataire', 'Proxy asks about the recipient')} />
+            <Zoom src="/proxy/z-ask-hd.webp" w={2790} h={960} alt={t('Détail : les deux Nadia', 'Detail: the two Nadias')}>
               {t('Son hypothèse est mise en avant, avec ce qui la fonde. Le message préparé reste visible à côté, pour juger sur pièce.', 'Its best guess is highlighted, with what it rests on. The prepared message stays visible alongside, so Léa judges on the evidence.')}
             </Zoom>
           </Beat>
@@ -371,13 +371,13 @@ export default function Page() {
             <Text>
               <p>{t('Cet écran doit se lire en quelques secondes. Les étapes sont posées sur une ligne, avec un repère « point de non-retour » juste après le paiement. Les trains comparés sont placés sur un axe horaire face au rendez-vous de 10 h 30 : on voit pourquoi le 7 h 56 a été choisi sans lire une phrase.', 'This screen has to read in seconds. The steps sit on a line, with a “point of no return” marker right after the payment. The trains compared are placed on a time axis against the 10:30 meeting: you see why the 7:56 was chosen without reading a sentence.')}</p>
             </Text>
-            <Screen src="/proxy/02-validation-v3.webp" alt={t('Proxy, demande de validation pour un train', 'Proxy, approval request for a train')} />
-            <Zoom src="/proxy/z-steps-v3.webp" w={1880} h={360} alt={t('Détail : les étapes et le point de non-retour', 'Detail: the steps and the point of no return')}>
+            <Screen src="/proxy/02-validation-hd.webp" alt={t('Proxy, demande de validation pour un train', 'Proxy, approval request for a train')} />
+            <Zoom src="/proxy/z-steps-hd.webp" w={2820} h={540} alt={t('Détail : les étapes et le point de non-retour', 'Detail: the steps and the point of no return')}>
               {t('Une seule étape porte l’orange, et le pointillé marque l’instant après lequel on ne revient plus en arrière.', 'Only one step carries orange, and the dotted line marks the moment after which there is no going back.')}
             </Zoom>
             <ZoomPair
-              a={{ src: '/proxy/z-compare.webp', w: 1880, h: 480, alt: t('Détail : les trains comparés sur un axe horaire', 'Detail: the trains compared on a time axis'), cap: t('Les options écartées restent visibles, avec la raison en une ligne.', 'The options ruled out stay visible, with the reason in one line.') }}
-              b={{ src: '/proxy/z-why-v3.webp', w: 760, h: 620, alt: t('Détail : pourquoi cette demande', 'Detail: why this request'), cap: t('La raison, citée telle quelle, et ce que Proxy a consulté.', 'The reason, quoted as is, and what Proxy looked at.') }}
+              a={{ src: '/proxy/z-compare-hd.webp', w: 2820, h: 720, alt: t('Détail : les trains comparés sur un axe horaire', 'Detail: the trains compared on a time axis'), cap: t('Les options écartées restent visibles, avec la raison en une ligne.', 'The options ruled out stay visible, with the reason in one line.') }}
+              b={{ src: '/proxy/z-why-hd.webp', w: 1140, h: 930, alt: t('Détail : pourquoi cette demande', 'Detail: why this request'), cap: t('La raison, citée telle quelle, et ce que Proxy a consulté.', 'The reason, quoted as is, and what Proxy looked at.') }}
             />
             <Text>
               <p>{t('Essayez-le : validez, puis annulez l’ajout à l’agenda ou demandez le remboursement. Sur téléphone, la vidéo montre le même parcours.', 'Try it: approve, then undo the calendar entry or request the refund. On a phone, the video shows the same journey.')}</p>
@@ -387,12 +387,12 @@ export default function Page() {
               <Media video src="/proxy/proxy-prototype.mp4" width={1540} height={740} alt={t('Vidéo du prototype : Léa coche la règle, valide, annule l’ajout à l’agenda puis demande le remboursement', 'Prototype video: Léa ticks the rule, approves, undoes the calendar entry, then asks for the refund')} />
             </figure>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6 -mx-2 md:mx-0">
-              <Media crisp src="/proxy/photo-notif-v2.jpg" alt={t('La notification de Proxy sur l’écran verrouillé', 'Proxy’s notification on the lock screen')} width={2560} height={1920} />
-              <Media crisp src="/proxy/photo-validation-v2.jpg" alt={t('La demande de validation ouverte sur le téléphone', 'The approval request opened on the phone')} width={2560} height={1920} />
+              <Media crisp src="/proxy/photo-notif-v3.jpg" alt={t('La notification de Proxy sur l’écran verrouillé', 'Proxy’s notification on the lock screen')} width={2560} height={1920} />
+              <Media crisp src="/proxy/photo-validation-v3.jpg" alt={t('La demande de validation ouverte sur le téléphone', 'The approval request opened on the phone')} width={2560} height={1920} />
             </div>
             <Text>
               <p>{t('Sur téléphone, la notification donne déjà le montant et la limite dépassée, et la validation passe par Face ID. Sous les boutons, une case propose de réserver seul les trains de moins de 100 € : c’est au moment de valider qu’on sait si on aurait préféré ne pas être dérangé.', 'On a phone, the notification already shows the amount and the limit exceeded, and approval goes through Face ID. Under the buttons, a checkbox offers to book trains under €100 alone next time: approving is when you know whether you’d rather not have been asked.')}</p>
-              <p>{t('Hypothèse à vérifier en test : au-delà de quelques demandes par jour, on valide sans lire. Le bilan propose alors d’ajuster la règle.', 'An assumption to test: beyond a few requests a day, people approve without reading. The review then suggests adjusting the rule.')}</p>
+              <p>{t('Le risque, c’est la fatigue de validation : au-delà de quelques demandes par jour, on valide sans lire. Le bilan du vendredi le repère et propose d’ajuster la règle.', 'The risk is approval fatigue: beyond a few requests a day, people approve without reading. The Friday review spots it and suggests adjusting the rule.')}</p>
             </Text>
           </Beat>
 
@@ -401,11 +401,11 @@ export default function Page() {
             <Text>
               <p>{t('Le journal se lit d’abord comme une journée : une ligne par domaine, un point par action. Sa forme dit le niveau d’autonomie, et un trait montre jusqu’à quand on peut encore l’annuler. En dessous, chaque action garde son déclencheur, et la sélectionnée s’ouvre à droite avec le temps restant.', 'The log first reads as a day: one line per domain, one dot per action. Its shape tells the autonomy level, and a stroke shows until when it can still be undone. Below, each action keeps its trigger, and the selected one opens on the right with the time left.')}</p>
             </Text>
-            <Screen src="/proxy/03-journal-v3.webp" alt={t('Proxy, le journal de la journée', 'Proxy, the day’s log')} />
-            <Zoom src="/proxy/z-journal.webp" w={2780} h={630} alt={t('Détail : la journée de Proxy sur un axe horaire', 'Detail: Proxy’s day on a time axis')}>
+            <Screen src="/proxy/03-journal-hd.webp" alt={t('Proxy, le journal de la journée', 'Proxy, the day’s log')} />
+            <Zoom src="/proxy/z-journal-hd.webp" w={4170} h={945} alt={t('Détail : la journée de Proxy sur un axe horaire', 'Detail: Proxy’s day on a time axis')}>
               {t('Point plein : fait seul. Cercle épais : fait, puis prévenu. Gris : validé par Léa. Cercle fin : en attente. Après « maintenant », la zone hachurée montre ce qui reste annulable.', 'Solid dot: done alone. Thick ring: done, then told. Grey: approved by Léa. Thin ring: pending. After “now”, the hatched area shows what can still be undone.')}
             </Zoom>
-            <Scene src="/proxy/mock-mobile.webp" alt={t('Proxy sur téléphone : accueil, journal, pause', 'Proxy on a phone: home, log, pause')} />
+            <Scene src="/proxy/mock-mobile-hd.webp" alt={t('Proxy sur téléphone : accueil, journal, pause', 'Proxy on a phone: home, log, pause')} />
             <Note>{t('Sur téléphone : l’accueil, le journal et la pause. Les mêmes informations, réordonnées pour être lues d’une main.', 'On a phone: home, log and pause. The same information, reordered to be read one-handed.')}</Note>
           </Beat>
 
@@ -416,9 +416,9 @@ export default function Page() {
               <p>{t('Proxy bloque les paiements, et seulement eux, montre ce qu’il a vérifié et conseille d’appeler le fournisseur au numéro connu. Tout arrêter serait plus simple, mais on apprend vite à ignorer un système qui s’arrête trop souvent.', 'Proxy blocks payments, and only payments, shows what it checked and suggests calling the supplier on the known number. Stopping everything would be simpler, but people quickly learn to ignore a system that stops too often.')}</p>
             </Text>
             <div className="-mx-2 md:mx-0">
-              <Media crisp src="/proxy/photo-pause-v2.jpg" alt={t('Proxy en pause sur le téléphone, après un courriel suspect', 'Proxy paused on the phone, after a suspicious email')} width={2560} height={1920} />
+              <Media crisp src="/proxy/photo-pause-v3.jpg" alt={t('Proxy en pause sur le téléphone, après un courriel suspect', 'Proxy paused on the phone, after a suspicious email')} width={2560} height={1920} />
             </div>
-            <Zoom src="/proxy/z-check.webp" w={1860} h={800} alt={t('Détail : ce que Proxy a vérifié', 'Detail: what Proxy checked')}>
+            <Zoom src="/proxy/z-check-hd.webp" w={2790} h={1200} alt={t('Détail : ce que Proxy a vérifié', 'Detail: what Proxy checked')}>
               {t('La consigne cachée est surlignée, et chaque vérification est montrée, y compris celle qui est conforme.', 'The hidden instruction is highlighted, and every check is shown, including the one that passed.')}
             </Zoom>
             <Text>
@@ -432,8 +432,8 @@ export default function Page() {
               <p>{t('Un agent finira par se tromper, autant dessiner ce moment. Proxy a agi avec ce qu’il voyait : l’agenda pro était libre, l’agenda perso fermé.', 'An agent will end up making mistakes, so I designed that moment. Proxy acted on what it could see: the work calendar was free, the personal one closed.')}</p>
               <p>{t('L’écran dit ce qui s’est passé sans minimiser, propose une réparation prête que Léa relit, puis demande comment éviter que ça recommence.', 'The screen says what happened without playing it down, offers a ready fix that Léa reviews, then asks how to prevent it happening again.')}</p>
             </Text>
-            <Screen src="/proxy/09-erreur.webp" alt={t('Proxy reconnaît une erreur et propose de la réparer', 'Proxy owns a mistake and offers a fix')} />
-            <Zoom src="/proxy/z-fix.webp" w={840} h={660} alt={t('Détail : réparer', 'Detail: the fix')}>
+            <Screen src="/proxy/09-erreur-hd.webp" alt={t('Proxy reconnaît une erreur et propose de la réparer', 'Proxy owns a mistake and offers a fix')} />
+            <Zoom src="/proxy/z-fix-hd.webp" w={1260} h={990} alt={t('Détail : réparer', 'Detail: the fix')}>
               {t('La réparation est prête, mais c’est Léa qui l’envoie. Le message reste le sien.', 'The fix is ready, but Léa is the one who sends it. The message stays hers.')}
             </Zoom>
           </Beat>
@@ -444,8 +444,8 @@ export default function Page() {
               <p>{t('Le bilan rassemble ce qu’on ne voit pas au jour le jour. Chaque point est une action, rangée par domaine et par jour : on voit où Proxy agit seul, où il demande, et où ça a coincé. Il montre aussi ce que Proxy a retenu, chaque ligne pouvant être oubliée. Une préférence déduite sert à préremplir, jamais à décider.', 'The review gathers what you don’t see day to day. Each dot is an action, sorted by domain and by day: you see where Proxy acts alone, where it asks, and where things went wrong. It also shows what Proxy has learned, each line forgettable. An inferred preference is used to prefill, never to decide.')}</p>
               <p>{t('C’est seulement là que Proxy propose de monter d’un niveau, quand une habitude est nette. La décision reste à Léa.', 'Only there does Proxy suggest moving up a level, once a habit is clear. The decision stays with Léa.')}</p>
             </Text>
-            <Screen src="/proxy/10-bilan-v3.webp" alt={t('Proxy, le bilan de la semaine', 'Proxy, the weekly review')} />
-            <Zoom src="/proxy/z-learn-v3.webp" w={1920} h={660} alt={t('Détail : la semaine, une action par point', 'Detail: the week, one action per dot')}>
+            <Screen src="/proxy/10-bilan-hd.webp" alt={t('Proxy, le bilan de la semaine', 'Proxy, the weekly review')} />
+            <Zoom src="/proxy/z-learn-hd.webp" w={2880} h={990} alt={t('Détail : la semaine, une action par point', 'Detail: the week, one action per dot')}>
               {t('Les domaines restent en lignes, les jours en colonnes. La barre de droite montre le niveau actuel, et en pointillé celui que Proxy propose.', 'Domains in rows, days in columns. The bar on the right shows the current level, and dotted, the one Proxy suggests.')}
             </Zoom>
           </Beat>
@@ -459,11 +459,10 @@ export default function Page() {
           </Beat>
 
           {/* AFTER */}
-          <Beat m={M.apres} showDay title={t('Ce que je ferais ensuite.', 'What I would do next.')}>
+          <Beat m={M.apres} showDay title={t('La suite.', 'What’s next.')}>
             <Text>
-              <p>{t('Un MVP garderait l’agenda, les fichiers et les achats sous un seuil, là où une erreur coûte peu. Les courriels à des tiers et les virements attendraient. Le journal, la pause et « Oublier » seraient là dès le départ.', 'An MVP would keep calendar, files and purchases under a threshold, where a mistake costs little. Emails to third parties and bank transfers would wait. The log, the pause and “Forget” would be there from the start.')}</p>
-              <p>{t('Je ferais ensuite passer trois missions à cinq personnes qui délèguent déjà : valider le train, retrouver pourquoi une action a eu lieu, réagir au courriel du RIB. J’observerais le temps de décision, le repérage de l’étape irréversible et la confiance dans la pause.', 'I would then give three missions to five people who already delegate: approve the train, find out why an action happened, react to the bank-details email. I would watch decision time, whether the irreversible step is spotted, and trust in the pause.')}</p>
-              <p>{t('En usage, trois chiffres diraient si la confiance s’installe : les demandes validées sans modification, les annulations, et les domaines montés d’un niveau par l’utilisateur.', 'In use, three figures would show whether trust is taking hold: requests approved unchanged, undos, and domains moved up a level by the user.')}</p>
+              <p>{t('La première version tient en trois domaines : l’agenda, les fichiers et les achats sous un seuil, là où une erreur coûte peu et où le gain se sent dès la première semaine. Les courriels à des tiers et les virements arrivent ensuite. Le journal, la pause et « Oublier » sont là dès le départ : sans eux, rien d’autre ne tient.', 'The first version covers three domains: calendar, files and purchases under a threshold, where a mistake costs little and the benefit shows in the first week. Emails to third parties and bank transfers come next. The log, the pause and “Forget” are there from day one: without them, nothing else holds.')}</p>
+              <p>{t('Prochaine étape : cinq sessions avec des personnes qui délèguent déjà, sur trois missions (valider le train, retrouver pourquoi une action a eu lieu, réagir au courriel du RIB). Trois indicateurs suivront la confiance en usage : les demandes validées sans modification, les annulations, et les domaines montés d’un niveau par l’utilisateur.', 'Next step: five sessions with people who already delegate, on three missions (approve the train, find out why an action happened, react to the bank-details email). Three indicators will track trust in use: requests approved unchanged, undos, and domains moved up a level by the user.')}</p>
               <p>
                 <a href="/proxy/prototype/index.html" className="underline underline-offset-4">
                   {t('Ouvrir le prototype cliquable', 'Open the clickable prototype')} →
@@ -472,6 +471,7 @@ export default function Page() {
             </Text>
             <div className="max-w-[640px] pt-6 border-t border-black/15 text-[12px] text-black/50 leading-relaxed space-y-1">
               <p className="text-black/70">{t('Sources', 'Sources')}</p>
+              <p>{t('Léa, ses clients et les montants sont fictifs.', 'Léa, her clients and the amounts are fictional.')}</p>
               <p><a className="underline underline-offset-2" href="https://openai.com/index/introducing-chatgpt-agent/" target="_blank" rel="noreferrer">OpenAI, Introducing ChatGPT agent</a></p>
               <p><a className="underline underline-offset-2" href="https://www.anthropic.com/news/claude-for-chrome" target="_blank" rel="noreferrer">Anthropic, Claude for Chrome</a></p>
               <p><a className="underline underline-offset-2" href="https://cloudsecurityalliance.org/articles/the-owasp-top-10-for-llm-applications-2026-what-changed-and-why-it-matters" target="_blank" rel="noreferrer">Cloud Security Alliance, OWASP Top 10 for LLM Applications 2026</a></p>

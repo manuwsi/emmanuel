@@ -16,6 +16,14 @@ const GRIDS: Record<string, number[][]> = {
     [1, 0, 1, 0, 1],
     [0, 1, 2, 1, 0],
   ],
+  // Proxy: the agent at work, a pulse spreading from the centre
+  proxy: [
+    [0, 0, 2, 0, 0],
+    [0, 2, 1, 2, 0],
+    [2, 1, 2, 1, 2],
+    [0, 2, 1, 2, 0],
+    [0, 0, 2, 0, 0],
+  ],
   // Dailies: a strip of film, one frame chosen among the takes
   dailies: [
     [1, 0, 1, 0, 1],

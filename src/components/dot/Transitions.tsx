@@ -9,6 +9,9 @@ import { useLang } from '../i18n';
 
 const INK = '#0a0a0a';
 
+type Lenis = { stop: () => void; start: () => void; scrollTo: (y: number, o?: { immediate?: boolean; force?: boolean }) => void };
+const lenis = () => (window as unknown as { __lenis?: Lenis }).__lenis;
+
 /** Name of a page, shown on the slate while the dots cover the screen. */
 function titleFor(path: string, lang: 'fr' | 'en') {
   const p = projects.find((x) => x.link === path);
@@ -57,6 +60,8 @@ export default function Transitions() {
           e.release();
           state.current = 'idle';
           setActive(false);
+          // wheel inertia from the previous page has died out by now
+          lenis()?.start();
         }
       );
     }, wait);
@@ -120,6 +125,8 @@ export default function Transitions() {
     const e = eng.current!;
     target.current = href.split(/[?#]/)[0];
     state.current = 'covering';
+    // the old page stops moving under the dots (wheel inertia would otherwise carry into the new page)
+    lenis()?.stop();
     setActive(true);
     cancel.current();
     cancel.current = tween(
@@ -132,7 +139,10 @@ export default function Transitions() {
         router.push(href);
         // never stay stuck on the slate
         window.setTimeout(() => {
-          if (state.current === 'covered') reveal(0);
+          if (state.current === 'covered') {
+            lenis()?.start();
+            reveal(0);
+          }
         }, 2500);
       }
     );
@@ -148,6 +158,7 @@ export default function Transitions() {
   useEffect(() => {
     if (state.current === 'covered' && target.current === pathname) {
       window.scrollTo(0, 0);
+      lenis()?.scrollTo(0, { immediate: true, force: true });
       reveal(260);
     }
   }, [pathname]);

@@ -11,6 +11,7 @@ import Cutter from '@/components/colosse/Cutter';
 import Depth from '@/components/colosse/Depth';
 import Scale from '@/components/colosse/Scale';
 import Compare from '@/components/colosse/Compare';
+import { ColosseSystem } from '@/components/project/DesignSystem';
 import '@/styles/globals.css';
 
 const W = { width: 2880, height: 1800, crisp: true };
@@ -402,8 +403,19 @@ export default function Colosse() {
           <figcaption className="mt-3 text-[13px] text-black/50">{t('Mise en situation, sur une tablette de chantier.', 'In context, on a rugged site tablet.')}</figcaption>
         </figure>
 
-        {/* 09 — PROTOTYPE */}
-        <Chap n={9} title={t('Le prototype', 'The prototype')} depth="−22 m" lede={t('Fais avancer la machine, choisis quoi faire face au vide, puis passe la main à l’équipe du matin.', 'Move the machine forward, choose what to do about the void, then hand over to the morning crew.')} />
+        {/* 09 — SYSTEM */}
+        <Chap n={9} title={t('Le système', 'The system')} depth="−22 m" lede={t('Six tokens, deux jeux de valeurs. Essaie le mode cabine.', 'Six tokens, two sets of values. Try cab mode.')}>
+          <p>
+            {t(
+              'Chaque couleur a un seul sens : le présent, l’alarme, l’attention, l’eau. Les écrans n’utilisent que ces noms, jamais une valeur. C’est ce qui permet d’avoir tout le produit en mode nuit sans redessiner un seul composant.',
+              'Each colour has a single meaning: the present, alarm, caution, water. Screens only use these names, never a value. That is what makes the whole product available at night without redrawing a single component.'
+            )}
+          </p>
+        </Chap>
+        <ColosseSystem />
+
+        {/* 10 — PROTOTYPE */}
+        <Chap n={10} title={t('Le prototype', 'The prototype')} depth="−22 m" lede={t('Fais avancer la machine, choisis quoi faire face au vide, puis passe la main à l’équipe du matin.', 'Move the machine forward, choose what to do about the void, then hand over to the morning crew.')} />
         <div className="md:hidden border border-black/15">
           <Media video src="/colosse/colosse-prototype-v2.mp4" width={1622} height={1208} alt={t('Vidéo du prototype : la machine détecte le vide, le pilote choisit l’option A, puis la relève de 6 h est signée', 'Prototype video: the machine detects the void, the driver picks option A, then the 6 am handover is signed')} />
         </div>
@@ -417,9 +429,9 @@ export default function Colosse() {
           <span className="text-black/45 md:hidden"> {t('(à essayer sur ordinateur)', '(try it on a computer)')}</span>
         </p>
 
-        {/* 10 — WHAT'S LEFT */}
+        {/* 11 — WHAT'S LEFT */}
         <Chap
-          n={10}
+          n={11}
           title={t('Ce qu’il reste à prouver', 'What’s left to prove')}
           depth={t('Arrivée', 'Arrived')}
           lede={t('Je n’ai encore montré ces écrans à aucun pilote de tunnelier.', 'I haven’t shown these screens to a single TBM driver yet.')}

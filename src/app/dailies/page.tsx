@@ -2,6 +2,7 @@
 
 import { ProjectPage, Media, Row, Chapter } from '@/components/project/ProjectPage';
 import { useT } from '@/components/i18n';
+import { DailiesSystem } from '@/components/project/DesignSystem';
 
 type T = <V,>(fr: V, en: V) => V;
 
@@ -383,7 +384,17 @@ export default function Page() {
       </Chapter>
 
       {/* PRINCIPLES */}
-      <Chapter n={10} title={t('Choix de design', 'Design choices')}>
+      <Chapter n={10} title={t('Le système', 'The system')} lede={t('Deux modes, une seule grammaire.', 'Two modes, one grammar.')}>
+        <p>
+          {t(
+            'Le studio passe ses journées sur des images : son interface est sombre et dense. Le client vient valider : la sienne est claire et calme. Les deux partagent les mêmes composants, et cinq statuts qui ne changent jamais de couleur.',
+            'The studio spends its days looking at images: its interface is dark and dense. The client comes to approve: theirs is light and calm. Both share the same components, and five statuses that never change colour.'
+          )}
+        </p>
+      </Chapter>
+      <DailiesSystem />
+
+      <Chapter n={11} title={t('Choix de design', 'Design choices')}>
         <p>
           {t(
             'Les trois premiers viennent d’une analyse du studio Shovel sur le site de la marque Hyeja : garder les gestes connus, changer la surface.',
@@ -402,7 +413,7 @@ export default function Page() {
       </div>
 
       {/* METRICS */}
-      <Chapter n={11} title={t('Comment savoir si ça marche', 'How to know it works')}>
+      <Chapter n={12} title={t('Comment savoir si ça marche', 'How to know it works')}>
         <p>
           {t(
             'Cinq mesures, une par hypothèse. Je n’ai pas encore de chiffres : ce sont elles que les premiers tests devront remplir.',
@@ -421,7 +432,7 @@ export default function Page() {
       </div>
 
       {/* NEXT */}
-      <Chapter n={12} title={t('La suite', 'What’s next')}>
+      <Chapter n={13} title={t('La suite', 'What’s next')}>
         <p>
           {t(
             'Confronter les cinq hypothèses à des personnes qui produisent de la vidéo IA en studio, puis leur faire tester le parcours revue → validation avec le prototype. Ce qu’elles diront remplacera la revue par personas.',

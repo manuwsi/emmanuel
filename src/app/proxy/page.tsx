@@ -2,6 +2,7 @@
 
 import { ProjectPage, Media, Row, Chapter } from '@/components/project/ProjectPage';
 import { useT } from '@/components/i18n';
+import { ProxySystem } from '@/components/project/DesignSystem';
 
 type T = <V,>(fr: V, en: V) => V;
 
@@ -286,8 +287,19 @@ export default function Page() {
         )}
       </Caption>
 
+      {/* SYSTEM */}
+      <Chapter n={8} title={t('Le système', 'The system')} lede={t('Six couleurs, trois familles, aucun rayon.', 'Six colours, three type families, no radius.')}>
+        <p>
+          {t(
+            'Un agent qui agit à ta place doit avoir l’air sérieux, pas sympathique. Le système est sobre exprès : papier, encre, filets. La seule couleur vive est réservée à ce qui ne se défait pas, pour qu’elle garde son sens.',
+            'An agent acting on your behalf should look serious, not friendly. The system is deliberately plain: paper, ink, hairlines. The only bright colour is kept for what can’t be undone, so it keeps its meaning.'
+          )}
+        </p>
+      </Chapter>
+      <ProxySystem />
+
       {/* PRINCIPLES */}
-      <Chapter n={8} title={t('Choix de design', 'Design choices')} />
+      <Chapter n={9} title={t('Choix de design', 'Design choices')} />
       <div className="grid grid-cols-1 md:grid-cols-5 gap-px bg-black/15 border border-black/15">
         {principles(t).map((p, i) => (
           <div key={p.title} className="bg-white p-5 md:p-6 space-y-2">
@@ -299,7 +311,7 @@ export default function Page() {
       </div>
 
       {/* METRICS */}
-      <Chapter n={9} title={t('Comment savoir si ça marche', 'How to know it works')}>
+      <Chapter n={10} title={t('Comment savoir si ça marche', 'How to know it works')}>
         <p>
           {t(
             'Cinq mesures. Je n’ai pas encore de chiffres : ce sont elles que les premiers tests devront remplir.',
@@ -318,7 +330,7 @@ export default function Page() {
       </div>
 
       {/* NEXT */}
-      <Chapter n={10} title={t('La suite', 'What’s next')}>
+      <Chapter n={11} title={t('La suite', 'What’s next')}>
         <p>
           {t(
             'Faire passer le prototype à cinq personnes qui délèguent déjà des tâches (assistants, outils d’automatisation), avec trois missions : valider le train, retrouver pourquoi une action a eu lieu, réagir au courriel suspect. Ce qu’elles feront remplacera les hypothèses du début.',

@@ -216,7 +216,7 @@ export function Chapter({ title, n, lede, children }: { title: string; n?: numbe
   return (
     <>
       <div className="fine-gap" aria-hidden />
-      <motion.div initial={{ opacity: 0 }} whileInView={{ opacity: 1 }} transition={{ duration: 0.8 }} viewport={{ once: true }} className="fine-note" data-chapter={label}>
+      <motion.div initial={{ opacity: 0 }} whileInView={{ opacity: 1 }} transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }} viewport={{ once: true }} className="fine-note" data-chapter={label}>
         <h3 className="text-black/45">
           <DotText text={label} play="view" />
         </h3>

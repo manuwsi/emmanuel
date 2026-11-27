@@ -3,49 +3,107 @@
 import { useEffect, useRef } from 'react';
 import { usePathname, useRouter } from 'next/navigation';
 import { Origin, reducedMotion } from './engine';
+import { bezier, DUR, EASE } from './motion';
 
 type Lenis = { stop: () => void; start: () => void; scrollTo: (y: number, o?: { immediate?: boolean; force?: boolean }) => void };
 const lenis = () => (window as unknown as { __lenis?: Lenis }).__lenis;
 
-/** Every page change is quiet: the page fades to white and the next one fades in from the top. */
+const inkE = bezier(EASE.ink);
+const uninkE = bezier(EASE.unink);
+
+/**
+ * Changing page is printed: from the point you clicked, a halftone of white dots grows until it covers the page,
+ * then on the next page the dots draw back from that same point. The thread of the click is kept, no generic fade.
+ */
 export default function Transitions() {
   const router = useRouter();
   const pathname = usePathname();
-  const fade = useRef<HTMLDivElement>(null);
+  const canvas = useRef<HTMLCanvasElement>(null);
+  const origin = useRef({ x: 0, y: 0 });
+  const raf = useRef(0);
   const state = useRef<'idle' | 'covering' | 'covered' | 'revealing'>('idle');
   const target = useRef<string | null>(null);
 
+  /** k: 0 → 1 along the move; cover = dots grow outwards from the origin, reveal = they shrink outwards from it */
+  const draw = (k: number, mode: 'cover' | 'reveal') => {
+    const c = canvas.current;
+    const ctx = c?.getContext('2d');
+    if (!c || !ctx) return;
+    const w = c.clientWidth, h = c.clientHeight;
+    const pitch = w < 768 ? 12 : 14;
+    const rmax = pitch * 0.74; // a little more than half the diagonal: at full size the dots close the page
+    const { x: ox, y: oy } = origin.current;
+    const maxD = Math.max(Math.hypot(ox, oy), Math.hypot(w - ox, oy), Math.hypot(ox, h - oy), Math.hypot(w - ox, h - oy));
+    const band = maxD * 0.42; // width of the halftone edge
+    const front = k * (maxD + band);
+    ctx.clearRect(0, 0, w, h);
+    ctx.fillStyle = '#fff';
+    if (mode === 'cover' && k >= 1) {
+      ctx.fillRect(0, 0, w, h);
+      return;
+    }
+    ctx.beginPath();
+    for (let y = pitch / 2; y < h + pitch; y += pitch) {
+      for (let x = pitch / 2; x < w + pitch; x += pitch) {
+        let s = (front - Math.hypot(x - ox, y - oy)) / band;
+        s = s < 0 ? 0 : s > 1 ? 1 : s;
+        const r = rmax * (mode === 'cover' ? s : 1 - s);
+        if (r > 0.3) {
+          ctx.moveTo(x + r, y);
+          ctx.arc(x, y, r, 0, Math.PI * 2);
+        }
+      }
+    }
+    ctx.fill();
+  };
 
-  const setFade = (on: boolean, ms: number) => {
-    const f = fade.current;
-    if (!f) return;
-    f.style.transition = `opacity ${ms}ms cubic-bezier(.4,0,.2,1)`;
-    f.style.opacity = on ? '1' : '0';
-    f.style.pointerEvents = on ? 'auto' : 'none';
+  const play = (mode: 'cover' | 'reveal', ms: number, done: () => void) => {
+    const c = canvas.current;
+    if (!c) return done();
+    const dpr = Math.min(2, window.devicePixelRatio || 1);
+    c.width = Math.round(innerWidth * dpr);
+    c.height = Math.round(innerHeight * dpr);
+    c.getContext('2d')?.setTransform(dpr, 0, 0, dpr, 0, 0);
+    c.style.display = 'block';
+    c.style.pointerEvents = 'auto';
+    const ease = mode === 'cover' ? inkE : uninkE;
+    const t0 = performance.now();
+    cancelAnimationFrame(raf.current);
+    const step = (now: number) => {
+      const p = Math.min(1, (now - t0) / ms);
+      draw(ease(p), mode);
+      if (p < 1) raf.current = requestAnimationFrame(step);
+      else done();
+    };
+    raf.current = requestAnimationFrame(step);
   };
 
   const reveal = () => {
     state.current = 'revealing';
+    // one frame for the new page to paint under the white
     window.setTimeout(() => {
-      setFade(false, 520);
-      window.setTimeout(() => {
+      play('reveal', DUR.unink, () => {
+        const c = canvas.current;
+        if (c) {
+          c.style.display = 'none';
+          c.style.pointerEvents = 'none';
+        }
         state.current = 'idle';
         lenis()?.start();
-      }, 540);
-    }, 90);
+      });
+    }, 60);
   };
 
-  /** Also used by the "keep scrolling to the next project" zone. */
-  const go = (href: string) => {
+  const go = (href: string, at?: { x: number; y: number }) => {
     target.current = href.split(/[?#]/)[0];
     state.current = 'covering';
+    origin.current = at ?? { x: innerWidth / 2, y: innerHeight / 2 };
     lenis()?.stop();
-    setFade(true, 260);
-    window.setTimeout(() => {
+    play('cover', DUR.ink, () => {
       state.current = 'covered';
       router.push(href);
       window.setTimeout(() => state.current === 'covered' && reveal(), 2500);
-    }, 280);
+    });
   };
   const goRef = useRef(go);
   goRef.current = go;
@@ -64,14 +122,14 @@ export default function Transitions() {
       if (/\.(html|pdf|jpg|png|mp4|webp|zip)$/i.test(url.pathname)) return;
       if (reducedMotion() || state.current !== 'idle') return;
       ev.preventDefault();
-      goRef.current(url.pathname + url.search + url.hash);
+      goRef.current(url.pathname + url.search + url.hash, ev.clientX || ev.clientY ? { x: ev.clientX, y: ev.clientY } : undefined);
     };
     document.addEventListener('click', onClick, true);
     (window as unknown as { __dotGo?: (h: string) => void }).__dotGo = (h) => goRef.current(h);
     return () => document.removeEventListener('click', onClick, true);
   }, []);
 
-  // the new page is there: fade it in from the top
+  // the new page is there: back to the top, and the dots draw back
   useEffect(() => {
     if (state.current === 'covered' && target.current === pathname) {
       window.scrollTo(0, 0);
@@ -83,12 +141,12 @@ export default function Transitions() {
 
   return (
     <>
-      <div ref={fade} aria-hidden className="pointer-events-none fixed inset-0 z-[45] bg-white opacity-0" />
+      <canvas ref={canvas} aria-hidden className="pointer-events-none fixed inset-0 z-[45] hidden h-full w-full" />
     </>
   );
 }
 
-/** Navigate with the quiet fade from code (falls back to a plain page load). */
+/** Navigate with the printed transition from code (falls back to a plain page load). */
 export function dotGo(href: string, _origin?: Origin) {
   void _origin;
   const fn = (window as unknown as { __dotGo?: (h: string) => void }).__dotGo;

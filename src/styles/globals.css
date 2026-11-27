@@ -168,6 +168,20 @@ html.lenis, html.lenis body { height: auto; }
   .fine-flow > .fine-r { grid-column: 4 / -1; }
 }
 
+/* ── Motion grammar (same values as src/components/dot/motion.ts) ─────────── */
+:root {
+  --ease-print: cubic-bezier(0.6, 0, 0.25, 1);
+  --ease-ink: cubic-bezier(0.55, 0, 0.75, 0.2);
+  --ease-unink: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-arrive: cubic-bezier(0.22, 1, 0.36, 1);
+  --ease-state: cubic-bezier(0.4, 0, 0.2, 1);
+  --dur-print: 1150ms;
+}
+
+/* keyboard: a thin, precise focus ring, never on mouse clicks */
+:focus-visible { outline: 1px solid #0a0a0a; outline-offset: 3px; border-radius: 1px; }
+:focus:not(:focus-visible) { outline: none; }
+
 /* ── Pictures printed in dots on arrival (DotIn) ─────────────────────────── */
 @property --dr { syntax: '<length>'; inherits: false; initial-value: 0px; }
 .dot-in {
@@ -176,7 +190,7 @@ html.lenis, html.lenis body { height: auto; }
   mask-image: radial-gradient(circle, #000 var(--dr), transparent calc(var(--dr) + 0.7px));
   -webkit-mask-size: 9px 9px;
   mask-size: 9px 9px;
-  transition: --dr 1.15s cubic-bezier(0.6, 0, 0.25, 1);
+  transition: --dr var(--dur-print) var(--ease-print);
 }
 .dot-in[data-in] { --dr: 7px; }
 .dot-in[data-done] { -webkit-mask-image: none; mask-image: none; }

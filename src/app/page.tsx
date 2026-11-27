@@ -281,9 +281,15 @@ export default function Home() {
           animate={{ opacity: 1 }}
           transition={{ duration: 1, delay: lead + 0.4 }}
         >
-          <p className="md:col-span-4">
-            {t('Précédemment OKCC, studio créatif — ', 'Previously OKCC, creative studio — ')}Hennessy, Shu Uemura, Louis Vuitton, L&apos;Oréal, YSL Beauty, HOKA.
-          </p>
+          <div className="space-y-1 md:col-span-4">
+            {/* the 30-second read: what kind of products, then where the eye was trained */}
+            <p className="font-medium">
+              {t('Je conçois des produits complexes, de l’agent IA au poste de pilotage d’un tunnelier.', 'I design complex products, from an AI agent to the cockpit of a tunnel boring machine.')}
+            </p>
+            <p className="text-black/45">
+              {t('Précédemment OKCC, studio créatif — ', 'Previously OKCC, creative studio — ')}Hennessy, Shu Uemura, Louis Vuitton, L&apos;Oréal, YSL Beauty, HOKA.
+            </p>
+          </div>
           <p className="text-black/45 md:col-span-3 md:col-start-6">{t('Disponible — CDI, Paris ou remote', 'Available — full-time, Paris or remote')}</p>
           <a href="#work" className="md:col-span-2 md:col-start-11 md:text-right">
             {t('Voir les projets', 'See the work')} ↓

@@ -5,7 +5,7 @@ import { motion } from 'framer-motion';
 import Header from '@/components/Header';
 import { useT } from '@/components/i18n';
 import { Bleed, Chap, Next, Principles, WRAP } from '@/components/case/Kit';
-import { CaseHead } from '@/components/project/ProjectPage';
+import { CaseHead, Summary } from '@/components/project/ProjectPage';
 import { Strip } from '@/app/foil/Kit';
 import Compare from '@/components/colosse/Compare';
 import DotIn from '@/components/dot/DotIn';
@@ -100,6 +100,15 @@ export default function Page() {
       </div>
 
       <div className={WRAP}>
+        <div className="mt-8">
+          <Summary
+            items={[
+              { k: t('Le problème', 'The problem'), v: t('Shu Uemura voulait aider ses clientes à choisir et à appliquer leurs produits, avec un coach personnel sur leur téléphone.', 'Shu Uemura wanted to help its clients choose and apply their products, with a personal coach on their phone.') },
+              { k: t('Ce que j’ai conçu', 'What I designed'), v: t('Tous les écrans de l’appli, en trois itérations avec le client, et un film en IA pour présenter le concept au CEO.', 'Every screen of the app, over three iterations with the client, and an AI film to present the concept to the CEO.') },
+              { k: t('Le parti pris', 'The stance'), v: t('Un mentor, pas un chatbot : l’appli mesure le visage avec les repères propres à la maison, puis montre le geste.', 'A mentor, not a chatbot: the app measures the face with the house’s own landmarks, then shows the gesture.') },
+            ]}
+          />
+        </div>
 
         {/* 01 — JOURNEY */}
         <Chap

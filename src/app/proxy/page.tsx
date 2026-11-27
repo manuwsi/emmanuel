@@ -1,7 +1,7 @@
 'use client';
 
 import { ReactNode } from 'react';
-import { ProjectPage, Media, Chapter, Row, FT } from '@/components/project/ProjectPage';
+import { Chapter, FT, Media, ProjectPage, Row, Summary } from '@/components/project/ProjectPage';
 import { useT } from '@/components/i18n';
 import { ProxySystem, Presence } from '@/components/project/DesignSystem';
 import { LiveRequest, DecisionModel } from '@/components/proxy/Live';
@@ -107,7 +107,20 @@ export default function Page() {
           </p>
         </>
       }
-      hero={<Media crisp priority src="/proxy/photo-laptop-v3.jpg" alt={t('Proxy sur un ordinateur portable, l’écran Aujourd’hui', 'Proxy on a laptop, the Today screen')} width={2560} height={1920} />}
+      hero={
+        <>
+          <Media crisp priority src="/proxy/photo-laptop-v3.jpg" alt={t('Proxy sur un ordinateur portable, l’écran Aujourd’hui', 'Proxy on a laptop, the Today screen')} width={2560} height={1920} />
+          <div className="mt-8">
+            <Summary
+              items={[
+                { k: t('Le problème', 'The problem'), v: t('Avec un agent IA, la supervision se joue au moment de l’action. L’avant (ce qu’on l’autorise à faire) et l’après (ce qu’il a fait) restent peu travaillés.', 'With an AI agent, supervision happens at the moment of action. The before (what it is allowed to do) and the after (what it did) get little attention.') },
+                { k: t('Ce que j’ai conçu', 'What I designed'), v: t('Un agent personnel et son interface : des règles par domaine, des demandes de validation, un journal avec délai d’annulation et un bilan de la semaine.', 'A personal agent and its interface: rules per domain, approval requests, a log with an undo window and a weekly summary.') },
+                { k: t('Le parti pris', 'The stance'), v: t('La confiance se règle domaine par domaine : tout commence sur « Proposer », puis chaque domaine trouve son niveau.', 'Trust is set domain by domain: everything starts on “Propose”, then each domain finds its level.') },
+              ]}
+            />
+          </div>
+        </>
+      }
     >
       {/* 01 — THE PROBLEM */}
       <Chapter n={1} title={t('Le problème', 'The problem')} lede={t('La supervision se joue au moment de l’action. L’avant et l’après restent peu travaillés.', 'Supervision happens at the moment of action. The before and the after get little attention.')}>

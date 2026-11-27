@@ -12,7 +12,7 @@ import { introWait, reducedMotion } from './engine';
  */
 const STEP = 34; // ms per braille step
 const STEPS = 5;
-const STAGGER = 18; // ms between letters
+const MAX = 700; // a whole text composes in 700 ms at most (24 ms between letters for short ones)
 
 function cell(n: number) {
   // a braille cell with n random dots lit
@@ -56,10 +56,11 @@ export default function DotText({
     if (fromHidden) chars.forEach((c) => (c.dataset.h = ''));
     const t0 = performance.now() + wait;
     const last: number[] = chars.map(() => -2);
+    const stagger = Math.min(24, Math.max(6, (MAX - STEPS * STEP) / Math.max(1, chars.length)));
     const tick = (now: number) => {
       let busy = false;
       chars.forEach((c, i) => {
-        const step = Math.floor((now - t0 - i * STAGGER) / STEP);
+        const step = Math.floor((now - t0 - i * stagger) / STEP);
         if (step === last[i]) {
           if (step < STEPS) busy = true;
           return;

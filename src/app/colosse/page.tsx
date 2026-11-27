@@ -36,7 +36,7 @@ function Chap({ n, title, depth, lede, children }: { n: number; title: string; d
   return (
     <>
       <div className="fine-gap" aria-hidden />
-      <motion.div initial={{ opacity: 0 }} whileInView={{ opacity: 1 }} transition={{ duration: 0.8 }} viewport={{ once: true }} className="fine-note" data-chapter={label}>
+      <motion.div initial={{ opacity: 0 }} whileInView={{ opacity: 1 }} transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }} viewport={{ once: true }} className="fine-note" data-chapter={label}>
         <h3 className="grid grid-cols-[1fr_auto] gap-3 text-black/45">
           <DotText text={label} play="view" />
           <span className="tabular-nums text-[#0a0a0a]">{depth}</span>

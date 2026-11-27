@@ -7,7 +7,7 @@ import { useT } from '@/components/i18n';
 import Header from '@/components/Header';
 import NextProject from '@/components/dot/NextProject';
 import DotIn from '@/components/dot/DotIn';
-import { CaseHead, Chapter, Media } from '@/components/project/ProjectPage';
+import { CaseHead, Chapter, Media, Summary } from '@/components/project/ProjectPage';
 import HoloCard from './HoloCard';
 import Constellation from './Constellation';
 import Story from './Story';
@@ -133,6 +133,15 @@ export default function Page() {
             height={1620}
             alt={t('Gros plan d’un iPhone tenu en main, sur l’écran évolution de Foil : plus 718 euros', 'Close-up of an iPhone held in hand, on Foil’s growth screen: plus 718 euros')}
           />
+          <div className="mt-8">
+            <Summary
+              items={[
+                { k: t('Le problème', 'The problem'), v: t('Suivre ses cartes, c’est plusieurs applis et plusieurs devises. Aucun outil ne garde le prix payé en yuans ou en yens à côté de la valeur actuelle.', 'Tracking cards means several apps and several currencies. No tool keeps the price paid in yuan or yen next to the current value.') },
+                { k: t('Ce que j’ai conçu', 'What I designed'), v: t('Une appli iOS : une seule collection pour tous les jeux, et pour chaque carte ce qu’elle vaut et l’écart avec le prix payé.', 'An iOS app: one collection for every game, and for each card what it is worth and the gap with the price paid.') },
+                { k: t('Le parti pris', 'The stance'), v: t('La carte reste au centre, éclairée comme un objet : une appli qui ne montre que de l’argent, on finit par ne plus l’ouvrir.', 'The card stays at the centre, lit like an object: an app that only shows money ends up unopened.') },
+              ]}
+            />
+          </div>
         </div>
 
         <div className="fine-flow mt-4">

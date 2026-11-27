@@ -5,7 +5,7 @@ import { motion } from 'framer-motion';
 import Header from '@/components/Header';
 import { useT } from '@/components/i18n';
 import { Bleed, Chap, Next, Principles, WRAP } from '@/components/case/Kit';
-import { CaseHead } from '@/components/project/ProjectPage';
+import { CaseHead, Summary } from '@/components/project/ProjectPage';
 import TabletStrip from '@/components/hennessy/TabletStrip';
 import SecondSkin from '@/components/hennessy/SecondSkin';
 import '@/styles/globals.css';
@@ -87,6 +87,15 @@ export default function Page() {
       </div>
 
       <div className={WRAP}>
+        <div className="mt-8">
+          <Summary
+            items={[
+              { k: t('Le contexte', 'The context'), v: t('Une édition limitée du Hennessy X.O avec l’artiste génératif Florian Zumbrunn : quarante carafes, chacune avec sa seconde peau et son numéro.', 'A limited edition of Hennessy X.O with generative artist Florian Zumbrunn: forty decanters, each with its second skin and its number.') },
+              { k: t('Ce que j’ai conçu', 'What I designed'), v: t('Les visuels 3D des bouteilles sous Blender et l’UI de la tablette de vente du château, où chaque visiteur choisit deux couleurs.', 'The 3D bottle visuals in Blender and the UI of the château’s sales tablet, where each visitor picks two colours.') },
+              { k: t('Le parti pris', 'The stance'), v: t('La couleur d’abord, un choix à la fois : debout devant une tablette, chaque étape doit rester simple.', 'Colour first, one choice at a time: standing in front of a tablet, each step has to stay simple.') },
+            ]}
+          />
+        </div>
 
         {/* 01 — JOURNEY */}
         <Chap

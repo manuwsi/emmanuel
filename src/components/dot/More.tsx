@@ -12,12 +12,12 @@ export default function More({ children, className = '' }: { children: ReactNode
   const [open, setOpen] = useState(false);
   return (
     <div className={className}>
-      <div className="grid transition-[grid-template-rows] duration-500 ease-[cubic-bezier(.4,0,.2,1)]" style={{ gridTemplateRows: open ? '1fr' : '0fr' }}>
-        <div className={`overflow-hidden transition-opacity duration-500 ${open ? 'opacity-100' : 'opacity-0'}`} aria-hidden={!open}>
+      <div className="grid transition-[grid-template-rows] duration-[320ms] ease-[var(--ease-state)]" style={{ gridTemplateRows: open ? '1fr' : '0fr' }}>
+        <div className={`overflow-hidden transition-opacity duration-[320ms] ease-[var(--ease-state)] ${open ? 'opacity-100 delay-75' : 'opacity-0'}`} aria-hidden={!open}>
           <div className="space-y-3 pt-3">{children}</div>
         </div>
       </div>
-      <button type="button" onClick={() => setOpen((o) => !o)} aria-expanded={open} className="mt-2 text-black/45 transition-colors hover:text-black">
+      <button type="button" onClick={() => setOpen((o) => !o)} aria-expanded={open} className="mt-2 text-black/45">
         {open ? t('− Réduire', '− Less') : t('+ Lire la suite', '+ Read more')}
       </button>
     </div>

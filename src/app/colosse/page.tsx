@@ -5,6 +5,7 @@ import { motion } from 'framer-motion';
 import Header from '@/components/Header';
 import NextProject from '@/components/dot/NextProject';
 import DotText from '@/components/dot/DotText';
+import More from '@/components/dot/More';
 import { Media, Summary } from '@/components/project/ProjectPage';
 import { useT } from '@/components/i18n';
 import Cutter from '@/components/colosse/Cutter';
@@ -52,9 +53,7 @@ function Chap({ n, title, depth, lede, children }: { n: number; title: string; d
         </p>
       )}
       {children && (
-        <div className="mt-10 md:mt-14 grid grid-cols-1 md:grid-cols-12 gap-6">
-          <div className="md:col-start-5 md:col-span-8 text-[15px] md:text-[17px] leading-[1.55] max-w-2xl space-y-4">{children}</div>
-        </div>
+        <More className="text-[14px] leading-[1.6] md:text-[13px] text-black/70 max-w-[460px] md:ml-[calc(25%+3px)]">{children}</More>
       )}
     </motion.section>
   );

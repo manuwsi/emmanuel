@@ -10,6 +10,7 @@ import { projects, type Project } from '@/components/projects';
 import { MarkFor } from '@/components/ProjectMark';
 import { introWait } from '@/components/dot/engine';
 import DotText from '@/components/dot/DotText';
+import Opening from '@/components/home/Opening';
 import { lenisScrollTo } from '@/components/dot/SmoothScroll';
 import '../styles/globals.css';
 
@@ -31,8 +32,8 @@ function ProjectCard({ project, index }: { project: Project; index: number; smal
         data-mark={project.link.slice(1)}
         data-label={t('Voir', 'View')}
       >
-        <div className="relative aspect-[4/3] w-full overflow-hidden bg-neutral-100">
-          {/* the cover settles in once, slowly: a light fade and a very small zoom-out */}
+        <div data-cover={project.link} className="relative aspect-[4/3] w-full overflow-hidden bg-neutral-100">
+          {/* the cover settles in once, slowly */}
           <motion.div
             className="absolute inset-0"
             initial={{ opacity: 0 }}
@@ -77,7 +78,7 @@ function ProjectCard({ project, index }: { project: Project; index: number; smal
 
 function GroupLabel({ children, count, first = false, right }: { children: React.ReactNode; count: number; first?: boolean; right?: React.ReactNode }) {
   return (
-    <div className={`${TXT} flex items-baseline justify-between px-2 pb-2 md:px-0 ${first ? 'pt-16 md:pt-24' : 'pt-20 md:pt-28'}`}>
+    <div className={`${TXT} flex items-baseline justify-between px-2 pb-2 md:px-0 ${first ? 'pt-8 md:pt-10' : 'pt-20 md:pt-28'}`}>
       <p>
         {children} <span className="ml-2 tabular-nums text-black/45">{count}</span>
       </p>
@@ -281,26 +282,35 @@ export default function Home() {
   return (
     <main className="!block min-h-screen w-full !overflow-visible bg-white pb-16 text-[#0a0a0a] [scroll-snap-type:none]">
       <Header active="work" />
+      <Opening />
 
-      {/* who: small and precise, the work comes right after */}
-      <section className={`${TXT} grid grid-cols-1 gap-x-3 gap-y-4 px-2 pt-24 md:grid-cols-12 md:px-3 md:pt-[22vh]`}>
+      {/* statement: one large line, the work already peeking underneath */}
+      <section className="flex min-h-[66svh] flex-col justify-end px-2 pb-6 md:min-h-[60svh] md:px-3">
         <motion.h1
           key={headline}
           data-intro-target
-          className="font-medium md:col-span-3"
+          className="max-w-[14ch] text-[13vw] font-medium leading-[0.92] tracking-[-0.045em] md:text-[min(4.6vw,76px)]"
           initial={lead > 0 ? false : { opacity: 0 }}
           animate={{ opacity: 1 }}
-          transition={{ duration: 1, ease: EASE, delay: 0.1 }}
+          transition={{ duration: 1.2, ease: EASE, delay: 0.1 }}
         >
-          {/* on the first visit, the line composes itself in dots where the opening dot lands */}
+          {/* on a fresh visit, the line composes itself in dots while the covers find their places */}
           <DotText text={headline} play="intro" />
         </motion.h1>
-        <motion.p className="text-black/70 md:col-span-4 md:col-start-4 md:pr-6" initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 1, delay: lead + 0.3 }}>
-          {t('Précédemment OKCC, studio créatif — ', 'Previously OKCC, creative studio — ')}Hennessy, Shu Uemura, Louis Vuitton, L&apos;Oréal, YSL Beauty, HOKA.
-        </motion.p>
-        <motion.p className="text-black/45 md:col-span-3 md:col-start-9" initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 1, delay: lead + 0.45 }}>
-          {t('Disponible — CDI, Paris ou remote', 'Available — full-time, Paris or remote')}
-        </motion.p>
+        <motion.div
+          className={`${TXT} mt-6 grid grid-cols-1 gap-3 md:mt-8 md:grid-cols-12 md:gap-x-3`}
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ duration: 1, delay: lead + 0.4 }}
+        >
+          <p className="md:col-span-4">
+            {t('Précédemment OKCC, studio créatif — ', 'Previously OKCC, creative studio — ')}Hennessy, Shu Uemura, Louis Vuitton, L&apos;Oréal, YSL Beauty, HOKA.
+          </p>
+          <p className="text-black/45 md:col-span-3 md:col-start-6">{t('Disponible — CDI, Paris ou remote', 'Available — full-time, Paris or remote')}</p>
+          <a href="#work" className="hover:underline md:col-span-2 md:col-start-11 md:text-right">
+            {t('Voir les projets', 'See the work')} ↓
+          </a>
+        </motion.div>
       </section>
 
       <div id="work" className="scroll-mt-6 px-0 md:px-3">

@@ -63,7 +63,7 @@ export default function RootLayout({
         {/* first visit of the session opens on the ink slate (see Transitions) */}
         <script
           dangerouslySetInnerHTML={{
-            __html: "try{var p=location.pathname,h=location.hostname;if(!/soutrame\\./.test(h)&&!(p.indexOf('/soutrame')===0&&p.indexOf('/soutrame-')!==0)&&!sessionStorage.getItem('dot-intro')&&!matchMedia('(prefers-reduced-motion: reduce)').matches)document.documentElement.dataset.intro='1'}catch(e){}",
+            __html: "try{var p=location.pathname,h=location.hostname;if(!/soutrame\\./.test(h)&&!(p.indexOf('/soutrame')===0&&p.indexOf('/soutrame-')!==0)&&!sessionStorage.getItem('dot-intro')&&!matchMedia('(prefers-reduced-motion: reduce)').matches)document.documentElement.dataset.intro='1';if(p==='/'&&!/soutrame\\./.test(h)&&!matchMedia('(prefers-reduced-motion: reduce)').matches)document.documentElement.dataset.homeIntro='1'}catch(e){}",
           }}
         />
       </head>

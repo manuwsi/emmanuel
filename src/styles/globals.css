@@ -129,8 +129,14 @@ html.has-cursor, html.has-cursor * { cursor: none !important; }
 html.has-cursor iframe { cursor: auto !important; }
 
 /* first visit: white with one dot until the title composes itself (safety: it goes away on its own) */
-html[data-intro='1'] #dot-veil { display: block; animation: dotveil 0.3s ease 3s forwards; }
+html[data-intro='1']:not([data-home-intro]) #dot-veil { display: block; animation: dotveil 0.3s ease 3s forwards; }
 html[data-intro='1'] #dot-veil [data-dot] { animation: dotin 0.5s cubic-bezier(.22,1,.36,1) both; }
+
+/* home opening: the covers wait for their thumbnail to land (safety: they show up on their own) */
+html[data-home-intro='1'] #home-opening { display: block; animation: dotveil 0.3s ease 4.2s forwards; }
+html[data-home-intro='1'] #home-opening [data-thumb]:first-child { animation: dotin 0.5s cubic-bezier(.22,1,.36,1) both; }
+html[data-home-intro='1'] [data-cover] { opacity: 0; animation: coverin 0.01s linear 4.2s forwards; }
+@keyframes coverin { to { opacity: 1; } }
 @keyframes dotin { from { scale: 0; } 60% { scale: 1.6; } to { scale: 1; } }
 @keyframes dotveil { to { opacity: 0; visibility: hidden; } }
 
@@ -156,13 +162,13 @@ html.lenis, html.lenis body { height: auto; }
   line-height: 1.6;
 }
 .fine-flow > * { grid-column: 1 / -1; min-width: 0; }
-.fine-flow > .fine-gap { height: 88px; }
+.fine-flow > .fine-gap { height: 64px; }
 .fine-flow > .fine-note { padding-bottom: 20px; }
 .fine-flow > .fine-full { grid-column: 1 / -1 !important; }
 @media (min-width: 768px) {
   .fine-flow { font-size: 13px; line-height: 1.6; }
-  .fine-flow > * { grid-column: 4 / 11; }
-  .fine-flow > .fine-gap { height: 160px; }
+  .fine-flow > * { grid-column: 4 / 10; }
+  .fine-flow > .fine-gap { height: 120px; }
   .fine-flow > .fine-note { grid-column: 1 / 4; grid-row: span 2; padding: 0 28px 0 0; }
   .fine-flow > .fine-wide { grid-column: 1 / -1; }
 }

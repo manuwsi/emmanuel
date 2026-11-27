@@ -33,6 +33,11 @@ export default function Transitions() {
       delete document.documentElement.dataset.intro;
       if (v) v.style.display = 'none';
     };
+    // the home page has its own opening (the covers), this one would only get in the way
+    if (document.documentElement.dataset.homeIntro === '1') {
+      const t0 = window.setTimeout(done, 2600);
+      return () => clearTimeout(t0);
+    }
     if (!v || !dot || reducedMotion()) return done();
     const target = document.querySelector<HTMLElement>('[data-intro-target]') ?? document.querySelector<HTMLElement>('main h1');
     const t1 = window.setTimeout(() => {

@@ -18,9 +18,16 @@ function Screen({ src, alt, caption }: { src: string; alt: string; caption?: Rea
   return <Media {...W} src={src} alt={alt} caption={caption} className="[&_img]:border [&_img]:border-black/10" />;
 }
 
-/** A readable close-up of part of a screen. */
+/** A readable close-up of part of a screen: two thirds of the column, its caption beside it. */
 function Zoom({ src, w, h, alt, children }: { src: string; w: number; h: number; alt: string; children: ReactNode }) {
-  return <Media crisp src={src} alt={alt} width={w} height={h} caption={children} className="[&_img]:border [&_img]:border-black/10" />;
+  return (
+    <div className={`${FT} grid grid-cols-1 items-end gap-x-3 gap-y-2 md:grid-cols-3`}>
+      <div className="md:col-span-2">
+        <Media crisp src={src} alt={alt} width={w} height={h} className="[&_img]:border [&_img]:border-black/10" />
+      </div>
+      <p className="text-black/45">{children}</p>
+    </div>
+  );
 }
 
 /** Published research behind three of Proxy's rules: real sources, with what I took from them. */
@@ -193,14 +200,14 @@ export default function Page() {
       <Zoom src="/proxy/z-steps-hd.webp" w={2820} h={540} alt={t('Détail : les étapes et le point de non-retour', 'Detail: the steps and the point of no return')}>
         {t('Une seule étape porte l’orange, et le pointillé marque l’instant après lequel on ne revient plus en arrière.', 'Only one step carries orange, and the dotted line marks the moment after which there is no going back.')}
       </Zoom>
-      <Row cols={2} align="start">
+      <div className="space-y-2">
         <Zoom src="/proxy/z-compare-hd.webp" w={2820} h={720} alt={t('Détail : les trains comparés sur un axe horaire', 'Detail: the trains compared on a time axis')}>
           {t('Les options écartées restent visibles, avec la raison en une ligne.', 'The options ruled out stay visible, with the reason in one line.')}
         </Zoom>
         <Zoom src="/proxy/z-why-hd.webp" w={1140} h={930} alt={t('Détail : pourquoi cette demande', 'Detail: why this request')}>
           {t('La raison, citée telle quelle, et ce que Proxy a consulté.', 'The reason, quoted as is, and what Proxy looked at.')}
         </Zoom>
-      </Row>
+      </div>
       <div className="hidden md:block">
         <LiveRequest />
         <p className={`${FT} mt-2 text-black/45`}>{t('Essayez-le : validez, puis annulez l’ajout à l’agenda ou demandez le remboursement.', 'Try it: approve, then undo the calendar entry or request the refund.')}</p>

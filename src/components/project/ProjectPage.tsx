@@ -4,6 +4,7 @@ import { ReactNode, useEffect, useRef } from 'react';
 import { motion } from 'framer-motion';
 import Image from 'next/image';
 import DotText from '../dot/DotText';
+import More from '../dot/More';
 import { usePathname } from 'next/navigation';
 import NextProject from '../dot/NextProject';
 import Header from '../Header';
@@ -214,7 +215,7 @@ export function Chapter({ title, n, lede, children }: { title: string; n?: numbe
           <DotText text={label} play="view" />
         </h3>
         {lede && <p className="mt-3 font-medium">{lede}</p>}
-        {children && <div className="mt-3 text-black/70">{children}</div>}
+        {children && (lede ? <More className="text-black/70">{children}</More> : <div className="mt-3 text-black/70">{children}</div>)}
       </motion.div>
     </>
   );

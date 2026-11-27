@@ -7,6 +7,7 @@ import Image from 'next/image';
 import { motion } from 'framer-motion';
 import NextProject from '@/components/dot/NextProject';
 import DotText from '@/components/dot/DotText';
+import More from '@/components/dot/More';
 
 export const DISPLAY = { fontFamily: 'var(--font-general-sans), Inter, sans-serif', fontWeight: 500, letterSpacing: '-0.03em' } as const;
 export const WRAP = 'px-2 md:px-3 w-full';
@@ -70,7 +71,7 @@ export function Chap({ n, title, aside, lede, children }: { n: number; title: st
         <div className="mt-4 grid grid-cols-1 md:grid-cols-12 md:gap-x-3">
           <div className="md:col-span-4 md:col-start-4 md:pr-6 space-y-3">
             {lede && <p className="font-medium">{lede}</p>}
-            {children && <div className="space-y-3 text-black/70">{children}</div>}
+            {children && (lede ? <More className="text-black/70">{children}</More> : <div className="space-y-3 text-black/70">{children}</div>)}
           </div>
         </div>
       )}

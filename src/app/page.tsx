@@ -10,7 +10,7 @@ import { projects, type Project } from '@/components/projects';
 import { MarkFor } from '@/components/ProjectMark';
 import { introWait } from '@/components/dot/engine';
 import DotText from '@/components/dot/DotText';
-import Opening from '@/components/home/Opening';
+import DotIn from '@/components/dot/DotIn';
 import { lenisScrollTo } from '@/components/dot/SmoothScroll';
 import '../styles/globals.css';
 
@@ -28,19 +28,10 @@ function ProjectCard({ project, index }: { project: Project; index: number; smal
         href={project.link}
         className="group block"
         aria-label={t(`Voir le projet ${title}`, `View project ${title}`)}
-        data-cursor="project"
-        data-mark={project.link.slice(1)}
-        data-label={t('Voir', 'View')}
       >
-        <div data-cover={project.link} className="relative aspect-[4/3] w-full overflow-hidden bg-neutral-100">
-          {/* the cover settles in once, slowly */}
-          <motion.div
-            className="absolute inset-0"
-            initial={{ opacity: 0 }}
-            whileInView={{ opacity: 1 }}
-            viewport={{ once: true, margin: '-6% 0px' }}
-            transition={{ duration: 1.8, ease: EASE, delay: (index % cols) * 0.12 }}
-          >
+        <div className="relative aspect-[4/3] w-full overflow-hidden">
+          {/* the opening: covers print in dots, one after the other along the row */}
+          <DotIn className="absolute inset-0" delay={(index % cols) * 110}>
             <Image
               src={project.image}
               alt={title}
@@ -50,18 +41,9 @@ function ProjectCard({ project, index }: { project: Project; index: number; smal
               quality={90}
               className="object-cover"
             />
-          </motion.div>
+          </DotIn>
         </div>
-        <div className="h-[2px] w-full bg-black/10">
-          <div className="h-full w-0 bg-[#0a0a0a] transition-[width] duration-700 ease-[cubic-bezier(.22,1,.36,1)]" />
-        </div>
-        <motion.div
-          className={`${TXT} flex items-start justify-between gap-3 pt-1.5`}
-          initial={{ opacity: 0 }}
-          whileInView={{ opacity: 1 }}
-          viewport={{ once: true, margin: '-6% 0px' }}
-          transition={{ duration: 1.2, ease: EASE, delay: 0.35 + (index % cols) * 0.12 }}
-        >
+        <div className={`${TXT} flex items-start justify-between gap-3 pt-1.5`}>
           <div>
             <p className="font-medium">{title}</p>
             <p className="text-black/50">{t(project.subtitle.fr, project.subtitle.en)}</p>
@@ -70,7 +52,7 @@ function ProjectCard({ project, index }: { project: Project; index: number; smal
             <MarkFor link={project.link} />
             {String(index + 1).padStart(2, '0')}
           </span>
-        </motion.div>
+        </div>
       </Link>
     </article>
   );
@@ -209,9 +191,6 @@ function IndexView() {
               ref={(el) => {
                 if (el) rows.current[i] = el;
               }}
-              data-cursor="project"
-              data-mark={proj.link.slice(1)}
-              data-label={t('Voir', 'View')}
               className={`${TXT} grid grid-cols-[3ch_1fr_auto] items-baseline gap-x-3 border-t border-black/10 px-2 py-2 transition-opacity duration-300 md:px-0`}
               style={{ opacity: Math.max(0.14, 1 - d * 0.28) }}
             >
@@ -282,7 +261,6 @@ export default function Home() {
   return (
     <main className="!block min-h-screen w-full !overflow-visible bg-white pb-16 text-[#0a0a0a] [scroll-snap-type:none]">
       <Header active="work" />
-      <Opening />
 
       {/* statement: one large line, the work already peeking underneath */}
       <section className="flex min-h-[66svh] flex-col justify-end px-2 pb-6 md:min-h-[60svh] md:px-3">
@@ -295,7 +273,7 @@ export default function Home() {
           transition={{ duration: 1.2, ease: EASE, delay: 0.1 }}
         >
           {/* on a fresh visit, the line composes itself in dots while the covers find their places */}
-          <DotText text={headline} play="intro" />
+          <DotText text={headline} play="mount" />
         </motion.h1>
         <motion.div
           className={`${TXT} mt-6 grid grid-cols-1 gap-3 md:mt-8 md:grid-cols-12 md:gap-x-3`}

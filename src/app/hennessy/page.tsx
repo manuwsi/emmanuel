@@ -92,7 +92,6 @@ export default function Page() {
         <Chap
           n={1}
           title={t('Le parcours', 'The journey')}
-          aside={t('6 écrans', '6 screens')}
           lede={t('Six écrans, et un seul vrai choix : deux couleurs.', 'Six screens, and only one real choice: two colours.')}
         >
           <p>
@@ -103,14 +102,13 @@ export default function Page() {
           </p>
         </Chap>
         <div className="fine-bleed">
-          <TabletStrip items={screens} hint={t('Faire glisser', 'Drag')} />
+          <TabletStrip items={screens} />
         </div>
 
         {/* 02 — COLOURS */}
         <Chap
           n={2}
           title={t('Le choix des couleurs', 'Choosing colours')}
-          aside={t('4 pistes', '4 options')}
           lede={t('C’est le choix des couleurs qui rend chaque bouteille unique. J’ai testé quatre façons de le faire.', 'Choosing colours is what makes each bottle unique. I tested four ways of doing it.')}
         />
         <div className="grid grid-cols-1 md:grid-cols-2 gap-x-3 gap-y-6">
@@ -158,7 +156,6 @@ export default function Page() {
         <Chap
           n={4}
           title={t('L’édition', 'The edition')}
-          aside="VivaTech 2025"
           lede={t('40 carafes, chacune avec sa seconde peau et son numéro de série. Aucune n’est identique.', '40 decanters, each with its second skin and its serial number. No two are the same.')}
         />
         <motion.div

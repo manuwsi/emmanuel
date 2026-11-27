@@ -40,11 +40,8 @@ export default function NextProject({ path }: { path: string }) {
           href={np.link}
           aria-label={title}
           className="block md:col-span-6 md:col-start-4"
-          data-cursor="project"
-          data-mark={np.link.slice(1)}
-          data-label={t('Voir', 'View')}
         >
-          <DotIn className="relative aspect-[16/10] w-full overflow-hidden bg-neutral-100">
+          <DotIn className="relative aspect-[16/10] w-full overflow-hidden">
             <Image src={np.image} alt="" fill sizes="(max-width: 768px) 100vw, 50vw" className="object-cover" />
           </DotIn>
         </Link>

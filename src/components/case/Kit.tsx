@@ -53,15 +53,14 @@ export function Meta({ rows, children }: { rows: [string, string][]; children: R
   );
 }
 
-export function Chap({ n, title, aside, lede, children }: { n: number; title: string; aside?: string; lede?: string; children?: ReactNode }) {
+export function Chap({ n, title, lede, children }: { n: number; title: string; lede?: string; children?: ReactNode }) {
   const label = `${String(n).padStart(2, '0')} → ${title}`;
   return (
     <>
       <div className="fine-gap" aria-hidden />
       <motion.div initial={{ opacity: 0 }} whileInView={{ opacity: 1 }} transition={{ duration: 0.8 }} viewport={{ once: true }} className="fine-note" data-chapter={label}>
-        <h3 className="grid grid-cols-[1fr_auto] gap-3 text-black/45">
+        <h3 className="text-black/45">
           <DotText text={label} play="view" />
-          {aside && <span className="tabular-nums">{aside}</span>}
         </h3>
         {lede && <p className="mt-3 font-medium">{lede}</p>}
         {children && (lede ? <More className="text-black/70">{children}</More> : <div className="mt-3 space-y-3 text-black/70">{children}</div>)}

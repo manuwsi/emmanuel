@@ -147,7 +147,7 @@ export function Row({ n, title, text, dark = false }: { n: string; title: string
 }
 
 /** Edge-to-edge strip of phone screens: drag, scroll, or use the numbers. */
-export function Strip({ items, label, hint }: { items: { src: string; name: string; group: string }[]; label: string; hint: string }) {
+export function Strip({ items, label }: { items: { src: string; name: string; group: string }[]; label: string }) {
   const track = useRef<HTMLDivElement>(null);
   const [at, setAt] = useState(0);
   const [progress, setProgress] = useState(0);
@@ -166,18 +166,11 @@ export function Strip({ items, label, hint }: { items: { src: string; name: stri
     el.addEventListener('scroll', on, { passive: true });
     return () => el.removeEventListener('scroll', on);
   }, [items.length]);
-  const goTo = (i: number) => {
-    const el = track.current;
-    const c = el?.children[i] as HTMLElement | undefined;
-    if (el && c) el.scrollTo({ left: c.offsetLeft, behavior: 'smooth' });
-  };
   return (
     <div>
-      <p data-pad className={`${TXT} px-2 pb-2 md:px-3`}>
-        {label} <span className="ml-2 text-black/45">{hint} →</span>
-      </p>
       <div
         ref={track}
+        aria-label={label}
         onPointerDown={(e) => { if (e.pointerType === 'mouse' && track.current) drag.current = { x: e.clientX, left: track.current.scrollLeft }; }}
         onPointerMove={(e) => { const d = drag.current; if (d && track.current) track.current.scrollLeft = d.left - (e.clientX - d.x); }}
         onPointerUp={() => (drag.current = null)}
@@ -201,11 +194,6 @@ export function Strip({ items, label, hint }: { items: { src: string; name: stri
             {items[at].group ? `${items[at].group} → ` : ''}{items[at].name}
           </motion.span>
         </AnimatePresence>
-        <div className="hidden gap-2 tabular-nums md:flex">
-          {items.map((_, i) => (
-            <button key={i} onClick={() => goTo(i)} className={i === at ? 'text-black' : 'text-black/30'} aria-label={`${i + 1}`}>{i + 1}</button>
-          ))}
-        </div>
       </div>
     </div>
   );

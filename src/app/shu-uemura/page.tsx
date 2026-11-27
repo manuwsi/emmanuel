@@ -105,7 +105,6 @@ export default function Page() {
         <Chap
           n={1}
           title={t('Le parcours', 'The journey')}
-          aside={t('9 écrans', '9 screens')}
           lede={t('Choisir un mentor, lui parler, se faire lire le visage, apprendre le geste.', 'Choose a mentor, talk to them, have your face read, learn the technique.')}
         >
           <p>
@@ -116,7 +115,7 @@ export default function Page() {
           </p>
         </Chap>
         <div className="fine-bleed">
-          <Strip items={flow} label={t('Le parcours complet', 'The full journey')} hint={t('Faire glisser', 'Drag')} />
+          <Strip items={flow} label={t('Le parcours complet', 'The full journey')} />
         </div>
 
         {/* 02 — THE FACE */}
@@ -132,7 +131,7 @@ export default function Page() {
             )}
           </p>
         </Chap>
-        <div className="bg-[#f2f1ee] px-4 py-8 md:px-[6%] md:py-10">
+        <div className="bg-[#f1f1ef] px-4 py-8 md:px-[6%] md:py-10">
           <div className="grid grid-cols-3 gap-3 md:gap-6">
             {[
               { f: '05-face-scan', k: 'A', fr: 'Les mesures.', en: 'The measurements.', d: t('Les proportions du visage, relevées par la caméra.', 'The face’s proportions, read by the camera.') },
@@ -154,7 +153,6 @@ export default function Page() {
         <Chap
           n={3}
           title={t('Itérations', 'Iterations')}
-          aside={t('3 versions', '3 versions')}
           lede={t('Trois versions, de l’appli générique à l’appli Shu Uemura.', 'Three versions, from a generic app to a Shu Uemura one.')}
         >
           <p>

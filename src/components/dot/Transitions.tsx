@@ -7,64 +7,14 @@ import { Origin, reducedMotion } from './engine';
 type Lenis = { stop: () => void; start: () => void; scrollTo: (y: number, o?: { immediate?: boolean; force?: boolean }) => void };
 const lenis = () => (window as unknown as { __lenis?: Lenis }).__lenis;
 
-/**
- * Two moments only:
- * - the very first visit of a session opens on one dot, which travels to the title as it composes itself;
- * - every page change after that is quiet: the page fades to white and the next one fades in.
- */
+/** Every page change is quiet: the page fades to white and the next one fades in from the top. */
 export default function Transitions() {
   const router = useRouter();
   const pathname = usePathname();
-  const veil = useRef<HTMLDivElement>(null);
   const fade = useRef<HTMLDivElement>(null);
   const state = useRef<'idle' | 'covering' | 'covered' | 'revealing'>('idle');
   const target = useRef<string | null>(null);
 
-  // first visit of the session: a single dot in the middle of a white page travels to the title,
-  // and the title composes itself in dots from there (DotText 'intro'); then everything is just the page.
-  useEffect(() => {
-    if (document.documentElement.dataset.intro !== '1') return;
-    try {
-      sessionStorage.setItem('dot-intro', '1');
-    } catch {}
-    const v = veil.current;
-    const dot = v?.querySelector<HTMLElement>('[data-dot]');
-    const done = () => {
-      delete document.documentElement.dataset.intro;
-      if (v) v.style.display = 'none';
-    };
-    // the home page has its own opening (the covers), this one would only get in the way
-    if (document.documentElement.dataset.homeIntro === '1') {
-      const t0 = window.setTimeout(done, 2600);
-      return () => clearTimeout(t0);
-    }
-    if (!v || !dot || reducedMotion()) return done();
-    const target = document.querySelector<HTMLElement>('[data-intro-target]') ?? document.querySelector<HTMLElement>('main h1');
-    const t1 = window.setTimeout(() => {
-      if (target) {
-        const r = target.getBoundingClientRect();
-        const fs = parseFloat(getComputedStyle(target).fontSize) || 16;
-        // measured from the veil itself, not the window: on Windows the scrollbar takes 15 px off the side
-        const box = v.getBoundingClientRect();
-        const x = r.left + fs * 0.3 - (box.left + box.width / 2);
-        const y = r.top + fs * 0.45 - (box.top + box.height / 2);
-        dot.style.transition = 'transform 620ms cubic-bezier(.65,0,.35,1)';
-        dot.style.transform = `translate(${x}px, ${y}px) scale(1.4)`;
-      }
-    }, 520);
-    const t2 = window.setTimeout(() => {
-      v.style.transition = 'background-color 420ms ease';
-      v.style.backgroundColor = 'rgba(255,255,255,0)';
-      dot.style.transition = 'transform 260ms ease, opacity 260ms ease';
-      dot.style.opacity = '0';
-    }, 1120);
-    const t3 = window.setTimeout(done, 1600);
-    return () => {
-      clearTimeout(t1);
-      clearTimeout(t2);
-      clearTimeout(t3);
-    };
-  }, []);
 
   const setFade = (on: boolean, ms: number) => {
     const f = fade.current;
@@ -133,10 +83,6 @@ export default function Transitions() {
 
   return (
     <>
-      {/* white in the first paint, with one dot in the middle (see the script in layout) */}
-      <div ref={veil} id="dot-veil" aria-hidden className="pointer-events-none fixed inset-0 z-[96] hidden bg-white">
-        <span data-dot className="absolute left-1/2 top-1/2 -ml-[4px] -mt-[4px] block h-2 w-2 rounded-full bg-[#0a0a0a]" />
-      </div>
       <div ref={fade} aria-hidden className="pointer-events-none fixed inset-0 z-[45] bg-white opacity-0" />
     </>
   );

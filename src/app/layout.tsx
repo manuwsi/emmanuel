@@ -1,7 +1,6 @@
 import type { Metadata } from 'next';
 import localFont from 'next/font/local';
 import '../styles/globals.css';
-import Cursor from '@/components/Cursor';
 import Transitions from '@/components/dot/Transitions';
 import SmoothScroll from '@/components/dot/SmoothScroll';
 import { LangProvider } from '@/components/i18n';
@@ -59,12 +58,6 @@ export default function RootLayout({
   return (
     <html lang="fr" className={`${generalSans.variable} ${ade.variable}`} suppressHydrationWarning>
       <head>
-        {/* first visit of the session opens on the ink slate (see Transitions) */}
-        <script
-          dangerouslySetInnerHTML={{
-            __html: "try{var p=location.pathname,h=location.hostname;if(!/soutrame\\./.test(h)&&!(p.indexOf('/soutrame')===0&&p.indexOf('/soutrame-')!==0)&&!sessionStorage.getItem('dot-intro')&&!matchMedia('(prefers-reduced-motion: reduce)').matches)document.documentElement.dataset.intro='1';if(p==='/'&&!/soutrame\\./.test(h)&&!matchMedia('(prefers-reduced-motion: reduce)').matches)document.documentElement.dataset.homeIntro='1'}catch(e){}",
-          }}
-        />
       </head>
       <body
         className="bg-white text-[#0a0a0a] font-sans antialiased"
@@ -72,7 +65,6 @@ export default function RootLayout({
       >
         <LangProvider>
           <SmoothScroll />
-          <Cursor />
           {children}
           <Transitions />
         </LangProvider>

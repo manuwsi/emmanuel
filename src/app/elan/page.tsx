@@ -421,7 +421,7 @@ export default function Page() {
         height={1062}
       />
       <div className="grid grid-cols-1 md:grid-cols-12 gap-px bg-black/15 border border-black/15">
-        <div className="md:col-span-5 bg-[#ecedef] p-10 md:p-14 flex items-center justify-center">
+        <div className="md:col-span-5 bg-[#f1f1ef] p-10 md:p-14 flex items-center justify-center">
           <div
             className={styles.live}
             role="img"

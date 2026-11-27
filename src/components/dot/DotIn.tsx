@@ -6,7 +6,7 @@ import { ReactNode, useEffect, useRef } from 'react';
  * Pictures arrive the way they are printed: a grid of tiny dots that grow until they touch.
  * Once, when the picture enters the screen; after that it is a normal picture again.
  */
-export default function DotIn({ children, className = '' }: { children: ReactNode; className?: string }) {
+export default function DotIn({ children, className = '', delay = 0 }: { children: ReactNode; className?: string; delay?: number }) {
   const ref = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -22,7 +22,7 @@ export default function DotIn({ children, className = '' }: { children: ReactNod
         if (!e.isIntersecting) return;
         io.disconnect();
         el.dataset.in = '';
-        t = window.setTimeout(() => (el.dataset.done = ''), 1300);
+        t = window.setTimeout(() => (el.dataset.done = ''), 1300 + delay);
       },
       { rootMargin: '0px 0px -10% 0px' }
     );
@@ -31,10 +31,10 @@ export default function DotIn({ children, className = '' }: { children: ReactNod
       io.disconnect();
       clearTimeout(t);
     };
-  }, []);
+  }, [delay]);
 
   return (
-    <div ref={ref} className={`dot-in ${className}`}>
+    <div ref={ref} className={`dot-in ${className}`} style={delay ? { transitionDelay: `${delay}ms` } : undefined}>
       {children}
     </div>
   );

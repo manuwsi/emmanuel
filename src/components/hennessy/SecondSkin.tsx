@@ -185,7 +185,7 @@ export default function SecondSkin() {
   const current = phase === 'dom' ? dom : phase === 'sec' ? sec : null;
 
   return (
-    <div className="grid grid-cols-1 md:grid-cols-12 bg-[#efece6]">
+    <div className="grid grid-cols-1 md:grid-cols-12 bg-[#f1f1ef]">
       {/* stage */}
       <div className="md:col-span-7 relative flex items-end justify-center gap-[6%] px-6 pt-10 pb-8 md:px-6 md:pt-10 md:pb-8 min-h-[400px] md:min-h-[480px]">
         <canvas

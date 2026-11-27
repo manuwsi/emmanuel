@@ -178,7 +178,7 @@ export default function Page() {
           {/* 04 — the screens */}
           <Chapter n={4} title={t('Quinze écrans', 'Fifteen screens')} lede={t('Le parcours complet, de la découverte à la revente.', 'The full journey, from discovery to resale.')} />
           <div className="fine-bleed">
-            <Strip items={screens} label={t('Les écrans', 'The screens')} hint={t('Faire glisser', 'Drag')} />
+            <Strip items={screens} label={t('Les écrans', 'The screens')} />
           </div>
           <div className="h-6" aria-hidden />
           <Media video src="/motion/foil-rows.mp4" width={1920} height={1080} alt={t('Animation : les quinze écrans défilent sur deux rails, en points loin du centre et nets au milieu', 'Animation: the fifteen screens slide on two rails, in dots away from the centre and sharp in the middle')} />

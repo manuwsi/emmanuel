@@ -8,7 +8,7 @@ import { useT } from '@/components/i18n';
 import { ProxySystem, Presence } from '@/components/project/DesignSystem';
 import { LivePresence, LiveRequest } from '@/components/proxy/Live';
 import { TrustLine } from '@/components/proxy/Art';
-import { BeatHead, Cap, Levels, Model, Moment, Rail, ScreenName, useActiveBeat } from '@/components/proxy/Figures';
+import { BeatHead, Cap, Levels, Model, Moment, Rail, ScreenName } from '@/components/proxy/Figures';
 import { Details, Film, JournalAxis, LaptopPhoto, LockScreen, Phones, Photo, Plate, Region, Shot } from '@/components/proxy/Show';
 import Header from '@/components/Header';
 import NextProject from '@/components/dot/NextProject';
@@ -159,7 +159,6 @@ export default function Page() {
     { id: 'v1800', day: fri, time: '18:00', state: 'done', doing: t('Le bilan', 'The review') },
   ];
   const M = Object.fromEntries(moments.map((m) => [m.id, m])) as Record<string, Moment>;
-  const active = useActiveBeat(moments.map((m) => m.id));
 
   const shots: Shot[] = [
     { rect: [0, 0, 1440, 900], title: t('La demande, entière.', 'The request, whole.'), note: t('Proxy s’est arrêté avant de payer : 89 €, c’est au-dessus de la limite de 60 € que Léa a fixée.', 'Proxy stopped before paying: €89 is over the €60 limit Léa set.') },
@@ -300,7 +299,7 @@ export default function Page() {
 
         <div className={GRID}>
           <aside className="hidden md:col-span-3 md:block" aria-label={t('Les moments de la semaine', 'The moments of the week')}>
-            <Rail moments={moments} active={active} labels={stateLabel} />
+            <Rail moments={moments} labels={stateLabel} />
           </aside>
           <div className="px-beats md:col-span-9">
             {/* MONDAY 09:00 */}

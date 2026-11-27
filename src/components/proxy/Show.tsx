@@ -3,7 +3,7 @@
 import { CSSProperties, ReactNode, useEffect, useRef, useState } from 'react';
 import Image from 'next/image';
 import DotIn from '@/components/dot/DotIn';
-import { Proto, Rect, useScaleFallback } from './Proto';
+import { MARKUP, Proto, Rect, useScaleFallback } from './Proto';
 import { SCREENS, ScreenId } from './screens';
 
 const HAIR = '#dcdfe2';
@@ -221,7 +221,7 @@ export function Film({ id, shots, label, name, zoom = 1.18 }: { id: ScreenId; sh
       <div className="sticky top-0 flex h-[100svh] flex-col justify-center">
         <div ref={frame} role="img" aria-label={label} className="px-frame w-full bg-white" style={{ aspectRatio: `${s.w} / ${s.h}`, maxHeight: 'calc(100svh - 200px)', boxShadow: `0 0 0 1px ${HAIR}`, ['--pw' as string]: s.w }}>
           <div ref={cam} className="px-cam" style={{ width: s.w, height: s.h }}>
-            <div className="px" style={{ width: s.w, height: s.h, position: 'absolute', left: 0, top: 0, userSelect: 'none', pointerEvents: 'none' }} dangerouslySetInnerHTML={{ __html: s.html }} />
+            <div className="px" style={{ width: s.w, height: s.h, position: 'absolute', left: 0, top: 0, userSelect: 'none', pointerEvents: 'none' }} dangerouslySetInnerHTML={MARKUP[id]} />
             <span ref={veil} className="absolute inset-0 bg-white/[0.74]" style={{ clipPath: 'polygon(0 0, 0 0, 0 0)' }} aria-hidden />
           </div>
         </div>
@@ -282,6 +282,9 @@ export function usePresence(ref: React.RefObject<HTMLElement | null>, selector: 
   }, [ref, selector, ms]);
 }
 
+/** What the laptop of the photograph shows: the top 853.85 px of the 900 px screen. */
+const LAPTOP_SCREEN: Rect = [0, 0, 1440, 853.85];
+
 /**
  * The laptop photograph, whole. Its screen is the live "Today" screen laid exactly over the printed one
  * (the screen in the picture is straight-on: 1248 × 740 px at 656, 218 of 2560 × 1920), so Proxy's presence
@@ -294,7 +297,7 @@ export function LaptopPhoto({ alt, priority = false, className = '', style }: { 
     <div ref={ref} className={`relative ${className}`} style={{ aspectRatio: '4 / 3', ...style }}>
       <Image src="/proxy/photo-laptop-v4.jpg" alt={alt} fill priority={priority} quality={90} sizes="(min-width: 768px) 75vw, 100vw" className="object-contain" />
       <div className="absolute" style={{ left: `${(656 / 2560) * 100}%`, top: `${(218 / 1920) * 100}%`, width: `${(1248 / 2560) * 100}%` }} aria-hidden>
-        <Proto id="aujourdhui" region={[0, 0, 1440, 853.85]} label="" className="w-full bg-white" />
+        <Proto id="aujourdhui" region={LAPTOP_SCREEN} label="" className="w-full bg-white" />
       </div>
     </div>
   );
@@ -326,7 +329,11 @@ export function JournalAxis({ label, rect, children }: { label: string; rect: Re
     const strokes = kids.filter((k) => k.tagName === 'DIV' && k.style.height === '2px');
     const ends = kids.filter((k) => k.style.width === '2px' && k.style.height === '10px');
     const now = kids.find((k) => k.style.width === '2px' && k.style.height === '280px');
-    const notes = kids.filter((k) => k.tagName === 'SPAN' && k.style.borderRadius !== '50%' && px(k.style.top) < 290);
+    const labels = kids.filter((k) => k.tagName === 'SPAN' && k.style.borderRadius !== '50%' && px(k.style.top) < 290);
+    // "now" is named as soon as its line is drawn; the notes on the undo windows come with them
+    const nowLabel = labels.find((k) => (k.textContent ?? '').startsWith('MAINTENANT'));
+    const notes = labels.filter((k) => k !== nowLabel);
+    if (nowLabel) nowLabel.style.opacity = '0';
     const E = 'cubic-bezier(0.22, 1, 0.36, 1)';
     dots.forEach((d) => {
       d.style.opacity = '0';
@@ -350,10 +357,14 @@ export function JournalAxis({ label, rect, children }: { label: string; rect: Re
           now.style.transition = `transform 500ms ${E}`;
           now.style.transform = 'none';
         }
+        if (nowLabel) {
+          nowLabel.style.transition = 'opacity 400ms ease 300ms';
+          nowLabel.style.opacity = '1';
+        }
         dots.forEach((d, i) => {
           d.style.transition = `opacity 300ms ease ${200 + i * step}ms, transform 520ms ${E} ${200 + i * step}ms`;
           d.style.opacity = '1';
-          d.style.transform = d.style.outline ? 'none' : 'none';
+          d.style.transform = 'none';
         });
         const after = 200 + dots.length * step;
         strokes.forEach((d) => {

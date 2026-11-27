@@ -1,8 +1,14 @@
 'use client';
 
-import { CSSProperties, useEffect, useRef } from 'react';
+import { CSSProperties, memo, useEffect, useRef } from 'react';
 import './proto.css';
 import { SCREENS, ScreenId } from './screens';
+
+/**
+ * One markup object per screen, created once. React sets innerHTML again whenever this object changes identity,
+ * which would rebuild the screen (and undo anything animated inside it) on every render of the page.
+ */
+export const MARKUP = Object.fromEntries((Object.keys(SCREENS) as ScreenId[]).map((k) => [k, { __html: SCREENS[k].html }])) as Record<ScreenId, { __html: string }>;
 
 /** x, y, width, height in the screen's own pixels (1440 × 900 for desktop screens, 390 × 844 on the phone). */
 export type Rect = readonly [number, number, number, number];
@@ -11,7 +17,7 @@ export type Rect = readonly [number, number, number, number];
  * A screen of the coded prototype, rendered live (the product's real markup, not a capture).
  * `region` shows only a part of it, at the frame's width.
  */
-export function Proto({ id, region, label, className = '', style }: { id: ScreenId; region?: Rect; label: string; className?: string; style?: CSSProperties }) {
+export const Proto = memo(function Proto({ id, region, label, className = '', style }: { id: ScreenId; region?: Rect; label: string; className?: string; style?: CSSProperties }) {
   const s = SCREENS[id];
   const [x, y, w, h] = region ?? [0, 0, s.w, s.h];
   const ref = useRef<HTMLDivElement>(null);
@@ -19,11 +25,11 @@ export function Proto({ id, region, label, className = '', style }: { id: Screen
   return (
     <div ref={ref} role="img" aria-label={label} className={`px-frame ${className}`} style={{ aspectRatio: `${w} / ${h}`, ['--pw' as string]: w, ...style }}>
       <div className="px-cam">
-        <div className="px" style={{ width: s.w, height: s.h, transform: x || y ? `translate(${-x}px, ${-y}px)` : undefined }} dangerouslySetInnerHTML={{ __html: s.html }} />
+        <div className="px" style={{ width: s.w, height: s.h, transform: x || y ? `translate(${-x}px, ${-y}px)` : undefined }} dangerouslySetInnerHTML={MARKUP[id]} />
       </div>
     </div>
   );
-}
+});
 
 /** Browsers without CSS trigonometry or container units get the same scale from a ResizeObserver. */
 export function useScaleFallback(ref: React.RefObject<HTMLElement | null>, w: number) {

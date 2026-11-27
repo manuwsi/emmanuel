@@ -167,7 +167,7 @@ export function Model() {
 
 export type Moment = { id: string; day: string; time: string; state: 'idle' | 'work' | 'wait' | 'stop' | 'done'; doing: string };
 
-export function useActiveBeat(ids: string[]) {
+function useActiveBeat(ids: string[]) {
   const [active, setActive] = useState(ids[0]);
   const key = ids.join(',');
   useEffect(() => {
@@ -182,7 +182,9 @@ export function useActiveBeat(ids: string[]) {
   return active;
 }
 
-export function Rail({ moments, active, labels }: { moments: Moment[]; active: string; labels: Record<Moment['state'], string> }) {
+export function Rail({ moments, labels }: { moments: Moment[]; labels: Record<Moment['state'], string> }) {
+  // the rail keeps this state to itself: the page around it never re-renders while it is read
+  const active = useActiveBeat(moments.map((m) => m.id));
   const cur = moments.find((m) => m.id === active) ?? moments[0];
   const stop = cur.state === 'stop';
   return (

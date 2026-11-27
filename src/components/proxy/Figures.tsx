@@ -76,7 +76,7 @@ export function Levels() {
   return (
     <figure ref={ref} className={FT}>
       {/* four columns sharing the same rows, so every level reads on the same lines */}
-      <div className="grid grid-cols-1 gap-x-3 gap-y-10 sm:grid-cols-2 md:grid-cols-4 md:grid-rows-[auto_auto_auto_auto_auto] md:gap-y-0">
+      <div className="grid grid-cols-2 gap-x-3 gap-y-8 md:grid-cols-4 md:grid-rows-[auto_auto_auto_auto_auto] md:gap-y-0">
         {rows.map((r, i) => (
           <div key={r.name} className="md:row-span-5 md:grid md:pr-5 md:[grid-template-rows:subgrid]">
             <div>
@@ -88,8 +88,8 @@ export function Levels() {
                 <span key={j} className="h-[6px] flex-1 transition-colors duration-500" style={{ background: on && j <= i ? INK : OFF, transitionDelay: `${i * 140 + j * 70}ms` }} />
               ))}
             </div>
-            <p className="mt-5 text-black/70">{r.does}</p>
-            <p className="mt-1">{r.gets}</p>
+            <p className="mt-5 hidden text-black/70 md:block">{r.does}</p>
+            <p className="mt-3 md:mt-1">{r.gets}</p>
             <div className="mt-4">
               <Sign level={i + 1} on={on} delay={500 + i * 220} />
               <p className="text-black/60">{r.sign}</p>
@@ -122,9 +122,9 @@ export function Model() {
   const cur = cases[c];
   return (
     <figure className={FT}>
-      <div className="flex flex-wrap items-baseline gap-x-5 gap-y-2" role="tablist" aria-label={t('Quatre moments du mercredi de Léa', 'Four moments of Léa’s Wednesday')}>
+      <div className="flex flex-wrap items-baseline gap-x-5 gap-y-0 md:gap-y-2" role="tablist" aria-label={t('Quatre moments du mercredi de Léa', 'Four moments of Léa’s Wednesday')}>
         {cases.map((k, i) => (
-          <button key={k.time} type="button" role="tab" aria-selected={i === c} onClick={() => setC(i)} className="group flex items-baseline gap-2 text-left transition-colors duration-300" style={{ color: i === c ? INK : 'rgba(0,0,0,.45)' }}>
+          <button key={k.time} type="button" role="tab" aria-selected={i === c} onClick={() => setC(i)} className="group flex items-baseline gap-2 py-[6px] text-left transition-colors duration-300 md:py-0" style={{ color: i === c ? INK : 'rgba(0,0,0,.45)' }}>
             <span className="h-[7px] w-[7px] shrink-0 translate-y-[-1px] rounded-full transition-colors duration-300" style={{ background: i === c ? (k.path[2] === 4 ? WARN : INK) : 'transparent', boxShadow: i === c ? undefined : 'inset 0 0 0 1px rgba(0,0,0,.4)' }} />
             <span className="tabular-nums">{k.time}</span>
             <span className={i === c ? 'font-medium' : 'underline decoration-black/25 underline-offset-[3px]'}>{k.name}</span>
@@ -133,16 +133,16 @@ export function Model() {
       </div>
       <div className="mt-6 grid grid-cols-1 border-t border-[#dcdfe2] md:grid-cols-4">
         {cols.map((col, ci) => (
-          <div key={col.h} className={`py-4 md:pr-5 ${ci > 0 ? 'border-t border-black/10 md:border-t-0' : ''}`}>
+          <div key={col.h} className={`grid grid-cols-[120px_1fr] items-baseline py-[10px] md:block md:py-4 md:pr-5 ${ci > 0 ? 'border-t border-black/10 md:border-t-0' : ''}`}>
             <p className="text-black/60">
               <span className="tabular-nums">0{ci + 1}</span> · {col.h}
             </p>
-            <ul className="mt-3 space-y-[7px]">
+            <ul className="space-y-[7px] md:mt-3">
               {col.items.map((it, k) => {
                 const hit = cur.path[ci] === k;
                 const warn = col.warn.includes(k);
                 return (
-                  <li key={it} className="flex items-start gap-[10px] transition-colors duration-300" style={{ color: hit ? (warn ? WARN : INK) : 'rgba(0,0,0,.34)' }}>
+                  <li key={it} className={`items-start gap-[10px] transition-colors duration-300 ${hit ? 'flex' : 'hidden md:flex'}`} style={{ color: hit ? (warn ? WARN : INK) : 'rgba(0,0,0,.34)' }}>
                     <span className="mt-[7px] h-[7px] w-[7px] shrink-0 rounded-full transition-[background-color,box-shadow] duration-300" style={{ background: hit ? (warn ? WARN : INK) : 'transparent', boxShadow: hit ? undefined : 'inset 0 0 0 1px rgba(0,0,0,.28)' }} />
                     <span className={hit ? 'font-medium' : ''}>{it}</span>
                   </li>
@@ -167,10 +167,11 @@ export function Model() {
 
 export type Moment = { id: string; day: string; time: string; state: 'idle' | 'work' | 'wait' | 'stop' | 'done'; doing: string };
 
-function useActiveBeat(ids: string[]) {
+function useActiveBeat(ids: string[], on: boolean) {
   const [active, setActive] = useState(ids[0]);
   const key = ids.join(',');
   useEffect(() => {
+    if (!on) return;
     const els = key
       .split(',')
       .map((id) => document.getElementById(id))
@@ -178,14 +179,29 @@ function useActiveBeat(ids: string[]) {
     const io = new IntersectionObserver((entries) => entries.forEach((e) => e.isIntersecting && setActive(e.target.id)), { rootMargin: '-38% 0px -58% 0px' });
     els.forEach((el) => io.observe(el));
     return () => io.disconnect();
-  }, [key]);
+  }, [key, on]);
   return active;
 }
 
+function useWide() {
+  const [wide, setWide] = useState(true);
+  useEffect(() => {
+    const mq = window.matchMedia('(min-width: 768px)');
+    const set = () => setWide(mq.matches);
+    set();
+    mq.addEventListener('change', set);
+    return () => mq.removeEventListener('change', set);
+  }, []);
+  return wide;
+}
+
 export function Rail({ moments, labels }: { moments: Moment[]; labels: Record<Moment['state'], string> }) {
-  // the rail keeps this state to itself: the page around it never re-renders while it is read
-  const active = useActiveBeat(moments.map((m) => m.id));
+  // the rail keeps this state to itself: the page around it never re-renders while it is read.
+  // On a phone it is not displayed, so it watches nothing and nothing ticks.
+  const wide = useWide();
+  const active = useActiveBeat(moments.map((m) => m.id), wide);
   const cur = moments.find((m) => m.id === active) ?? moments[0];
+  if (!wide) return null;
   const stop = cur.state === 'stop';
   return (
     <div className={`sticky top-[19vh] ${FT}`}>

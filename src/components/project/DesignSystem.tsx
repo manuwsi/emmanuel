@@ -56,6 +56,7 @@ export function Presence({ k, size = 8 }: { k: string; size?: number }) {
 
 export function ProxySystem() {
   const t = useT() as T;
+  const [open, setOpen] = useState(false);
   const colours = [
     { name: t('Blanc', 'White'), hex: P.paper, n: 25, role: t('Fond des écrans', 'Screen background') },
     { name: t('Panneau', 'Panel'), hex: '#f4f5f6', n: 8, role: t('Le contexte, à droite', 'Context, on the right') },
@@ -68,8 +69,8 @@ export function ProxySystem() {
     <section className="mt-6 border" style={{ background: P.paper, color: P.ink, borderColor: P.line }}>
       <Fonts />
       {/* header strip */}
-      <div className="flex items-center justify-between px-5 md:px-8 py-4 border-b" style={{ borderColor: P.line }}>
-        <div className="flex items-center gap-3">
+      <div className="flex flex-wrap items-center justify-between gap-x-4 gap-y-2 px-5 md:px-8 py-4 border-b" style={{ borderColor: P.line }}>
+        <div className="flex items-center gap-3 whitespace-nowrap">
           <Presence k="work" size={4} />
           <span className="text-[13px] font-medium">Proxy</span>
           <span className="text-[13px]" style={{ color: P.grey }}>{t('— système', '— system')}</span>
@@ -81,9 +82,9 @@ export function ProxySystem() {
       <div className="px-5 md:px-8 pt-8 pb-3">
         <Label className="text-black/55">{t('Couleur · le nombre de points dit la place qu’elle prend', 'Colour · the number of dots says how much room it takes')}</Label>
       </div>
-      <div className="grid grid-cols-2 md:grid-cols-6 px-5 md:px-8 border-t" style={{ borderColor: P.line }}>
+      <div className="grid grid-cols-3 md:grid-cols-6 px-5 md:px-8 border-t" style={{ borderColor: P.line }}>
         {colours.map((c, i) => (
-          <div key={c.hex} className="py-6 pr-4 flex flex-col gap-5">
+          <div key={c.hex} className="py-6 pr-3 md:pr-4 flex flex-col gap-5">
             <Dose n={c.n} color={c.hex} />
             <div className="space-y-1">
               <span className="block text-[13px] font-medium" style={i === 5 ? { color: P.warn } : undefined}>{c.name}</span>
@@ -94,6 +95,11 @@ export function ProxySystem() {
         ))}
       </div>
 
+      {/* on a phone the sheet opens on its colours; type and components follow on demand */}
+      <button type="button" onClick={() => setOpen((o) => !o)} aria-expanded={open} className="block w-full border-t px-5 py-4 text-left text-[14px] md:hidden" style={{ borderColor: P.line, color: P.grey }}>
+        {open ? t('− Réduire', '− Less') : t('+ Typographie et composants', '+ Type and components')}
+      </button>
+      <div className={open ? '' : 'hidden md:block'}>
       {/* type */}
       <div className="grid grid-cols-1 md:grid-cols-12 border-t" style={{ borderColor: P.line }}>
         <div className="md:col-span-6 p-5 md:p-8" style={{ borderColor: P.line }}>
@@ -161,6 +167,7 @@ export function ProxySystem() {
           </div>
           <p className="text-[12px]" style={{ color: P.grey }}>{t('Le seul élément animé. Toujours accompagné d’une phrase.', 'The only animated element. Always comes with a sentence.')}</p>
         </div>
+      </div>
       </div>
     </section>
   );

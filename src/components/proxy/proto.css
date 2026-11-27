@@ -87,3 +87,8 @@
   .px-details > .px-keep > .px-part { display: block; }
   .px-details > .px-keep > figcaption { margin-top: 8px; }
 }
+
+/* On a phone the photographs are simply there: the dot print is a paint-heavy reveal, kept for wide screens */
+@media (max-width: 767px) {
+  .px-photo.dot-in { -webkit-mask-image: none; mask-image: none; }
+}

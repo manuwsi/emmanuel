@@ -25,14 +25,28 @@ const FRAMES: Record<string, string[]> = {
 
 export function LivePresence({ state, size = 9 }: { state: 'work' | 'wait' | 'done' | 'stop'; size?: number }) {
   const [i, setI] = useState(0);
+  const ref = useRef<HTMLDivElement>(null);
   useEffect(() => {
-    if (state !== 'work') return;
-    const id = setInterval(() => setI((x) => (x + 1) % FRAMES.work.length), 260);
-    return () => clearInterval(id);
+    const el = ref.current;
+    if (state !== 'work' || !el) return;
+    // it only works while someone can see it: nothing ticks off screen, or where it is not displayed
+    let id: ReturnType<typeof setInterval> | undefined;
+    const io = new IntersectionObserver(([e]) => {
+      if (e.isIntersecting && !id) id = setInterval(() => setI((x) => (x + 1) % FRAMES.work.length), 260);
+      else if (!e.isIntersecting && id) {
+        clearInterval(id);
+        id = undefined;
+      }
+    });
+    io.observe(el);
+    return () => {
+      io.disconnect();
+      if (id) clearInterval(id);
+    };
   }, [state]);
   const f = FRAMES[state][state === 'work' ? i : 0];
   return (
-    <div className="grid grid-cols-5 w-fit" style={{ gap: size * 0.7 }}>
+    <div ref={ref} className="grid grid-cols-5 w-fit" style={{ gap: size * 0.7 }}>
       {f.split('').map((c, k) => (
         <span
           key={k}

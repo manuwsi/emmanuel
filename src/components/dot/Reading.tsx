@@ -91,9 +91,18 @@ export function ChapterCrumb() {
     const on = () => {
       if (!raf) raf = requestAnimationFrame(tick);
     };
-    tick();
-    window.addEventListener('scroll', on, { passive: true });
+    // the chapter is only written in the breadcrumb on wide screens: on a phone nothing is measured while scrolling
+    const wide = window.matchMedia('(min-width: 768px)');
+    const attach = () => {
+      window.removeEventListener('scroll', on);
+      if (!wide.matches) return;
+      tick();
+      window.addEventListener('scroll', on, { passive: true });
+    };
+    attach();
+    wide.addEventListener('change', attach);
     return () => {
+      wide.removeEventListener('change', attach);
       window.removeEventListener('scroll', on);
       cancelAnimationFrame(raf);
     };

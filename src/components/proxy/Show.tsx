@@ -3,7 +3,8 @@
 import { CSSProperties, ReactNode, useEffect, useRef, useState } from 'react';
 import Image from 'next/image';
 import DotIn from '@/components/dot/DotIn';
-import { MARKUP, Proto, Rect, useScaleFallback } from './Proto';
+import { useT } from '@/components/i18n';
+import { Proto, Rect, useScaleFallback, useScreenMarkup } from './Proto';
 import { SCREENS, ScreenId } from './screens';
 
 const HAIR = '#dcdfe2';
@@ -62,62 +63,37 @@ export function Plate({ id, label, marks = [], className = '' }: { id: ScreenId;
 
 /**
  * A part of a screen at reading size. The frame is never wider than the part's own pixels × `max`,
- * so the interface is not blown up on large displays; on a narrow one it keeps `min` × its pixels
- * and travels sideways as the page scrolls (you read along it).
+ * so the interface is not blown up on large displays. On a phone a part too wide for the screen keeps
+ * `min` × its pixels and is moved sideways with the finger: plain native scrolling, nothing driven by script.
  */
-export function Region({ id, rect, label, k, min = 0.86, max = 1.12, className = '', children }: { id: ScreenId; rect: Rect; label: string; k?: string; min?: number; max?: number; className?: string; children?: ReactNode }) {
+export function Region({ id, rect, label, k, min = 0.86, max = 1.12, className = '', eager = false, children }: { id: ScreenId; rect: Rect; label: string; k?: string; min?: number; max?: number; className?: string; eager?: boolean; children?: ReactNode }) {
+  const t = useT();
   const wrap = useRef<HTMLDivElement>(null);
-  const strip = useRef<HTMLDivElement>(null);
+  const [over, setOver] = useState(false);
   const w = rect[2];
   useEffect(() => {
     const el = wrap.current;
-    const st = strip.current;
-    if (!el || !st) return;
-    let raf = 0;
-    let over = 0;
-    const tick = () => {
-      raf = 0;
-      if (over <= 1) return;
-      const r = el.getBoundingClientRect();
-      const vh = window.innerHeight;
-      if (r.bottom < -vh || r.top > 2 * vh) return;
-      // from the moment the part is fully in view at the bottom to the moment it reaches the upper part of the screen
-      const a = vh - r.height - vh * 0.08;
-      const b = vh * 0.18;
-      const q = Math.min(1, Math.max(0, (a - r.top) / Math.max(1, a - b)));
-      // both ends rest for a moment, so the first and the last words can be read still
-      const p = Math.min(1, Math.max(0, (q - 0.14) / 0.72));
-      st.style.transform = `translate3d(${-over * p}px,0,0)`;
-    };
-    const on = () => {
-      if (over > 1 && !raf) raf = requestAnimationFrame(tick);
-    };
-    const measure = () => {
-      over = st.offsetWidth - el.clientWidth;
-      if (over <= 1) st.style.transform = '';
-      else tick();
-    };
+    if (!el) return;
+    const measure = () => setOver(el.scrollWidth - el.clientWidth > 2);
     measure();
     const ro = new ResizeObserver(measure);
     ro.observe(el);
-    window.addEventListener('scroll', on, { passive: true });
-    return () => {
-      ro.disconnect();
-      window.removeEventListener('scroll', on);
-      cancelAnimationFrame(raf);
-    };
+    return () => ro.disconnect();
   }, []);
   return (
     <figure className={className}>
-      <div ref={wrap} className="px-part relative overflow-hidden" style={{ maxWidth: w * max, boxShadow: `0 0 0 1px ${HAIR}` }}>
-        <div ref={strip} style={{ width: `max(100%, ${w * min}px)` }}>
-          <Proto id={id} region={rect} label={label} className="w-full bg-white" />
+      <div ref={wrap} className="px-part relative overflow-x-auto overflow-y-hidden overscroll-x-contain [scrollbar-width:none] [&::-webkit-scrollbar]:hidden" style={{ maxWidth: w * max, boxShadow: `0 0 0 1px ${HAIR}` }}>
+        <div style={{ width: `max(100%, ${w * min}px)` }}>
+          <Proto id={id} region={rect} label={label} eager={eager} className="w-full bg-white" />
         </div>
       </div>
-      {(children || k) && (
+      {(children || k || over) && (
         <figcaption className="mt-2 flex max-w-[440px] gap-2 text-[14px] leading-[1.6] text-black/60 md:text-[13px]">
           {k && <Key k={k} className="mt-[3px] shrink-0" />}
-          <span>{children}</span>
+          <span>
+            {children}
+            {over && <span className="whitespace-nowrap text-black/40"> {t('Glisser →', 'Swipe →')}</span>}
+          </span>
         </figcaption>
       )}
     </figure>
@@ -149,6 +125,8 @@ export function Film({ id, shots, label, name, zoom = 1.18 }: { id: ScreenId; sh
   const frame = useRef<HTMLDivElement>(null);
   const cam = useRef<HTMLDivElement>(null);
   const veil = useRef<HTMLSpanElement>(null);
+  const px = useRef<HTMLDivElement>(null);
+  useScreenMarkup(frame, px, id);
   const [active, setActive] = useState(0);
   const n = shots.length;
 
@@ -204,12 +182,23 @@ export function Film({ id, shots, label, name, zoom = 1.18 }: { id: ScreenId; sh
     const on = () => {
       if (!raf) raf = requestAnimationFrame(tick);
     };
-    tick();
+    // the film exists on wide screens only: on a phone nothing listens to the scroll
+    const wide = window.matchMedia('(min-width: 768px)');
     const ro = new ResizeObserver(on);
-    ro.observe(f);
-    window.addEventListener('scroll', on, { passive: true });
-    window.addEventListener('resize', on);
+    const attach = () => {
+      window.removeEventListener('scroll', on);
+      window.removeEventListener('resize', on);
+      ro.disconnect();
+      if (!wide.matches) return;
+      ro.observe(f);
+      window.addEventListener('scroll', on, { passive: true });
+      window.addEventListener('resize', on);
+      tick();
+    };
+    attach();
+    wide.addEventListener('change', attach);
     return () => {
+      wide.removeEventListener('change', attach);
       ro.disconnect();
       window.removeEventListener('scroll', on);
       window.removeEventListener('resize', on);
@@ -222,7 +211,7 @@ export function Film({ id, shots, label, name, zoom = 1.18 }: { id: ScreenId; sh
       <div className="sticky top-0 flex h-[100svh] flex-col justify-center">
         <div ref={frame} role="img" aria-label={label} className="px-frame w-full bg-white" style={{ aspectRatio: `${s.w} / ${s.h}`, maxHeight: 'calc(100svh - 200px)', boxShadow: `0 0 0 1px ${HAIR}`, ['--pw' as string]: s.w }}>
           <div ref={cam} className="px-cam" style={{ width: s.w, height: s.h }}>
-            <div className="px" style={{ width: s.w, height: s.h, position: 'absolute', left: 0, top: 0, userSelect: 'none', pointerEvents: 'none' }} dangerouslySetInnerHTML={MARKUP[id]} />
+            <div ref={px} className="px" style={{ width: s.w, height: s.h, position: 'absolute', left: 0, top: 0, userSelect: 'none', pointerEvents: 'none' }} />
             <span ref={veil} className="absolute inset-0 bg-white/[0.74]" style={{ clipPath: 'polygon(0 0, 0 0, 0 0)' }} aria-hidden />
           </div>
         </div>
@@ -295,10 +284,11 @@ export function LaptopPhoto({ alt, priority = false, className = '', style }: { 
   const ref = useRef<HTMLDivElement>(null);
   usePresence(ref, '.dm.xl');
   return (
-    <div ref={ref} className={`relative ${className}`} style={{ aspectRatio: '4 / 3', ...style }}>
+    <div className={`relative ${className}`} style={{ aspectRatio: '4 / 3', ...style }}>
       <Image src="/proxy/photo-laptop-v4.jpg" alt={alt} fill priority={priority} quality={90} sizes="(min-width: 768px) 75vw, 100vw" className="object-contain" />
-      <div className="absolute" style={{ left: `${(656 / 2560) * 100}%`, top: `${(218 / 1920) * 100}%`, width: `${(1248 / 2560) * 100}%` }} aria-hidden>
-        <Proto id="aujourdhui" region={LAPTOP_SCREEN} label="" className="w-full bg-white" />
+      {/* on a phone the photograph is enough: its screen is too small there for a live one to add anything */}
+      <div ref={ref} className="absolute hidden md:block" style={{ left: `${(656 / 2560) * 100}%`, top: `${(218 / 1920) * 100}%`, width: `${(1248 / 2560) * 100}%` }} aria-hidden>
+        <Proto id="aujourdhui" region={LAPTOP_SCREEN} label="" eager className="w-full bg-white" />
       </div>
     </div>
   );
@@ -307,7 +297,7 @@ export function LaptopPhoto({ alt, priority = false, className = '', style }: { 
 /** A photograph, whole: never cropped, never enlarged beyond its pixels. */
 export function Photo({ src, alt, className = '', sizes = '(min-width: 768px) 40vw, 100vw' }: { src: string; alt: string; className?: string; sizes?: string }) {
   return (
-    <DotIn className={className}>
+    <DotIn className={`px-photo ${className}`}>
       <Image src={src} alt={alt} width={2560} height={1920} quality={90} sizes={sizes} className="block h-auto w-full" />
     </DotIn>
   );
@@ -317,7 +307,7 @@ export function Photo({ src, alt, className = '', sizes = '(min-width: 768px) 40
  * The day's axis of the log. When it comes on screen the day is written once, in order:
  * each action lands at its hour, then the undo windows run out to the right.
  */
-export function JournalAxis({ label, rect, children }: { label: string; rect: Rect; children?: ReactNode }) {
+export function JournalAxis({ label, rect, k, children }: { label: string; rect: Rect; k?: string; children?: ReactNode }) {
   const ref = useRef<HTMLDivElement>(null);
   useEffect(() => {
     const root = ref.current;
@@ -384,7 +374,7 @@ export function JournalAxis({ label, rect, children }: { label: string; rect: Re
   }, []);
   return (
     <div ref={ref} className="md:col-span-9">
-      <Region id="journal" rect={rect} label={label} k="A" min={0.7} max={1.02} className="px-keep">
+      <Region id="journal" rect={rect} label={label} k={k} min={0.7} max={1.02} eager className="px-keep">
         {children}
       </Region>
     </div>
@@ -411,7 +401,9 @@ export function Phones({ items }: { items: { id: ScreenId; label: string; name: 
  * The lock screen of the photograph, rebuilt at reading size: the notification is where everything starts.
  * It arrives once, when the figure comes on screen, and pushes the earlier one down.
  */
-export function LockScreen({ label, date, now, first, second }: { label: string; date: string; now: string; first: string; second: string }) {
+export function LockScreen({ label, date, now, first, second, compact = false }: { label: string; date: string; now: string; first: string; second: string; compact?: boolean }) {
+  const H = compact ? 232 : 452;
+  const y0 = compact ? 16 : 212;
   const ref = useRef<HTMLDivElement>(null);
   const [on, setOn] = useState(false);
   useScaleFallback(ref, 390);
@@ -433,12 +425,12 @@ export function LockScreen({ label, date, now, first, second }: { label: string;
   }, []);
   const E = 'cubic-bezier(0.22, 1, 0.36, 1)';
   return (
-    <div ref={ref} role="img" aria-label={label} className="px-frame w-full" style={{ aspectRatio: '390 / 452', ['--pw' as string]: 390, boxShadow: `0 0 0 1px ${HAIR}` }}>
+    <div ref={ref} role="img" aria-label={label} className="px-frame w-full" style={{ aspectRatio: `390 / ${H}`, ['--pw' as string]: 390, boxShadow: `0 0 0 1px ${HAIR}` }}>
       <div className="px-cam">
-        <div className="px" style={{ width: 390, height: 452, background: '#e3e6e9', backgroundImage: 'radial-gradient(circle, #d3d7db 4.5px, transparent 5px)', backgroundSize: '41px 44px', backgroundPosition: '4px 14px' }}>
-          <div style={{ position: 'absolute', left: 0, right: 0, top: 38, textAlign: 'center', fontSize: 17, fontWeight: 500 }}>{date}</div>
-          <div style={{ position: 'absolute', left: 0, right: 0, top: 58, textAlign: 'center', fontSize: 88, fontWeight: 600, letterSpacing: '-0.035em', lineHeight: 1.1 }}>10:39</div>
-          <div style={{ position: 'absolute', left: 6, right: 6, top: 212, height: 98, borderRadius: 24, background: '#fbfbfc', padding: '15px 16px', display: 'flex', gap: 12, alignItems: 'center', opacity: on ? 1 : 0, transform: on ? 'none' : 'translateY(-16px) scale(0.97)', transition: `opacity 420ms ease 250ms, transform 700ms ${E} 250ms` }}>
+        <div className="px" style={{ width: 390, height: H, background: '#e3e6e9', backgroundImage: 'radial-gradient(circle, #d3d7db 4.5px, transparent 5px)', backgroundSize: '41px 44px', backgroundPosition: '4px 14px' }}>
+          {!compact && <div style={{ position: 'absolute', left: 0, right: 0, top: 38, textAlign: 'center', fontSize: 17, fontWeight: 500 }}>{date}</div>}
+          {!compact && <div style={{ position: 'absolute', left: 0, right: 0, top: 58, textAlign: 'center', fontSize: 88, fontWeight: 600, letterSpacing: '-0.035em', lineHeight: 1.1 }}>10:39</div>}
+          <div style={{ position: 'absolute', left: 6, right: 6, top: y0, height: 98, borderRadius: 24, background: '#fbfbfc', padding: '15px 16px', display: 'flex', gap: 12, alignItems: 'center', opacity: on ? 1 : 0, transform: on ? 'none' : 'translateY(-16px) scale(0.97)', transition: `opacity 420ms ease 250ms, transform 700ms ${E} 250ms` }}>
             <span style={{ width: 40, height: 40, borderRadius: 10, background: '#121212', flex: 'none', display: 'grid', gridTemplateColumns: 'repeat(3, 5px)', gridAutoRows: '5px', gap: 4, placeContent: 'center' }}>
               {[1, 0, 1, 0, 1, 0, 1, 0, 1].map((d, i) => (
                 <i key={i} style={{ width: 5, height: 5, borderRadius: '50%', background: d ? '#fff' : 'transparent', display: 'block' }} />
@@ -452,7 +444,7 @@ export function LockScreen({ label, date, now, first, second }: { label: string;
               <span style={{ display: 'block', fontSize: 15, lineHeight: 1.36, color: '#34383c' }}>{first}</span>
             </span>
           </div>
-          <div style={{ position: 'absolute', left: 6, right: 6, top: 322, height: 74, borderRadius: 24, background: 'rgba(255,255,255,.6)', padding: '14px 18px', transform: on ? 'none' : 'translateY(-110px)', transition: `transform 700ms ${E} 250ms` }}>
+          <div style={{ position: 'absolute', left: 6, right: 6, top: y0 + 110, height: 74, borderRadius: 24, background: 'rgba(255,255,255,.6)', padding: '14px 18px', transform: on ? 'none' : 'translateY(-110px)', transition: `transform 700ms ${E} 250ms` }}>
             <span style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'baseline' }}>
               <b style={{ fontSize: 15, fontWeight: 600 }}>Proxy</b>
               <span style={{ fontSize: 13, color: '#8a9096' }}>09:42</span>

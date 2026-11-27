@@ -211,3 +211,15 @@ html.lenis, html.lenis body { height: auto; }
 /* launch of the site: white from the first paint, the matrix takes over (safety: it leaves on its own) */
 html[data-home-intro='1'] #launch { display: block; animation: launchout 0.3s ease 4.5s forwards; }
 @keyframes launchout { to { opacity: 0; visibility: hidden; } }
+
+/* ── Editorial cases: the product's own voices ─────────────────────────────── */
+@font-face { font-family: 'Newsreader'; src: url('/proxy/prototype/fonts/newsreader-latin-300-normal.woff2') format('woff2'); font-weight: 300; font-display: swap; }
+@font-face { font-family: 'Newsreader'; src: url('/proxy/prototype/fonts/newsreader-latin-400-normal.woff2') format('woff2'); font-weight: 400; font-display: swap; }
+@font-face { font-family: 'Geist Mono'; src: url('/proxy/prototype/fonts/geist-mono-latin-400-normal.woff2') format('woff2'); font-weight: 400; font-display: swap; }
+.f-serif { font-family: 'Newsreader', Georgia, serif; font-weight: 300; letter-spacing: -0.018em; }
+.f-mono { font-family: 'Geist Mono', ui-monospace, monospace; letter-spacing: 0.02em; }
+/* words rise out of their own line, one after the other */
+.ln-w { display: inline-block; overflow: hidden; vertical-align: bottom; padding-bottom: 0.08em; margin-bottom: -0.08em; }
+.ln-w > span { display: inline-block; transform: translateY(105%); transition: transform 1s var(--ease-arrive); }
+.ln[data-in] .ln-w > span { transform: none; }
+@media (prefers-reduced-motion: reduce) { .ln-w > span { transform: none; transition: none; } }

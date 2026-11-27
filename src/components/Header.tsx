@@ -25,7 +25,7 @@ export default function Header({ active, crumb }: { active?: 'work' | 'about'; c
         <Link href="/" className="hover:underline underline-offset-2">
           <DotText text="Emmanuel Ijjou" play="intro" />
         </Link>{' '}
-        → <DotText text={here} play="intro" delay={120} />
+        → <DotText text={here} play="mount" delay={120} />
         {crumb && <ReadProgress />}
       </div>
 

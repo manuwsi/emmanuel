@@ -3,6 +3,7 @@
 import { ReactNode, useEffect, useRef } from 'react';
 import { motion } from 'framer-motion';
 import Image from 'next/image';
+import DotText from '../dot/DotText';
 import { usePathname } from 'next/navigation';
 import NextProject from '../dot/NextProject';
 import Header from '../Header';
@@ -229,7 +230,7 @@ export function Chapter({ title, n, lede, children }: { title: string; n?: numbe
         viewport={{ once: true }}
         className="pt-24 pb-6 md:pt-36 md:pb-10"
       >
-        <h3 className="text-[13px] text-black/45 pb-3">{label}</h3>
+        <h3 className="text-[13px] text-black/45 pb-3"><DotText text={label} play="view" /></h3>
         <p className="max-w-[900px] text-[26px] md:text-[44px] leading-[1.1]" style={DISPLAY}>
           {lede}
         </p>
@@ -252,7 +253,7 @@ export function Chapter({ title, n, lede, children }: { title: string; n?: numbe
       className="pt-20 pb-6 md:pt-28 md:pb-10 grid grid-cols-1 md:grid-cols-12 gap-6"
     >
       <h3 className="md:col-span-4 text-[13px] text-black/45">
-        {label}
+        <DotText text={label} play="view" />
       </h3>
       {children && (
         <div className="md:col-span-8 text-[15px] md:text-[17px] leading-[1.5] max-w-2xl space-y-4">

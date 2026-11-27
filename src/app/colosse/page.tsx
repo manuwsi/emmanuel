@@ -4,6 +4,7 @@ import { ReactNode } from 'react';
 import { motion } from 'framer-motion';
 import Header from '@/components/Header';
 import NextProject from '@/components/dot/NextProject';
+import DotText from '@/components/dot/DotText';
 import { Media, Summary } from '@/components/project/ProjectPage';
 import { useT } from '@/components/i18n';
 import Cutter from '@/components/colosse/Cutter';
@@ -40,9 +41,9 @@ function Chap({ n, title, depth, lede, children }: { n: number; title: string; d
       viewport={{ once: true, margin: '-80px' }}
       className="pt-28 pb-8 md:pt-40 md:pb-12"
     >
-      <div className="flex items-baseline justify-between border-t border-black/15 pt-3">
+      <div className="grid grid-cols-[1fr_auto] items-baseline gap-4 border-t border-black/15 pt-3">
         <h3 className="text-[13px] text-black/45">
-          {String(n).padStart(2, '0')} → {title}
+          <DotText text={`${String(n).padStart(2, '0')} → ${title}`} play="view" />
         </h3>
         <span className="text-[13px] tabular-nums">{depth}</span>
       </div>
@@ -263,7 +264,7 @@ export default function Colosse() {
 
         {/* 04 — 02:09 */}
         <section className="pt-32 md:pt-48">
-          <div className="flex items-baseline justify-between border-t border-black/15 pt-3">
+          <div className="grid grid-cols-[1fr_auto] items-baseline gap-4 border-t border-black/15 pt-3">
             <h3 className="text-[13px] text-black/45">04 → {t('Le moment critique', 'The critical moment')}</h3>
             <span className="text-[13px] tabular-nums">−14 m</span>
           </div>

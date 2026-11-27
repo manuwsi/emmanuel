@@ -1,8 +1,10 @@
 'use client';
 
 import { ReactNode, useEffect, useState } from 'react';
-import { ProjectPage, Media } from '@/components/project/ProjectPage';
+import { Media } from '@/components/project/ProjectPage';
 import { useT } from '@/components/i18n';
+import { CaseShell, Section, Body, Recul, Facts, Plates, Plate, TEXT, DISPLAY, DISPLAY_STYLE, PAD, GRID } from '@/components/case2/Case';
+import { WeekArt, TrustLine } from '@/components/proxy/Art';
 import { ProxySystem, Presence } from '@/components/project/DesignSystem';
 import { LiveRequest, DecisionModel } from '@/components/proxy/Live';
 
@@ -12,7 +14,6 @@ type State = 'idle' | 'work' | 'wait' | 'stop' | 'done';
 const W = { width: 2880, height: 1800 };
 /** The case study speaks in the site's own type; Proxy's typefaces stay inside the product. */
 const GM = { fontVariantNumeric: 'tabular-nums' } as const;
-const NR = { fontFamily: 'var(--font-general-sans), Inter, sans-serif', fontWeight: 500, letterSpacing: '-0.03em' } as const;
 const WARN = '#c9461f';
 const INK = '#121212';
 
@@ -44,13 +45,13 @@ function Beat({ m, title, children, showDay = false }: { m: Moment; title: strin
         className="hidden md:block absolute left-[-6px] top-[6px] w-[11px] h-[11px] rounded-full"
         style={{ background: stop ? WARN : INK, boxShadow: '0 0 0 4px #fff' }}
       />
-      {showDay && <div className="text-[13px] mb-5 md:hidden" style={GM}>{m.day}</div>}
+      {showDay && <div className={`${TEXT} mb-5 md:hidden`} style={GM}>{m.day}</div>}
       <div className="flex items-center gap-4 flex-wrap border-t border-black/15 md:border-0 pt-4 md:pt-0">
-        <span className="text-[13px] tabular-nums" style={{ ...GM, color: stop ? WARN : INK }}>{m.time}</span>
-        <span className="text-[13px] text-black/55">{m.doing}</span>
+        <span className={`${TEXT} tabular-nums`} style={{ ...GM, color: stop ? WARN : INK }}>{m.time}</span>
+        <span className={`${TEXT} text-black/45`}>{m.doing}</span>
         <span className="md:hidden ml-auto"><Presence k={m.state} size={5} /></span>
       </div>
-      <h3 className="mt-5 md:mt-6 max-w-[900px] text-[28px] md:text-[44px] leading-[1.1]" style={NR}>
+      <h3 className={`mt-5 md:mt-6 max-w-[22ch] ${DISPLAY}`} style={DISPLAY_STYLE}>
         {title}
       </h3>
       <div className="mt-8 md:mt-12 space-y-10 md:space-y-12">{children}</div>
@@ -59,10 +60,10 @@ function Beat({ m, title, children, showDay = false }: { m: Moment; title: strin
 }
 
 function Text({ children }: { children: ReactNode }) {
-  return <div className="max-w-[640px] text-[16px] md:text-[17px] leading-[1.6] space-y-5">{children}</div>;
+  return <div className={`max-w-[640px] ${TEXT} space-y-4`}>{children}</div>;
 }
 function Note({ children }: { children: ReactNode }) {
-  return <p className="text-[13px] text-black/60 leading-relaxed max-w-[640px] -mt-6 md:-mt-8">{children}</p>;
+  return <p className={`${TEXT} text-black/45 max-w-[640px] -mt-6 md:-mt-8`}>{children}</p>;
 }
 /**
  * Desktop screens break out of the story column to the full page width on desktop (the pinned
@@ -95,7 +96,7 @@ function Zoom({ src, w, h, alt, children }: { src: string; w: number; h: number;
       <div className="border border-black/10 -mx-2 md:mx-0">
         <Media crisp src={src} alt={alt} width={w} height={h} />
       </div>
-      <figcaption className="mt-3 text-[13px] text-black/60 leading-relaxed max-w-[640px]">{children}</figcaption>
+      <figcaption className={`mt-2 ${TEXT} text-black/45 max-w-[640px]`}>{children}</figcaption>
     </figure>
   );
 }
@@ -107,7 +108,7 @@ function ZoomPair({ a, b }: { a: { src: string; w: number; h: number; alt: strin
           <div className="border border-black/10 -mx-2 md:mx-0">
             <Media crisp src={z.src} alt={z.alt} width={z.w} height={z.h} />
           </div>
-          <figcaption className="mt-3 text-[13px] text-black/60 leading-relaxed">{z.cap}</figcaption>
+          <figcaption className={`mt-2 ${TEXT} text-black/45`}>{z.cap}</figcaption>
         </figure>
       ))}
     </div>
@@ -137,63 +138,19 @@ function Grounding({ t }: { t: T }) {
     },
   ];
   return (
-    <figure className="max-w-[920px]">
-      <div className="hidden md:grid grid-cols-[180px_1fr_1fr] gap-6 pb-3 border-b border-black/15 text-[12px] text-black/55">
+    <figure className="w-full">
+      <div className={`hidden md:grid grid-cols-[180px_1fr_1fr] gap-6 pb-3 border-b border-black/15 ${TEXT} text-black/45`}>
         <span>{t('Source', 'Source')}</span>
         <span>{t('Ce qu’elle montre', 'What it shows')}</span>
         <span>{t('Ce que j’en ai fait', 'What I did with it')}</span>
       </div>
       {rows.map((r) => (
-        <div key={r.src} className="grid grid-cols-1 md:grid-cols-[180px_1fr_1fr] gap-2 md:gap-6 py-4 border-b border-black/15 text-[14px] leading-relaxed">
-          <a href={r.href} target="_blank" rel="noreferrer" className="text-[13px] underline underline-offset-2">{r.src}</a>
+        <div key={r.src} className={`grid grid-cols-1 md:grid-cols-[180px_1fr_1fr] gap-2 md:gap-6 py-4 border-b border-black/15 ${TEXT}`}>
+          <a href={r.href} target="_blank" rel="noreferrer" className="underline underline-offset-2">{r.src}</a>
           <span className="text-black/60">{r.finding}</span>
           <span>{r.rule}</span>
         </div>
       ))}
-    </figure>
-  );
-}
-
-/** One line, two ends, five domains placed where Léa set them. */
-function Spectrum({ t }: { t: T }) {
-  const doms = [
-    { name: t('Virements', 'Transfers'), x: 4 },
-    { name: t('Courriels à un nouveau contact', 'Emails to a new contact'), x: 22 },
-    { name: t('Achats au-dessus de 60 €', 'Purchases over €60'), x: 40 },
-    { name: t('Agenda', 'Calendar'), x: 68 },
-    { name: t('Classer des fichiers', 'Filing documents'), x: 94 },
-  ];
-  return (
-    <figure className="max-w-[900px] pt-2">
-      <div className="flex justify-between text-[13px]">
-        <span>{t('Proxy demande tout', 'Proxy asks for everything')}</span>
-        <span>{t('Proxy agit en silence', 'Proxy acts silently')}</span>
-      </div>
-      <div className="relative mt-4 h-[150px] md:h-[110px]">
-        <div className="absolute left-0 right-0 top-[10px] h-px bg-black/25" />
-        <div className="absolute left-0 top-[6px] w-px h-[9px] bg-black/40" />
-        <div className="absolute right-0 top-[6px] w-px h-[9px] bg-black/40" />
-        {doms.map((d, i) => (
-          <div key={d.name} className="absolute top-0" style={{ left: `${d.x}%`, transform: 'translateX(-50%)' }}>
-            <span className="block mx-auto w-[21px] h-[21px] rounded-full border-[5px] border-white" style={{ background: INK }} />
-            <span
-              className="absolute text-[12px] md:text-[13px] text-black/60 leading-snug w-[92px] md:w-[150px]"
-              style={{
-                top: i % 2 ? 72 : 32,
-                left: i === 0 ? -6 : i === doms.length - 1 ? 'auto' : '50%',
-                right: i === doms.length - 1 ? -6 : 'auto',
-                transform: i === 0 || i === doms.length - 1 ? 'none' : 'translateX(-50%)',
-                textAlign: i === 0 ? 'left' : i === doms.length - 1 ? 'right' : 'center',
-              }}
-            >
-              {d.name}
-            </span>
-          </div>
-        ))}
-      </div>
-      <figcaption className="mt-2 text-[13px] text-black/50 max-w-[640px]">
-        {t('Les réglages de Léa après trois semaines. Chaque point se déplace indépendamment des autres.', 'Léa’s settings after three weeks. Each dot moves independently of the others.')}
-      </figcaption>
     </figure>
   );
 }
@@ -203,8 +160,6 @@ export default function Page() {
 
   const wed = t('Mer. 26 nov.', 'Wed 26 Nov');
   const moments: Moment[] = [
-    { id: 'avant', day: t('Avant', 'Before'), time: t('Avant', 'Before'), state: 'idle', doing: t('Ce qui existe déjà', 'What already exists') },
-    { id: 'modele', day: t('Avant', 'Before'), time: t('Modèle', 'Model'), state: 'idle', doing: t('Comment Proxy décide', 'How Proxy decides') },
     { id: 'j1', day: t('Lun. 3 nov.', 'Mon 3 Nov'), time: '09:00', state: 'idle', doing: t('Le premier jour', 'Day one') },
     { id: 'm0830', day: wed, time: '08:30', state: 'work', doing: t('Proxy travaille déjà', 'Proxy is already at work') },
     { id: 'm0942', day: wed, time: '09:42', state: 'work', doing: t('14 factures classées', '14 invoices filed') },
@@ -214,8 +169,6 @@ export default function Page() {
     { id: 'm1117', day: wed, time: '11:17', state: 'stop', doing: t('Une pause', 'A pause') },
     { id: 'm1431', day: wed, time: '14:31', state: 'wait', doing: t('Une erreur', 'A mistake') },
     { id: 'v1800', day: t('Ven. 28 nov.', 'Fri 28 Nov'), time: '18:00', state: 'done', doing: t('Le bilan', 'The review') },
-    { id: 'sys', day: t('Système', 'System'), time: '—', state: 'idle', doing: t('Le design system', 'The design system') },
-    { id: 'apres', day: t('Après', 'After'), time: t('Après', 'After'), state: 'idle', doing: t('MVP et tests', 'MVP and testing') },
   ];
   const active = useActive(moments.map((m) => m.id));
   const [wideInView, setWideInView] = useState(false);
@@ -242,111 +195,144 @@ export default function Page() {
   };
 
   return (
-    <ProjectPage
-      title="Proxy"
-      subtitle={t('Agent IA personnel, pensé autour de la supervision humaine', 'A personal AI agent, designed around human oversight')}
-      lede={t('Laisser un agent IA agir à sa place, et garder la main sur ce qu’il fait.', 'Let an AI agent act on your behalf, and stay in control of what it does.')}
-      meta={{
-        year: '2026',
-        context: t('Projet personnel, concept', 'Personal project, concept'),
-        role: t('Recherche, UX/UI, design system, prototype codé', 'Research, UX/UI, design system, coded prototype'),
-        tools: t('Prototype codé en HTML/CSS, avec Claude', 'Prototype coded in HTML/CSS, with Claude'),
-      }}
-      hero={
-        <div className="space-y-8 md:space-y-10">
-          <div className="-mx-2 md:mx-0">
-            <Media crisp src="/proxy/photo-laptop-v3.jpg" alt={t('Proxy sur un ordinateur portable, l’écran Aujourd’hui', 'Proxy on a laptop, the Today screen')} width={2560} height={1920} priority />
+    <CaseShell crumb="Proxy" path="/proxy">
+      {/* OPENING — the idea before the screens: a week of actions, one dot each */}
+      <section className={`${PAD} pt-24 md:pt-28`}>
+        <div className={GRID}>
+          <div className="md:col-span-5">
+            <h1 data-intro-target className={DISPLAY} style={DISPLAY_STYLE}>Proxy</h1>
+            <p className={`${TEXT} mt-2 text-black/45`}>{t('Agent IA personnel, pensé autour de la supervision humaine', 'A personal AI agent, designed around human oversight')}</p>
           </div>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-8 border-t border-black/15 pt-5">
-            {[
-              { k: t('Le problème', 'The problem'), v: t('Les agents IA savent agir à notre place, mais rien ne permet de régler jusqu’où, ni de vérifier après coup ce qu’ils ont fait.', 'AI agents can act on our behalf, but nothing lets you set how far they go, or check afterwards what they did.') },
-              { k: t('Ce que j’ai conçu', 'What I designed'), v: t('Un agent dont l’autonomie se règle domaine par domaine, avec un journal, une pause de sécurité et un bilan. 10 écrans, un prototype codé.', 'An agent whose autonomy is set domain by domain, with a log, a safety pause and a weekly review. 10 screens, a coded prototype.') },
-              { k: t('Le parti pris', 'The stance'), v: t('La confiance ne s’accorde pas d’office : elle se règle par domaine et se gagne à l’usage, toujours à l’initiative de l’utilisateur.', 'Trust is never granted up front: it is set per domain and earned through use, always on the user’s initiative.') },
-            ].map((x) => (
-              <div key={x.k}>
-                <span className="block text-[13px] text-black/55">{x.k}</span>
-                <p className="mt-2 text-[15px] leading-[1.5]">{x.v}</p>
-              </div>
-            ))}
-          </div>
+          <p className={`${DISPLAY} mt-10 md:col-span-7 md:mt-0`} style={DISPLAY_STYLE}>
+            {t('Laisser un agent IA agir à sa place, et garder la main sur ce qu’il fait.', 'Let an AI agent act on your behalf, and stay in control of what it does.')}
+          </p>
         </div>
-      }
-      intro={t(
-        <>
-          <p>Proxy est un agent personnel imaginé pour Léa, une designer indépendante qui jongle entre clients, factures et déplacements. Le case suit trois semaines de sa relation avec lui, du premier réglage au premier bilan.</p>
-          
-        </>,
-        <>
-          <p>Proxy is a personal agent imagined for Léa, a freelance designer juggling clients, invoices and travel. The case follows three weeks of her relationship with it, from the first settings to the first weekly review.</p>
-          
-        </>
-      )}
-    >
-      <p className="text-[13px] text-black/60">
-        <a href="/proxy/prototype/index.html" className="underline underline-offset-4 hover:text-black">
-          {t('Ouvrir le prototype cliquable', 'Open the clickable prototype')}
-        </a>{' '}
-        · {t('10 écrans, sur ordinateur', '10 screens, on a computer')}
-      </p>
+        <div className="mt-14 md:mt-16">
+          <WeekArt />
+        </div>
+      </section>
 
-      <div className="pt-10 md:pt-16">
-        <Media video src="/motion/proxy-fragments.mp4" width={1920} height={1080} alt={t('Animation : les fragments d’une journée de Proxy se rassemblent et deviennent le journal', 'Animation: the fragments of a day with Proxy gather and become the log')} />
-      </div>
+      {/* THE STEP BACK */}
+      <Section
+        n={1}
+        label={t('Vue d’ensemble', 'The big picture')}
+        lede={t('Les agents IA savent déjà agir à notre place. La vraie question, c’est jusqu’où on les laisse faire.', 'AI agents can already act on our behalf. The real question is how far we let them go.')}
+      >
+        <Recul
+          items={[
+            { k: t('Le contexte', 'The context'), v: t('Les agents sortent du chat et agissent sur le web. Les garde-fous actuels se jouent au moment de l’action : une permission ici, une autorisation site par site là.', 'Agents are leaving the chat and acting on the web. Today’s safeguards happen at the moment of action: a permission here, a site-by-site authorisation there.') },
+            { k: t('Le problème', 'The problem'), v: t('L’avant (que déléguer, à quelles conditions) et l’après (qu’a-t-il fait, puis-je revenir en arrière) restent peu travaillés. Or le bon réglage dépend de la tâche.', 'The before (what to delegate, on what terms) and the after (what did it do, can I undo it) get little attention. Yet the right setting depends on the task.') },
+            { k: t('Le parti pris', 'The stance'), v: t('La confiance ne s’accorde pas d’office : elle se règle par domaine et se gagne à l’usage, toujours à l’initiative de l’utilisateur.', 'Trust is never granted up front: it is set per domain and earned through use, always on the user’s initiative.') },
+            { k: t('Ce que j’ai conçu', 'What I designed'), v: t('Un agent dont l’autonomie se règle domaine par domaine, avec un journal, une pause de sécurité et un bilan. 10 écrans, un prototype codé.', 'An agent whose autonomy is set domain by domain, with a log, a safety pause and a weekly review. 10 screens, a coded prototype.') },
+          ]}
+        />
+        <div className="mt-16 md:mt-24">
+          <Facts
+            items={[
+              [t('Année', 'Year'), '2026'],
+              [t('Contexte', 'Context'), t('Projet personnel, concept', 'Personal project, concept')],
+              [t('Rôle', 'Role'), t('Recherche, UX/UI, design system, prototype codé', 'Research, UX/UI, design system, coded prototype')],
+              [t('Outils', 'Tools'), t('Prototype codé en HTML/CSS, avec Claude', 'Prototype coded in HTML/CSS, with Claude')],
+            ]}
+          />
+        </div>
+      </Section>
 
-      <div className="grid grid-cols-1 md:grid-cols-12 gap-0 md:gap-8 pt-10 md:pt-16">
+      {/* THE IDEA IN ONE PICTURE */}
+      <Section
+        n={2}
+        label={t('L’idée', 'The idea')}
+        lede={t('Un seul curseur ne suffit pas. Chaque domaine a le sien, et il bouge avec le temps.', 'One slider is not enough. Each domain has its own, and it moves over time.')}
+      >
+        <Body>
+          <p>{t('Léa veut ses factures classées sans qu’on lui demande, mais relire chaque courriel à un nouveau client. Au premier jour, tout est réglé sur « Proposer ». Trois semaines plus tard, chaque domaine a trouvé sa place.', 'Léa wants her invoices filed without being asked, but to read every email to a new client. On day one, everything is set to “Propose”. Three weeks later, each domain has found its place.')}</p>
+        </Body>
+        <div className={`${PAD} mt-16 md:mt-24`}>
+          <TrustLine />
+        </div>
+      </Section>
+
+      {/* THE MODEL */}
+      <Section
+        n={3}
+        label={t('Le modèle', 'The model')}
+        lede={t('Ce qui se passe entre un déclencheur et une action.', 'What happens between a trigger and an action.')}
+      >
+        <Body>
+          <p>{t('Avant les écrans, j’ai posé ce modèle, et appuyé ses règles sur la recherche publiée. Chaque écran du case en est un état.', 'Before the screens, I laid out this model, and grounded its rules in published research. Every screen in the case is one of its states.')}</p>
+        </Body>
+        <div className={`${PAD} mt-12 md:mt-16 space-y-16`}>
+          <DecisionModel />
+          <Grounding t={t} />
+        </div>
+      </Section>
+
+      {/* IN MOTION, IN HAND */}
+      <Section
+        n={4}
+        label={t('Le produit', 'The product')}
+        lede={t('Une interface calme, presque administrative : elle manipule de l’argent et des messages.', 'A calm, almost administrative interface: it handles money and messages.')}
+      >
+        <Plates>
+          <Plate video src="/motion/proxy-fragments.mp4" w={1920} h={1080} alt={t('Animation : les fragments d’une journée de Proxy se rassemblent et deviennent le journal', 'Animation: the fragments of a day with Proxy gather and become the log')} />
+        </Plates>
+        <Plates className="mt-3">
+          <Plate crisp aspect="16 / 9" position="50% 40%" src="/proxy/photo-laptop-v3.jpg" w={2560} h={1920} alt={t('Proxy sur un ordinateur portable, l’écran Aujourd’hui', 'Proxy on a laptop, the Today screen')} />
+        </Plates>
+        <Plates cols={3} className="mt-3">
+          <Plate crisp src="/proxy/photo-notif-v3.jpg" w={2560} h={1920} alt={t('La notification de Proxy sur l’écran verrouillé', 'Proxy’s notification on the lock screen')} />
+          <Plate crisp src="/proxy/photo-validation-v3.jpg" w={2560} h={1920} alt={t('La demande de validation ouverte sur le téléphone', 'The approval request opened on the phone')} />
+          <Plate crisp src="/proxy/photo-pause-v3.jpg" w={2560} h={1920} alt={t('Proxy en pause sur le téléphone, après un courriel suspect', 'Proxy paused on the phone, after a suspicious email')} />
+        </Plates>
+        <Body className="mt-10">
+          <p>
+            <a href="/proxy/prototype/index.html" className="underline underline-offset-4">
+              {t('Ouvrir le prototype cliquable', 'Open the clickable prototype')}
+            </a>{' '}
+            <span className="text-black/45">· {t('10 écrans, sur ordinateur', '10 screens, on a computer')}</span>
+          </p>
+        </Body>
+      </Section>
+
+      {/* THE DETAIL — one Wednesday, hour by hour */}
+      <Section
+        n={5}
+        label={t('Le détail', 'The detail')}
+        lede={t('Une journée de Léa avec Proxy, heure par heure.', 'One day of Léa with Proxy, hour by hour.')}
+      >
+        <div className={PAD}>
+          <div className="grid grid-cols-1 md:grid-cols-12 gap-0 md:gap-8">
         {/* PINNED PRESENCE (desktop) */}
-        <aside className="hidden md:block md:col-span-3">
-          <div className={`sticky top-32 space-y-6 transition-opacity duration-500 ${wideInView ? 'opacity-0 pointer-events-none' : 'opacity-100'}`}>
-            <Presence k={cur.state} size={18} />
-            <div>
-              <div className="text-[13px] text-black/55 h-[18px]" style={GM}>{cur.day !== cur.time ? cur.day : ''}</div>
-              <div className="mt-2 text-[40px] leading-none tabular-nums font-medium tracking-[-0.03em]" style={{ ...GM, color: cur.state === 'stop' ? WARN : INK }}>
-                {cur.time}
+          <aside className="hidden md:block md:col-span-3">
+            <div className={`sticky top-32 space-y-6 transition-opacity duration-500 ${wideInView ? 'opacity-0 pointer-events-none' : 'opacity-100'}`}>
+              <Presence k={cur.state} size={18} />
+              <div>
+                <div className="text-[13px] text-black/55 h-[18px]" style={GM}>{cur.day !== cur.time ? cur.day : ''}</div>
+                <div className="mt-2 text-[40px] leading-none tabular-nums font-medium tracking-[-0.03em]" style={{ ...GM, color: cur.state === 'stop' ? WARN : INK }}>
+                  {cur.time}
+                </div>
+                <div className="mt-3 text-[13px]" style={{ color: cur.state === 'stop' ? WARN : 'rgba(0,0,0,.5)' }}>
+                  Proxy · {stateLabel[cur.state]}
+                </div>
               </div>
-              <div className="mt-3 text-[13px]" style={{ color: cur.state === 'stop' ? WARN : 'rgba(0,0,0,.5)' }}>
-                Proxy · {stateLabel[cur.state]}
-              </div>
+              <ol className="pt-4 border-t border-black/15 space-y-[5px]">
+                {moments.map((m, i) => (
+                  <li key={m.id}>
+                    {(i === 0 || moments[i - 1].day !== m.day) && m.day !== m.time && (
+                      <span className="block text-[11px] text-black/35 pt-3 pb-1" style={GM}>{m.day}</span>
+                    )}
+                    <a href={`#${m.id}`} className="flex gap-3 text-[12px] transition-colors" style={{ color: m.id === active ? INK : 'rgba(0,0,0,.45)' }}>
+                      <span className="w-[48px] shrink-0 tabular-nums" style={GM}>{m.time}</span>
+                      <span className="truncate">{m.doing}</span>
+                    </a>
+                  </li>
+                ))}
+              </ol>
             </div>
-            <ol className="pt-4 border-t border-black/15 space-y-[5px]">
-              {moments.map((m, i) => (
-                <li key={m.id}>
-                  {(i === 0 || moments[i - 1].day !== m.day) && m.day !== m.time && (
-                    <span className="block text-[11px] text-black/35 pt-3 pb-1" style={GM}>{m.day}</span>
-                  )}
-                  <a href={`#${m.id}`} className="flex gap-3 text-[12px] transition-colors" style={{ color: m.id === active ? INK : 'rgba(0,0,0,.45)' }}>
-                    <span className="w-[48px] shrink-0 tabular-nums" style={GM}>{m.time}</span>
-                    <span className="truncate">{m.doing}</span>
-                  </a>
-                </li>
-              ))}
-            </ol>
-          </div>
-        </aside>
-
-        {/* THE STORY */}
-        <div className="md:col-span-9 relative md:border-l md:border-black/15">
-          {/* BEFORE */}
-          <Beat m={M.avant} title={t('Ce que font les agents aujourd’hui.', 'What agents do today.')}>
-            <Text>
-              <p>{t('ChatGPT agent demande la permission avant les actions qui ont des conséquences ; Claude dans Chrome fonctionne par autorisations, site par site. L’OWASP classe l’injection de prompt au premier rang des risques des applications LLM.', 'ChatGPT agent asks for permission before actions with consequences; Claude in Chrome works with site-by-site permissions. OWASP ranks prompt injection as the top risk for LLM applications.')}</p>
-              <p>{t('La supervision se joue au moment de l’action. L’avant (que déléguer, à quelles conditions) et l’après (qu’a-t-il fait, puis-je revenir en arrière) restent peu travaillés.', 'Supervision happens at the moment of action. The before (what to delegate, on what terms) and the after (what did it do, can I undo it) get little attention.')}</p>
-              <p>{t('Or le bon réglage dépend de la tâche : Léa veut ses factures classées sans qu’on lui demande, mais relire chaque courriel à un nouveau client.', 'Yet the right setting depends on the task: Léa wants her invoices filed without being asked, but to read every email to a new client.')}</p>
-            </Text>
-            <Spectrum t={t} />
-            <Text>
-              <p>{t('Ces principes ne dépendent d’aucun modèle et pourraient équiper n’importe quel agent ; j’en ai fait un produit complet pour les éprouver dans un vrai parcours.', 'These principles depend on no particular model and could equip any agent; I made them a complete product to test them in a real journey.')}</p>
-            </Text>
-          </Beat>
-
-          {/* MODEL */}
-          <Beat m={M.modele} title={t('Ce qui se passe entre un déclencheur et une action.', 'What happens between a trigger and an action.')}>
-            <Text>
-              <p>{t('Avant les écrans, j’ai posé ce modèle, et appuyé ses règles sur la recherche publiée. Chaque écran du case en est un état.', 'Before the screens, I laid out this model, and grounded its rules in published research. Every screen in the case is one of its states.')}</p>
-            </Text>
-            <DecisionModel />
-            <Grounding t={t} />
-          </Beat>
-
+          </aside>
+  
+  
+            <div className="md:col-span-9 relative md:border-l md:border-black/15">
           {/* DAY ONE */}
           <Beat m={M.j1} showDay title={t('Léa connecte ses comptes. Proxy commence par tout proposer.', 'Léa connects her accounts. Proxy starts by proposing everything.')}>
             <Text>
@@ -495,38 +481,45 @@ export default function Page() {
             </Zoom>
           </Beat>
 
-          {/* SYSTEM */}
-          <Beat m={M.sys} showDay title={t('Le design system.', 'The design system.')}>
-            <Text>
-              <p>{t('Proxy manipule de l’argent et des messages : une interface calme, presque administrative. Blanc, une encre, des gris froids, aucun arrondi, et l’orange réservé à l’irréversible.', 'Proxy handles money and messages: a calm, almost administrative interface. White, one ink, cool greys, no rounded corners, and orange kept for the irreversible.')}</p>
-            </Text>
-            <ProxySystem />
-          </Beat>
-
-          {/* AFTER */}
-          <Beat m={M.apres} showDay title={t('La suite.', 'What’s next.')}>
-            <Text>
-              <p>{t('La première version tient en trois domaines où une erreur coûte peu : l’agenda, les fichiers et les achats sous un seuil. Le journal, la pause et « Oublier » sont là dès le départ.', 'The first version covers three domains where mistakes cost little: calendar, files and purchases under a threshold. The log, the pause and “Forget” are there from day one.')}</p>
-              <p>{t('Prochaine étape : cinq sessions avec des personnes qui délèguent déjà, sur trois missions. Trois indicateurs suivront ensuite la confiance en usage : validations sans modification, annulations, domaines montés d’un niveau.', 'Next step: five sessions with people who already delegate, on three missions. Three indicators will then track trust in use: unchanged approvals, undos, domains moved up a level.')}</p>
-              <p>
-                <a href="/proxy/prototype/index.html" className="underline underline-offset-4">
-                  {t('Ouvrir le prototype cliquable', 'Open the clickable prototype')} →
-                </a>
-              </p>
-            </Text>
-            <div className="max-w-[640px] pt-6 border-t border-black/15 text-[12px] text-black/50 leading-relaxed space-y-1">
-              <p className="text-black/70">{t('Sources', 'Sources')}</p>
-              <p>{t('Léa, ses clients et les montants sont fictifs.', 'Léa, her clients and the amounts are fictional.')}</p>
-              <p><a className="underline underline-offset-2" href="https://openai.com/index/introducing-chatgpt-agent/" target="_blank" rel="noreferrer">OpenAI, Introducing ChatGPT agent</a></p>
-              <p><a className="underline underline-offset-2" href="https://www.anthropic.com/news/claude-for-chrome" target="_blank" rel="noreferrer">Anthropic, Claude for Chrome</a></p>
-              <p><a className="underline underline-offset-2" href="https://journals.sagepub.com/doi/10.1518/001872097778543886" target="_blank" rel="noreferrer">Parasuraman &amp; Riley, Humans and Automation: Use, Misuse, Disuse, Abuse, Human Factors, 1997</a></p>
-              <p><a className="underline underline-offset-2" href="https://pmc.ncbi.nlm.nih.gov/articles/PMC5387195" target="_blank" rel="noreferrer">Ancker et al., Effects of workload, work complexity, and repeated alerts on alert fatigue, BMC Med Inform Decis Mak, 2017</a></p>
-              <p><a className="underline underline-offset-2" href="https://www.microsoft.com/en-us/research/publication/guidelines-for-human-ai-interaction/" target="_blank" rel="noreferrer">Amershi et al., Guidelines for Human-AI Interaction, CHI 2019</a></p>
-              <p><a className="underline underline-offset-2" href="https://cloudsecurityalliance.org/articles/the-owasp-top-10-for-llm-applications-2026-what-changed-and-why-it-matters" target="_blank" rel="noreferrer">Cloud Security Alliance, OWASP Top 10 for LLM Applications 2026</a></p>
             </div>
-          </Beat>
+          </div>
         </div>
-      </div>
-    </ProjectPage>
+      </Section>
+
+      {/* THE SYSTEM */}
+      <Section
+        n={6}
+        label={t('Le design system', 'The design system')}
+        lede={t('Blanc, une encre, des gris froids, aucun arrondi, et l’orange réservé à l’irréversible.', 'White, one ink, cool greys, no rounded corners, and orange kept for the irreversible.')}
+      >
+        <div className={PAD}>
+          <ProxySystem />
+        </div>
+      </Section>
+
+      {/* THE STEP BACK, AGAIN */}
+      <Section
+        n={7}
+        label={t('Avec du recul', 'Stepping back')}
+        lede={t('Ces principes ne dépendent d’aucun modèle. Ils pourraient équiper n’importe quel agent.', 'These principles depend on no particular model. They could equip any agent.')}
+      >
+        <Body>
+          <p>{t('La première version tient en trois domaines où une erreur coûte peu : l’agenda, les fichiers et les achats sous un seuil. Le journal, la pause et « Oublier » sont là dès le départ.', 'The first version covers three domains where mistakes cost little: calendar, files and purchases under a threshold. The log, the pause and “Forget” are there from day one.')}</p>
+          <p>{t('Prochaine étape : cinq sessions avec des personnes qui délèguent déjà, sur trois missions. Trois indicateurs suivront ensuite la confiance en usage : validations sans modification, annulations, domaines montés d’un niveau.', 'Next step: five sessions with people who already delegate, on three missions. Three indicators will then track trust in use: unchanged approvals, undos, domains moved up a level.')}</p>
+        </Body>
+        <div className={`${GRID} ${PAD} mt-16`}>
+          <div className={`md:col-span-6 md:col-start-4 max-w-[640px] pt-3 border-t border-black/15 ${TEXT} text-black/45 space-y-1`}>
+            <p className="text-black">{t('Sources', 'Sources')}</p>
+            <p>{t('Léa, ses clients et les montants sont fictifs.', 'Léa, her clients and the amounts are fictional.')}</p>
+            <p><a className="underline underline-offset-2" href="https://openai.com/index/introducing-chatgpt-agent/" target="_blank" rel="noreferrer">OpenAI, Introducing ChatGPT agent</a></p>
+            <p><a className="underline underline-offset-2" href="https://www.anthropic.com/news/claude-for-chrome" target="_blank" rel="noreferrer">Anthropic, Claude for Chrome</a></p>
+            <p><a className="underline underline-offset-2" href="https://journals.sagepub.com/doi/10.1518/001872097778543886" target="_blank" rel="noreferrer">Parasuraman &amp; Riley, Humans and Automation: Use, Misuse, Disuse, Abuse, Human Factors, 1997</a></p>
+            <p><a className="underline underline-offset-2" href="https://pmc.ncbi.nlm.nih.gov/articles/PMC5387195" target="_blank" rel="noreferrer">Ancker et al., Effects of workload, work complexity, and repeated alerts on alert fatigue, BMC Med Inform Decis Mak, 2017</a></p>
+            <p><a className="underline underline-offset-2" href="https://www.microsoft.com/en-us/research/publication/guidelines-for-human-ai-interaction/" target="_blank" rel="noreferrer">Amershi et al., Guidelines for Human-AI Interaction, CHI 2019</a></p>
+            <p><a className="underline underline-offset-2" href="https://cloudsecurityalliance.org/articles/the-owasp-top-10-for-llm-applications-2026-what-changed-and-why-it-matters" target="_blank" rel="noreferrer">Cloud Security Alliance, OWASP Top 10 for LLM Applications 2026</a></p>
+          </div>
+        </div>
+      </Section>
+    </CaseShell>
   );
 }

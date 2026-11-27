@@ -269,7 +269,7 @@ export function introWait() {
   if (typeof window === 'undefined') return 0;
   const w = window as unknown as { __introEnd?: number };
   if (w.__introEnd === undefined) {
-    w.__introEnd = document.documentElement.dataset.intro === '1' ? performance.now() + 1050 : 0;
+    w.__introEnd = document.documentElement.dataset.intro === '1' ? performance.now() + 1150 : 0;
   }
   return Math.max(0, w.__introEnd - performance.now());
 }

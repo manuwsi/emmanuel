@@ -1,56 +1,62 @@
 'use client';
 
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useRef } from 'react';
 import { usePathname, useRouter } from 'next/navigation';
-import { DotCanvas, Origin, reducedMotion, tween } from './engine';
-import DotText from './DotText';
-
-const INK = '#0a0a0a';
+import { Origin, reducedMotion } from './engine';
 
 type Lenis = { stop: () => void; start: () => void; scrollTo: (y: number, o?: { immediate?: boolean; force?: boolean }) => void };
 const lenis = () => (window as unknown as { __lenis?: Lenis }).__lenis;
 
 /**
  * Two moments only:
- * - the very first visit of a session opens on an ink slate with the name, which dissolves in dots;
+ * - the very first visit of a session opens on one dot, which travels to the title as it composes itself;
  * - every page change after that is quiet: the page fades to white and the next one fades in.
  */
 export default function Transitions() {
   const router = useRouter();
   const pathname = usePathname();
-  const cv = useRef<HTMLCanvasElement>(null);
   const veil = useRef<HTMLDivElement>(null);
   const fade = useRef<HTMLDivElement>(null);
   const state = useRef<'idle' | 'covering' | 'covered' | 'revealing'>('idle');
   const target = useRef<string | null>(null);
-  const [slate, setSlate] = useState(false);
 
-  // first visit of the session: the slate with the name, then the dots open on the page
+  // first visit of the session: a single dot in the middle of a white page travels to the title,
+  // and the title composes itself in dots from there (DotText 'intro'); then everything is just the page.
   useEffect(() => {
     if (document.documentElement.dataset.intro !== '1') return;
     try {
       sessionStorage.setItem('dot-intro', '1');
     } catch {}
-    if (reducedMotion()) {
-      if (veil.current) veil.current.style.display = 'none';
+    const v = veil.current;
+    const dot = v?.querySelector<HTMLElement>('[data-dot]');
+    const done = () => {
       delete document.documentElement.dataset.intro;
-      return;
-    }
-    const e = new DotCanvas(cv.current!, 22);
-    e.resize(window.innerWidth, window.innerHeight);
-    e.render(1, { x: 0.5, y: 0.5 }, { solid: INK });
-    setSlate(true);
-    const t = window.setTimeout(() => {
-      delete document.documentElement.dataset.intro;
-      if (veil.current) veil.current.style.display = 'none';
-      setSlate(false);
-      tween(
-        900,
-        (k) => e.render(1 - k, { x: 0.5, y: 0.5 }, { solid: INK, invert: true, spread: 1.6 }),
-        () => e.release()
-      );
-    }, 950);
-    return () => clearTimeout(t);
+      if (v) v.style.display = 'none';
+    };
+    if (!v || !dot || reducedMotion()) return done();
+    const target = document.querySelector<HTMLElement>('[data-intro-target]') ?? document.querySelector<HTMLElement>('main h1');
+    const t1 = window.setTimeout(() => {
+      if (target) {
+        const r = target.getBoundingClientRect();
+        const fs = parseFloat(getComputedStyle(target).fontSize) || 16;
+        const x = r.left + fs * 0.3 - innerWidth / 2;
+        const y = r.top + fs * 0.45 - innerHeight / 2;
+        dot.style.transition = 'transform 620ms cubic-bezier(.65,0,.35,1)';
+        dot.style.transform = `translate(${x}px, ${y}px) scale(1.4)`;
+      }
+    }, 520);
+    const t2 = window.setTimeout(() => {
+      v.style.transition = 'background-color 420ms ease';
+      v.style.backgroundColor = 'rgba(255,255,255,0)';
+      dot.style.transition = 'transform 260ms ease, opacity 260ms ease';
+      dot.style.opacity = '0';
+    }, 1120);
+    const t3 = window.setTimeout(done, 1600);
+    return () => {
+      clearTimeout(t1);
+      clearTimeout(t2);
+      clearTimeout(t3);
+    };
   }, []);
 
   const setFade = (on: boolean, ms: number) => {
@@ -120,17 +126,11 @@ export default function Transitions() {
 
   return (
     <>
-      {/* solid ink in the first paint, so the intro never shows the page before the slate (see the script in layout) */}
-      <div ref={veil} id="dot-veil" aria-hidden className="pointer-events-none fixed inset-0 z-[96] hidden bg-[#0a0a0a]" />
-      <canvas ref={cv} aria-hidden className="pointer-events-none fixed inset-0 z-[95] h-screen w-screen" />
+      {/* white in the first paint, with one dot in the middle (see the script in layout) */}
+      <div ref={veil} id="dot-veil" aria-hidden className="pointer-events-none fixed inset-0 z-[96] hidden bg-white">
+        <span data-dot className="absolute left-1/2 top-1/2 -ml-[4px] -mt-[4px] block h-2 w-2 rounded-full bg-[#0a0a0a]" />
+      </div>
       <div ref={fade} aria-hidden className="pointer-events-none fixed inset-0 z-[45] bg-white opacity-0" />
-      {slate && (
-        <div aria-hidden className="pointer-events-none fixed inset-0 z-[97] flex items-center justify-center text-white">
-          <span className="text-[13px] font-medium uppercase tracking-[0.02em]">
-            <DotText text="Emmanuel Ijjou" play="mount" delay={120} />
-          </span>
-        </div>
-      )}
     </>
   );
 }

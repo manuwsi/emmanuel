@@ -6,6 +6,7 @@ import { ReactNode } from 'react';
 import Image from 'next/image';
 import { motion } from 'framer-motion';
 import NextProject from '@/components/dot/NextProject';
+import DotText from '@/components/dot/DotText';
 
 export const DISPLAY = { fontFamily: 'var(--font-general-sans), Inter, sans-serif', fontWeight: 500, letterSpacing: '-0.03em' } as const;
 export const WRAP = 'px-2 md:px-3 w-full max-w-[1400px] mx-auto';
@@ -55,9 +56,9 @@ export function Chap({ n, title, aside, lede, children }: { n: number; title: st
       viewport={{ once: true, margin: '-80px' }}
       className="pt-28 pb-8 md:pt-40 md:pb-12"
     >
-      <div className="flex items-baseline justify-between border-t border-black/15 pt-3">
-        <h3 className="text-[13px] text-black/45">
-          {String(n).padStart(2, '0')} → {title}
+      <div className="grid grid-cols-[1fr_auto] items-start gap-4 border-t border-black/15 pt-3">
+        <h3 className="text-[13px] leading-[1.35] text-black/45">
+          <DotText text={`${String(n).padStart(2, '0')} → ${title}`} play="view" />
         </h3>
         {aside && <span className="text-[13px] tabular-nums">{aside}</span>}
       </div>

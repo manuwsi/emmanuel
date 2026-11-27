@@ -128,8 +128,10 @@ main {
 html.has-cursor, html.has-cursor * { cursor: none !important; }
 html.has-cursor iframe { cursor: auto !important; }
 
-/* first visit: solid ink until the slate opens (safety: it goes away on its own) */
-html[data-intro='1'] #dot-veil { display: block; animation: dotveil 0.3s ease 3.4s forwards; }
+/* first visit: white with one dot until the title composes itself (safety: it goes away on its own) */
+html[data-intro='1'] #dot-veil { display: block; animation: dotveil 0.3s ease 3s forwards; }
+html[data-intro='1'] #dot-veil [data-dot] { animation: dotin 0.5s cubic-bezier(.22,1,.36,1) both; }
+@keyframes dotin { from { scale: 0; } 60% { scale: 1.6; } to { scale: 1; } }
 @keyframes dotveil { to { opacity: 0; visibility: hidden; } }
 
 /* the scrollbar keeps its room, so nothing shifts sideways between pages or views */

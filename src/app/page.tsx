@@ -9,6 +9,7 @@ import { useT } from '@/components/i18n';
 import { projects, type Project } from '@/components/projects';
 import { MarkFor } from '@/components/ProjectMark';
 import { introWait } from '@/components/dot/engine';
+import DotText from '@/components/dot/DotText';
 import { lenisScrollTo } from '@/components/dot/SmoothScroll';
 import '../styles/globals.css';
 
@@ -22,7 +23,14 @@ function ProjectCard({ project, index, small = false }: { project: Project; inde
   const cols = small ? 3 : 2;
   return (
     <article>
-      <Link href={project.link} className="group block" aria-label={t(`Voir le projet ${title}`, `View project ${title}`)}>
+      <Link
+        href={project.link}
+        className="group block"
+        aria-label={t(`Voir le projet ${title}`, `View project ${title}`)}
+        data-cursor="project"
+        data-mark={project.link.slice(1)}
+        data-label={t('Voir', 'View')}
+      >
         <div className="relative aspect-[4/3] w-full overflow-hidden bg-neutral-100">
           {/* the cover settles in once, slowly: a light fade and a very small zoom-out */}
           <motion.div
@@ -177,7 +185,9 @@ function IndexView() {
         </div>
         <div className={`${TXT} mt-2 flex items-start justify-between gap-4 px-2 md:px-0`}>
           <motion.div key={p.link} initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.35 }}>
-            <p className="font-medium">{t(p.title.fr, p.title.en)}</p>
+            <p className="font-medium">
+              <DotText key={p.link} text={t(p.title.fr, p.title.en)} play="mount" />
+            </p>
             <p className="text-black/50">{t(p.subtitle.fr, p.subtitle.en)}</p>
           </motion.div>
           <span className="flex items-center gap-2.5 tabular-nums text-black/55">
@@ -198,6 +208,9 @@ function IndexView() {
               ref={(el) => {
                 if (el) rows.current[i] = el;
               }}
+              data-cursor="project"
+              data-mark={proj.link.slice(1)}
+              data-label={t('Voir', 'View')}
               className="grid grid-cols-[2.6ch_1fr] items-baseline gap-x-3 border-t border-black/10 px-2 py-2.5 transition-opacity duration-300 md:px-0 md:py-3"
               style={{ opacity: Math.max(0.14, 1 - d * 0.28) }}
             >
@@ -272,18 +285,20 @@ export default function Home() {
       <section className="flex min-h-[78svh] flex-col justify-end px-2 pb-6 md:px-3">
         <motion.h1
           key={headline}
+          data-intro-target
           className="max-w-[14ch] text-[13vw] font-medium leading-[0.9] tracking-[-0.045em] md:text-[min(6vw,96px)]"
-          initial={{ opacity: 0 }}
+          initial={lead > 0 ? false : { opacity: 0 }}
           animate={{ opacity: 1 }}
-          transition={{ duration: 1.4, ease: EASE, delay: lead + 0.2 }}
+          transition={{ duration: 1.2, ease: EASE, delay: 0.1 }}
         >
-          {headline}
+          {/* on the first visit, the title composes itself in dots where the opening dot lands */}
+          <DotText text={headline} play="intro" />
         </motion.h1>
         <motion.div
           className={`${TXT} mt-8 grid grid-cols-1 gap-4 md:grid-cols-4`}
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
-          transition={{ duration: 1, delay: lead + 0.7 }}
+          transition={{ duration: 1, delay: lead + 0.5 }}
         >
           <p className="md:col-span-2 md:max-w-[480px]">
             {t('Précédemment OKCC, studio créatif — ', 'Previously OKCC, creative studio — ')}Hennessy, Shu Uemura, Louis Vuitton, L&apos;Oréal, YSL Beauty, HOKA.

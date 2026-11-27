@@ -24,7 +24,7 @@ function Zoom({ k, title, src, w, h, alt, bare = false, children }: { k: string;
         <Media src={src} alt={alt} width={w} height={h} crisp />
       </div>
       <figcaption className="mt-3 grid grid-cols-[28px_1fr] gap-x-2 text-[13px] leading-[1.45]">
-        <span className="text-black/45">{k}</span>
+        <span className="text-black/55">{k}</span>
         <span><span className="font-medium">{title}</span> <span className="text-black/60">{children}</span></span>
       </figcaption>
     </figure>
@@ -37,7 +37,7 @@ function Chap({ n, title, depth, lede, children }: { n: number; title: string; d
     <>
       <div className="fine-gap" aria-hidden />
       <motion.div initial={{ opacity: 0 }} whileInView={{ opacity: 1 }} transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }} viewport={{ once: true }} className="fine-note" data-chapter={label}>
-        <h3 className="grid grid-cols-[1fr_auto] gap-3 text-black/45">
+        <h3 className="grid grid-cols-[1fr_auto] gap-3 text-black/55">
           <DotText text={label} play="view" />
           <span className="tabular-nums text-[#0a0a0a]">{depth}</span>
         </h3>
@@ -50,7 +50,7 @@ function Chap({ n, title, depth, lede, children }: { n: number; title: string; d
 
 function Src({ n }: { n: number }) {
   return (
-    <a href={`#src-${n}`} className="align-super text-[10px] text-black/45 ml-0.5">
+    <a href={`#src-${n}`} className="align-super text-[10px] text-black/55 ml-0.5">
       {n}
     </a>
   );
@@ -161,8 +161,13 @@ export default function Colosse() {
       </div>
       <div className="fine-flow mt-16 px-2 md:mt-24 md:px-3">
         <figure>
-          <Media src="/colosse/2-anomalie.webp" alt={t('Anomalie : un vide devant la roue, sous une école', 'Anomaly: a void ahead of the wheel, under a school')} priority {...W} />
-          <figcaption className="mt-2 text-[14px] leading-[1.6] md:text-[13px] text-black/45">
+          <Media crisp priority src="/colosse/tablette-anomalie-v2.jpg" alt={t('Mise en situation : l’écran Anomalie sur une tablette de chantier, tenue par des mains gantées', 'In context: the Anomaly screen on a rugged site tablet, held in gloved hands')} width={2560} height={1920} />
+          <figcaption className="mt-2 text-black/55">{t('Mise en situation, sur une tablette de chantier.', 'In context, on a rugged site tablet.')}</figcaption>
+        </figure>
+        <div className="h-2" aria-hidden />
+        <figure>
+          <Media src="/colosse/2-anomalie.webp" alt={t('Anomalie : un vide devant la roue, sous une école', 'Anomaly: a void ahead of the wheel, under a school')} {...W} />
+          <figcaption className="mt-2 text-[14px] leading-[1.6] md:text-[13px] text-black/55">
             {t(
               '02:09. La sonde détecte un vide sous une école. L’écran le dessine à sa place dans le sol et propose trois options à l’ingénieur de quart.',
               '02:09. The probe picks up a void under a school. The screen draws it where it is in the ground and gives the shift engineer three options.'
@@ -215,19 +220,19 @@ export default function Colosse() {
         <div className="grid grid-cols-1 gap-6 py-4 md:grid-cols-3 md:gap-3">
           {principles.map((p, i) => (
             <div key={p.k} className="border-t border-black/15 pt-2">
-              <div className="text-black/45">0{i + 1}</div>
+              <div className="text-black/55">0{i + 1}</div>
               <div className="mt-1 font-medium">{p.k}</div>
               <p className="mt-1 text-black/70">{p.v}</p>
             </div>
           ))}
         </div>
         <div className="pb-6">
-          <div className="text-black/45 mb-3">{t('Les hachures, une par type de sol, comme sur les plans', 'Hatches, one per type of ground, as on engineering drawings')}</div>
+          <div className="text-black/55 mb-3">{t('Les hachures, une par type de sol, comme sur les plans', 'Hatches, one per type of ground, as on engineering drawings')}</div>
           <Legend />
         </div>
         <div className="space-y-2">
           <Media src="/colosse/1-pilotage.webp" alt={t('Pilotage : la coupe du terrain en direct', 'Driving: the live section of the ground')} {...W} />
-          <p className="text-[13px] text-black/50 max-w-3xl">
+          <p className="text-[13px] text-black/55 max-w-3xl">
             {t('En haut, la coupe : immeubles, couches de sol, nappe, métro à 3,4 m, et la ligne noire du présent. En bas, trois vues comme sur un plan : la roue, la rue vue du dessus, l’avancée de la nuit.', 'At the top, the section: buildings, ground layers, water table, metro at 3.4 m, and the black line of the present. Below, three views as on a plan: the wheel, the street from above, the night’s progress.')}
           </p>
         </div>
@@ -344,10 +349,6 @@ export default function Colosse() {
           <Media video src="/motion/colosse-shift.mp4" width={1920} height={1080} alt={t('Animation : la nuit tombe sur l’écran de pilotage, une anomalie s’allume, puis le jour revient', 'Animation: night falls on the driving screen, an anomaly lights up, then day comes back')} />
         </div>
 
-        <figure>
-          <Media crisp src="/colosse/tablette-anomalie-v2.jpg" alt={t('Mise en situation : l’écran Anomalie sur une tablette de chantier, tenue par des mains gantées', 'In context: the Anomaly screen on a rugged site tablet, held in gloved hands')} width={2560} height={1920} />
-          <figcaption className="mt-2 text-black/45">{t('Mise en situation, sur une tablette de chantier.', 'In context, on a rugged site tablet.')}</figcaption>
-        </figure>
 
         {/* 09 — SYSTEM */}
         <Chap n={9} title={t('Le système', 'The system')} depth="−22 m" lede={t('Six tokens, deux jeux de valeurs. Essaie le mode cabine.', 'Six tokens, two sets of values. Try cab mode.')}>
@@ -369,7 +370,7 @@ export default function Colosse() {
           <a href="/colosse/prototype/index.html" className="underline underline-offset-2">
             {t('Ouvrir le prototype en plein écran', 'Open the prototype full screen')} →
           </a>
-          <span className="text-black/45 md:hidden"> {t('(à essayer sur ordinateur)', '(try it on a computer)')}</span>
+          <span className="text-black/55 md:hidden"> {t('(à essayer sur ordinateur)', '(try it on a computer)')}</span>
         </p>
 
         {/* 11 — WHAT'S LEFT */}
@@ -389,11 +390,11 @@ export default function Colosse() {
 
         {/* SOURCES */}
         <section className="mt-16">
-          <div className="text-black/45 border-t border-black/15 pt-2 mb-3">{t('Sources', 'Sources')}</div>
+          <div className="text-black/55 border-t border-black/15 pt-2 mb-3">{t('Sources', 'Sources')}</div>
           <ol className="space-y-1">
             {sources.map((s) => (
               <li key={s.n} id={`src-${s.n}`} className="flex gap-3">
-                <span className="text-black/45 w-4">{s.n}</span>
+                <span className="text-black/55 w-4">{s.n}</span>
                 <a href={s.href} target="_blank" rel="noreferrer" className="underline underline-offset-2">
                   {s.label}
                 </a>

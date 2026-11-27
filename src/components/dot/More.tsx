@@ -17,7 +17,7 @@ export default function More({ children, className = '' }: { children: ReactNode
           <div className="space-y-3 pt-3">{children}</div>
         </div>
       </div>
-      <button type="button" onClick={() => setOpen((o) => !o)} aria-expanded={open} className="mt-2 text-black/45">
+      <button type="button" onClick={() => setOpen((o) => !o)} aria-expanded={open} className="mt-2 text-black/55">
         {open ? t('− Réduire', '− Less') : t('+ Lire la suite', '+ Read more')}
       </button>
     </div>

@@ -37,7 +37,7 @@ export default function Depth() {
       <div className="hidden min-[1600px]:flex items-start gap-2">
         <div className="text-right pt-0.5">
           <div className="text-[13px] tabular-nums leading-none">−{d.toFixed(1).replace('.', ',')} m</div>
-          <div className="text-[11px] text-black/45 mt-1 whitespace-nowrap">{t(layer.fr, layer.en)}</div>
+          <div className="text-[11px] text-black/55 mt-1 whitespace-nowrap">{t(layer.fr, layer.en)}</div>
         </div>
         <svg width="18" height={H} className="overflow-visible">
           {Array.from({ length: AXIS + 1 }).map((_, i) => (
@@ -49,7 +49,7 @@ export default function Depth() {
       </div>
       {/* mobile: one line */}
       <div className="min-[1600px]:hidden text-[12px] tabular-nums bg-white/90 px-1.5 py-0.5">
-        −{d.toFixed(1).replace('.', ',')} m · <span className="text-black/50">{t(layer.fr, layer.en)}</span>
+        −{d.toFixed(1).replace('.', ',')} m · <span className="text-black/55">{t(layer.fr, layer.en)}</span>
       </div>
     </div>
   );

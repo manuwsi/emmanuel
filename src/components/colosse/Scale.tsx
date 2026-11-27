@@ -52,7 +52,7 @@ export default function Scale() {
     <div ref={ref} className="relative h-[280vh]">
       <div className="sticky top-0 h-screen flex flex-col justify-center overflow-hidden">
         <div className="absolute left-2 md:left-3 top-16 md:top-20 z-10 text-[14px] leading-[1.6] md:text-[13px]" data-chapter={t('01 → L’échelle', '01 → The scale')}>
-          <div className="text-black/45">{t('01 → L’échelle', '01 → The scale')}</div>
+          <div className="text-black/55">{t('01 → L’échelle', '01 → The scale')}</div>
           <div key={stage.big} className="mt-3 text-[14vw] md:text-[4.6vw] leading-[0.85] tracking-[-0.05em] font-medium tabular-nums">
             {stage.big}
           </div>
@@ -97,7 +97,7 @@ export default function Scale() {
             <line x1={136.5} x2={136.5} y1={-13.3} y2={-11.7} />
           </g>
         </svg>
-        <div className="absolute right-2 md:right-3 bottom-12 text-[12px] leading-[1.5] text-black/45 text-right max-w-[260px]">
+        <div className="absolute right-2 md:right-3 bottom-24 text-[12px] leading-[1.5] text-black/55 text-right max-w-[260px]">
           {t('Dimensions d’un tunnelier du Grand Paris Express (Tiphaine, ligne 15 Ouest). Tout est à la même échelle.', 'Dimensions of a Grand Paris Express TBM (Tiphaine, line 15 West). Everything is drawn to the same scale.')}
         </div>
       </div>

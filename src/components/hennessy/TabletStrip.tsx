@@ -53,7 +53,7 @@ export default function TabletStrip({ items }: { items: { src: string; n: string
       <div data-pad className="flex min-h-[72px] items-start justify-between gap-6 px-2 pt-2 text-[14px] leading-[1.6] md:px-3 md:text-[13px]">
         <AnimatePresence mode="wait">
           <motion.p key={at} initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} transition={{ duration: 0.25 }} className="max-w-[460px]">
-            <span className="tabular-nums text-black/45">{items[at].n} </span>
+            <span className="tabular-nums text-black/55">{items[at].n} </span>
             <span className="font-medium">{items[at].title}</span> <span className="text-black/60">{items[at].text}</span>
           </motion.p>
         </AnimatePresence>

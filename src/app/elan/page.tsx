@@ -227,7 +227,7 @@ function HapticScore({ t }: { t: T }) {
 }
 
 function Caption({ children }: { children: React.ReactNode }) {
-  return <span className="block text-[13px] text-black/45">{children}</span>;
+  return <span className="block text-[13px] text-black/55">{children}</span>;
 }
 
 export default function Page() {
@@ -290,7 +290,7 @@ export default function Page() {
       <ol className="grid grid-cols-1 md:grid-cols-3 gap-px bg-black/15 border border-black/15">
         {problems(t).map((p) => (
           <li key={p.title} className="bg-white p-6 md:p-8 flex flex-col gap-4">
-            <span className="text-[13px] text-black/45">{p.when}</span>
+            <span className="text-[13px] text-black/55">{p.when}</span>
             <h4 className="font-medium">{p.title}</h4>
             <p className="text-sm text-black/60 leading-relaxed">{p.text}</p>
           </li>
@@ -318,7 +318,7 @@ export default function Page() {
       <ol className="grid grid-cols-1 md:grid-cols-3 gap-px bg-black/15 border border-black/15">
         {moments(t).map((m, i) => (
           <li key={m.title} className="bg-white p-6 md:p-8 flex flex-col gap-4">
-            <span className="text-[13px] text-black/45">
+            <span className="text-[13px] text-black/55">
               0{i + 1} — {m.where}
             </span>
             <h4 className="font-medium">{m.title}</h4>
@@ -371,7 +371,7 @@ export default function Page() {
         </div>
         <div className="md:col-span-5 bg-white p-6 md:p-8 flex flex-col justify-between gap-10">
           <div className="space-y-4">
-            <span className="text-[13px] text-black/45">{t('Vue éclatée', 'Exploded view')}</span>
+            <span className="text-[13px] text-black/55">{t('Vue éclatée', 'Exploded view')}</span>
             <h4 className="font-medium">
               {t('Un écran, quatre couches, une information par couche.', 'One screen, four layers, one piece of information per layer.')}
             </h4>
@@ -379,7 +379,7 @@ export default function Page() {
           <ol className="divide-y divide-black/15 border-t border-black/15">
             {layers(t).map((l) => (
               <li key={l.n} className="grid grid-cols-[3rem_1fr] gap-2 py-4">
-                <span className="text-[13px] text-black/45 pt-0.5">{l.n}</span>
+                <span className="text-[13px] text-black/55 pt-0.5">{l.n}</span>
                 <div className="space-y-1">
                   <h5 className="font-medium">{l.title}</h5>
                   <p className="text-sm text-black/60 leading-relaxed">{l.text}</p>
@@ -439,7 +439,7 @@ export default function Page() {
         <ol className="md:col-span-7 bg-white px-6 md:px-8 divide-y divide-black/15">
           {rules(t).map((r, i) => (
             <li key={r.title} className="grid grid-cols-[3rem_1fr] gap-2 py-5 md:py-6">
-              <span className="text-[13px] text-black/45 pt-1">0{i + 1}</span>
+              <span className="text-[13px] text-black/55 pt-1">0{i + 1}</span>
               <div className="space-y-1.5">
                 <h4 className="font-medium">{r.title}</h4>
                 <p className="text-sm text-black/60 leading-relaxed">{r.text}</p>
@@ -461,12 +461,12 @@ export default function Page() {
                 className="w-full h-auto block"
               />
               <span className="text-[12px] md:text-[13px] leading-snug">
-                <span className="text-black/45">{String(i + 1).padStart(2, '0')}</span> {s.name}
+                <span className="text-black/55">{String(i + 1).padStart(2, '0')}</span> {s.name}
               </span>
             </li>
           ))}
           <li className="bg-white p-3 md:p-5 flex items-end">
-            <p className="text-[12px] md:text-[13px] text-black/45 leading-snug">
+            <p className="text-[12px] md:text-[13px] text-black/55 leading-snug">
               {t('Un écran, une question.', 'One screen, one question.')}
             </p>
           </li>
@@ -539,7 +539,7 @@ export default function Page() {
                 </div>
               </div>
               <div className="p-6 md:p-8 flex flex-col gap-3">
-                <span className="text-[13px] text-black/45">{d.where}</span>
+                <span className="text-[13px] text-black/55">{d.where}</span>
                 <h4 className="font-medium">{d.title}</h4>
                 <p className="text-sm text-black/60 leading-relaxed max-w-md">{d.text}</p>
               </div>

@@ -204,7 +204,7 @@ export default function SecondSkin() {
 
       {/* tablet side */}
       <div className="md:col-span-5 border-t md:border-t-0 md:border-l border-black/10 px-4 py-8 md:px-8 md:py-12 flex flex-col">
-        <div className="flex items-center justify-between text-[12px] text-black/45">
+        <div className="flex items-center justify-between text-[12px] text-black/55">
           <span>{phase === 'dom' ? '1 / 3' : phase === 'sec' ? '2 / 3' : '3 / 3'}</span>
           {phase !== 'dom' && (
             <button onClick={reset} className="underline underline-offset-2">
@@ -294,7 +294,7 @@ export default function SecondSkin() {
           </p>
         )}
 
-        <p className="mt-auto pt-10 text-[12px] leading-[1.45] text-black/45">
+        <p className="mt-auto pt-10 text-[12px] leading-[1.45] text-black/55">
           {t(
             'Simulation simplifiée, pour faire vivre le parcours. Les vraies œuvres viennent des algorithmes de Florian Zumbrunn.',
             'A simplified simulation, to bring the journey to life. The real artworks come from Florian Zumbrunn’s algorithms.'

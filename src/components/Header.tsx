@@ -23,9 +23,8 @@ export default function Header({ active, crumb }: { active?: 'work' | 'about'; c
 
   return (
     <>
-      {/* the page dissolves under the corners, so text never runs into the name or the menu */}
+      {/* the page dissolves under the breadcrumb, so text never runs into it (the bottom bar stays transparent) */}
       <div aria-hidden className="pointer-events-none fixed inset-x-0 top-0 z-40 h-10 bg-gradient-to-b from-white from-30% to-transparent md:h-11" />
-      <div aria-hidden className="pointer-events-none fixed inset-x-0 bottom-0 z-40 h-12 bg-gradient-to-t from-white from-30% to-transparent md:h-14" />
       <div className={`${corner} left-0 top-0 whitespace-nowrap py-1.5`}>
         <Link href="/" className="underline-offset-2">
           <DotText text="Emmanuel Ijjou" play="intro" />

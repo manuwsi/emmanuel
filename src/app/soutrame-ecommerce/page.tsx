@@ -70,7 +70,7 @@ export default function Page() {
         <div className="space-y-8 md:space-y-10">
           <>
       <Media src="/soutrame-case/campaign.jpg" alt={t('Soutrame — ouverture du site', 'Soutrame — site opening')} width={2400} height={1500} priority />
-          <p className="text-[13px] text-black/50 pt-2">
+          <p className="text-[13px] text-black/55 pt-2">
             <Link href="/soutrame" className="underline underline-offset-2 hover:text-black">
               soutrame.com
             </Link>{' '}
@@ -101,9 +101,9 @@ export default function Page() {
       <ol className="grid grid-cols-2 md:grid-cols-4 gap-px bg-black/15 border border-black/15">
         {constraints(t).map((c, i) => (
           <li key={c.title} className="bg-white p-5 md:p-6 space-y-2">
-            <span className="text-[13px] text-black/45">0{i + 1}</span>
+            <span className="text-[13px] text-black/55">0{i + 1}</span>
             <h4 className="text-[13px] font-medium">{c.title}</h4>
-            <p className="text-xs text-black/50 leading-relaxed">{c.text}</p>
+            <p className="text-xs text-black/55 leading-relaxed">{c.text}</p>
           </li>
         ))}
       </ol>
@@ -131,7 +131,7 @@ export default function Page() {
       <div className="grid grid-cols-1 md:grid-cols-3 gap-px bg-black/15 border border-black/15">
         {decisions(t).map((d, i) => (
           <div key={d.title} className="bg-white p-6 md:p-8 flex flex-col gap-4">
-            <span className="text-[13px] text-black/45">
+            <span className="text-[13px] text-black/55">
               {t('Choix', 'Choice')} 0{i + 1}
             </span>
             <h4 className="font-medium">{d.title}</h4>
@@ -149,11 +149,11 @@ export default function Page() {
       <Row cols={2}>
         <div className="space-y-2">
           <Media src="/soutrame-case/v1-hero.jpg" alt={t('Version 1 — ouverture', 'Version 1 — opening')} width={1440} height={900} />
-          <span className="block text-[13px] text-black/45">{t('V1 — ouverture', 'V1 — opening')}</span>
+          <span className="block text-[13px] text-black/55">{t('V1 — ouverture', 'V1 — opening')}</span>
         </div>
         <div className="space-y-2">
           <Media src="/soutrame-case/v1-shop.jpg" alt={t('Version 1 — boutique', 'Version 1 — shop')} width={1440} height={900} />
-          <span className="block text-[13px] text-black/45">{t('V1 — boutique', 'V1 — shop')}</span>
+          <span className="block text-[13px] text-black/55">{t('V1 — boutique', 'V1 — shop')}</span>
         </div>
       </Row>
       <Chapter title={t('Ce qui a changé', 'What changed')}>
@@ -167,11 +167,11 @@ export default function Page() {
       <Row cols={2}>
         <div className="space-y-2">
           <Media src="/soutrame-case/shop.jpg" alt={t('Version finale — boutique', 'Final version — shop')} width={2400} height={1500} />
-          <span className="block text-[13px] text-black/45">{t('Boutique', 'Shop')}</span>
+          <span className="block text-[13px] text-black/55">{t('Boutique', 'Shop')}</span>
         </div>
         <div className="space-y-2">
           <Media src="/soutrame-case/shop_hover.jpg" alt={t('Version finale — survol d’une pièce', 'Final version — hovering a piece')} width={2400} height={1500} />
-          <span className="block text-[13px] text-black/45">{t('Au survol, la pièce portée', 'On hover, the piece worn')}</span>
+          <span className="block text-[13px] text-black/55">{t('Au survol, la pièce portée', 'On hover, the piece worn')}</span>
         </div>
       </Row>
 
@@ -190,11 +190,11 @@ export default function Page() {
       <Row cols={2}>
         <div className="space-y-2">
           <Media src="/soutrame-case/bag.jpg" alt={t('Panier vide', 'Empty bag')} width={2400} height={1500} />
-          <span className="block text-[13px] text-black/45">{t('Le panier vide redirige vers Instagram pour être prévenu du drop', 'The empty bag points to Instagram to hear about the drop')}</span>
+          <span className="block text-[13px] text-black/55">{t('Le panier vide redirige vers Instagram pour être prévenu du drop', 'The empty bag points to Instagram to hear about the drop')}</span>
         </div>
         <div className="space-y-2">
           <Media src="/soutrame-case/lookbook.jpg" alt={t('Lookbook', 'Lookbook')} width={2400} height={1500} />
-          <span className="block text-[13px] text-black/45">{t('Le lookbook, une bande d’images à faire glisser', 'The lookbook, a strip of images to drag')}</span>
+          <span className="block text-[13px] text-black/55">{t('Le lookbook, une bande d’images à faire glisser', 'The lookbook, a strip of images to drag')}</span>
         </div>
       </Row>
 

@@ -70,7 +70,7 @@ export function Plate({ src, alt, caption, aspect, mobileAspect = '4/5', mobileS
       <div className="relative w-full overflow-hidden md:ml-[calc(25%+3px)] md:w-[calc(50%-6px)]" style={{ aspectRatio: phone ? mobileAspect : aspect, background: dark ? '#0b0c0e' : '#e2e1de' }}>
         <Weave src={phone && mobileSrc ? mobileSrc : src} alt={alt} sizes="(min-width:768px) 50vw, 100vw" priority={priority} force={priority} />
       </div>
-      {caption && <figcaption className={`${TXT} pt-1.5 text-black/45 md:ml-[calc(25%+3px)]`}>{caption}</figcaption>}
+      {caption && <figcaption className={`${TXT} pt-1.5 text-black/55 md:ml-[calc(25%+3px)]`}>{caption}</figcaption>}
     </figure>
   );
 }

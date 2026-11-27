@@ -24,7 +24,7 @@ export default function NextProject({ path }: { path: string }) {
     <section id="next-zone" className={`${FT} mt-32 w-full px-2 pb-28 md:mt-48 md:px-3 md:pb-36`}>
       <div className="grid grid-cols-1 gap-x-3 gap-y-4 border-t border-black/15 pt-2 md:grid-cols-12">
         <div className="md:col-span-3 md:pr-7">
-          <p className="flex justify-between text-black/45">
+          <p className="flex justify-between text-black/55">
             <span>{t('Projet suivant', 'Next project')}</span>
             <span className="tabular-nums">
               {pad(index + 1)} / {pad(projects.length)}
@@ -34,7 +34,7 @@ export default function NextProject({ path }: { path: string }) {
             {title}
             <MarkFor link={np.link} />
           </Link>
-          <p className="text-black/45">{t(np.subtitle.fr, np.subtitle.en)}</p>
+          <p className="text-black/55">{t(np.subtitle.fr, np.subtitle.en)}</p>
         </div>
         <Link
           href={np.link}
@@ -49,7 +49,7 @@ export default function NextProject({ path }: { path: string }) {
 
       {/* the twelve marks: an index that only this site could have */}
       <nav aria-label={t('Tous les projets', 'All projects')} className="mt-20 grid grid-cols-1 gap-x-3 gap-y-4 md:mt-28 md:grid-cols-12">
-        <p className="text-black/45 md:col-span-3">{t('Les douze projets', 'The twelve projects')}</p>
+        <p className="text-black/55 md:col-span-3">{t('Les douze projets', 'The twelve projects')}</p>
         <ol className="grid grid-cols-6 gap-y-5 md:col-span-9 md:col-start-4 md:grid-cols-12">
           {projects.map((p, i) => {
             const here = p.link === path;
@@ -59,7 +59,7 @@ export default function NextProject({ path }: { path: string }) {
                   <span className={here ? '' : 'opacity-25'}>
                     <MarkFor link={p.link} className="h-[18px] w-[18px]" />
                   </span>
-                  <span className={`text-[11px] tabular-nums ${here ? '' : 'text-black/45'}`}>{pad(i + 1)}</span>
+                  <span className={`text-[11px] tabular-nums ${here ? '' : 'text-black/55'}`}>{pad(i + 1)}</span>
                 </Link>
               </li>
             );

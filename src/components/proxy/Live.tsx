@@ -138,7 +138,7 @@ export function LiveRequest() {
                   <span className="w-[18px] text-center text-[12px]" style={GM}>
                     {undone ? '↺' : doneStep ? '✓' : active ? '…' : k + 1}
                   </span>
-                  <span className={`flex-1 ${undone ? 'line-through text-black/45' : ''}`}>{s.label}</span>
+                  <span className={`flex-1 ${undone ? 'line-through text-black/55' : ''}`}>{s.label}</span>
                   {s.warn ? (
                     <span className="text-[11px] px-2 py-[2px]" style={{ boxShadow: `inset 0 0 0 1px ${WARN}`, color: WARN }}>{s.note}</span>
                   ) : (

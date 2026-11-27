@@ -10,8 +10,8 @@ function Captioned({ p }: { p: Piece }) {
     <figure className="space-y-4">
       <Media src={p.src} alt={p.title} width={p.width} height={p.height} video={p.video} />
       <figcaption className="grid grid-cols-1 md:grid-cols-12 gap-2">
-        <span className="md:col-span-4 text-[13px] text-black/45">{p.title}</span>
-        <span className="md:col-span-8 text-xs text-black/45 leading-relaxed max-w-xl">{p.caption}</span>
+        <span className="md:col-span-4 text-[13px] text-black/55">{p.title}</span>
+        <span className="md:col-span-8 text-xs text-black/55 leading-relaxed max-w-xl">{p.caption}</span>
       </figcaption>
     </figure>
   );
@@ -87,8 +87,8 @@ export default function Page() {
         <figure className="space-y-4 max-w-2xl mx-auto">
           <Media src="/ai-red-figure.webp" alt="Material Study" width={1920} height={2400} />
           <figcaption className="text-center space-y-1">
-            <span className="block text-[13px] text-black/45">Material Study</span>
-            <span className="block text-xs text-black/45">
+            <span className="block text-[13px] text-black/55">Material Study</span>
+            <span className="block text-xs text-black/55">
               {t('Une étude de matière : laque rouge, courbes et lumière.', 'A material study: red lacquer, curves and light.')}
             </span>
           </figcaption>

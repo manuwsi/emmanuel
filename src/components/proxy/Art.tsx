@@ -47,7 +47,7 @@ export function TrustLine() {
     <figure ref={ref}>
       <div className="flex justify-between text-[14px] leading-[1.6] md:text-[13px]">
         <span>{t('Proxy demande tout', 'Proxy asks for everything')}</span>
-        <span className="hidden tabular-nums text-black/45 md:inline">{on ? t("Trois semaines plus tard", "Three weeks later") : t("Premier jour", "Day one")}</span>
+        <span className="hidden tabular-nums text-black/55 md:inline">{on ? t("Trois semaines plus tard", "Three weeks later") : t("Premier jour", "Day one")}</span>
         <span>{t('Proxy agit en silence', 'Proxy acts silently')}</span>
       </div>
       <div className="relative mt-6 h-[150px] md:h-[110px]">

@@ -25,7 +25,7 @@ function Section({ title, children }: { title: string; children: ReactNode }) {
       viewport={{ once: true }}
       className="grid grid-cols-1 md:grid-cols-12 gap-6 md:gap-8 border-t border-black/15 pt-10"
     >
-      <h2 className="md:col-span-4 text-[13px] text-black/45">{title}</h2>
+      <h2 className="md:col-span-4 text-[13px] text-black/55">{title}</h2>
       <div className="md:col-span-8">{children}</div>
     </motion.section>
   );
@@ -95,7 +95,7 @@ export default function AboutPage() {
           transition={{ duration: 1 }}
           className="space-y-8 md:space-y-10"
         >
-          <span className="block text-[13px] text-black/45">
+          <span className="block text-[13px] text-black/55">
             {t('À propos', 'About')}
           </span>
           <h1 className="text-4xl md:text-7xl font-medium tracking-[-0.03em] tracking-tight leading-[1.05] max-w-4xl">
@@ -192,7 +192,7 @@ export default function AboutPage() {
           {/* AWARD */}
           <Section title={t('Distinction', 'Award')}>
             <p className="text-lg md:text-2xl font-medium tracking-[-0.03em]">Lovie Award — Best Experience Art Direction</p>
-            <p className="mt-2 text-sm text-black/50">
+            <p className="mt-2 text-sm text-black/55">
               {t('Hennessy X.O Second Skin, avec OKCC — VivaTech 2025', 'Hennessy X.O Second Skin, with OKCC — VivaTech 2025')}
             </p>
           </Section>
@@ -204,9 +204,9 @@ export default function AboutPage() {
                 <div key={e.where} className="space-y-4">
                   <div className="flex flex-col md:flex-row md:items-baseline md:justify-between gap-1">
                     <h3 className="text-base md:text-lg">
-                      {e.role} <span className="text-black/50">· {e.where}</span>
+                      {e.role} <span className="text-black/55">· {e.where}</span>
                     </h3>
-                    <span className="text-xs tracking-widest uppercase text-black/45 tabular-nums">{e.date}</span>
+                    <span className="text-xs tracking-widest uppercase text-black/55 tabular-nums">{e.date}</span>
                   </div>
                   <ul className="space-y-2 text-sm text-black/70 leading-relaxed">
                     {e.items.map((it) => (
@@ -223,8 +223,8 @@ export default function AboutPage() {
           {/* EDUCATION */}
           <Section title={t('Formation', 'Education')}>
             <ul className="space-y-3 text-sm md:text-base text-black/80">
-              <li>Master Digital Design <span className="text-black/50">· ESD — École Supérieure du Digital, Paris</span></li>
-              <li>Bachelor Création Digitale <span className="text-black/50">· ESD — École Supérieure du Digital, Paris</span></li>
+              <li>Master Digital Design <span className="text-black/55">· ESD — École Supérieure du Digital, Paris</span></li>
+              <li>Bachelor Création Digitale <span className="text-black/55">· ESD — École Supérieure du Digital, Paris</span></li>
             </ul>
           </Section>
 
@@ -233,7 +233,7 @@ export default function AboutPage() {
             <dl className="grid grid-cols-1 md:grid-cols-2 gap-6">
               {skills.map((s) => (
                 <div key={s.k} className="space-y-1">
-                  <dt className="text-[13px] text-black/45">{s.k}</dt>
+                  <dt className="text-[13px] text-black/55">{s.k}</dt>
                   <dd className="text-sm text-black/80 leading-relaxed">{s.v}</dd>
                 </div>
               ))}
@@ -248,7 +248,7 @@ export default function AboutPage() {
           </Section>
         </div>
 
-        <footer className="mt-32 mb-10 text-center text-xs tracking-widest text-black/45">
+        <footer className="mt-32 mb-10 text-center text-xs tracking-widest text-black/55">
           © {new Date().getFullYear()} Emmanuel Ijjou
         </footer>
       </div>

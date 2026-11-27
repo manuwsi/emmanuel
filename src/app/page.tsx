@@ -46,7 +46,7 @@ function ProjectCard({ project, index }: { project: Project; index: number; smal
         <div className={`${TXT} flex items-start justify-between gap-3 pt-1.5`}>
           <div>
             <p className="font-medium">{title}</p>
-            <p className="text-black/50">{t(project.subtitle.fr, project.subtitle.en)}</p>
+            <p className="text-black/55">{t(project.subtitle.fr, project.subtitle.en)}</p>
           </div>
           <span className="flex shrink-0 items-center gap-2.5 tabular-nums text-black/55">
             <MarkFor link={project.link} />
@@ -62,7 +62,7 @@ function GroupLabel({ children, count, first = false, right }: { children: React
   return (
     <div className={`${TXT} flex items-baseline justify-between px-2 pb-2 md:px-0 ${first ? 'pt-8 md:pt-10' : 'pt-20 md:pt-28'}`}>
       <p>
-        {children} <span className="ml-2 tabular-nums text-black/45">{count}</span>
+        {children} <span className="ml-2 tabular-nums text-black/55">{count}</span>
       </p>
       {right}
     </div>
@@ -171,7 +171,7 @@ function IndexView() {
             <p className="font-medium">
               <DotText key={p.link} text={t(p.title.fr, p.title.en)} play="mount" />
             </p>
-            <p className="text-black/50">{t(p.subtitle.fr, p.subtitle.en)}</p>
+            <p className="text-black/55">{t(p.subtitle.fr, p.subtitle.en)}</p>
           </motion.div>
           <span className="flex items-center gap-2.5 tabular-nums text-black/55">
             <MarkFor link={p.link} />
@@ -194,9 +194,9 @@ function IndexView() {
               className={`${TXT} grid grid-cols-[3ch_1fr_auto] items-baseline gap-x-3 border-t border-black/10 px-2 py-2 transition-opacity duration-300 md:px-0`}
               style={{ opacity: Math.max(0.14, 1 - d * 0.28) }}
             >
-              <span className="tabular-nums text-black/45">{String(i + 1).padStart(2, '0')}</span>
+              <span className="tabular-nums text-black/55">{String(i + 1).padStart(2, '0')}</span>
               <span className="font-medium">{t(proj.title.fr, proj.title.en)}</span>
-              <span className="text-right text-black/45">{t(proj.subtitle.fr, proj.subtitle.en).replace(/^\d{4} — /, '')}</span>
+              <span className="text-right text-black/55">{t(proj.subtitle.fr, proj.subtitle.en).replace(/^\d{4} — /, '')}</span>
             </Link>
           );
         })}
@@ -248,7 +248,7 @@ export default function Home() {
         <div className={`${TXT} flex items-start justify-between gap-3 pt-1.5`}>
           <div>
             <p className="font-medium">Contact</p>
-            <p className="text-black/50">emmanuelijjou@gmail.com</p>
+            <p className="text-black/55">emmanuelijjou@gmail.com</p>
           </div>
         </div>
       </a>
@@ -286,11 +286,11 @@ export default function Home() {
             <p className="font-medium">
               {t('Je conçois des produits complexes, de l’agent IA au poste de pilotage d’un tunnelier.', 'I design complex products, from an AI agent to the cockpit of a tunnel boring machine.')}
             </p>
-            <p className="text-black/45">
+            <p className="text-black/55">
               {t('Précédemment OKCC, studio créatif — ', 'Previously OKCC, creative studio — ')}Hennessy, Shu Uemura, Louis Vuitton, L&apos;Oréal, YSL Beauty, HOKA.
             </p>
           </div>
-          <p className="text-black/45 md:col-span-3 md:col-start-6">{t('Disponible — CDI, Paris ou remote', 'Available — full-time, Paris or remote')}</p>
+          <p className="text-black/55 md:col-span-3 md:col-start-6">{t('Disponible — CDI, Paris ou remote', 'Available — full-time, Paris or remote')}</p>
           <a href="#work" className="md:col-span-2 md:col-start-11 md:text-right">
             {t('Voir les projets', 'See the work')} ↓
           </a>

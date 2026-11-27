@@ -79,7 +79,7 @@ export default function Compare({ pairs, width = 2880, height = 1800, labels }: 
       </div>
       <figcaption className="mt-3 flex items-baseline justify-between gap-4 text-[13px]">
         <span>← {L.left}</span>
-        <span className="text-center text-black/50">{t('Fais glisser la ligne', 'Drag the line')}</span>
+        <span className="text-center text-black/55">{t('Fais glisser la ligne', 'Drag the line')}</span>
         <span>{L.right} →</span>
       </figcaption>
     </figure>

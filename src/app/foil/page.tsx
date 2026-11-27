@@ -160,7 +160,7 @@ export default function Page() {
           {/* 03 — the product */}
           <Chapter n={3} title={t('Le produit', 'The product')} lede={t('La carte reste au centre de l’écran. Je l’ai éclairée comme un objet : son reflet bouge avec le doigt.', 'The card stays at the centre of the screen. I lit it like an object: its reflection moves with your finger.')} />
           <div className="fine-r">
-            <p className="pb-2 text-black/45">{t('Touche la carte', 'Touch the card')} →</p>
+            <p className="pb-2 text-black/55">{t('Touche la carte', 'Touch the card')} →</p>
             <HoloCard />
           </div>
           <Beat>{t('Toute la collection sur un écran : un point par carte, regroupés par jeu. Plus une carte vaut cher, plus son point est gros.', 'The whole collection on one screen: one dot per card, grouped by game. The more a card is worth, the bigger its dot.')}</Beat>
@@ -172,11 +172,11 @@ export default function Page() {
             <Story />
           </div>
           <div className="mt-12">
-            <div className="mb-3 text-black/45">{t('Choix de design', 'Design choices')}</div>
+            <div className="mb-3 text-black/55">{t('Choix de design', 'Design choices')}</div>
             <div className="grid grid-cols-1 gap-6 md:grid-cols-2 md:gap-3">
               {principles(t).map((p) => (
                 <div key={p.n} className="border-t border-black/15 pt-2">
-                  <div className="text-black/45">{p.n}</div>
+                  <div className="text-black/55">{p.n}</div>
                   <div className="mt-1 font-medium">{p.title}</div>
                   <p className="mt-1 text-black/70">{p.text}</p>
                 </div>
@@ -205,7 +205,7 @@ export default function Page() {
                   <Image unoptimized src={`/foil/p/${h.f}.webp`} alt={h.n} width={780} height={1688} sizes="(min-width:768px) 16vw, 30vw" className="h-auto w-full rounded-t-[6%]" />
                 </div>
               </DotIn>
-              <figcaption className="pt-1.5 text-black/45">{h.n}</figcaption>
+              <figcaption className="pt-1.5 text-black/55">{h.n}</figcaption>
             </figure>
           ))}
         </div>

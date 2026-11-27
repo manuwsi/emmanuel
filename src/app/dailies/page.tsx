@@ -105,7 +105,7 @@ const metrics = (t: T) => [
 ];
 
 function Caption({ children }: { children: React.ReactNode }) {
-  return <p className="text-[13px] text-black/50 leading-relaxed pt-2 max-w-2xl">{children}</p>;
+  return <p className="text-[13px] text-black/55 leading-relaxed pt-2 max-w-2xl">{children}</p>;
 }
 
 export default function Page() {
@@ -129,7 +129,7 @@ export default function Page() {
         <div className="space-y-8 md:space-y-10">
           <>
       <Media src="/dailies/01-projet.webp" alt={t('Dailies — le projet et ses huit plans', 'Dailies — the project and its eight shots')} {...W} priority />
-          <p className="text-[13px] text-black/50 pt-2">
+          <p className="text-[13px] text-black/55 pt-2">
             <a href="/dailies/prototype/index.html" className="underline underline-offset-2">
               {t('Ouvrir le prototype cliquable', 'Open the clickable prototype')}
             </a>{' '}
@@ -165,9 +165,9 @@ export default function Page() {
       <ol className="grid grid-cols-1 md:grid-cols-5 gap-px bg-black/15 border border-black/15">
         {problems(t).map((p, i) => (
           <li key={p.title} className="bg-white p-5 md:p-6 space-y-2">
-            <span className="text-[13px] text-black/45">0{i + 1}</span>
+            <span className="text-[13px] text-black/55">0{i + 1}</span>
             <h4 className="text-[13px] font-medium">{p.title}</h4>
-            <p className="text-xs text-black/50 leading-relaxed">{p.text}</p>
+            <p className="text-xs text-black/55 leading-relaxed">{p.text}</p>
           </li>
         ))}
       </ol>
@@ -184,7 +184,7 @@ export default function Page() {
       <div className="overflow-x-auto">
         <table className="w-full min-w-[560px] text-[13px] border-collapse">
           <thead>
-            <tr className="text-black/45 text-left">
+            <tr className="text-black/55 text-left">
               <th className="font-normal py-3 pr-4 border-b border-black/15"></th>
               <th className="font-normal py-3 px-4 border-b border-black/15">Frame.io</th>
               <th className="font-normal py-3 px-4 border-b border-black/15">Preview</th>
@@ -214,8 +214,8 @@ export default function Page() {
           <div key={r.name} className="bg-white p-6 md:p-8 flex flex-col gap-4">
             <h4 className="font-medium">{r.name}</h4>
             <p className="text-sm text-black/70 leading-relaxed">{r.does}</p>
-            <p className="mt-auto text-xs text-black/50 leading-relaxed">
-              <span className="text-black/45">{t('Veut : ', 'Wants: ')}</span>
+            <p className="mt-auto text-xs text-black/55 leading-relaxed">
+              <span className="text-black/55">{t('Veut : ', 'Wants: ')}</span>
               {r.wants}
             </p>
           </div>
@@ -234,7 +234,7 @@ export default function Page() {
       <ol className="grid grid-cols-2 md:grid-cols-6 gap-px bg-black/15 border border-black/15">
         {flow(t).map((s, i) => (
           <li key={s} className={`p-5 space-y-2 ${i < 4 ? 'bg-[#0b0b0c] text-white' : 'bg-[#f1efea]'}`}>
-            <span className={`text-[13px] ${i < 4 ? 'text-white/45' : 'text-black/45'}`}>
+            <span className={`text-[13px] ${i < 4 ? 'text-white/45' : 'text-black/55'}`}>
               0{i + 1} · {i < 4 ? t('studio', 'studio') : t('client', 'client')}
             </span>
             <p className="text-[13px] font-medium leading-snug">{s}</p>
@@ -293,10 +293,10 @@ export default function Page() {
       <div className="grid grid-cols-1 md:grid-cols-3 gap-px bg-black/15 border border-black/15">
         {personas(t).map((p) => (
           <div key={p.who} className="bg-white p-6 md:p-8 flex flex-col gap-4">
-            <span className="text-[13px] text-black/45">{p.who}</span>
+            <span className="text-[13px] text-black/55">{p.who}</span>
             <h4 className="font-medium">{p.task}</h4>
             <p className="text-sm text-black/70 leading-relaxed">{p.found}</p>
-            <p className="mt-auto text-xs text-black/50 leading-relaxed">→ {p.change}</p>
+            <p className="mt-auto text-xs text-black/55 leading-relaxed">→ {p.change}</p>
           </div>
         ))}
       </div>
@@ -359,9 +359,9 @@ export default function Page() {
       <div className="grid grid-cols-1 md:grid-cols-5 gap-px bg-black/15 border border-black/15">
         {principles(t).map((p, i) => (
           <div key={p.title} className="bg-white p-5 md:p-6 space-y-2">
-            <span className="text-[13px] text-black/45">0{i + 1}</span>
+            <span className="text-[13px] text-black/55">0{i + 1}</span>
             <h4 className="text-[13px] font-medium">{p.title}</h4>
-            <p className="text-xs text-black/50 leading-relaxed">{p.text}</p>
+            <p className="text-xs text-black/55 leading-relaxed">{p.text}</p>
           </div>
         ))}
       </div>
@@ -375,9 +375,9 @@ export default function Page() {
       <div className="grid grid-cols-1 md:grid-cols-5 gap-px bg-black/15 border border-black/15">
         {metrics(t).map((x, i) => (
           <div key={x.m} className="bg-white p-5 md:p-6 space-y-2">
-            <span className="text-[13px] text-black/45">0{i + 1}</span>
+            <span className="text-[13px] text-black/55">0{i + 1}</span>
             <h4 className="text-[13px] font-medium">{x.m}</h4>
-            <p className="text-xs text-black/50 leading-relaxed">{x.why}</p>
+            <p className="text-xs text-black/55 leading-relaxed">{x.why}</p>
           </div>
         ))}
       </div>

@@ -150,7 +150,7 @@ export default function Page() {
               <motion.figure key={s.f} initial={{ opacity: 0 }} whileInView={{ opacity: 1 }} viewport={{ once: true, margin: '-60px' }} transition={{ duration: 0.8, delay: i * 0.1 }}>
                 <Phone src={S(s.f)} alt={`Shu Uemura — ${t(s.fr, s.en)}`} />
                 <figcaption className="mt-2 hidden md:grid grid-cols-[22px_1fr] gap-x-2">
-                  <span className="text-black/45">{s.k}</span>
+                  <span className="text-black/55">{s.k}</span>
                   <span><span className="font-medium">{t(s.fr, s.en)}</span> <span className="text-black/60">{s.d}</span></span>
                 </figcaption>
               </motion.figure>
@@ -181,7 +181,7 @@ export default function Page() {
               <Phone src="/shu-draft-requests.png" alt={t('Premier jet, galerie de demandes', 'First draft, request gallery')} />
               <Phone src="/shu-draft-chat.png" alt={t('Premier jet, chat', 'First draft, chat')} />
             </div>
-            <figcaption className="mt-2 text-black/45">{t('Premier jet', 'First draft')}</figcaption>
+            <figcaption className="mt-2 text-black/55">{t('Premier jet', 'First draft')}</figcaption>
           </figure>
           <div className="mx-auto w-full max-w-[300px]">
             <Compare
@@ -197,7 +197,7 @@ export default function Page() {
           </div>
         </div>
         <div className="mt-16">
-          <div className="mb-3 text-black/45">{t('Choix de design', 'Design choices')}</div>
+          <div className="mb-3 text-black/55">{t('Choix de design', 'Design choices')}</div>
           <Principles items={principles} />
         </div>
 
@@ -222,7 +222,7 @@ export default function Page() {
                   <Image src={`/shu-sb-${f.n}.jpg`} alt={t(`Film — ${f.fr}`, `Film — ${f.en}`)} fill sizes="(min-width:768px) 25vw, 50vw" className="object-cover" />
                 </div>
               </DotIn>
-              <figcaption className="pb-2 pt-1.5 text-black/45">
+              <figcaption className="pb-2 pt-1.5 text-black/55">
                 <span className="tabular-nums">0{f.n} </span>
                 <span className="text-[#0a0a0a]">{t(f.fr, f.en)}</span>
               </figcaption>

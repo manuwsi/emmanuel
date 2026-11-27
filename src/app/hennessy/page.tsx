@@ -136,7 +136,7 @@ export default function Page() {
                 )}
               </div>
               <figcaption className="mt-2 grid grid-cols-[28px_1fr] gap-x-2">
-                <span className="text-black/45 tabular-nums">0{v.n}</span>
+                <span className="text-black/55 tabular-nums">0{v.n}</span>
                 <span className={v.kept ? '' : 'text-black/60'}>{t(v.fr, v.en)}</span>
               </figcaption>
             </motion.figure>
@@ -149,7 +149,7 @@ export default function Page() {
           )}
         </p>
         <div className="mt-16">
-          <div className="mb-3 text-black/45">{t('Choix de design', 'Design choices')}</div>
+          <div className="mb-3 text-black/55">{t('Choix de design', 'Design choices')}</div>
           <Principles items={principles} />
         </div>
 
@@ -177,7 +177,7 @@ export default function Page() {
           40
         </motion.div>
         <div className="mt-8 flex flex-col gap-1 border-t border-black/15 pt-2 md:flex-row md:items-baseline md:justify-between">
-          <span className="text-black/45">{t('Distinction', 'Award')}</span>
+          <span className="text-black/55">{t('Distinction', 'Award')}</span>
           <span>Lovie Award — Best Experience Art Direction</span>
         </div>
       </div>

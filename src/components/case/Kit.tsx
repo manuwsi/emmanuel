@@ -22,9 +22,9 @@ export function Title({ title, kicker, subtitle }: { title: string; kicker?: str
     <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 1 }} className="fine-full space-y-4">
       <h1 data-intro-target className={`${FT} font-medium`}>
         {title}
-        {kicker && <span className="text-black/45"> {kicker}</span>}
+        {kicker && <span className="text-black/55"> {kicker}</span>}
       </h1>
-      <h2 className={`${FT} !mt-0 text-black/45`}>{subtitle}</h2>
+      <h2 className={`${FT} !mt-0 text-black/55`}>{subtitle}</h2>
     </motion.div>
   );
 }
@@ -43,7 +43,7 @@ export function Meta({ rows, children }: { rows: [string, string][]; children: R
       <dl className="md:col-span-3 grid grid-cols-2 md:grid-cols-1 gap-4 content-start">
         {rows.map(([k, v]) => (
           <div key={k}>
-            <dt className="text-black/45">{k}</dt>
+            <dt className="text-black/55">{k}</dt>
             <dd>{v}</dd>
           </div>
         ))}
@@ -59,7 +59,7 @@ export function Chap({ n, title, lede, children }: { n: number; title: string; l
     <>
       <div className="fine-gap" aria-hidden />
       <motion.div initial={{ opacity: 0 }} whileInView={{ opacity: 1 }} transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }} viewport={{ once: true }} className="fine-note" data-chapter={label}>
-        <h3 className="text-black/45">
+        <h3 className="text-black/55">
           <DotText text={label} play="view" />
         </h3>
         {lede && <p className="mt-3 font-medium">{lede}</p>}
@@ -74,7 +74,7 @@ export function Principles({ items }: { items: { k: string; v: string }[] }) {
     <div className={`${FT} grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-3`}>
       {items.map((p, i) => (
         <div key={p.k} className="border-t border-black/15 pt-2">
-          <div className="text-black/45">0{i + 1}</div>
+          <div className="text-black/55">0{i + 1}</div>
           <div className="mt-1 font-medium">{p.k}</div>
           <p className="mt-1 text-black/70">{p.v}</p>
         </div>
@@ -92,7 +92,7 @@ export function Bleed({ src, alt, aspect, mobileAspect, caption, position = 'cen
           <Image src={src} alt={alt} fill priority={priority} sizes="(max-width: 768px) 100vw, 50vw" quality={90} className="object-cover" style={{ objectPosition: position }} />
         </DotIn>
       </div>
-      {caption && <figcaption className={`${FT} pt-1.5 text-black/45 ${MEDIA}`}>{caption}</figcaption>}
+      {caption && <figcaption className={`${FT} pt-1.5 text-black/55 ${MEDIA}`}>{caption}</figcaption>}
     </figure>
   );
 }

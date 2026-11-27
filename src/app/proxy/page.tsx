@@ -15,7 +15,7 @@ const WARN = '#c9461f';
 
 /** A screen of the product, with a thin frame so white screens don't melt into the page. */
 function Screen({ src, alt, caption }: { src: string; alt: string; caption?: ReactNode }) {
-  return <Media {...W} src={src} alt={alt} caption={caption} className="[&_img]:border [&_img]:border-black/10" />;
+  return <Media {...W} src={src} alt={alt} caption={caption} />;
 }
 
 /** A readable close-up of part of a screen: two thirds of the column, its caption beside it. */
@@ -25,7 +25,7 @@ function Zoom({ src, w, h, alt, children }: { src: string; w: number; h: number;
       <div className="md:col-span-2">
         <Media crisp src={src} alt={alt} width={w} height={h} className="[&_img]:border [&_img]:border-black/10" />
       </div>
-      <p className="text-black/45">{children}</p>
+      <p className="text-black/55">{children}</p>
     </div>
   );
 }
@@ -54,7 +54,7 @@ function Grounding({ t }: { t: T }) {
   ];
   return (
     <figure className={`${FT} mt-10`}>
-      <div className="hidden grid-cols-[150px_1fr_1fr] gap-3 border-b border-black/15 pb-2 text-black/45 md:grid">
+      <div className="hidden grid-cols-[150px_1fr_1fr] gap-3 border-b border-black/15 pb-2 text-black/55 md:grid">
         <span>{t('Source', 'Source')}</span>
         <span>{t('Ce qu’elle montre', 'What it shows')}</span>
         <span>{t('Ce que j’en ai fait', 'What I did with it')}</span>
@@ -129,7 +129,7 @@ export default function Page() {
       </Chapter>
       <figure className="border border-black/10 px-5 pb-6 pt-5 md:px-8 md:pb-8">
         <TrustLine />
-        <figcaption className={`${FT} mt-4 text-black/45`}>{t('Au premier jour, tout est réglé sur « Proposer ». Trois semaines plus tard, chaque domaine a trouvé sa place.', 'On day one, everything is set to “Propose”. Three weeks later, each domain has found its place.')}</figcaption>
+        <figcaption className={`${FT} mt-4 text-black/55`}>{t('Au premier jour, tout est réglé sur « Proposer ». Trois semaines plus tard, chaque domaine a trouvé sa place.', 'On day one, everything is set to “Propose”. Three weeks later, each domain has found its place.')}</figcaption>
       </figure>
 
       {/* 02 — THE MODEL */}
@@ -223,7 +223,7 @@ export default function Page() {
       </div>
       <div className="hidden md:block">
         <LiveRequest />
-        <p className={`${FT} mt-2 text-black/45`}>{t('Essayez-le : validez, puis annulez l’ajout à l’agenda ou demandez le remboursement.', 'Try it: approve, then undo the calendar entry or request the refund.')}</p>
+        <p className={`${FT} mt-2 text-black/55`}>{t('Essayez-le : validez, puis annulez l’ajout à l’agenda ou demandez le remboursement.', 'Try it: approve, then undo the calendar entry or request the refund.')}</p>
       </div>
       <div className="md:hidden">
         <Media video src="/proxy/proxy-prototype.mp4" width={1540} height={740} alt={t('Vidéo du prototype : Léa valide, annule l’ajout à l’agenda puis demande le remboursement', 'Prototype video: Léa approves, undoes the calendar entry, then asks for the refund')} />
@@ -275,7 +275,7 @@ export default function Page() {
         <p>{t('La première version tient en trois domaines où une erreur coûte peu : l’agenda, les fichiers et les achats sous un seuil. Le journal, la pause et « Oublier » sont là dès le départ.', 'The first version covers three domains where mistakes cost little: calendar, files and purchases under a threshold. The log, the pause and “Forget” are there from day one.')}</p>
         <p>{t('Prochaine étape : cinq sessions avec des personnes qui délèguent déjà, sur trois missions. Trois indicateurs suivront ensuite la confiance en usage : validations sans modification, annulations, domaines montés d’un niveau.', 'Next step: five sessions with people who already delegate, on three missions. Three indicators will then track trust in use: unchanged approvals, undos, domains moved up a level.')}</p>
       </Chapter>
-      <div className={`${FT} space-y-1 border-t border-black/15 pt-3 text-black/45`}>
+      <div className={`${FT} space-y-1 border-t border-black/15 pt-3 text-black/55`}>
         <p className="text-[#0a0a0a]">{t('Sources', 'Sources')}</p>
         <p>{t('Léa, ses clients et les montants sont fictifs.', 'Léa, her clients and the amounts are fictional.')}</p>
         <p><a className="underline underline-offset-2" href="https://openai.com/index/introducing-chatgpt-agent/" target="_blank" rel="noreferrer">OpenAI, Introducing ChatGPT agent</a></p>

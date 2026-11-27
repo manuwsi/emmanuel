@@ -76,9 +76,9 @@ export function CaseHead({ title, kicker, subtitle, lede, intro, rows }: { title
       <div className="md:col-span-3">
         <h1 data-intro-target className="font-medium">
           {title}
-          {kicker && <span className="text-black/45"> {kicker}</span>}
+          {kicker && <span className="text-black/55"> {kicker}</span>}
         </h1>
-        <h2 className="text-black/45">{subtitle}</h2>
+        <h2 className="text-black/55">{subtitle}</h2>
       </div>
       <div className="space-y-3 md:col-span-4 md:col-start-4 md:pr-6">
         {lede && <p className="font-medium">{lede}</p>}
@@ -87,7 +87,7 @@ export function CaseHead({ title, kicker, subtitle, lede, intro, rows }: { title
       <dl className="grid grid-cols-2 content-start gap-x-3 gap-y-4 md:col-span-3 md:col-start-9">
         {rows.map(([k, v]) => (
           <div key={k}>
-            <dt className="text-black/45">{k}</dt>
+            <dt className="text-black/55">{k}</dt>
             <dd>{v}</dd>
           </div>
         ))}
@@ -119,9 +119,12 @@ export function Media({
   crisp?: boolean;
   caption?: ReactNode;
 }) {
+  // a flat desktop screen (16:10 capture) is laid on a light plate, like a print on a table,
+  // so every screen of the folio is presented the same way next to the photo mockups
+  const screen = !video && /\.webp$/.test(src) && Math.abs(width / height - 1.6) < 0.02;
   return (
     <figure className={`w-full ${className}`}>
-      <DotIn>
+      <DotIn className={screen ? 'bg-[#f1f1ef] p-[4%] md:p-[5.5%]' : ''}>
         {video ? (
           <LazyVideo src={src} width={width} height={height} alt={alt} />
         ) : (
@@ -133,11 +136,11 @@ export function Media({
             priority={priority}
             unoptimized={crisp}
             sizes="(max-width: 768px) 100vw, 50vw"
-            className="w-full h-auto block"
+            className={`block h-auto w-full ${screen ? 'shadow-[0_22px_44px_-26px_rgba(0,0,0,0.38)] ring-1 ring-black/[0.06]' : ''}`}
           />
         )}
       </DotIn>
-      {caption && <figcaption className={`${FT} mt-2 mb-4 text-black/45`}>{caption}</figcaption>}
+      {caption && <figcaption className={`${FT} mt-2 mb-4 text-black/55`}>{caption}</figcaption>}
     </figure>
   );
 }
@@ -217,7 +220,7 @@ export function Chapter({ title, n, lede, children }: { title: string; n?: numbe
     <>
       <div className="fine-gap" aria-hidden />
       <motion.div initial={{ opacity: 0 }} whileInView={{ opacity: 1 }} transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }} viewport={{ once: true }} className="fine-note" data-chapter={label}>
-        <h3 className="text-black/45">
+        <h3 className="text-black/55">
           <DotText text={label} play="view" />
         </h3>
         {lede && <p className="mt-3 font-medium">{lede}</p>}
@@ -233,7 +236,7 @@ export function Summary({ items }: { items: { k: string; v: string }[] }) {
     <div className={`grid grid-cols-1 gap-6 border-t border-black/15 pt-3 md:grid-cols-3 md:gap-3 ${FT}`}>
       {items.map((x) => (
         <div key={x.k}>
-          <span className="block text-black/45">{x.k}</span>
+          <span className="block text-black/55">{x.k}</span>
           <p className="mt-1">{x.v}</p>
         </div>
       ))}

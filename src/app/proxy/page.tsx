@@ -2,6 +2,7 @@
 
 import { ReactNode, useEffect, useState } from 'react';
 import Image from 'next/image';
+import { preload } from 'react-dom';
 import { usePathname } from 'next/navigation';
 import { FT, Media, Summary } from '@/components/project/ProjectPage';
 import { useT } from '@/components/i18n';
@@ -157,6 +158,8 @@ function Journal({ beats }: { beats: Beat[] }) {
 }
 
 export default function Page() {
+  // Proxy's serif is fetched first, so the opening sentence is set once, in its own type (no reflow)
+  preload('/proxy/prototype/fonts/newsreader-latin-300-normal.woff2', { as: 'font', type: 'font/woff2', crossOrigin: 'anonymous' });
   const t = useT() as T;
   const pathname = usePathname();
   const mon = t('Lun. 3 nov.', 'Mon 3 Nov');

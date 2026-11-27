@@ -142,3 +142,28 @@ html.lenis, html.lenis body { height: auto; }
 .lenis.lenis-smooth { scroll-behavior: auto !important; }
 .lenis.lenis-smooth [data-lenis-prevent] { overscroll-behavior: contain; }
 
+
+/* ── Fine case layout ──────────────────────────────────────────────
+   One 12-column grid. On desktop the notes sit in columns 1–3 (sticky beside their first picture),
+   pictures and figures in columns 4–10, 8 px apart. On a phone everything is one column. */
+.fine-flow {
+  display: grid;
+  grid-template-columns: repeat(12, minmax(0, 1fr));
+  column-gap: 12px;
+  row-gap: 8px;
+  align-items: start;
+  font-size: 14px;
+  line-height: 1.6;
+}
+.fine-flow > * { grid-column: 1 / -1; min-width: 0; }
+.fine-flow > .fine-gap { height: 88px; }
+.fine-flow > .fine-note { padding-bottom: 20px; }
+.fine-flow > .fine-full { grid-column: 1 / -1 !important; }
+@media (min-width: 768px) {
+  .fine-flow { font-size: 13px; line-height: 1.6; }
+  .fine-flow > * { grid-column: 4 / 11; }
+  .fine-flow > .fine-gap { height: 160px; }
+  .fine-flow > .fine-note { grid-column: 1 / 4; grid-row: span 2; padding: 0 28px 0 0; }
+  .fine-flow > .fine-wide { grid-column: 1 / -1; }
+}
+.fine-flow p + p { margin-top: 0.75em; }

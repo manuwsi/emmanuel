@@ -41,7 +41,7 @@ export default function Header({ active, crumb }: { active?: 'work' | 'about'; c
       </div>
 
       <Link href="/" className={`${corner} bottom-0 left-0 flex items-end gap-2 pb-1`} aria-label={t('Accueil', 'Home')}>
-        <span className="block text-[15px] font-bold uppercase leading-none tracking-[-0.045em] min-[380px]:text-[17px] sm:text-[20px] md:text-[24px]">
+        <span className="block text-[15px] font-bold uppercase leading-none tracking-[-0.045em] min-[380px]:text-[16px] md:text-[18px]">
           <DotText text="Emmanuel Ijjou" play="intro" delay={200} />
         </span>
         <span className="mb-[1px]"><ProjectMark /></span>

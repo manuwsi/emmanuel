@@ -337,7 +337,7 @@ export default function Page() {
         <ol className="grid grid-cols-1 md:grid-cols-3 gap-px bg-black/15 border border-black/15">
           {glance(t).map((g) => (
             <li key={g.title} className="bg-white p-6 md:p-8 flex flex-col gap-3">
-              <span className="text-[15vw] md:text-[5.2vw] font-medium leading-[0.95] tracking-[-0.045em]">{g.time}</span>
+              <span className="text-[10vw] md:text-[2vw] font-medium leading-[0.95] tracking-[-0.04em]">{g.time}</span>
               <h4 className="text-xl md:text-2xl font-medium tracking-[-0.03em] leading-snug pt-4">{g.title}</h4>
               <p className="text-sm text-black/60 leading-relaxed">{g.text}</p>
             </li>
@@ -372,7 +372,7 @@ export default function Page() {
         <div className="md:col-span-5 bg-white p-6 md:p-8 flex flex-col justify-between gap-10">
           <div className="space-y-4">
             <span className="text-[13px] text-black/45">{t('Vue éclatée', 'Exploded view')}</span>
-            <h4 className="text-2xl md:text-[2.6vw] font-medium tracking-[-0.035em] leading-[1.05]">
+            <h4 className="text-[18px] md:text-[1.35vw] font-medium tracking-[-0.025em] leading-[1.15]">
               {t('Un écran, quatre couches, une information par couche.', 'One screen, four layers, one piece of information per layer.')}
             </h4>
           </div>

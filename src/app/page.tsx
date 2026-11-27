@@ -14,13 +14,13 @@ import { lenisScrollTo } from '@/components/dot/SmoothScroll';
 import '../styles/globals.css';
 
 const EASE = [0.22, 1, 0.36, 1] as const;
-const TXT = 'text-[13px] leading-[1.35]';
+const TXT = 'text-[14px] leading-[1.5] md:text-[13px]';
 
 /** One project: a card in a regular grid — every cover in the same 4:3 frame, then a thin caption. */
-function ProjectCard({ project, index, small = false }: { project: Project; index: number; small?: boolean }) {
+function ProjectCard({ project, index }: { project: Project; index: number; small?: boolean }) {
   const t = useT();
   const title = t(project.title.fr, project.title.en);
-  const cols = small ? 3 : 2;
+  const cols = 4;
   return (
     <article>
       <Link
@@ -45,7 +45,7 @@ function ProjectCard({ project, index, small = false }: { project: Project; inde
               alt={title}
               fill
               priority={index < 2}
-              sizes={small ? '(min-width:768px) 33vw, 100vw' : '(min-width:768px) 50vw, 100vw'}
+              sizes="(min-width:768px) 25vw, 50vw"
               quality={90}
               className="object-cover"
             />
@@ -55,7 +55,7 @@ function ProjectCard({ project, index, small = false }: { project: Project; inde
           <div className="h-full w-0 bg-[#0a0a0a] transition-[width] duration-700 ease-[cubic-bezier(.22,1,.36,1)] group-hover:w-full" />
         </div>
         <motion.div
-          className={`${TXT} flex items-start justify-between gap-4 px-2 pt-1.5 md:px-0`}
+          className={`${TXT} flex items-start justify-between gap-3 pt-1.5`}
           initial={{ opacity: 0 }}
           whileInView={{ opacity: 1 }}
           viewport={{ once: true, margin: '-6% 0px' }}
@@ -77,7 +77,7 @@ function ProjectCard({ project, index, small = false }: { project: Project; inde
 
 function GroupLabel({ children, count, first = false, right }: { children: React.ReactNode; count: number; first?: boolean; right?: React.ReactNode }) {
   return (
-    <div className={`${TXT} flex items-baseline justify-between px-2 pb-1.5 md:px-0 ${first ? 'pt-6' : 'pt-24 md:pt-32'}`}>
+    <div className={`${TXT} flex items-baseline justify-between px-2 pb-2 md:px-0 ${first ? 'pt-16 md:pt-24' : 'pt-20 md:pt-28'}`}>
       <p>
         {children} <span className="ml-2 tabular-nums text-black/45">{count}</span>
       </p>
@@ -168,7 +168,7 @@ function IndexView() {
   return (
     <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.8 }} className="grid grid-cols-1 gap-3 md:grid-cols-12">
       {/* the frame, well apart from the titles */}
-      <div className="sticky top-8 z-10 order-first bg-white pb-4 md:order-last md:col-span-4 md:col-start-9 md:self-start md:pt-[18vh]">
+      <div className="sticky top-8 z-10 order-first bg-white px-2 pb-4 md:order-last md:col-span-4 md:col-start-8 md:self-start md:px-0 md:pt-[22vh]">
         <div className="relative aspect-[16/10] w-full overflow-hidden bg-neutral-100 md:aspect-[4/3]">
           {projects.map((proj, i) => (
             <Image
@@ -183,7 +183,7 @@ function IndexView() {
             />
           ))}
         </div>
-        <div className={`${TXT} mt-2 flex items-start justify-between gap-4 px-2 md:px-0`}>
+        <div className={`${TXT} mt-1.5 flex items-start justify-between gap-3`}>
           <motion.div key={p.link} initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.35 }}>
             <p className="font-medium">
               <DotText key={p.link} text={t(p.title.fr, p.title.en)} play="mount" />
@@ -198,7 +198,7 @@ function IndexView() {
       </div>
 
       {/* the lines */}
-      <div ref={listRef} className="md:col-span-6 md:pb-[34vh] md:pt-[18vh]">
+      <div ref={listRef} className="md:col-span-5 md:pb-[40vh] md:pt-[22vh]">
         {projects.map((proj, i) => {
           const d = Math.abs(i - active);
           return (
@@ -211,11 +211,12 @@ function IndexView() {
               data-cursor="project"
               data-mark={proj.link.slice(1)}
               data-label={t('Voir', 'View')}
-              className="grid grid-cols-[2.6ch_1fr] items-baseline gap-x-3 border-t border-black/10 px-2 py-2.5 transition-opacity duration-300 md:px-0 md:py-3"
+              className={`${TXT} grid grid-cols-[3ch_1fr_auto] items-baseline gap-x-3 border-t border-black/10 px-2 py-2 transition-opacity duration-300 md:px-0`}
               style={{ opacity: Math.max(0.14, 1 - d * 0.28) }}
             >
-              <span className={`${TXT} tabular-nums text-black/50`}>{String(i + 1).padStart(2, '0')}</span>
-              <span className="text-[9vw] font-medium leading-[0.95] tracking-[-0.045em] md:text-[clamp(28px,3.1vw,52px)]">{t(proj.title.fr, proj.title.en)}</span>
+              <span className="tabular-nums text-black/45">{String(i + 1).padStart(2, '0')}</span>
+              <span className="font-medium">{t(proj.title.fr, proj.title.en)}</span>
+              <span className="text-right text-black/45">{t(proj.subtitle.fr, proj.subtitle.en).replace(/^\d{4} — /, '')}</span>
             </Link>
           );
         })}
@@ -253,9 +254,9 @@ export default function Home() {
   const contactCard = (
     <motion.div initial={{ opacity: 0 }} whileInView={{ opacity: 1 }} viewport={{ once: true, margin: '-8% 0px' }} transition={{ duration: 1, ease: EASE, delay: 0.16 }}>
       <a href="mailto:emmanuelijjou@gmail.com" className="group block">
-        <div className="relative flex aspect-[4/3] w-full flex-col justify-between bg-[#0a0a0a] p-5 text-white md:p-6">
+        <div className="relative flex aspect-[4/3] w-full flex-col justify-between bg-[#0a0a0a] p-3 text-white md:p-4">
           <p className={TXT + ' text-white/55'}>{t('Disponible — CDI, Paris ou remote', 'Available — full-time, Paris or remote')}</p>
-          <p className="text-[9vw] font-medium leading-[0.95] tracking-[-0.04em] md:text-[2.4vw]">
+          <p className={`${TXT} font-medium`}>
             {t('Un poste, un projet ?', 'A role, a project?')}
             <br />
             <span className="text-white/55 transition-colors duration-500 group-hover:text-white">{t('Écrivez-moi', 'Write to me')} →</span>
@@ -264,7 +265,7 @@ export default function Home() {
         <div className="h-[2px] w-full bg-black/10">
           <div className="h-full w-0 bg-[#0a0a0a] transition-[width] duration-700 ease-[cubic-bezier(.22,1,.36,1)] group-hover:w-full" />
         </div>
-        <div className={`${TXT} flex items-start justify-between gap-4 px-2 pt-1.5 md:px-0`}>
+        <div className={`${TXT} flex items-start justify-between gap-3 pt-1.5`}>
           <div>
             <p className="font-medium">Contact</p>
             <p className="text-black/50">emmanuelijjou@gmail.com</p>
@@ -281,33 +282,25 @@ export default function Home() {
     <main className="!block min-h-screen w-full !overflow-visible bg-white pb-16 text-[#0a0a0a] [scroll-snap-type:none]">
       <Header active="work" />
 
-      {/* statement */}
-      <section className="flex min-h-[78svh] flex-col justify-end px-2 pb-6 md:px-3">
+      {/* who: small and precise, the work comes right after */}
+      <section className={`${TXT} grid grid-cols-1 gap-x-3 gap-y-4 px-2 pt-24 md:grid-cols-12 md:px-3 md:pt-[22vh]`}>
         <motion.h1
           key={headline}
           data-intro-target
-          className="max-w-[14ch] text-[13vw] font-medium leading-[0.9] tracking-[-0.045em] md:text-[min(6vw,96px)]"
+          className="font-medium md:col-span-3"
           initial={lead > 0 ? false : { opacity: 0 }}
           animate={{ opacity: 1 }}
-          transition={{ duration: 1.2, ease: EASE, delay: 0.1 }}
+          transition={{ duration: 1, ease: EASE, delay: 0.1 }}
         >
-          {/* on the first visit, the title composes itself in dots where the opening dot lands */}
+          {/* on the first visit, the line composes itself in dots where the opening dot lands */}
           <DotText text={headline} play="intro" />
         </motion.h1>
-        <motion.div
-          className={`${TXT} mt-8 grid grid-cols-1 gap-4 md:grid-cols-4`}
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ duration: 1, delay: lead + 0.5 }}
-        >
-          <p className="md:col-span-2 md:max-w-[480px]">
-            {t('Précédemment OKCC, studio créatif — ', 'Previously OKCC, creative studio — ')}Hennessy, Shu Uemura, Louis Vuitton, L&apos;Oréal, YSL Beauty, HOKA.
-          </p>
-          <p className="text-black/50 md:col-span-1">{t('Disponible — CDI, Paris ou remote', 'Available — full-time, Paris or remote')}</p>
-          <a href="#work" className="hover:underline md:text-right">
-            {t('Voir les projets', 'See the work')} ↓
-          </a>
-        </motion.div>
+        <motion.p className="text-black/70 md:col-span-4 md:col-start-4 md:pr-6" initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 1, delay: lead + 0.3 }}>
+          {t('Précédemment OKCC, studio créatif — ', 'Previously OKCC, creative studio — ')}Hennessy, Shu Uemura, Louis Vuitton, L&apos;Oréal, YSL Beauty, HOKA.
+        </motion.p>
+        <motion.p className="text-black/45 md:col-span-3 md:col-start-9" initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 1, delay: lead + 0.45 }}>
+          {t('Disponible — CDI, Paris ou remote', 'Available — full-time, Paris or remote')}
+        </motion.p>
       </section>
 
       <div id="work" className="scroll-mt-6 px-0 md:px-3">
@@ -323,22 +316,22 @@ export default function Home() {
             <GroupLabel first count={featured.length} right={<ViewToggle view={view} setView={setView} />}>
               {t('Sélection', 'Selected work')}
             </GroupLabel>
-            <div className="grid grid-cols-1 gap-x-3 gap-y-12 md:grid-cols-2 md:gap-y-16">
+            <div className="grid grid-cols-2 gap-x-2 gap-y-8 px-2 md:grid-cols-4 md:gap-x-3 md:gap-y-12 md:px-0">
               {featured.map((project, i) => (
-                <ProjectCard key={project.link} project={project} index={i} />
+                <ProjectCard key={project.link} project={project} index={i} small />
               ))}
             </div>
 
             <GroupLabel count={more.length}>{t('Autres projets', 'More work')}</GroupLabel>
-            <div className="grid grid-cols-1 gap-x-3 gap-y-12 md:grid-cols-3 md:gap-y-14">
+            <div className="grid grid-cols-2 gap-x-2 gap-y-8 px-2 md:grid-cols-4 md:gap-x-3 md:gap-y-12 md:px-0">
               {more.map((project, i) => (
                 <ProjectCard key={project.link} project={project} index={featured.length + i} small />
               ))}
-              {more.length % 3 !== 0 && contactCard}
+              {more.length % 4 !== 0 && contactCard}
             </div>
 
             <GroupLabel count={explorations.length}>{t('Explorations', 'Explorations')}</GroupLabel>
-            <div className="grid grid-cols-1 gap-x-3 gap-y-12 md:grid-cols-3 md:gap-y-14">
+            <div className="grid grid-cols-2 gap-x-2 gap-y-8 px-2 md:grid-cols-4 md:gap-x-3 md:gap-y-12 md:px-0">
               {explorations.map((project, i) => (
                 <ProjectCard key={project.link} project={project} index={featured.length + more.length + i} small />
               ))}

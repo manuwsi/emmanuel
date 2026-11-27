@@ -98,7 +98,7 @@ export function Chrome({ chapters }: { chapters: { id: string; label: string }[]
         {lang === 'fr' ? 'EN' : 'FR'}
       </button>
       <Link href="/" className="fixed bottom-0 left-0 z-40 flex items-end gap-2 px-2 pb-1 text-white mix-blend-difference md:px-3" aria-label={t('Accueil', 'Home')}>
-        <span className="block text-[15px] font-bold uppercase leading-none tracking-[-0.045em] min-[380px]:text-[17px] sm:text-[20px] md:text-[24px]">Emmanuel Ijjou</span>
+        <span className="block text-[15px] font-bold uppercase leading-none tracking-[-0.045em] min-[380px]:text-[16px] md:text-[18px]">Emmanuel Ijjou</span>
         <span className="mb-[1px]"><ProjectMark /></span>
       </Link>
       <div className={`${TXT} fixed bottom-0 right-0 z-40 px-2 pb-1.5 text-white mix-blend-difference md:px-3`}>
@@ -138,7 +138,7 @@ export function Row({ n, title, text, dark = false }: { n: string; title: string
     <Reveal>
       <div className={`grid grid-cols-12 gap-x-3 border-t py-5 md:py-7 ${dark ? 'border-white/20' : 'border-black/20'}`}>
         <span className={`${TXT} col-span-2 tabular-nums md:col-span-1 ${dark ? 'text-white/45' : 'text-black/40'}`}>{n}</span>
-        <h3 className="col-span-10 text-[26px] leading-[1.05] md:col-span-5 md:text-[40px]" style={DISPLAY}>{title}</h3>
+        <h3 className="col-span-10 text-[14px] leading-[1.6] font-medium md:col-span-5 md:text-[13px]">{title}</h3>
         <p className={`col-span-10 col-start-3 mt-3 max-w-[460px] text-[15px] leading-[1.45] md:col-span-4 md:col-start-8 md:mt-1 ${dark ? 'text-white/60' : 'text-black/60'}`}>{text}</p>
       </div>
     </Reveal>

@@ -30,7 +30,6 @@ function Zoom({ k, title, src, w, h, alt, bare = false, children }: { k: string;
     </figure>
   );
 }
-const DISPLAY = { fontFamily: 'var(--font-general-sans), Inter, sans-serif', fontWeight: 500, letterSpacing: '-0.03em' } as const;
 
 function Chap({ n, title, depth, lede, children }: { n: number; title: string; depth: string; lede?: string; children?: ReactNode }) {
   return (
@@ -48,7 +47,7 @@ function Chap({ n, title, depth, lede, children }: { n: number; title: string; d
         <span className="text-[13px] tabular-nums">{depth}</span>
       </div>
       {lede && (
-        <p className="mt-8 md:mt-12 max-w-[980px] text-[28px] md:text-[52px] leading-[1.04]" style={DISPLAY}>
+        <p className="mt-4 text-[14px] leading-[1.6] md:text-[13px] font-medium max-w-[460px] md:ml-[calc(25%+3px)]">
           {lede}
         </p>
       )}
@@ -147,7 +146,7 @@ export default function Colosse() {
         <div className="absolute inset-0 [background-image:radial-gradient(circle,rgba(10,10,10,.10)_1px,transparent_1.6px)] [background-size:20px_20px]" />
         <Cutter className="absolute right-[-38vw] md:right-[-14vw] top-1/2 -translate-y-1/2 w-[120vw] h-[120vw] md:w-[78vw] md:h-[78vw]" />
         <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 1 }} className="absolute left-2 md:left-3 top-28 md:top-36 space-y-4">
-          <h1 className="text-[19vw] md:text-[11vw] font-medium leading-[0.82] tracking-[-0.055em]">Colosse</h1>
+          <h1 data-intro-target className="text-[14px] leading-[1.6] md:text-[13px] font-medium">Colosse</h1>
           <h2 className="text-[13px] leading-[1.35] text-black/50"><span className="bg-white">{t('2026 — Concept UX/UI, poste de pilotage d’un tunnelier', '2026 — UX/UI concept, tunnel boring machine cockpit')}</span></h2>
         </motion.div>
         <div className="absolute left-2 md:left-3 bottom-12 text-[13px] text-black/45">{t('Descendre ↓', 'Go down ↓')}</div>
@@ -155,7 +154,7 @@ export default function Colosse() {
 
       <div className="px-2 md:px-3 w-full max-w-[1400px] mx-auto">
         {/* LEDE + META */}
-        <p className="pt-20 md:pt-28 max-w-[1050px] text-[30px] md:text-[60px] leading-[1.02]" style={DISPLAY}>
+        <p className="pt-16 md:pt-24 text-[14px] leading-[1.6] md:text-[13px] font-medium max-w-[460px] md:ml-[calc(25%+3px)]">
           {t(
             'Un tunnelier pèse plus de 1 600 tonnes et creuse sous Paris jour et nuit. J’ai imaginé l’écran de la personne qui le pilote.',
             'A tunnel boring machine weighs over 1,600 tonnes and digs under Paris day and night. I designed the screen of the person who drives it.'
@@ -246,7 +245,7 @@ export default function Colosse() {
           {principles.map((p, i) => (
             <div key={p.k} className="border-t-[3px] border-[#0a0a0a] pt-3">
               <div className="text-[13px] text-black/45">0{i + 1}</div>
-              <div className="mt-2 text-[22px] leading-[1.1]" style={DISPLAY}>{p.k}</div>
+              <div className="mt-1 font-medium">{p.k}</div>
               <p className="mt-3 text-[15px] leading-[1.5] text-black/75">{p.v}</p>
             </div>
           ))}
@@ -273,11 +272,11 @@ export default function Colosse() {
             whileInView={{ opacity: 1 }}
             transition={{ duration: 0.9, ease: 'easeOut' }}
             viewport={{ once: true, margin: '-100px' }}
-            className="mt-6 text-[34vw] md:text-[24vw] leading-[0.8] tracking-[-0.06em] font-medium tabular-nums text-[#e3382a]"
+            className="mt-6 text-[22vw] md:text-[9vw] leading-[0.85] tracking-[-0.06em] font-medium tabular-nums text-[#e3382a] md:ml-[calc(25%+3px)]"
           >
             02:09
           </motion.div>
-          <p className="mt-8 md:mt-12 max-w-[980px] text-[28px] md:text-[52px] leading-[1.04]" style={DISPLAY}>
+          <p className="mt-4 text-[14px] leading-[1.6] md:text-[13px] font-medium max-w-[460px] md:ml-[calc(25%+3px)]">
             {t('La sonde à l’avant de la roue détecte un vide, 31 mètres plus loin. Juste au-dessus, il y a une école.', 'The probe at the front of the wheel picks up a void, 31 metres ahead. Right above it, there’s a school.')}
           </p>
           <div className="mt-10 md:mt-14 grid grid-cols-1 md:grid-cols-12 gap-6">

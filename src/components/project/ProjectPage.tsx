@@ -10,7 +10,8 @@ import Header from '../Header';
 import { useT } from '../i18n';
 import '../../styles/globals.css';
 
-const DISPLAY = { fontFamily: 'var(--font-general-sans), Inter, sans-serif', fontWeight: 500, letterSpacing: '-0.03em' } as const;
+/** The one text size of the case pages (14 px on a phone, 13 px on desktop). */
+export const FT = 'text-[14px] leading-[1.6] md:text-[13px]';
 
 type Meta = { year: string; context: string; role: string; tools: string; award?: string };
 
@@ -44,59 +45,40 @@ export function ProjectPage({
   ];
 
   return (
-    <main className="w-full min-h-screen bg-white text-[#0a0a0a] font-sans overflow-x-clip relative flex flex-col [scroll-snap-type:none]">
+    <main className="relative block min-h-screen w-full overflow-x-clip bg-white font-sans text-[#0a0a0a] [scroll-snap-type:none]">
       <Header crumb={title} />
 
-      <div className="pt-28 md:pt-36 px-2 md:px-3 w-full max-w-[1400px] mx-auto flex-grow">
-        {/* TITLE */}
-        <motion.div
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ duration: 1 }}
-          className="space-y-4"
-        >
-          <h1 className="text-[13vw] md:text-[7vw] font-medium leading-[0.9] tracking-[-0.045em]">
-            {title}
-          </h1>
-          <h2 className="text-[13px] leading-[1.35] text-black/60">
-            {subtitle}
-          </h2>
-          {lede && (
-            <p className="!mt-14 md:!mt-20 max-w-[900px] text-[28px] md:text-[48px] leading-[1.08]" style={DISPLAY}>
-              {lede}
-            </p>
-          )}
-        </motion.div>
-
-        {hero && (
-          <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 1, delay: 0.15 }} className="mt-12 md:mt-16">
-            {hero}
-          </motion.div>
-        )}
-
-        {/* META + INTRO */}
-        <motion.div
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ duration: 1, delay: 0.2 }}
-          className="mt-14 md:mt-20 grid grid-cols-1 md:grid-cols-12 gap-10 md:gap-8 border-t border-black/15 pt-6"
-        >
-          <dl className="md:col-span-4 grid grid-cols-2 md:grid-cols-1 gap-6 content-start">
+      <div className="px-2 pt-24 md:px-3 md:pt-[24vh]">
+        {/* HEADER — title, what it is, the facts: small, side by side */}
+        <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 1 }} className={`grid grid-cols-1 gap-x-3 gap-y-8 md:grid-cols-12 ${FT}`}>
+          <div className="md:col-span-3">
+            <h1 data-intro-target className="font-medium">{title}</h1>
+            <h2 className="text-black/45">{subtitle}</h2>
+          </div>
+          <div className="space-y-3 md:col-span-4 md:col-start-4 md:pr-6">
+            {lede && <p className="font-medium">{lede}</p>}
+            <div className="space-y-3 text-black/70">{intro}</div>
+          </div>
+          <dl className="grid grid-cols-2 content-start gap-x-3 gap-y-4 md:col-span-3 md:col-start-9">
             {metaRows.map((m) => (
-              <div key={m.label} className="space-y-1">
-                <dt className="text-[13px] text-black/55">{m.label}</dt>
-                <dd className="text-[13px] leading-[1.35]">{m.value}</dd>
+              <div key={m.label}>
+                <dt className="text-black/45">{m.label}</dt>
+                <dd>{m.value}</dd>
               </div>
             ))}
           </dl>
-          <div className="md:col-span-8 space-y-5 text-[15px] md:text-[17px] leading-[1.5] max-w-2xl">
-            {intro}
-          </div>
         </motion.div>
 
-        {/* GALLERY */}
-        <div className="mt-20 md:mt-28 space-y-6 md:space-y-10">{children}</div>
+        {hero && (
+          <div className="fine-flow mt-16 md:mt-24">
+            <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 1, delay: 0.15 }}>
+              {hero}
+            </motion.div>
+          </div>
+        )}
 
+        {/* THE CASE — notes on the left, pictures in the middle column */}
+        <div className="fine-flow mt-4">{children}</div>
       </div>
       <NextProject path={pathname} />
     </main>
@@ -113,6 +95,7 @@ export function Media({
   className = '',
   priority = false,
   crisp = false,
+  caption,
 }: {
   src: string;
   alt: string;
@@ -123,13 +106,14 @@ export function Media({
   priority?: boolean;
   /** Serve the file as is (no recompression): for line drawings and interface screens with fine detail. */
   crisp?: boolean;
+  caption?: ReactNode;
 }) {
   return (
-    <motion.div
+    <motion.figure
       initial={{ opacity: 0 }}
       whileInView={{ opacity: 1 }}
-      transition={{ duration: 0.8, ease: 'easeOut' }}
-      viewport={{ once: true, margin: '-60px' }}
+      transition={{ duration: 0.9, ease: 'easeOut' }}
+      viewport={{ once: true, margin: '-40px' }}
       className={`w-full ${className}`}
     >
       {video ? (
@@ -146,7 +130,8 @@ export function Media({
           className="w-full h-auto block"
         />
       )}
-    </motion.div>
+      {caption && <figcaption className={`${FT} mt-2 mb-4 text-black/45`}>{caption}</figcaption>}
+    </motion.figure>
   );
 }
 
@@ -209,69 +194,40 @@ export function Row({
   const mobileClass = mobileCols === 2 ? 'grid-cols-2' : 'grid-cols-1';
   const alignClass = { start: 'items-start', center: 'items-center', end: 'items-end' }[align];
   return (
-    <div className={`grid ${mobileClass} ${colClass} ${alignClass} gap-4 md:gap-8 ${className}`}>
+    <div className={`grid ${mobileClass} ${colClass} ${alignClass} gap-2 ${className}`}>
       {children}
     </div>
   );
 }
 
 /**
- * Text interlude between visuals.
- * With `n` the label reads "01 → Title"; with `lede` a large sentence opens the chapter (Foil layout).
+ * A chapter: a note in the left column (sticky beside the first picture that follows), on desktop.
+ * With `n` the label reads "01 → Title"; `lede` is the one sentence to remember, in medium weight.
  */
 export function Chapter({ title, n, lede, children }: { title: string; n?: number; lede?: string; children?: ReactNode }) {
   const label = n ? `${String(n).padStart(2, '0')} → ${title}` : title;
-  if (lede) {
-    return (
-      <motion.div
-        initial={{ opacity: 0 }}
-        whileInView={{ opacity: 1 }}
-        transition={{ duration: 0.8 }}
-        viewport={{ once: true }}
-        className="pt-24 pb-6 md:pt-36 md:pb-10"
-      >
-        <h3 className="text-[13px] text-black/45 pb-3"><DotText text={label} play="view" /></h3>
-        <p className="max-w-[900px] text-[26px] md:text-[44px] leading-[1.1]" style={DISPLAY}>
-          {lede}
-        </p>
-        {children && (
-          <div className="mt-10 md:mt-14 grid grid-cols-1 md:grid-cols-12 gap-6">
-            <div className="md:col-start-5 md:col-span-8 text-[15px] md:text-[17px] leading-[1.5] max-w-2xl space-y-4">
-              {children}
-            </div>
-          </div>
-        )}
-      </motion.div>
-    );
-  }
   return (
-    <motion.div
-      initial={{ opacity: 0 }}
-      whileInView={{ opacity: 1 }}
-      transition={{ duration: 0.8 }}
-      viewport={{ once: true }}
-      className="pt-20 pb-6 md:pt-28 md:pb-10 grid grid-cols-1 md:grid-cols-12 gap-6"
-    >
-      <h3 className="md:col-span-4 text-[13px] text-black/45">
-        <DotText text={label} play="view" />
-      </h3>
-      {children && (
-        <div className="md:col-span-8 text-[15px] md:text-[17px] leading-[1.5] max-w-2xl space-y-4">
-          {children}
-        </div>
-      )}
-    </motion.div>
+    <>
+      <div className="fine-gap" aria-hidden />
+      <motion.div initial={{ opacity: 0 }} whileInView={{ opacity: 1 }} transition={{ duration: 0.8 }} viewport={{ once: true }} className="fine-note">
+        <h3 className="text-black/45">
+          <DotText text={label} play="view" />
+        </h3>
+        {lede && <p className="mt-3 font-medium">{lede}</p>}
+        {children && <div className="mt-3 text-black/70">{children}</div>}
+      </motion.div>
+    </>
   );
 }
 
-/** The 30-second read: three short statements under the hero image. */
+/** The 30-second read: three short statements. */
 export function Summary({ items }: { items: { k: string; v: string }[] }) {
   return (
-    <div className="grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-8 border-t border-black/15 pt-5">
+    <div className={`grid grid-cols-1 gap-6 border-t border-black/15 pt-3 md:grid-cols-3 md:gap-3 ${FT}`}>
       {items.map((x) => (
         <div key={x.k}>
-          <span className="block text-[13px] text-black/55">{x.k}</span>
-          <p className="mt-2 text-[15px] leading-[1.5]">{x.v}</p>
+          <span className="block text-black/45">{x.k}</span>
+          <p className="mt-1">{x.v}</p>
         </div>
       ))}
     </div>

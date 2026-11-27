@@ -2,7 +2,7 @@
 
 import Image from 'next/image';
 import { usePathname } from 'next/navigation';
-import { Chrome, Plate, Reveal, Row, Strip, Weave, DISPLAY, TXT, usePhone } from './Kit';
+import { Chrome, Plate, Reveal, Row, Strip, Weave, TXT, usePhone } from './Kit';
 import { useT } from '@/components/i18n';
 import NextProject from '@/components/dot/NextProject';
 import { Media } from '@/components/project/ProjectPage';
@@ -71,7 +71,7 @@ const hooks = (t: T) => [
 function Lede({ children, dark = false }: { children: React.ReactNode; dark?: boolean }) {
   return (
     <Reveal>
-      <p className={`max-w-[900px] text-[28px] leading-[1.08] md:text-[52px] ${dark ? 'text-white' : ''}`} style={DISPLAY}>{children}</p>
+      <p className={`text-[14px] leading-[1.6] md:text-[13px] font-medium max-w-[460px] ${dark ? 'text-white' : ''}`}>{children}</p>
     </Reveal>
   );
 }
@@ -286,7 +286,7 @@ export default function Page() {
                   <Image unoptimized loading="eager" src={`/foil/p/${h.f}.webp`} alt={h.n} width={780} height={1688} sizes="(min-width:768px) 30vw, 70vw" className="h-auto w-full rounded-t-[5%]" />
                 </div>
               </div>
-              <h3 className="px-2 pt-3 text-[22px] leading-[1.1] md:px-0" style={DISPLAY}>{h.n}</h3>
+              <h3 className="px-2 pt-2 text-[14px] leading-[1.6] md:text-[13px] font-medium md:px-0">{h.n}</h3>
               <p className="max-w-[420px] px-2 pt-2 text-[15px] leading-[1.45] text-black/60 md:px-0">{h.text}</p>
             </Reveal>
           ))}

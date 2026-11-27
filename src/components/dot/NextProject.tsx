@@ -89,44 +89,35 @@ export default function NextProject({ path }: { path: string }) {
   const title = t(np.title.fr, np.title.en);
 
   return (
-    <section id="next-zone" ref={zone} className="relative mt-32 h-[185vh] w-full md:mt-40">
+    <section id="next-zone" ref={zone} className="relative mt-32 h-[185vh] w-full md:mt-48">
       <div className="sticky top-0 flex h-[100svh] w-full flex-col justify-center px-2 md:px-3">
-        <div className="mx-auto w-full max-w-[1400px]">
-          <div className="flex items-baseline justify-between border-t-[3px] border-[#0a0a0a] pt-2 text-[13px] leading-[1.35]">
-            <span className="text-black/45">
-              {t('Projet suivant', 'Next project')}
-            </span>
-            <span className="tabular-nums text-black/45">
-              {String(index + 1).padStart(2, '0')} / {String(projects.length).padStart(2, '0')}
-            </span>
+        <div className="grid grid-cols-1 gap-x-3 gap-y-4 text-[14px] leading-[1.6] md:grid-cols-12 md:text-[13px]">
+          <div className="md:col-span-3 md:pr-7">
+            <p className="flex justify-between border-t border-black/15 pt-2 text-black/45">
+              <span>{t('Projet suivant', 'Next project')}</span>
+              <span className="tabular-nums">
+                {String(index + 1).padStart(2, '0')} / {String(projects.length).padStart(2, '0')}
+              </span>
+            </p>
+            <Link href={np.link} className="mt-3 flex items-center gap-2.5 font-medium" data-cursor="project" data-mark={np.link.slice(1)} data-label={t('Voir', 'View')}>
+              {title}
+              <MarkFor link={np.link} />
+            </Link>
+            <p className="text-black/45">{t(np.subtitle.fr, np.subtitle.en)}</p>
           </div>
-
-          <div className="mt-6 grid grid-cols-1 items-end gap-6 md:mt-8 md:grid-cols-12 md:gap-3">
-            <div className="md:col-span-6">
-              <Link href={np.link} className="inline-flex items-start gap-3">
-                <span className="text-[13vw] font-medium leading-[0.92] tracking-[-0.045em] md:text-[5.4vw]">{title}</span>
-              </Link>
-              <p className="mt-3 flex items-center gap-2.5 text-[13px] text-black/55">
-                <MarkFor link={np.link} />
-                {t(np.subtitle.fr, np.subtitle.en)}
-              </p>
-            </div>
-            <div ref={frame} className="relative aspect-[4/3] w-full overflow-hidden bg-neutral-100 md:col-span-6">
+          <div className="md:col-span-7 md:col-start-4">
+            <div ref={frame} className="relative aspect-[16/10] w-full overflow-hidden bg-neutral-100">
               <canvas ref={cv} aria-hidden className="absolute inset-0 h-full w-full" />
             </div>
-          </div>
-
-          <div className="mt-8 md:mt-10">
-            <div className="h-[2px] w-full bg-black/10">
+            <div className="mt-3 h-px w-full bg-black/15">
               <div ref={line} className="h-full w-full origin-left bg-[#0a0a0a]" style={{ transform: 'scaleX(0)' }} />
             </div>
-            <div className="mt-2 flex justify-between text-[13px] text-black/45">
+            <div className="mt-1.5 flex justify-between text-black/45">
               <span>{t('Continuez à défiler', 'Keep scrolling')} ↓</span>
               <span ref={pct} className="tabular-nums">0%</span>
             </div>
           </div>
         </div>
-        <footer className="absolute bottom-12 right-2 text-[13px] text-black/40 md:right-3">© {new Date().getFullYear()} Emmanuel Ijjou</footer>
       </div>
     </section>
   );

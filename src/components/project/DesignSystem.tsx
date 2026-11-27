@@ -98,7 +98,7 @@ export function ProxySystem() {
       <div className="grid grid-cols-1 md:grid-cols-12 border-t" style={{ borderColor: P.line }}>
         <div className="md:col-span-6 p-5 md:p-8" style={{ borderColor: P.line }}>
           <div className="flex justify-between text-[11px]" style={{ ...GM, color: P.grey }}><span>Newsreader 400</span><span>40 / 1.08</span></div>
-          <p className="mt-6 text-[34px] md:text-[48px] leading-[1.06]" style={NR}>{t('Réserver Paris → Lyon, jeudi 7\u00a0h\u00a056.', 'Book Paris → Lyon, Thursday\u00a07:56.')}</p>
+          <p className="mt-6 text-[24px] md:text-[30px] leading-[1.08]" style={NR}>{t('Réserver Paris → Lyon, jeudi 7\u00a0h\u00a056.', 'Book Paris → Lyon, Thursday\u00a07:56.')}</p>
           <p className="mt-4 text-[12px]" style={{ color: P.grey }}>{t('Pour ce que Proxy va faire, ou te demande. Une phrase, jamais un titre de rubrique.', 'For what Proxy is about to do, or asks you. A sentence, never a section heading.')}</p>
         </div>
         <div className="md:col-span-3 p-5 md:p-8" style={{ borderColor: P.line }}>
@@ -358,7 +358,7 @@ export function ColosseSystem() {
         <div className="md:col-span-5 flex flex-col">
           <div className="px-5 md:px-8 py-6 border-t md:border-t-0 border-b" style={{ borderColor: line }}>
             <span className="text-[10.5px] tracking-[0.06em]" style={{ ...GM, color: mut }}>{t('PROFONDEUR', 'DEPTH')}</span>
-            <div className="mt-1 text-[44px] md:text-[56px] font-medium tracking-[-0.02em] tabular-nums leading-none">−22,4 m</div>
+            <div className="mt-1 text-[30px] md:text-[36px] font-medium tracking-[-0.02em] tabular-nums leading-none">−22,4 m</div>
             <span className="text-[11px]" style={{ ...GM, color: mut }}>{t('General Sans 500 · chiffres tabulaires', 'General Sans 500 · tabular figures')}</span>
             {/* the line of the present over a ground section */}
             <svg viewBox="0 0 300 70" className="mt-5 w-full h-[70px]">

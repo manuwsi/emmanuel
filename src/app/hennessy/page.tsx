@@ -4,7 +4,7 @@ import Image from 'next/image';
 import { motion } from 'framer-motion';
 import Header from '@/components/Header';
 import { useT } from '@/components/i18n';
-import { Bleed, Chap, DISPLAY, Lede, Meta, Next, Principles, Title, WRAP } from '@/components/case/Kit';
+import { Bleed, Chap, Lede, Meta, Next, Principles, Title, WRAP } from '@/components/case/Kit';
 import TabletStrip from '@/components/hennessy/TabletStrip';
 import SecondSkin from '@/components/hennessy/SecondSkin';
 import '@/styles/globals.css';
@@ -167,11 +167,11 @@ export default function Page() {
             whileInView={{ opacity: 1 }}
             transition={{ duration: 0.9, ease: 'easeOut' }}
             viewport={{ once: true, margin: '-100px' }}
-            className="mt-6 text-[40vw] md:text-[26vw] leading-[0.78] tracking-[-0.07em] font-medium tabular-nums"
+            className="mt-6 text-[22vw] md:text-[9vw] leading-[0.85] tracking-[-0.06em] font-medium tabular-nums md:ml-[calc(25%+3px)]"
           >
             40
           </motion.div>
-          <p className="mt-8 md:mt-12 max-w-[980px] text-[28px] md:text-[52px] leading-[1.04]" style={DISPLAY}>
+          <p className="mt-4 text-[14px] leading-[1.6] md:text-[13px] font-medium max-w-[460px] md:ml-[calc(25%+3px)]">
             {t('carafes, chacune avec sa seconde peau et son numéro de série. Aucune n’est identique.', 'decanters, each with its second skin and its serial number. No two are the same.')}
           </p>
           <div className="mt-12 border-t border-black/15 pt-3 flex flex-col md:flex-row md:items-baseline md:justify-between gap-2 text-[13px]">

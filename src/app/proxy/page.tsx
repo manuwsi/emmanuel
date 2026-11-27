@@ -109,7 +109,14 @@ export default function Page() {
       }
       hero={
         <>
-          <Media crisp priority src="/proxy/photo-laptop-v3.jpg" alt={t('Proxy sur un ordinateur portable, l’écran Aujourd’hui', 'Proxy on a laptop, the Today screen')} width={2560} height={1920} />
+          <Media
+            crisp
+            priority
+            src="/proxy/opening.jpg"
+            alt={t('« Tu décides jusqu’où Proxy peut aller. » Cinq domaines, du premier jour à trois semaines plus tard : les virements restent demandés, le classement des fichiers se fait en silence.', '“You decide how far Proxy can go.” Five domains, from day one to three weeks later: transfers are still asked for, filing documents happens silently.')}
+            width={2880}
+            height={1800}
+          />
           <div className="mt-8">
             <Summary
               items={[
@@ -146,6 +153,7 @@ export default function Page() {
         <p>{t('Pas de mascotte : un personnage sympathique pousse à faire confiance trop vite. La présence de Proxy est une grille de points à trois états, toujours accompagnée d’une phrase.', 'No mascot: a friendly character makes you trust too fast. Proxy’s presence is a three-state grid of dots, always paired with a sentence.')}</p>
       </Chapter>
       <Media video src="/motion/proxy-fragments.mp4" width={1920} height={1080} alt={t('Animation : les fragments d’une journée de Proxy se rassemblent et deviennent le journal', 'Animation: the fragments of a day with Proxy gather and become the log')} />
+      <Media crisp src="/proxy/photo-laptop-v3.jpg" alt={t('Proxy sur un ordinateur portable, l’écran Aujourd’hui', 'Proxy on a laptop, the Today screen')} width={2560} height={1920} />
       <Row cols={3} mobileCols={1}>
         <Media crisp src="/proxy/photo-notif-v3.jpg" alt={t('La notification de Proxy sur l’écran verrouillé', 'Proxy’s notification on the lock screen')} width={2560} height={1920} />
         <Media crisp src="/proxy/photo-validation-v3.jpg" alt={t('La demande de validation ouverte sur le téléphone', 'The approval request opened on the phone')} width={2560} height={1920} />

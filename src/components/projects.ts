@@ -25,7 +25,7 @@ export const projects: Project[] = [
   {
     title: same('Colosse'),
     subtitle: { fr: '2026 — Cockpit de tunnelier', en: '2026 — Tunnel boring machine cockpit' },
-    image: '/colosse/cover-v3.jpg',
+    image: '/colosse/cover-v4.jpg',
     size: [1667, 1250],
     hover: '/colosse/cover.jpg',
     link: '/colosse',
@@ -34,7 +34,7 @@ export const projects: Project[] = [
   {
     title: same('Proxy'),
     subtitle: { fr: '2026 — Agent IA personnel', en: '2026 — Personal AI agent' },
-    image: '/proxy/cover-photo-v3.jpg',
+    image: '/proxy/cover-v4.jpg',
     size: [1667, 1250],
     hover: '/proxy/cover-photo-hover-v3.jpg',
     link: '/proxy',
@@ -43,7 +43,7 @@ export const projects: Project[] = [
   {
     title: same('Élan'),
     subtitle: { fr: '2026 — Montre connectée et iOS', en: '2026 — Smartwatch and iOS' },
-    image: '/elan/cover-v2.jpg',
+    image: '/elan/cover-v4.jpg',
     size: [1667, 1250],
     hover: '/elan/cover.jpg',
     link: '/elan',

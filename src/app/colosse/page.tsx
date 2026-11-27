@@ -160,15 +160,13 @@ export default function Colosse() {
         />
       </div>
       <div className="fine-flow mt-16 px-2 md:mt-24 md:px-3">
-        <figure>
-          <Media src="/colosse/2-anomalie.webp" alt={t('Anomalie : un vide devant la roue, sous une école', 'Anomaly: a void ahead of the wheel, under a school')} priority {...W} />
-          <figcaption className="mt-2 text-[14px] leading-[1.6] md:text-[13px] text-black/45">
-            {t(
-              '02:09. La sonde détecte un vide sous une école. L’écran le dessine à sa place dans le sol et propose trois options à l’ingénieur de quart.',
-              '02:09. The probe picks up a void under a school. The screen draws it where it is in the ground and gives the shift engineer three options.'
-            )}
-          </figcaption>
-        </figure>
+        <Media
+          priority
+          src="/colosse/opening.jpg"
+          width={2880}
+          height={1800}
+          alt={t('Coupe du sol sous Paris : les immeubles, les couches de terrain, la nappe à −8,2 m, le tunnelier Ysée à −22 m et, 31 m devant sa roue, un vide probable sous une école', 'Section of the ground under Paris: the buildings, the ground layers, the water table at −8.2 m, the Ysée tunnel boring machine at −22 m and, 31 m ahead of its wheel, a probable void under a school')}
+        />
         <div className="mt-8">
           <Summary
             items={[
@@ -256,6 +254,15 @@ export default function Colosse() {
         >
           02:09
         </motion.div>
+        <figure>
+          <Media src="/colosse/2-anomalie.webp" alt={t('Anomalie : un vide devant la roue, sous une école', 'Anomaly: a void ahead of the wheel, under a school')} {...W} />
+          <figcaption className="mt-2 text-[14px] leading-[1.6] md:text-[13px] text-black/45">
+            {t(
+              '02:09. La sonde détecte un vide sous une école. L’écran le dessine à sa place dans le sol et propose trois options à l’ingénieur de quart.',
+              '02:09. The probe picks up a void under a school. The screen draws it where it is in the ground and gives the shift engineer three options.'
+            )}
+          </figcaption>
+        </figure>
         <div className="grid grid-cols-1 items-start gap-6 md:grid-cols-2 md:gap-3">
           <Zoom k="A" title={t('L’alerte.', 'The alert.')} src="/colosse/zoom-alerte.webp" w={2032} h={2096} alt={t('Gros plan : le vide dessiné dans le sol, à 31,6 m de la roue', 'Close-up: the void drawn in the ground, 31.6 m from the wheel')}>
             {t(

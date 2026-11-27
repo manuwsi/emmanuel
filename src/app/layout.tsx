@@ -58,6 +58,12 @@ export default function RootLayout({
   return (
     <html lang="fr" className={`${generalSans.variable} ${ade.variable}`} suppressHydrationWarning>
       <head>
+        {/* fresh load of the home page: the launch plays (see components/home/Launch) */}
+        <script
+          dangerouslySetInnerHTML={{
+            __html: "try{if(location.pathname==='/'&&!/soutrame\\./.test(location.hostname)&&!matchMedia('(prefers-reduced-motion: reduce)').matches)document.documentElement.dataset.homeIntro='1'}catch(e){}",
+          }}
+        />
       </head>
       <body
         className="bg-white text-[#0a0a0a] font-sans antialiased"

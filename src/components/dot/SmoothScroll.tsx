@@ -21,7 +21,7 @@ export default function SmoothScroll() {
     let alive = true;
     import('@studio-freight/lenis').then(({ default: Lenis }) => {
       if (!alive) return;
-      lenis = new Lenis({ duration: 1.15, smoothWheel: true, wheelMultiplier: 0.95 }) as unknown as L;
+      lenis = new Lenis({ lerp: 0.085, smoothWheel: true, wheelMultiplier: 0.9 }) as unknown as L;
       (window as unknown as { __lenis?: L }).__lenis = lenis;
       const loop = (t: number) => {
         lenis?.raf(t);

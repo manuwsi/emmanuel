@@ -26,8 +26,12 @@ export default function DotIn({ children, className = '', delay = 0 }: { childre
       },
       { rootMargin: '0px 0px -10% 0px' }
     );
-    io.observe(el);
+    const html = document.documentElement;
+    const start = () => io.observe(el);
+    if (html.dataset.homeIntro === '1') window.addEventListener('dot:launched', start, { once: true });
+    else start();
     return () => {
+      window.removeEventListener('dot:launched', start);
       io.disconnect();
       clearTimeout(t);
     };

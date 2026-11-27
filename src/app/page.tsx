@@ -11,6 +11,7 @@ import { MarkFor } from '@/components/ProjectMark';
 import { introWait } from '@/components/dot/engine';
 import DotText from '@/components/dot/DotText';
 import DotIn from '@/components/dot/DotIn';
+import Launch from '@/components/home/Launch';
 import { lenisScrollTo } from '@/components/dot/SmoothScroll';
 import '../styles/globals.css';
 
@@ -261,6 +262,7 @@ export default function Home() {
   return (
     <main className="!block min-h-screen w-full !overflow-visible bg-white pb-16 text-[#0a0a0a] [scroll-snap-type:none]">
       <Header active="work" />
+      <Launch />
 
       {/* statement: one large line, the work already peeking underneath */}
       <section className="flex min-h-[66svh] flex-col justify-end px-2 pb-6 md:min-h-[60svh] md:px-3">

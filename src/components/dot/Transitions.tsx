@@ -4,6 +4,7 @@ import { useEffect, useRef } from 'react';
 import { usePathname, useRouter } from 'next/navigation';
 import { Origin, reducedMotion } from './engine';
 import { bezier, DUR, EASE } from './motion';
+import { drawHalftone, fitCanvas } from './halftone';
 
 type Lenis = { stop: () => void; start: () => void; scrollTo: (y: number, o?: { immediate?: boolean; force?: boolean }) => void };
 const lenis = () => (window as unknown as { __lenis?: Lenis }).__lenis;
@@ -24,46 +25,16 @@ export default function Transitions() {
   const state = useRef<'idle' | 'covering' | 'covered' | 'revealing'>('idle');
   const target = useRef<string | null>(null);
 
-  /** k: 0 → 1 along the move; cover = dots grow outwards from the origin, reveal = they shrink outwards from it */
   const draw = (k: number, mode: 'cover' | 'reveal') => {
     const c = canvas.current;
     const ctx = c?.getContext('2d');
-    if (!c || !ctx) return;
-    const w = c.clientWidth, h = c.clientHeight;
-    const pitch = w < 768 ? 12 : 14;
-    const rmax = pitch * 0.74; // a little more than half the diagonal: at full size the dots close the page
-    const { x: ox, y: oy } = origin.current;
-    const maxD = Math.max(Math.hypot(ox, oy), Math.hypot(w - ox, oy), Math.hypot(ox, h - oy), Math.hypot(w - ox, h - oy));
-    const band = maxD * 0.42; // width of the halftone edge
-    const front = k * (maxD + band);
-    ctx.clearRect(0, 0, w, h);
-    ctx.fillStyle = '#fff';
-    if (mode === 'cover' && k >= 1) {
-      ctx.fillRect(0, 0, w, h);
-      return;
-    }
-    ctx.beginPath();
-    for (let y = pitch / 2; y < h + pitch; y += pitch) {
-      for (let x = pitch / 2; x < w + pitch; x += pitch) {
-        let s = (front - Math.hypot(x - ox, y - oy)) / band;
-        s = s < 0 ? 0 : s > 1 ? 1 : s;
-        const r = rmax * (mode === 'cover' ? s : 1 - s);
-        if (r > 0.3) {
-          ctx.moveTo(x + r, y);
-          ctx.arc(x, y, r, 0, Math.PI * 2);
-        }
-      }
-    }
-    ctx.fill();
+    if (c && ctx) drawHalftone(ctx, c.clientWidth, c.clientHeight, origin.current, k, mode);
   };
 
   const play = (mode: 'cover' | 'reveal', ms: number, done: () => void) => {
     const c = canvas.current;
     if (!c) return done();
-    const dpr = Math.min(2, window.devicePixelRatio || 1);
-    c.width = Math.round(innerWidth * dpr);
-    c.height = Math.round(innerHeight * dpr);
-    c.getContext('2d')?.setTransform(dpr, 0, 0, dpr, 0, 0);
+    fitCanvas(c);
     c.style.display = 'block';
     c.style.pointerEvents = 'auto';
     const ease = mode === 'cover' ? inkE : uninkE;

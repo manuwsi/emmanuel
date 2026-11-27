@@ -54,10 +54,8 @@ export function ProjectPage({
         <CaseHead title={title} subtitle={subtitle} lede={lede} intro={intro} rows={metaRows.map((m) => [m.label, m.value] as [string, string])} />
 
         {hero && (
-          <div className="fine-flow mt-16 md:mt-24">
-            <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 1, delay: 0.15 }}>
-              {hero}
-            </motion.div>
+          <div className="fine-flow fine-hero mt-16 md:mt-24">
+            {hero}
           </div>
         )}
 

@@ -159,6 +159,18 @@ html.lenis, html.lenis body { height: auto; }
   .fine-flow > .fine-wide { grid-column: 1 / -1; }
 }
 .fine-flow p + p { margin-top: 0.75em; }
+/* the opening picture of a case: wide, from the picture column to the right edge (edge to edge on phones) */
+.fine-flow.fine-hero > figure:first-child, .fine-flow > .fine-open { grid-column: 1 / -1 !important; margin-left: -8px; margin-right: -8px; }
+@media (min-width: 768px) {
+  .fine-flow.fine-hero > figure:first-child, .fine-flow > .fine-open { grid-column: 4 / -1 !important; margin-left: 0; margin-right: -12px; }
+}
+/* same when the opening picture sits in a wrapper with the 30-second summary: the wrapper goes wide, the summary keeps the column */
+.fine-flow.fine-hero > div:first-child > figure:first-child { margin-left: -8px; margin-right: -8px; }
+@media (min-width: 768px) {
+  .fine-flow.fine-hero > div:first-child { grid-column: 4 / -1 !important; margin-right: -12px; }
+  .fine-flow.fine-hero > div:first-child > figure:first-child { margin-left: 0; margin-right: 0; }
+  .fine-flow.fine-hero > div:first-child > :not(figure) { max-width: calc(66.666% - 4px); }
+}
 /* a strip that starts at the picture column and runs off the right edge */
 .fine-flow > .fine-bleed { grid-column: 1 / -1 !important; margin-left: -8px; margin-right: -8px; min-width: 0; }
 @media (min-width: 768px) {
@@ -195,3 +207,7 @@ html.lenis, html.lenis body { height: auto; }
 .dot-in[data-in] { --dr: 7px; }
 .dot-in[data-done] { -webkit-mask-image: none; mask-image: none; }
 @media (prefers-reduced-motion: reduce) { .dot-in { -webkit-mask-image: none; mask-image: none; } }
+
+/* launch of the site: white from the first paint, the matrix takes over (safety: it leaves on its own) */
+html[data-home-intro='1'] #launch { display: block; animation: launchout 0.3s ease 4.5s forwards; }
+@keyframes launchout { to { opacity: 0; visibility: hidden; } }

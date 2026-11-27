@@ -15,7 +15,6 @@ export const WRAP = 'fine-flow px-2 md:px-3 w-full';
 /** The one text size of the case pages (14 px on a phone, 13 px on desktop). */
 const FT = 'text-[14px] leading-[1.6] md:text-[13px]';
 /** Columns 4 to 10 of the 12-column grid: where pictures sit on desktop. */
-const MEDIA = 'md:ml-[calc(25%+3px)] md:w-[calc(50%-6px)]';
 
 export function Title({ title, kicker, subtitle }: { title: string; kicker?: string; subtitle: string }) {
   return (
@@ -86,13 +85,14 @@ export function Principles({ items }: { items: { k: string; v: string }[] }) {
 /** Edge-to-edge picture, slow reveal, thin caption. */
 export function Bleed({ src, alt, aspect, mobileAspect, caption, position = 'center', priority = false, bg = '#f2f1ee' }: { src: string; alt: string; aspect: string; mobileAspect?: string; caption?: string; position?: string; priority?: boolean; bg?: string }) {
   return (
-    <figure className="w-full px-2 md:px-3">
-      <div className={`relative w-full overflow-hidden [aspect-ratio:var(--am)] md:[aspect-ratio:var(--ad)] ${MEDIA}`} style={{ ['--ad' as string]: aspect, ['--am' as string]: mobileAspect ?? aspect, background: bg }}>
+    <figure className="w-full md:pl-3">
+      {/* the opening picture: from the picture column to the right edge (edge to edge on phones) */}
+      <div className="relative overflow-hidden [aspect-ratio:var(--am)] md:ml-[calc((100%-12px)*0.25+3px)] md:[aspect-ratio:var(--ad)]" style={{ ['--ad' as string]: aspect, ['--am' as string]: mobileAspect ?? aspect, background: bg }}>
         <DotIn className="absolute inset-0">
           <Image src={src} alt={alt} fill priority={priority} sizes="(max-width: 768px) 100vw, 50vw" quality={90} className="object-cover" style={{ objectPosition: position }} />
         </DotIn>
       </div>
-      {caption && <figcaption className={`${FT} pt-1.5 text-black/55 ${MEDIA}`}>{caption}</figcaption>}
+      {caption && <figcaption className={`${FT} px-2 pt-1.5 text-black/55 md:ml-[calc((100%-12px)*0.25+3px)] md:px-0`}>{caption}</figcaption>}
     </figure>
   );
 }

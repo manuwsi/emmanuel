@@ -9,6 +9,7 @@ import More from '@/components/dot/More';
 import { CaseHead, Media, Summary } from '@/components/project/ProjectPage';
 import { useT } from '@/components/i18n';
 import Depth from '@/components/colosse/Depth';
+import Wheel from '@/components/colosse/Wheel';
 import Scale from '@/components/colosse/Scale';
 import Compare from '@/components/colosse/Compare';
 import { ColosseSystem } from '@/components/project/DesignSystem';
@@ -129,7 +130,9 @@ export default function Colosse() {
       <Header crumb="Colosse" />
       <Depth />
 
-      <div className="px-2 pt-24 md:px-3 md:pt-[24vh]">
+      <Wheel />
+
+      <div className="px-2 pt-16 md:px-3 md:pt-24">
         <CaseHead
           title="Colosse"
           subtitle={t('2026 — Concept UX/UI, poste de pilotage d’un tunnelier', '2026 — UX/UI concept, tunnel boring machine cockpit')}
@@ -160,7 +163,7 @@ export default function Colosse() {
         />
       </div>
       <div className="fine-flow mt-16 px-2 md:mt-24 md:px-3">
-        <figure>
+        <figure className="fine-open">
           <Media crisp priority src="/colosse/tablette-anomalie-v2.jpg" alt={t('Mise en situation : l’écran Anomalie sur une tablette de chantier, tenue par des mains gantées', 'In context: the Anomaly screen on a rugged site tablet, held in gloved hands')} width={2560} height={1920} />
           <figcaption className="mt-2 text-black/55">{t('Mise en situation, sur une tablette de chantier.', 'In context, on a rugged site tablet.')}</figcaption>
         </figure>

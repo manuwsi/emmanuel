@@ -10,8 +10,7 @@ import DotIn from './DotIn';
 const FT = 'text-[14px] leading-[1.6] md:text-[13px]';
 
 /**
- * The end of every case. No scrolling trick: the next project, quietly, then the twelve marks side by side.
- * The mark of the case you just read is the one drawn in full (it filled up in the corner while you were reading).
+ * The end of every case. No scrolling trick: the next project, quietly.
  */
 export default function NextProject({ path }: { path: string }) {
   const t = useT();
@@ -47,25 +46,6 @@ export default function NextProject({ path }: { path: string }) {
         </Link>
       </div>
 
-      {/* the twelve marks: an index that only this site could have */}
-      <nav aria-label={t('Tous les projets', 'All projects')} className="mt-20 grid grid-cols-1 gap-x-3 gap-y-4 md:mt-28 md:grid-cols-12">
-        <p className="text-black/55 md:col-span-3">{t('Les douze projets', 'The twelve projects')}</p>
-        <ol className="grid grid-cols-6 gap-y-5 md:col-span-9 md:col-start-4 md:grid-cols-12">
-          {projects.map((p, i) => {
-            const here = p.link === path;
-            return (
-              <li key={p.link}>
-                <Link href={p.link} aria-label={t(p.title.fr, p.title.en)} aria-current={here ? 'page' : undefined} className="inline-flex flex-col items-start gap-1.5">
-                  <span className={here ? '' : 'opacity-25'}>
-                    <MarkFor link={p.link} className="h-[18px] w-[18px]" />
-                  </span>
-                  <span className={`text-[11px] tabular-nums ${here ? '' : 'text-black/55'}`}>{pad(i + 1)}</span>
-                </Link>
-              </li>
-            );
-          })}
-        </ol>
-      </nav>
     </section>
   );
 }

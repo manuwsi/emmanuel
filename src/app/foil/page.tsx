@@ -127,6 +127,7 @@ export default function Page() {
 
         <div className="fine-flow mt-16 md:mt-24">
           <Media
+            className="fine-open"
             priority
             src="/foil/hero-v2.jpg"
             width={2880}

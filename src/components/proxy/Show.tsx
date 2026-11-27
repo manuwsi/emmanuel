@@ -159,6 +159,7 @@ export function Film({ id, shots, label, name, zoom = 1.18 }: { id: ScreenId; sh
     if (!w || !f || !c) return;
     let raf = 0;
     let last = -1;
+    c.dataset.k = '';
     const fit = (r: Rect, fw: number, fh: number) => {
       // a part is never enlarged beyond `zoom` × its real size: close enough to read, never blown up
       const whole = r[2] >= s.w - 1;

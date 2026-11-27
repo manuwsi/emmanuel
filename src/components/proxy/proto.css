@@ -60,6 +60,10 @@
 .px-frame { position: relative; overflow: hidden; container-type: inline-size; }
 .px-frame > .px-cam { position: absolute; left: 0; top: 0; transform-origin: 0 0; --px-cw: 100cqw; --k: tan(atan2(var(--px-cw), calc(var(--pw) * 1px))); transform: scale(var(--k)); }
 .px-frame .px { position: absolute; left: 0; top: 0; user-select: none; -webkit-user-select: none; pointer-events: none; }
+/* a browser that cannot work the scale out in CSS shows the screen once the script has measured it, never unscaled */
+@supports not (scale: tan(atan2(1px, 1px))) {
+  .px-frame > .px-cam:not([data-k]) { visibility: hidden; }
+}
 
 /* the opening photograph: whole, as large as the first screen allows, hands entering from the bottom edge */
 .px-hero { height: 75vw; right: 0; }

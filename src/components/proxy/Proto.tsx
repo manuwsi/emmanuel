@@ -31,14 +31,22 @@ export const Proto = memo(function Proto({ id, region, label, className = '', st
   );
 });
 
-/** Browsers without CSS trigonometry or container units get the same scale from a ResizeObserver. */
+/**
+ * The scale is first worked out in CSS alone (so the screens are right before any script runs), then confirmed
+ * from the frame's real width: every browser ends on the same value, whatever it makes of CSS trigonometry.
+ */
 export function useScaleFallback(ref: React.RefObject<HTMLElement | null>, w: number) {
   useEffect(() => {
     const el = ref.current;
-    if (!el || (CSS.supports('width', '1cqw') && CSS.supports('scale', 'tan(atan2(1px, 1px))'))) return;
-    const cam = el.querySelector<HTMLElement>('.px-cam');
-    if (!cam) return;
-    const ro = new ResizeObserver(() => cam.style.setProperty('--k', String(el.clientWidth / w)));
+    const cam = el?.querySelector<HTMLElement>('.px-cam');
+    if (!el || !cam) return;
+    const set = () => {
+      if (!el.clientWidth) return;
+      cam.style.setProperty('--k', String(el.clientWidth / w));
+      cam.dataset.k = '';
+    };
+    set();
+    const ro = new ResizeObserver(set);
     ro.observe(el);
     return () => ro.disconnect();
   }, [ref, w]);

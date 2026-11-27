@@ -421,12 +421,13 @@ export default function Page() {
                   <Photo src="/proxy/photo-notif-v4.jpg" alt={t('La notification de Proxy sur l’écran verrouillé', 'Proxy’s notification on the lock screen')} sizes="(min-width: 768px) 50vw, 100vw" />
                 </figure>
                 <figure className="md:col-span-3">
+                  {/* the interface stays in French, like every screen of the prototype */}
                   <LockScreen
                     label={t('L’écran verrouillé : la notification de Proxy', 'The lock screen: Proxy’s notification')}
-                    date={t('Mercredi 26 novembre', 'Wednesday 26 November')}
-                    now={t('maintenant', 'now')}
-                    first={t('Train Paris → Lyon, 89 €. Au-dessus de ta règle de 60 €, j’attends ton accord.', 'Train Paris → Lyon, €89. Over your €60 rule, I’m waiting for your go-ahead.')}
-                    second={t('14 factures classées dans « Compta / novembre ».', '14 invoices filed in “Accounts / November”.')}
+                    date="Mercredi 26 novembre"
+                    now="maintenant"
+                    first="Train Paris → Lyon, 89 €. Au-dessus de ta règle de 60 €, j’attends ton accord."
+                    second="14 factures classées dans « Compta / novembre »."
                   />
                   <Cap>
                     <span className="tabular-nums text-[#0a0a0a]">10:39</span> · {t('La notification, telle qu’elle arrive.', 'The notification, as it arrives.')}

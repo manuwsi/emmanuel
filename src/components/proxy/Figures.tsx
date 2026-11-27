@@ -78,7 +78,7 @@ export function Levels() {
       {/* four columns sharing the same rows, so every level reads on the same lines */}
       <div className="grid grid-cols-1 gap-x-3 gap-y-10 sm:grid-cols-2 md:grid-cols-4 md:grid-rows-[auto_auto_auto_auto_auto] md:gap-y-0">
         {rows.map((r, i) => (
-          <div key={r.name} className="md:row-span-5 md:grid md:grid-rows-subgrid md:pr-5">
+          <div key={r.name} className="md:row-span-5 md:grid md:pr-5 md:[grid-template-rows:subgrid]">
             <div>
               <p className="tabular-nums text-black/60">0{i + 1}</p>
               <p className="font-medium">{r.name}</p>

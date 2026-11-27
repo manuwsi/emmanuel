@@ -64,7 +64,11 @@
 /* the opening photograph: whole, as large as the first screen allows, hands entering from the bottom edge */
 .px-hero { height: 75vw; right: 0; }
 @media (min-width: 768px) {
-  .px-hero { height: min(calc(100svh - 92px), calc((100vw - 24px) * 0.5625)); }
+  /* never beyond the photograph's own 1920 px of height; on dense displays it stops at 1200 px so it is not stretched */
+  .px-hero { height: min(calc(100svh - 92px), calc((100vw - 24px) * 0.5625), 1920px); }
+}
+@media (min-width: 768px) and (min-resolution: 1.5dppx) {
+  .px-hero { height: min(calc(100svh - 92px), calc((100vw - 24px) * 0.5625), 1200px); }
 }
 
 /* On a display where the whole screen is already at reading size, its enlarged parts step aside:

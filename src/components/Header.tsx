@@ -7,6 +7,7 @@ import DotText from './dot/DotText';
 import { ChapterCrumb, ReadingMark } from './dot/Reading';
 import { Mark } from './SoutrameMarks';
 import { usePathname } from 'next/navigation';
+import { useEffect, useState } from 'react';
 
 /**
  * Shared site chrome, in the corners of the screen:
@@ -19,12 +20,29 @@ export default function Header({ active, crumb }: { active?: 'work' | 'about'; c
   const corner = 'fixed z-50 text-white mix-blend-difference text-[13px] leading-[1.35] px-2 md:px-3';
   const link = (on: boolean) => (on ? 'underline underline-offset-2' : 'underline-offset-2');
   const here = crumb ?? (active === 'about' ? t('À propos', 'About') : t('Travaux', 'Work'));
-  const soutrame = (usePathname() ?? '').startsWith('/soutrame');
+  const pathname = usePathname() ?? '';
+  const soutrame = pathname.startsWith('/soutrame');
+  // a section that brings its own ink to the top of the screen (data-top-dark) lifts the white veil while it passes under the breadcrumb
+  const [veil, setVeil] = useState(true);
+  useEffect(() => {
+    const els = document.querySelectorAll('[data-top-dark]');
+    if (!els.length) return;
+    const under = new Set<Element>();
+    const io = new IntersectionObserver(
+      (es) => {
+        es.forEach((e) => (e.isIntersecting ? under.add(e.target) : under.delete(e.target)));
+        setVeil(under.size === 0);
+      },
+      { rootMargin: '0px 0px -97% 0px' }
+    );
+    els.forEach((el) => io.observe(el));
+    return () => io.disconnect();
+  }, [pathname]);
 
   return (
     <>
       {/* the page dissolves under the breadcrumb, so text never runs into it (the bottom bar stays transparent) */}
-      <div aria-hidden className="pointer-events-none fixed inset-x-0 top-0 z-40 h-10 bg-gradient-to-b from-white from-30% to-transparent md:h-11" />
+      <div aria-hidden className="pointer-events-none fixed inset-x-0 top-0 z-40 h-10 bg-gradient-to-b from-white from-30% to-transparent transition-opacity duration-300 md:h-11" style={{ opacity: veil ? 1 : 0 }} />
       <div className={`${corner} left-0 top-0 whitespace-nowrap py-1.5`}>
         <Link href="/" className="underline-offset-2">
           <DotText text="Emmanuel Ijjou" play="intro" />

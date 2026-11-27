@@ -92,3 +92,21 @@
 @media (max-width: 767px) {
   .px-photo.dot-in { -webkit-mask-image: none; mask-image: none; }
 }
+
+/* The request: the cut answers when Proxy crosses it. */
+@keyframes px-seam-hit { 0% { box-shadow: 0 0 0 0 #c9461f; } 35% { box-shadow: 0 0 0 5px #c9461f; } 100% { box-shadow: 0 0 0 0 #c9461f; } }
+.px-seam-hit { animation: px-seam-hit 900ms cubic-bezier(.65, 0, .2, 1) 1; }
+@media (prefers-reduced-motion: reduce) { .px-seam-hit { animation: none; } }
+
+/* The journal: the line that is read changes without a jolt. */
+@keyframes px-read { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: none; } }
+.px-read { animation: px-read 380ms cubic-bezier(.2, .7, .2, 1) both; }
+@media (prefers-reduced-motion: reduce) { .px-read { animation: none; } }
+
+/* The ramp: each dot is printed in turn, from the first level to the last. */
+.px-dot { transform-box: fill-box; transform-origin: center; transition: transform 520ms cubic-bezier(.2, .8, .2, 1); }
+
+/* The composed moments, for those who asked for less motion: everything is simply there. */
+@media (prefers-reduced-motion: reduce) {
+  .px-moment, .px-moment * { transition-duration: 0.01ms !important; transition-delay: 0ms !important; animation: none !important; }
+}

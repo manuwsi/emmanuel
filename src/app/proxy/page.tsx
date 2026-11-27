@@ -6,10 +6,14 @@ import { usePathname } from 'next/navigation';
 import { FT } from '@/components/project/ProjectPage';
 import { useT } from '@/components/i18n';
 import { ProxySystem, Presence } from '@/components/project/DesignSystem';
-import { LivePresence, LiveRequest } from '@/components/proxy/Live';
+import { LivePresence } from '@/components/proxy/Live';
 import { TrustLine } from '@/components/proxy/Art';
-import { BeatHead, Cap, Levels, Model, Moment, Rail, ScreenName } from '@/components/proxy/Figures';
-import { Details, Film, JournalAxis, LaptopPhoto, LockScreen, Phones, Photo, Plate, Region, Shot } from '@/components/proxy/Show';
+import { BeatHead, Cap, Model, Moment, Rail, ScreenName } from '@/components/proxy/Figures';
+import { Details, LaptopPhoto, LockScreen, Phones, Photo, Plate, Region } from '@/components/proxy/Show';
+import { Autonomy } from '@/components/proxy/Autonomy';
+import { Request } from '@/components/proxy/Request';
+import { Timetable } from '@/components/proxy/Timetable';
+import { Trail } from '@/components/proxy/Trail';
 import Header from '@/components/Header';
 import NextProject from '@/components/dot/NextProject';
 import DotText from '@/components/dot/DotText';
@@ -34,13 +38,6 @@ const R = {
   levels: [40, 228, 980, 572],
   askWho: [40, 291, 920, 314],
   askMessage: [1000, 84, 440, 320],
-  reqWhat: [40, 114, 960, 152],
-  reqSteps: [40, 274, 960, 204],
-  reqCompare: [40, 472, 960, 252],
-  reqWhy: [1040, 76, 400, 318],
-  reqDecide: [1040, 741, 400, 159],
-  logAxis: [40, 170, 1384, 334],
-  logCard: [1004, 511, 380, 229],
   pauseMail: [40, 294, 940, 199],
   pauseChecks: [40, 497, 940, 204],
   errFacts: [40, 288, 940, 256],
@@ -149,7 +146,12 @@ function Fold({ label, less, children }: { label: string; less: string; children
  * `children` are the pictures composed for a wide screen; `phone` the ones composed for a phone
  * (the product's own phone screens, and parts that fit the width or slide under the finger).
  */
-function Beat({ m, title, state, children, phone, after, body, more, last = false }: { m: Moment; title: string; state: string; body: ReactNode; more?: ReactNode; children: ReactNode; phone: ReactNode; after?: ReactNode; last?: boolean }) {
+/** A moment that takes the whole width of the page, from inside the nine columns of the week (it passes over the rail). */
+function Bleed({ children, className = '' }: { children: ReactNode; className?: string }) {
+  return <div data-bleed className={`relative z-10 -mx-2 bg-white md:mx-0 md:ml-[calc(-33.3333%-16px)] md:w-[calc(133.3333%+28px)] ${className}`}>{children}</div>;
+}
+
+function Beat({ m, title, state, children, phone, lead, after, body, more, last = false }: { m: Moment; title: string; state: string; body: ReactNode; more?: ReactNode; children?: ReactNode; phone?: ReactNode; lead?: ReactNode; after?: ReactNode; last?: boolean }) {
   return (
     <article id={m.id} data-chapter={`${m.day} · ${m.time}`} className={`scroll-mt-28 ${last ? '' : 'pb-20 md:pb-[22vh]'}`}>
       <BeatHead m={m} label={state} />
@@ -160,8 +162,9 @@ function Beat({ m, title, state, children, phone, after, body, more, last = fals
         {more && <div className="hidden space-y-3 md:block">{more}</div>}
         {more && <More className="md:hidden">{more}</More>}
       </div>
-      <div className="mt-8 hidden md:mt-14 md:block">{children}</div>
-      <div className="mt-8 space-y-8 md:hidden">{phone}</div>
+      {lead}
+      {children && <div className="mt-8 hidden md:mt-14 md:block">{children}</div>}
+      {phone && <div className="mt-8 space-y-8 md:hidden">{phone}</div>}
       {after}
     </article>
   );
@@ -196,13 +199,12 @@ export default function Page() {
   ];
   const M = Object.fromEntries(moments.map((m) => [m.id, m])) as Record<string, Moment>;
 
-  const shots: Shot[] = [
-    { rect: [0, 0, 1440, 900], title: t('La demande, entière.', 'The request, whole.'), note: t('Proxy s’est arrêté avant de payer : 89 €, c’est au-dessus de la limite de 60 € que Léa a fixée.', 'Proxy stopped before paying: €89 is over the €60 limit Léa set.') },
-    { rect: R.reqWhat, title: t('Ce qu’il demande.', 'What it asks.'), note: t('L’action tient en une phrase. Le montant est posé face à la règle dépassée, avant tout le reste.', 'The action fits in one sentence. The amount is set against the rule it breaks, before anything else.') },
-    { rect: R.reqSteps, title: t('Ce qu’il va faire, dans l’ordre.', 'What it will do, in order.'), note: t('Une seule étape porte l’orange, et le pointillé marque l’instant après lequel on ne revient plus en arrière.', 'Only one step carries orange, and the dotted line marks the moment after which there is no going back.') },
-    { rect: R.reqCompare, title: t('Ce qu’il a comparé.', 'What it compared.'), note: t('Les trains sont placés face au rendez-vous de 10 h 30 : on voit le choix sans lire. Les options écartées restent visibles, avec la raison en une ligne.', 'The trains are placed against the 10:30 meeting: you see the choice without reading. The options ruled out stay visible, with the reason in one line.') },
-    { rect: R.reqWhy, title: t('D’où vient la demande.', 'Where the request comes from.'), note: t('La raison, citée telle quelle, et ce que Proxy a consulté.', 'The reason, quoted as is, and what Proxy looked at.') },
-    { rect: R.reqDecide, title: t('La décision reste à Léa.', 'The decision stays with Léa.'), note: t('Une case permet de réserver seul les trains de moins de 100 € la prochaine fois. Rien n’est payé avant la validation.', 'A checkbox lets Proxy book trains under €100 alone next time. Nothing is paid before approval.') },
+
+  const facts = [
+                  [t('Année', 'Year'), '2026'],
+                  [t('Contexte', 'Context'), t('Projet personnel, concept', 'Personal project, concept')],
+                  [t('Rôle', 'Role'), t('Recherche, UX/UI, design system, prototype codé', 'Research, UX/UI, design system, coded prototype')],
+                  [t('Outils', 'Tools'), t('Prototype codé en HTML/CSS, avec Claude', 'Prototype coded in HTML/CSS, with Claude')],
   ];
 
   return (
@@ -210,8 +212,8 @@ export default function Page() {
       <Header crumb="Proxy" />
 
       <div className="relative">
-        {/* OPENING — the object, whole. The photograph stays in place; the text leaves with the page and the case slides over the picture */}
-        <div className="pointer-events-none sticky top-0 h-[100svh] px-2 md:px-3">
+        {/* OPENING — the name, the promise and the object, whole. On a wide screen the photograph stays in place: the text leaves with the page, and the case slides over the picture */}
+        <div className="pointer-events-none sticky top-0 hidden h-[100svh] px-3 md:block">
           <div className={`${GRID} h-full`}>
             <div className="md:relative md:col-span-9 md:col-start-4">
               <div className="px-hero absolute bottom-0 right-0" style={{ aspectRatio: '4 / 3' }}>
@@ -220,21 +222,17 @@ export default function Page() {
             </div>
           </div>
         </div>
-        <section className="relative -mt-[100svh] h-[100svh] px-2 md:px-3">
+        <section className="relative -mt-[100svh] hidden h-[100svh] px-3 md:block">
           <div className={GRID}>
-            <div className={`${FT} pt-[88px] md:col-span-3 md:pr-7 md:pt-[104px]`}>
-              <h1 data-intro-target className="font-medium">
+            <div className="pt-[78px] md:col-span-4 md:pr-6 xl:col-span-3">
+              <LivePresence state="work" size={9} />
+              <h1 data-intro-target className="mt-7 text-[clamp(80px,8.2vw,132px)] font-medium leading-[0.86] tracking-[-0.05em]">
                 Proxy
               </h1>
-              <p className="text-black/60">{t('Agent IA personnel, pensé autour de la supervision humaine', 'A personal AI agent, designed around human oversight')}</p>
-              <p className="mt-5 max-w-[320px] font-medium">{t('Laisser un agent IA agir à sa place, et garder la main sur ce qu’il fait.', 'Let an AI agent act on your behalf, and stay in control of what it does.')}</p>
-              <dl className="mt-8 grid max-w-[340px] grid-cols-2 content-start gap-x-3 gap-y-4 md:grid-cols-1 xl:grid-cols-2">
-                {[
-                  [t('Année', 'Year'), '2026'],
-                  [t('Contexte', 'Context'), t('Projet personnel, concept', 'Personal project, concept')],
-                  [t('Rôle', 'Role'), t('Recherche, UX/UI, design system, prototype codé', 'Research, UX/UI, design system, coded prototype')],
-                  [t('Outils', 'Tools'), t('Prototype codé en HTML/CSS, avec Claude', 'Prototype coded in HTML/CSS, with Claude')],
-                ].map(([k, v]) => (
+              <p className={`${FT} mt-5 text-black/60`}>{t('Agent IA personnel, pensé autour de la supervision humaine', 'A personal AI agent, designed around human oversight')}</p>
+              <p className={`${H} mt-7`}>{t('Laisser un agent IA agir à sa place, et garder la main sur ce qu’il fait.', 'Let an AI agent act on your behalf, and stay in control of what it does.')}</p>
+              <dl className={`${FT} mt-9 grid max-w-[340px] grid-cols-1 content-start gap-x-3 gap-y-4 xl:grid-cols-2`}>
+                {facts.map(([k, v]) => (
                   <div key={k}>
                     <dt className="text-black/60">{k}</dt>
                     <dd>{v}</dd>
@@ -243,6 +241,24 @@ export default function Page() {
               </dl>
             </div>
           </div>
+        </section>
+        {/* on a phone: the same opening, in reading order, and nothing moves with the scroll */}
+        <section className="px-2 pb-12 pt-[72px] md:hidden">
+          <LivePresence state="work" size={7} />
+          <h1 className="mt-6 text-[76px] font-medium leading-[0.86] tracking-[-0.05em]">Proxy</h1>
+          <p className={`${FT} mt-4 text-black/60`}>{t('Agent IA personnel, pensé autour de la supervision humaine', 'A personal AI agent, designed around human oversight')}</p>
+          <p className={`${H} mt-5 max-w-[15em]`}>{t('Laisser un agent IA agir à sa place, et garder la main sur ce qu’il fait.', 'Let an AI agent act on your behalf, and stay in control of what it does.')}</p>
+          <div className="-mx-2 mt-7">
+            <LaptopPhoto priority alt={t('Proxy sur un ordinateur portable, l’écran Aujourd’hui', 'Proxy on a laptop, the Today screen')} />
+          </div>
+          <dl className={`${FT} mt-7 grid grid-cols-2 gap-x-3 gap-y-4`}>
+            {facts.map(([k, v]) => (
+              <div key={k}>
+                <dt className="text-black/60">{k}</dt>
+                <dd>{v}</dd>
+              </div>
+            ))}
+          </dl>
         </section>
 
         {/* THE ESSENTIALS */}
@@ -293,18 +309,19 @@ export default function Page() {
           <Note label={t('02 → Le modèle', '02 → The model')} lede={t('Ce qui se passe entre un déclencheur et une action.', 'What happens between a trigger and an action.')}>
             <p>{t('Avant les écrans, j’ai posé ce modèle, et appuyé ses règles sur la recherche publiée. Chaque écran du case en est un état.', 'Before the screens, I laid out this model, and grounded its rules in published research. Every screen in the case is one of its states.')}</p>
           </Note>
+        </section>
+
+        {/* the four levels, as one ramp across the page */}
+        <div className="-mx-2 pt-12 md:-mx-3 md:pt-[9vh]">
+          <Autonomy />
+        </div>
+
+        <section className={`${GRID} gap-y-8 pt-16 md:gap-y-10 md:pt-[14vh]`}>
           <div className="md:col-span-9 md:col-start-4">
-            <p className={`${FT} mb-6 max-w-[440px] text-black/70`}>{t('Chaque domaine a son niveau. Le même geste, classer une facture, ne se passe pas de la même façon selon celui que Léa a choisi.', 'Each domain has its level. The same gesture, filing an invoice, plays out differently depending on the one Léa chose.')}</p>
-            <Levels />
-            <div className="mt-12 md:mt-24">
+            <div>
               <div className="hidden md:block">
                 <Region id="autonomie" rect={R.levels} label={t('Proxy, les niveaux d’autonomie par domaine', 'Proxy, autonomy levels per domain')}>
                   <span className="tabular-nums text-[#0a0a0a]">03</span> · <span className="text-[#0a0a0a]">{t('Les niveaux d’autonomie', 'Autonomy levels')}</span>. {t('Dans le produit : cinq domaines, chacun à son niveau, avec ses limites écrites en clair. Le pointillé est une suggestion de Proxy, que Léa n’a pas encore acceptée.', 'In the product: five domains, each at its own level, with its limits written out. The dotted segment is a suggestion from Proxy that Léa has not accepted yet.')}
-                </Region>
-              </div>
-              <div className="md:hidden">
-                <Region id="aujourdhui" rect={R.homeAlone} min={0} label={t('Proxy : ce qu’il peut faire seul, domaine par domaine', 'Proxy: what it can do alone, domain by domain')}>
-                  {t('Dans le produit : chaque domaine à son niveau, toujours visible sur l’accueil.', 'In the product: each domain at its own level, always visible on the home screen.')}
                 </Region>
               </div>
             </div>
@@ -483,11 +500,17 @@ export default function Page() {
                 </>
               }
               after={
-                <div className="mt-10 md:mt-0">
-                  <p className={`${FT} mb-4 max-w-[440px] text-black/70`}>{t('À vous : validez, puis annulez l’ajout à l’agenda ou demandez le remboursement.', 'Your turn: approve, then undo the calendar entry or request the refund.')}</p>
-                  <LiveRequest />
-                  <Cap>{t('Le risque, c’est la fatigue de validation : le bilan du vendredi la repère et propose d’ajuster la règle.', 'The risk is approval fatigue: the Friday review spots it and suggests adjusting the rule.')}</Cap>
-                </div>
+                <>
+                  <Bleed className="mt-12 md:mt-[12vh]">
+                    <Request />
+                  </Bleed>
+                  <Cap className="mt-4">{t('À vous : validez, puis annulez l’ajout à l’agenda ou demandez le remboursement. Ou refusez : l’autre côté de la page s’en va.', 'Your turn: approve, then undo the calendar entry or request the refund. Or decline: the other side of the page goes away.')}</Cap>
+                  <div className="pt-16 md:pt-[16vh]">
+                    <p className={`${FT} mb-8 max-w-[440px] text-black/70 md:mb-10`}>{t('Pourquoi ce train. Aucun des trois ne passe sous la limite de 60 € : Proxy propose celui qui colle au rendez-vous de 10 h 30, et attend.', 'Why this train. None of the three falls under the €60 limit: Proxy proposes the one that fits the 10:30 meeting, and waits.')}</p>
+                    <Timetable />
+                    <Cap className="mt-6">{t('Le risque, c’est la fatigue de validation : le bilan du vendredi la repère et propose d’ajuster la règle.', 'The risk is approval fatigue: the Friday review spots it and suggests adjusting the rule.')}</Cap>
+                  </div>
+                </>
               }
               title={t('Un train à 89 €, au-dessus de sa limite de 60 €.', 'An €89 train, above her €60 limit.')}
               body={<p>{t('Tout part d’une notification. Sur l’écran verrouillé, elle donne déjà le montant et la limite dépassée ; la demande s’ouvre, et se valide avec Face ID.', 'It all starts with a notification. On the lock screen, it already shows the amount and the limit exceeded; the request opens, and is approved with Face ID.')}</p>}
@@ -519,51 +542,25 @@ export default function Page() {
                   <Photo src="/proxy/photo-validation-v4.jpg" alt={t('La demande de validation ouverte sur le téléphone', 'The approval request opened on the phone')} sizes="(min-width: 768px) 50vw, 100vw" />
                 </figure>
               </div>
-
-              {/* the same request on a computer, read part by part */}
-              <div>
-                <Film
-                  id="validation"
-                  shots={shots}
-                  label={t('Proxy, demande de validation pour un train', 'Proxy, approval request for a train')}
-                  name={
-                    <>
-                      <span className="tabular-nums">05</span> · <span className="text-[#0a0a0a]">{t('Une demande de validation', 'An approval request')}</span>
-                    </>
-                  }
-                />
-              </div>
             </Beat>
 
             {/* 10:41 */}
             <Beat
               m={M.m1041}
               state={stateLabel.work}
-              phone={
-                <JournalAxis rect={R.logAxis} label={t('Détail : la journée de Proxy sur un axe horaire', 'Detail: Proxy’s day on a time axis')}>
-                  <span className="tabular-nums text-[#0a0a0a]">07</span> · <span className="text-[#0a0a0a]">{t('Le journal', 'The log')}</span>. {t('Plein : fait seul. Cercle épais : fait, puis prévenu. Gris : validé par Léa. Cercle fin : en attente.', 'Solid: done alone. Thick ring: done, then told. Grey: approved by Léa. Thin ring: pending.')}
-                </JournalAxis>
+              lead={
+                <Bleed className="mt-10 md:mt-[9vh]">
+                  <Trail />
+                </Bleed>
               }
               title={t('Le billet est réservé, et tout est écrit dans le journal.', 'The ticket is booked, and everything is written in the log.')}
-              body={<p>{t('Une ligne par domaine, un point par action. Sa forme dit le niveau d’autonomie, un trait montre jusqu’à quand on peut l’annuler.', 'One line per domain, one dot per action. Its shape tells the autonomy level, a stroke shows until when it can be undone.')}</p>}
+              body={<p>{t('Une ligne par domaine, une note par action. Sa forme dit le niveau d’autonomie, sa traîne le temps qu’il reste pour l’annuler.', 'One line per domain, one note per action. Its shape tells the autonomy level, its tail the time left to undo it.')}</p>}
             >
               <Plate
                 id="journal"
                 label={t('Proxy, le journal de la journée', 'Proxy, the day’s log')}
-                marks={[
-                  { k: 'A', rect: R.logAxis },
-                  { k: 'B', rect: R.logCard },
-                ]}
               />
-              <ScreenName n="07">{t('Le journal', 'The log')}</ScreenName>
-              <Details>
-                <JournalAxis k="A" rect={R.logAxis} label={t('Détail : la journée de Proxy sur un axe horaire', 'Detail: Proxy’s day on a time axis')}>
-                  {t('Plein : fait seul. Cercle épais : fait, puis prévenu. Gris : validé par Léa. Cercle fin : en attente.', 'Solid: done alone. Thick ring: done, then told. Grey: approved by Léa. Thin ring: pending.')}
-                </JournalAxis>
-                <Region id="journal" rect={R.logCard} k="B" label={t('Détail : une action encore annulable', 'Detail: an action that can still be undone')} className="md:col-span-4">
-                  {t('Chaque action garde son déclencheur, et le temps qu’il reste pour l’annuler.', 'Every action keeps its trigger, and the time left to undo it.')}
-                </Region>
-              </Details>
+              <ScreenName n="07">{t('Le journal, dans le produit', 'The log, in the product')}</ScreenName>
               <div className="pt-[12vh]">
                 <Phones
                   items={[

@@ -9,8 +9,6 @@ type T = <V,>(fr: V, en: V) => V;
 
 const INK = '#121212';
 const WARN = '#c9461f';
-const GREY = '#868b90';
-const OFF = '#e5e7e9';
 const FT = 'text-[14px] leading-[1.6] md:text-[13px]';
 
 export function useSeen<E extends Element>(threshold = 0.35) {
@@ -33,72 +31,6 @@ export function useSeen<E extends Element>(threshold = 0.35) {
     return () => io.disconnect();
   }, [threshold]);
   return [ref, on] as const;
-}
-
-/* ───────────────────────── Four levels, one same gesture ───────────────────────── */
-
-/** The journal's own signs: how an action is written tells how much Proxy was allowed to do. */
-function Sign({ level, on, delay }: { level: number; on: boolean; delay: number }) {
-  const d = (ms: number) => ({ transitionDelay: `${delay + ms}ms` });
-  const dot = 'absolute top-1/2 block h-[14px] w-[14px] -translate-y-1/2 rounded-full transition-[opacity,transform] duration-500';
-  const show = { opacity: on ? 1 : 0, transform: `translateY(-50%) scale(${on ? 1 : 0.4})` };
-  return (
-    <div className="relative h-[34px]" aria-hidden>
-      <span className="absolute left-0 right-0 top-1/2 h-px" style={{ background: OFF }} />
-      {level === 1 && <span className="absolute left-0 top-1/2 h-[9px] w-px -translate-y-1/2" style={{ background: GREY }} />}
-      {level === 2 && (
-        <>
-          <span className={dot} style={{ left: 0, background: '#fff', boxShadow: `inset 0 0 0 1.5px ${GREY}`, ...show, ...d(0) }} />
-          <span className="absolute top-1/2 h-px origin-left transition-transform duration-700" style={{ left: 20, width: '34%', transform: `scaleX(${on ? 1 : 0})`, ...d(350), backgroundImage: `repeating-linear-gradient(90deg, ${GREY} 0 3px, transparent 3px 6px)` }} />
-          <span className={dot} style={{ left: 'calc(34% + 26px)', background: GREY, ...show, ...d(900) }} />
-        </>
-      )}
-      {level >= 3 && (
-        <>
-          <span className="absolute top-1/2 h-[2px] origin-left -translate-y-1/2 transition-transform duration-[900ms]" style={{ left: 7, width: '58%', background: INK, transform: `translateY(-50%) scaleX(${on ? 1 : 0})`, ...d(350) }} />
-          <span className="absolute top-1/2 h-[10px] w-[2px] -translate-y-1/2 transition-opacity duration-300" style={{ left: 'calc(58% + 7px)', background: INK, opacity: on ? 1 : 0, ...d(1150) }} />
-          <span className={dot} style={{ left: 0, background: level === 4 ? INK : '#fff', boxShadow: level === 4 ? undefined : `inset 0 0 0 3px ${INK}`, ...show, ...d(0) }} />
-        </>
-      )}
-    </div>
-  );
-}
-
-export function Levels() {
-  const t = useT() as T;
-  const [ref, on] = useSeen<HTMLDivElement>(0.4);
-  const rows = [
-    { name: t('Observer', 'Observe'), does: t('Proxy voit la facture arriver. Il n’y touche pas.', 'Proxy sees the invoice come in. It leaves it alone.'), gets: t('Rien ne bouge.', 'Nothing moves.'), sign: t('rien au journal', 'nothing in the log') },
-    { name: t('Proposer', 'Propose'), does: t('Il prépare le classement, puis attend.', 'It prepares the filing, then waits.'), gets: t('Une demande : Léa valide ou refuse.', 'A request: Léa approves or declines.'), sign: t('proposé, puis validé par Léa', 'proposed, then approved by Léa') },
-    { name: t('Agir, puis prévenir', 'Act, then tell'), does: t('Il classe, puis le dit à Léa.', 'It files, then tells Léa.'), gets: t('Une notification, et un délai pour annuler.', 'A notification, and a window to undo.'), sign: t('fait, puis prévenu · encore annulable', 'done, then told · still undoable') },
-    { name: t('Agir seul', 'Act alone'), does: t('Il classe.', 'It files.'), gets: t('Aucune interruption : c’est écrit au journal.', 'No interruption: it is written in the log.'), sign: t('fait seul · encore annulable', 'done alone · still undoable') },
-  ];
-  return (
-    <figure ref={ref} className={FT}>
-      {/* four columns sharing the same rows, so every level reads on the same lines */}
-      <div className="grid grid-cols-2 gap-x-3 gap-y-8 md:grid-cols-4 md:grid-rows-[auto_auto_auto_auto_auto] md:gap-y-0">
-        {rows.map((r, i) => (
-          <div key={r.name} className="md:row-span-5 md:grid md:pr-5 md:[grid-template-rows:subgrid]">
-            <div>
-              <p className="tabular-nums text-black/60">0{i + 1}</p>
-              <p className="font-medium">{r.name}</p>
-            </div>
-            <div className="mt-3 flex gap-[3px]" aria-hidden>
-              {[0, 1, 2, 3].map((j) => (
-                <span key={j} className="h-[6px] flex-1 transition-colors duration-500" style={{ background: on && j <= i ? INK : OFF, transitionDelay: `${i * 140 + j * 70}ms` }} />
-              ))}
-            </div>
-            <p className="mt-5 hidden text-black/70 md:block">{r.does}</p>
-            <p className="mt-3 md:mt-1">{r.gets}</p>
-            <div className="mt-4">
-              <Sign level={i + 1} on={on} delay={500 + i * 220} />
-              <p className="text-black/60">{r.sign}</p>
-            </div>
-          </div>
-        ))}
-      </div>
-    </figure>
-  );
 }
 
 /* ───────────────────────── The decision model, followed case by case ───────────────────────── */
@@ -195,16 +127,38 @@ function useWide() {
   return wide;
 }
 
+/** While a moment takes the whole width of the page ([data-bleed]), the rail steps aside instead of being cut by it. */
+function useAway(on: boolean) {
+  const [away, setAway] = useState(false);
+  useEffect(() => {
+    if (!on) return;
+    const els = document.querySelectorAll('[data-bleed]');
+    if (!els.length) return;
+    const over = new Set<Element>();
+    const io = new IntersectionObserver(
+      (es) => {
+        es.forEach((e) => (e.isIntersecting ? over.add(e.target) : over.delete(e.target)));
+        setAway(over.size > 0);
+      },
+      { rootMargin: '-10% 0px -14% 0px' }
+    );
+    els.forEach((el) => io.observe(el));
+    return () => io.disconnect();
+  }, [on]);
+  return away;
+}
+
 export function Rail({ moments, labels }: { moments: Moment[]; labels: Record<Moment['state'], string> }) {
   // the rail keeps this state to itself: the page around it never re-renders while it is read.
   // On a phone it is not displayed, so it watches nothing and nothing ticks.
   const wide = useWide();
   const active = useActiveBeat(moments.map((m) => m.id), wide);
+  const away = useAway(wide);
   const cur = moments.find((m) => m.id === active) ?? moments[0];
   if (!wide) return null;
   const stop = cur.state === 'stop';
   return (
-    <div className={`sticky top-[19vh] ${FT}`}>
+    <div className={`sticky top-[19vh] transition-[opacity,transform] duration-300 ease-out motion-reduce:transition-none ${FT}`} style={{ opacity: away ? 0 : 1, transform: away ? 'translateY(-8px)' : 'none', pointerEvents: away ? 'none' : undefined, visibility: away ? 'hidden' : 'visible', transitionProperty: 'opacity, transform, visibility' }}>
       <div className="h-[92px]">{cur.state === 'work' ? <LivePresence state="work" size={11} /> : <Presence k={cur.state} size={11} />}</div>
       <p className="mt-6 tabular-nums text-black/60">{cur.day}</p>
       <p className="mt-1 text-[34px] font-medium tabular-nums leading-none tracking-[-0.03em]" style={{ color: stop ? WARN : INK }}>

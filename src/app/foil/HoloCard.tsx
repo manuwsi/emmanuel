@@ -60,7 +60,7 @@ export default function HoloCard() {
         ref={stage}
         onPointerMove={onMove}
         onPointerLeave={() => (hover.current = false)}
-        className="md:col-span-7 relative min-h-[520px] md:min-h-[720px] flex items-center justify-center overflow-hidden touch-pan-y"
+        className="md:col-span-7 relative min-h-[520px] md:min-h-[600px] flex items-center justify-center overflow-hidden touch-pan-y"
         style={{ background: 'radial-gradient(90% 70% at 50% 0%, #17191e 0%, #08090b 70%)', perspective: '1100px' }}
       >
         <div
@@ -138,11 +138,11 @@ export default function HoloCard() {
               <button
                 onClick={() => setI(k)}
                 aria-pressed={k === i}
-                className={`w-full flex items-center gap-4 px-6 md:px-8 py-4 border-b border-white/10 text-left transition-colors ${k === i ? 'bg-white/[0.06]' : 'hover:bg-white/[0.03]'}`}
+                className={`w-full flex items-center gap-4 px-6 md:px-8 py-4 border-b border-white/10 text-left transition-colors ${k === i ? 'bg-white/[0.06]' : ''}`}
               >
                 <Image unoptimized loading="eager" src={`/foil/cards/${c.id}.webp`} alt="" width={c.w} height={c.h} sizes="40px" className="w-10 h-auto rounded-[3px]" />
                 <span className="flex-1">
-                  <span className="block text-[15px]">{c.name}</span>
+                  <span className="block text-[14px] md:text-[13px]">{c.name}</span>
                   <span className="block text-[12px] text-white/45">{c.game}</span>
                 </span>
                 <span className="text-[14px] tabular-nums text-white/70">{c.value} €</span>

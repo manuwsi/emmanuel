@@ -44,8 +44,10 @@ export default function Transitions() {
       if (target) {
         const r = target.getBoundingClientRect();
         const fs = parseFloat(getComputedStyle(target).fontSize) || 16;
-        const x = r.left + fs * 0.3 - innerWidth / 2;
-        const y = r.top + fs * 0.45 - innerHeight / 2;
+        // measured from the veil itself, not the window: on Windows the scrollbar takes 15 px off the side
+        const box = v.getBoundingClientRect();
+        const x = r.left + fs * 0.3 - (box.left + box.width / 2);
+        const y = r.top + fs * 0.45 - (box.top + box.height / 2);
         dot.style.transition = 'transform 620ms cubic-bezier(.65,0,.35,1)';
         dot.style.transform = `translate(${x}px, ${y}px) scale(1.4)`;
       }

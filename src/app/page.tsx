@@ -53,7 +53,7 @@ function ProjectCard({ project, index }: { project: Project; index: number; smal
           </motion.div>
         </div>
         <div className="h-[2px] w-full bg-black/10">
-          <div className="h-full w-0 bg-[#0a0a0a] transition-[width] duration-700 ease-[cubic-bezier(.22,1,.36,1)] group-hover:w-full" />
+          <div className="h-full w-0 bg-[#0a0a0a] transition-[width] duration-700 ease-[cubic-bezier(.22,1,.36,1)]" />
         </div>
         <motion.div
           className={`${TXT} flex items-start justify-between gap-3 pt-1.5`}
@@ -260,11 +260,11 @@ export default function Home() {
           <p className={`${TXT} font-medium`}>
             {t('Un poste, un projet ?', 'A role, a project?')}
             <br />
-            <span className="text-white/55 transition-colors duration-500 group-hover:text-white">{t('Écrivez-moi', 'Write to me')} →</span>
+            <span className="text-white">{t('Écrivez-moi', 'Write to me')} →</span>
           </p>
         </div>
         <div className="h-[2px] w-full bg-black/10">
-          <div className="h-full w-0 bg-[#0a0a0a] transition-[width] duration-700 ease-[cubic-bezier(.22,1,.36,1)] group-hover:w-full" />
+          <div className="h-full w-0 bg-[#0a0a0a] transition-[width] duration-700 ease-[cubic-bezier(.22,1,.36,1)]" />
         </div>
         <div className={`${TXT} flex items-start justify-between gap-3 pt-1.5`}>
           <div>
@@ -307,7 +307,7 @@ export default function Home() {
             {t('Précédemment OKCC, studio créatif — ', 'Previously OKCC, creative studio — ')}Hennessy, Shu Uemura, Louis Vuitton, L&apos;Oréal, YSL Beauty, HOKA.
           </p>
           <p className="text-black/45 md:col-span-3 md:col-start-6">{t('Disponible — CDI, Paris ou remote', 'Available — full-time, Paris or remote')}</p>
-          <a href="#work" className="hover:underline md:col-span-2 md:col-start-11 md:text-right">
+          <a href="#work" className="md:col-span-2 md:col-start-11 md:text-right">
             {t('Voir les projets', 'See the work')} ↓
           </a>
         </motion.div>
@@ -353,7 +353,7 @@ export default function Home() {
       <footer className={`${TXT} mt-32 grid grid-cols-2 gap-y-6 px-2 pb-10 md:grid-cols-4 md:px-3`}>
         <div>
           <p>Contact</p>
-          <a href="mailto:emmanuelijjou@gmail.com" className="text-black/55 hover:text-black">
+          <a href="mailto:emmanuelijjou@gmail.com" className="text-black/55">
             emmanuelijjou@gmail.com
           </a>
         </div>
@@ -363,7 +363,7 @@ export default function Home() {
         </div>
         <div>
           <p>{t('Profil', 'Profile')}</p>
-          <Link href="/about" className="text-black/55 hover:text-black">
+          <Link href="/about" className="text-black/55">
             {t('À propos', 'About')} →
           </Link>
         </div>

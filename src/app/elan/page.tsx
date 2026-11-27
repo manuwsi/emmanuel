@@ -291,7 +291,7 @@ export default function Page() {
         {problems(t).map((p) => (
           <li key={p.title} className="bg-white p-6 md:p-8 flex flex-col gap-4">
             <span className="text-[13px] text-black/45">{p.when}</span>
-            <h4 className="text-xl md:text-2xl font-medium tracking-[-0.03em] leading-snug">{p.title}</h4>
+            <h4 className="font-medium">{p.title}</h4>
             <p className="text-sm text-black/60 leading-relaxed">{p.text}</p>
           </li>
         ))}
@@ -321,7 +321,7 @@ export default function Page() {
             <span className="text-[13px] text-black/45">
               0{i + 1} — {m.where}
             </span>
-            <h4 className="text-xl md:text-2xl font-medium tracking-[-0.03em] leading-snug">{m.title}</h4>
+            <h4 className="font-medium">{m.title}</h4>
             <p className="text-sm text-black/60 leading-relaxed">{m.text}</p>
           </li>
         ))}
@@ -337,8 +337,8 @@ export default function Page() {
         <ol className="grid grid-cols-1 md:grid-cols-3 gap-px bg-black/15 border border-black/15">
           {glance(t).map((g) => (
             <li key={g.title} className="bg-white p-6 md:p-8 flex flex-col gap-3">
-              <span className="text-[10vw] md:text-[2vw] font-medium leading-[0.95] tracking-[-0.04em]">{g.time}</span>
-              <h4 className="text-xl md:text-2xl font-medium tracking-[-0.03em] leading-snug pt-4">{g.title}</h4>
+              <span className="text-[8vw] md:text-[1.5vw] font-medium leading-[0.95] tracking-[-0.04em]">{g.time}</span>
+              <h4 className="pt-3 font-medium">{g.title}</h4>
               <p className="text-sm text-black/60 leading-relaxed">{g.text}</p>
             </li>
           ))}
@@ -372,7 +372,7 @@ export default function Page() {
         <div className="md:col-span-5 bg-white p-6 md:p-8 flex flex-col justify-between gap-10">
           <div className="space-y-4">
             <span className="text-[13px] text-black/45">{t('Vue éclatée', 'Exploded view')}</span>
-            <h4 className="text-[18px] md:text-[1.35vw] font-medium tracking-[-0.025em] leading-[1.15]">
+            <h4 className="font-medium">
               {t('Un écran, quatre couches, une information par couche.', 'One screen, four layers, one piece of information per layer.')}
             </h4>
           </div>
@@ -381,7 +381,7 @@ export default function Page() {
               <li key={l.n} className="grid grid-cols-[3rem_1fr] gap-2 py-4">
                 <span className="text-[13px] text-black/45 pt-0.5">{l.n}</span>
                 <div className="space-y-1">
-                  <h5 className="text-[15px] font-medium">{l.title}</h5>
+                  <h5 className="font-medium">{l.title}</h5>
                   <p className="text-sm text-black/60 leading-relaxed">{l.text}</p>
                 </div>
               </li>
@@ -441,7 +441,7 @@ export default function Page() {
             <li key={r.title} className="grid grid-cols-[3rem_1fr] gap-2 py-5 md:py-6">
               <span className="text-[13px] text-black/45 pt-1">0{i + 1}</span>
               <div className="space-y-1.5">
-                <h4 className="text-lg md:text-xl font-medium tracking-[-0.03em] leading-snug">{r.title}</h4>
+                <h4 className="font-medium">{r.title}</h4>
                 <p className="text-sm text-black/60 leading-relaxed">{r.text}</p>
               </div>
             </li>
@@ -540,7 +540,7 @@ export default function Page() {
               </div>
               <div className="p-6 md:p-8 flex flex-col gap-3">
                 <span className="text-[13px] text-black/45">{d.where}</span>
-                <h4 className="text-xl md:text-2xl font-medium tracking-[-0.03em] leading-snug">{d.title}</h4>
+                <h4 className="font-medium">{d.title}</h4>
                 <p className="text-sm text-black/60 leading-relaxed max-w-md">{d.text}</p>
               </div>
             </li>

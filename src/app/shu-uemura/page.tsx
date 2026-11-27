@@ -4,9 +4,11 @@ import Image from 'next/image';
 import { motion } from 'framer-motion';
 import Header from '@/components/Header';
 import { useT } from '@/components/i18n';
-import { Bleed, Chap, Lede, Meta, Next, Principles, Title, WRAP } from '@/components/case/Kit';
+import { Bleed, Chap, Next, Principles, WRAP } from '@/components/case/Kit';
+import { CaseHead } from '@/components/project/ProjectPage';
 import { Strip } from '@/app/foil/Kit';
 import Compare from '@/components/colosse/Compare';
+import DotIn from '@/components/dot/DotIn';
 import '@/styles/globals.css';
 
 /** A phone screen at its real ratio, with a thin rounded edge. */
@@ -51,37 +53,17 @@ export default function Page() {
     <main className="w-full min-h-screen bg-white text-[#0a0a0a] font-sans overflow-x-clip relative flex flex-col [scroll-snap-type:none]">
       <Header crumb="Shu Uemura AI:tutor" />
 
-      <div className={`${WRAP} pt-28 md:pt-36`}>
-        <Title title="Shu Uemura" kicker="AI:tutor" subtitle={t('2025 — UI design, coach beauté IA, avec OKCC', '2025 — UI design, AI beauty tutor, with OKCC')} />
-      </div>
-
-      <div className="mt-14 md:mt-20">
-        <Bleed
-          src="/shu-cover-v7.jpg"
-          alt={t('Une main tient un pinceau Shu Uemura et l’iPhone, ouvert sur l’analyse du visage', 'A hand holds a Shu Uemura brush and the iPhone, open on the face analysis')}
-          aspect="2400/1500"
-          mobileAspect="4/5"
-          position="50% 80%"
-          priority
-          bg="#ffffff"
-        />
-      </div>
-
-      <div className={WRAP}>
-        <Lede className="pt-20 md:pt-28">
-          {t(
+      <div className="px-2 pt-24 md:px-3 md:pt-[24vh]">
+        <CaseHead
+          title="Shu Uemura"
+          kicker="AI:tutor"
+          subtitle={t('2025 — UI design, coach beauté IA, avec OKCC', '2025 — UI design, AI beauty tutor, with OKCC')}
+          lede={t(
             'Un coach maquillage sur mobile, qui lit le visage de la cliente et lui montre le geste, produit par produit.',
             'A mobile make-up coach that reads the client’s face and shows her the technique, product by product.'
           )}
-        </Lede>
-        <Meta
-          rows={[
-            [t('Année', 'Year'), '2025'],
-            [t('Contexte', 'Context'), 'OKCC'],
-            [t('Rôle', 'Role'), t('UI design, film de présentation IA', 'UI design, AI concept film')],
-            [t('Outils', 'Tools'), 'Figma, Runway, Kling'],
-          ]}
-        >
+          intro={
+            <>
           <p>
             {t(
               'Shu Uemura voulait aider ses clientes à choisir et à appliquer leurs produits, avec un coach personnel sur leur téléphone.',
@@ -94,7 +76,30 @@ export default function Page() {
               'I designed every screen, working directly with the client over three iterations. I also made an AI film to present the concept to Shu Uemura’s CEO before development. The concept was well received and the project was delivered.'
             )}
           </p>
-        </Meta>
+            </>
+          }
+          rows={[
+            [t('Année', 'Year'), '2025'],
+            [t('Contexte', 'Context'), 'OKCC'],
+            [t('Rôle', 'Role'), t('UI design, film de présentation IA', 'UI design, AI concept film')],
+            [t('Outils', 'Tools'), 'Figma, Runway, Kling'],
+          ]}
+        />
+      </div>
+
+      <div className="mt-16 md:mt-24">
+        <Bleed
+          src="/shu-cover-v7.jpg"
+          alt={t('Une main tient un pinceau Shu Uemura et l’iPhone, ouvert sur l’analyse du visage', 'A hand holds a Shu Uemura brush and the iPhone, open on the face analysis')}
+          aspect="2400/1500"
+          mobileAspect="4/5"
+          position="50% 80%"
+          priority
+          bg="#ffffff"
+        />
+      </div>
+
+      <div className={WRAP}>
 
         {/* 01 — JOURNEY */}
         <Chap
@@ -110,11 +115,10 @@ export default function Page() {
             )}
           </p>
         </Chap>
-      </div>
+        <div className="fine-bleed">
+          <Strip items={flow} label={t('Le parcours complet', 'The full journey')} hint={t('Faire glisser', 'Drag')} />
+        </div>
 
-      <Strip items={flow} label={t('Le parcours complet', 'The full journey')} hint={t('Faire glisser', 'Drag')} />
-
-      <div className={WRAP}>
         {/* 02 — THE FACE */}
         <Chap
           n={2}
@@ -128,8 +132,8 @@ export default function Page() {
             )}
           </p>
         </Chap>
-        <div className="bg-[#f2f1ee] px-4 py-10 md:px-[8%] md:py-16">
-          <div className="grid grid-cols-3 gap-3 md:gap-8">
+        <div className="bg-[#f2f1ee] px-4 py-8 md:px-[6%] md:py-10">
+          <div className="grid grid-cols-3 gap-3 md:gap-6">
             {[
               { f: '05-face-scan', k: 'A', fr: 'Les mesures.', en: 'The measurements.', d: t('Les proportions du visage, relevées par la caméra.', 'The face’s proportions, read by the camera.') },
               { f: '06-brow-shape', k: 'B', fr: 'La forme.', en: 'The shape.', d: t('Une forme recommandée, et les autres à côté.', 'One recommended shape, the others next to it.') },
@@ -137,7 +141,7 @@ export default function Page() {
             ].map((s, i) => (
               <motion.figure key={s.f} initial={{ opacity: 0 }} whileInView={{ opacity: 1 }} viewport={{ once: true, margin: '-60px' }} transition={{ duration: 0.8, delay: i * 0.1 }}>
                 <Phone src={S(s.f)} alt={`Shu Uemura — ${t(s.fr, s.en)}`} />
-                <figcaption className="mt-3 hidden md:grid grid-cols-[22px_1fr] gap-x-2 text-[13px] leading-[1.45]">
+                <figcaption className="mt-2 hidden md:grid grid-cols-[22px_1fr] gap-x-2">
                   <span className="text-black/45">{s.k}</span>
                   <span><span className="font-medium">{t(s.fr, s.en)}</span> <span className="text-black/60">{s.d}</span></span>
                 </figcaption>
@@ -152,44 +156,41 @@ export default function Page() {
           title={t('Itérations', 'Iterations')}
           aside={t('3 versions', '3 versions')}
           lede={t('Trois versions, de l’appli générique à l’appli Shu Uemura.', 'Three versions, from a generic app to a Shu Uemura one.')}
-        />
-        <div className="grid grid-cols-1 md:grid-cols-12 gap-12 md:gap-6 items-start">
-          <div className="md:col-span-5 space-y-10 text-[15px] md:text-[17px] leading-[1.55]">
-            <div className="border-t border-black/15 pt-3">
-              <div className="text-[13px] text-black/45">{t('Premier jet', 'First draft')}</div>
-              <p className="mt-2 text-black/75">{t('Les bases fonctionnelles : un compte, une galerie de demandes et un chat texte neutre.', 'The functional groundwork: an account, a request gallery and a neutral text chat.')}</p>
-              <div className="mt-4 grid grid-cols-3 gap-2 max-w-[320px] opacity-80">
-                <Phone src="/shu-draft-login.png" alt={t('Premier jet, connexion', 'First draft, login')} />
-                <Phone src="/shu-draft-requests.png" alt={t('Premier jet, galerie de demandes', 'First draft, request gallery')} />
-                <Phone src="/shu-draft-chat.png" alt={t('Premier jet, chat', 'First draft, chat')} />
-              </div>
+        >
+          <p>
+            <span className="text-[#0a0a0a]">{t('Premier jet.', 'First draft.')}</span> {t('Les bases fonctionnelles : un compte, une galerie de demandes et un chat texte neutre.', 'The functional groundwork: an account, a request gallery and a neutral text chat.')}
+          </p>
+          <p>
+            <span className="text-[#0a0a0a]">V1.</span> {t('L’univers de marque arrive : le rouge Shu Uemura, le choix d’un mentor, l’analyse faciale. Mais ça reste générique.', 'The brand world arrives: Shu Uemura red, choosing a mentor, face analysis. But it stays generic.')}
+          </p>
+          <p>
+            <span className="text-[#0a0a0a]">{t('Version finale.', 'Final version.')}</span> {t('Elle s’appuie sur le savoir-faire de la maison : les mesures du visage propres à Shu Uemura, les décors en béton dans l’esprit de Tokyo, et des tutoriels liés aux produits.', 'It builds on the house’s craft: Shu Uemura’s own face measurements, concrete settings in a Tokyo spirit, and product-linked tutorials.')}
+          </p>
+        </Chap>
+        <div className="grid grid-cols-1 items-end gap-8 md:grid-cols-2 md:gap-3">
+          <figure>
+            <div className="grid grid-cols-3 gap-2">
+              <Phone src="/shu-draft-login.png" alt={t('Premier jet, connexion', 'First draft, login')} />
+              <Phone src="/shu-draft-requests.png" alt={t('Premier jet, galerie de demandes', 'First draft, request gallery')} />
+              <Phone src="/shu-draft-chat.png" alt={t('Premier jet, chat', 'First draft, chat')} />
             </div>
-            <div className="border-t border-black/15 pt-3">
-              <div className="text-[13px] text-black/45">V1</div>
-              <p className="mt-2 text-black/75">{t('L’univers de marque arrive : le rouge Shu Uemura, le choix d’un mentor, l’analyse faciale. Mais ça reste générique.', 'The brand world arrives: Shu Uemura red, choosing a mentor, face analysis. But it stays generic.')}</p>
-            </div>
-            <div className="border-t-[3px] border-[#0a0a0a] pt-3">
-              <div className="text-[13px] text-black/45">{t('Version finale', 'Final version')}</div>
-              <p className="mt-2">{t('Elle s’appuie sur le savoir-faire de la maison : les mesures du visage propres à Shu Uemura, les décors en béton dans l’esprit de Tokyo, et des tutoriels liés aux produits.', 'It builds on the house’s craft: Shu Uemura’s own face measurements, concrete settings in a Tokyo spirit, and product-linked tutorials.')}</p>
-            </div>
-          </div>
-          <div className="md:col-start-7 md:col-span-6">
-            <div className="mx-auto max-w-[360px]">
-              <Compare
-                width={390}
-                height={844}
-                pairs={[
-                  { name: t('Accueil', 'Welcome'), day: '/shu-v1-cover.png', night: S('01-cover'), alt: t('Accueil', 'Welcome') },
-                  { name: t('Mentor', 'Mentor'), day: '/shu-v1-mentor.png', night: S('02-select-haruto'), alt: t('Choix du mentor', 'Choosing a mentor') },
-                  { name: t('Visage', 'Face'), day: '/shu-v1-facemesh.png', night: S('05-face-scan'), alt: t('Analyse du visage', 'Face analysis') },
-                ]}
-                labels={{ left: 'V1', right: t('Finale', 'Final'), leftAlt: 'V1', rightAlt: t('version finale', 'final version'), aria: t('Comparer la V1 et la version finale', 'Compare V1 and the final version') }}
-              />
-            </div>
+            <figcaption className="mt-2 text-black/45">{t('Premier jet', 'First draft')}</figcaption>
+          </figure>
+          <div className="mx-auto w-full max-w-[300px]">
+            <Compare
+              width={390}
+              height={844}
+              pairs={[
+                { name: t('Accueil', 'Welcome'), day: '/shu-v1-cover.png', night: S('01-cover'), alt: t('Accueil', 'Welcome') },
+                { name: t('Mentor', 'Mentor'), day: '/shu-v1-mentor.png', night: S('02-select-haruto'), alt: t('Choix du mentor', 'Choosing a mentor') },
+                { name: t('Visage', 'Face'), day: '/shu-v1-facemesh.png', night: S('05-face-scan'), alt: t('Analyse du visage', 'Face analysis') },
+              ]}
+              labels={{ left: 'V1', right: t('Finale', 'Final'), leftAlt: 'V1', rightAlt: t('version finale', 'final version'), aria: t('Comparer la V1 et la version finale', 'Compare V1 and the final version') }}
+            />
           </div>
         </div>
-        <div className="mt-20 md:mt-28">
-          <div className="text-[13px] text-black/45 mb-4">{t('Choix de design', 'Design choices')}</div>
+        <div className="mt-16">
+          <div className="mb-3 text-black/45">{t('Choix de design', 'Design choices')}</div>
           <Principles items={principles} />
         </div>
 
@@ -206,20 +207,19 @@ export default function Page() {
             )}
           </p>
         </Chap>
-      </div>
-
-      <div className="bg-[#0b0c0e] px-2 py-3 md:px-3">
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-1">
-          {film.map((f, i) => (
-            <motion.figure key={f.n} initial={{ opacity: 0 }} whileInView={{ opacity: 1 }} viewport={{ once: true, margin: '-40px' }} transition={{ duration: 0.9, delay: i * 0.12 }}>
-              <div className="relative overflow-hidden" style={{ aspectRatio: '540/292' }}>
-                <Image src={`/shu-sb-${f.n}.jpg`} alt={t(`Film — ${f.fr}`, `Film — ${f.en}`)} fill sizes="(min-width:768px) 25vw, 50vw" className="object-cover" />
-              </div>
-              <figcaption className="pt-2 pb-3 text-[12px] leading-[1.4] text-white/60">
-                <span className="text-white/35 tabular-nums">0{f.n} — </span>
-                {t(f.fr, f.en)}
+        <div className="grid grid-cols-2 gap-x-2 gap-y-1">
+          {film.map((f) => (
+            <figure key={f.n}>
+              <DotIn className="relative overflow-hidden bg-[#0b0c0e]" >
+                <div style={{ aspectRatio: '540/292' }} className="relative">
+                  <Image src={`/shu-sb-${f.n}.jpg`} alt={t(`Film — ${f.fr}`, `Film — ${f.en}`)} fill sizes="(min-width:768px) 25vw, 50vw" className="object-cover" />
+                </div>
+              </DotIn>
+              <figcaption className="pb-2 pt-1.5 text-black/45">
+                <span className="tabular-nums">0{f.n} </span>
+                <span className="text-[#0a0a0a]">{t(f.fr, f.en)}</span>
               </figcaption>
-            </motion.figure>
+            </figure>
           ))}
         </div>
       </div>

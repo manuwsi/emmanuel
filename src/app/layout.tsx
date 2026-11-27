@@ -4,7 +4,6 @@ import '../styles/globals.css';
 import Cursor from '@/components/Cursor';
 import Transitions from '@/components/dot/Transitions';
 import SmoothScroll from '@/components/dot/SmoothScroll';
-import CaseRail from '@/components/dot/CaseRail';
 import { LangProvider } from '@/components/i18n';
 
 const generalSans = localFont({
@@ -75,7 +74,6 @@ export default function RootLayout({
           <SmoothScroll />
           <Cursor />
           {children}
-          <CaseRail />
           <Transitions />
         </LangProvider>
       </body>

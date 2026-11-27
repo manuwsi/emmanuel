@@ -65,11 +65,12 @@ export function Reveal({ children, delay = 0, className = '' }: { children: Reac
 export function Plate({ src, alt, caption, aspect, mobileAspect = '4/5', mobileSrc, priority = false, dark = true }: { src: string; alt: string; caption?: string; aspect: string; mobileAspect?: string; mobileSrc?: string; priority?: boolean; dark?: boolean }) {
   const phone = usePhone();
   return (
-    <figure>
-      <div className="relative w-full overflow-hidden" style={{ aspectRatio: phone ? mobileAspect : aspect, background: dark ? '#0b0c0e' : '#e2e1de' }}>
-        <Weave src={phone && mobileSrc ? mobileSrc : src} alt={alt} sizes="100vw" priority={priority} force={priority} />
+    <figure className="px-2 md:px-3">
+      {/* in the picture column (4 to 9) like the other cases, never edge to edge */}
+      <div className="relative w-full overflow-hidden md:ml-[calc(25%+3px)] md:w-[calc(50%-6px)]" style={{ aspectRatio: phone ? mobileAspect : aspect, background: dark ? '#0b0c0e' : '#e2e1de' }}>
+        <Weave src={phone && mobileSrc ? mobileSrc : src} alt={alt} sizes="(min-width:768px) 50vw, 100vw" priority={priority} force={priority} />
       </div>
-      {caption && <figcaption className={`${TXT} px-2 pt-1.5 text-black/55 md:px-3`}>{caption}</figcaption>}
+      {caption && <figcaption className={`${TXT} pt-1.5 text-black/45 md:ml-[calc(25%+3px)]`}>{caption}</figcaption>}
     </figure>
   );
 }
@@ -136,10 +137,10 @@ export function Chrome({ chapters }: { chapters: { id: string; label: string }[]
 export function Row({ n, title, text, dark = false }: { n: string; title: string; text: string; dark?: boolean }) {
   return (
     <Reveal>
-      <div className={`grid grid-cols-12 gap-x-3 border-t py-5 md:py-7 ${dark ? 'border-white/20' : 'border-black/20'}`}>
+      <div className={`grid grid-cols-12 gap-x-3 border-t py-4 md:py-5 ${dark ? 'border-white/20' : 'border-black/20'}`}>
         <span className={`${TXT} col-span-2 tabular-nums md:col-span-1 ${dark ? 'text-white/45' : 'text-black/40'}`}>{n}</span>
         <h3 className="col-span-10 text-[14px] leading-[1.6] font-medium md:col-span-5 md:text-[13px]">{title}</h3>
-        <p className={`col-span-10 col-start-3 mt-3 max-w-[460px] text-[15px] leading-[1.45] md:col-span-4 md:col-start-8 md:mt-1 ${dark ? 'text-white/60' : 'text-black/60'}`}>{text}</p>
+        <p className={`col-span-10 col-start-3 mt-2 max-w-[460px] text-[14px] leading-[1.6] md:col-span-4 md:col-start-8 md:mt-0 md:text-[13px] ${dark ? 'text-white/60' : 'text-black/60'}`}>{text}</p>
       </div>
     </Reveal>
   );
@@ -172,7 +173,7 @@ export function Strip({ items, label, hint }: { items: { src: string; name: stri
   };
   return (
     <div>
-      <p className={`${TXT} px-2 pb-2 md:px-3`}>
+      <p data-pad className={`${TXT} px-2 pb-2 md:px-3`}>
         {label} <span className="ml-2 text-black/45">{hint} →</span>
       </p>
       <div
@@ -184,17 +185,17 @@ export function Strip({ items, label, hint }: { items: { src: string; name: stri
         className="flex cursor-grab select-none gap-1 overflow-x-auto active:cursor-grabbing [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
       >
         {items.map((s) => (
-          <div key={s.src} className="relative flex aspect-[4/5] w-[78vw] shrink-0 items-center justify-center bg-[#0b0c0e] md:aspect-auto md:h-[82svh] md:w-[calc(82svh*0.8)]">
+          <div key={s.src} className="relative flex aspect-[4/5] w-[64vw] shrink-0 items-center justify-center bg-[#0b0c0e] md:aspect-auto md:h-[56svh] md:w-[calc(56svh*0.8)]">
             <div className="relative h-[86%] aspect-[780/1688]">
               <Image unoptimized loading="eager" src={s.src} alt={s.name} fill sizes="(min-width:768px) 40vw, 70vw" className="rounded-[4%] object-cover" draggable={false} />
             </div>
           </div>
         ))}
       </div>
-      <div className="relative h-[3px] w-full bg-black/10">
+      <div className="relative h-px w-full bg-black/10">
         <div className="absolute inset-y-0 left-0 bg-[#0a0a0a] transition-[width] duration-200" style={{ width: `${8 + progress * 92}%` }} />
       </div>
-      <div className={`${TXT} flex items-start justify-between gap-4 px-2 pt-1.5 md:px-3`}>
+      <div data-pad className={`${TXT} flex items-start justify-between gap-4 px-2 pt-1.5 md:px-3`}>
         <AnimatePresence mode="wait">
           <motion.span key={at} initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} transition={{ duration: 0.25 }}>
             {items[at].group ? `${items[at].group} → ` : ''}{items[at].name}
@@ -202,7 +203,7 @@ export function Strip({ items, label, hint }: { items: { src: string; name: stri
         </AnimatePresence>
         <div className="hidden gap-2 tabular-nums md:flex">
           {items.map((_, i) => (
-            <button key={i} onClick={() => goTo(i)} className={i === at ? 'text-black' : 'text-black/30 hover:text-black/70'} aria-label={`${i + 1}`}>{i}</button>
+            <button key={i} onClick={() => goTo(i)} className={i === at ? 'text-black' : 'text-black/30'} aria-label={`${i + 1}`}>{i + 1}</button>
           ))}
         </div>
       </div>

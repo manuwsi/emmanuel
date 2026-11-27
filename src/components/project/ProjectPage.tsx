@@ -3,6 +3,7 @@
 import { ReactNode, useEffect, useRef } from 'react';
 import { motion } from 'framer-motion';
 import Image from 'next/image';
+import DotIn from '../dot/DotIn';
 import DotText from '../dot/DotText';
 import More from '../dot/More';
 import { usePathname } from 'next/navigation';
@@ -50,25 +51,7 @@ export function ProjectPage({
       <Header crumb={title} />
 
       <div className="px-2 pt-24 md:px-3 md:pt-[24vh]">
-        {/* HEADER — title, what it is, the facts: small, side by side */}
-        <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 1 }} className={`grid grid-cols-1 gap-x-3 gap-y-8 md:grid-cols-12 ${FT}`}>
-          <div className="md:col-span-3">
-            <h1 data-intro-target className="font-medium">{title}</h1>
-            <h2 className="text-black/45">{subtitle}</h2>
-          </div>
-          <div className="space-y-3 md:col-span-4 md:col-start-4 md:pr-6">
-            {lede && <p className="font-medium">{lede}</p>}
-            <div className="space-y-3 text-black/70">{intro}</div>
-          </div>
-          <dl className="grid grid-cols-2 content-start gap-x-3 gap-y-4 md:col-span-3 md:col-start-9">
-            {metaRows.map((m) => (
-              <div key={m.label}>
-                <dt className="text-black/45">{m.label}</dt>
-                <dd>{m.value}</dd>
-              </div>
-            ))}
-          </dl>
-        </motion.div>
+        <CaseHead title={title} subtitle={subtitle} lede={lede} intro={intro} rows={metaRows.map((m) => [m.label, m.value] as [string, string])} />
 
         {hero && (
           <div className="fine-flow mt-16 md:mt-24">
@@ -83,6 +66,33 @@ export function ProjectPage({
       </div>
       <NextProject path={pathname} />
     </main>
+  );
+}
+
+/** The opening of every case, the same everywhere: title, what it is, the facts. Small, side by side. */
+export function CaseHead({ title, kicker, subtitle, lede, intro, rows }: { title: string; kicker?: string; subtitle: string; lede?: ReactNode; intro?: ReactNode; rows: [string, string][] }) {
+  return (
+    <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 1 }} className={`grid grid-cols-1 gap-x-3 gap-y-8 md:grid-cols-12 ${FT}`}>
+      <div className="md:col-span-3">
+        <h1 data-intro-target className="font-medium">
+          {title}
+          {kicker && <span className="text-black/45"> {kicker}</span>}
+        </h1>
+        <h2 className="text-black/45">{subtitle}</h2>
+      </div>
+      <div className="space-y-3 md:col-span-4 md:col-start-4 md:pr-6">
+        {lede && <p className="font-medium">{lede}</p>}
+        {intro && <div className="space-y-3 text-black/70">{intro}</div>}
+      </div>
+      <dl className="grid grid-cols-2 content-start gap-x-3 gap-y-4 md:col-span-3 md:col-start-9">
+        {rows.map(([k, v]) => (
+          <div key={k}>
+            <dt className="text-black/45">{k}</dt>
+            <dd>{v}</dd>
+          </div>
+        ))}
+      </dl>
+    </motion.div>
   );
 }
 
@@ -110,29 +120,25 @@ export function Media({
   caption?: ReactNode;
 }) {
   return (
-    <motion.figure
-      initial={{ opacity: 0 }}
-      whileInView={{ opacity: 1 }}
-      transition={{ duration: 0.9, ease: 'easeOut' }}
-      viewport={{ once: true, margin: '-40px' }}
-      className={`w-full ${className}`}
-    >
-      {video ? (
-        <LazyVideo src={src} width={width} height={height} alt={alt} />
-      ) : (
-        <Image
-          src={src}
-          alt={alt}
-          width={width}
-          height={height}
-          priority={priority}
-          unoptimized={crisp}
-          sizes="(max-width: 768px) 100vw, 1152px"
-          className="w-full h-auto block"
-        />
-      )}
+    <figure className={`w-full ${className}`}>
+      <DotIn>
+        {video ? (
+          <LazyVideo src={src} width={width} height={height} alt={alt} />
+        ) : (
+          <Image
+            src={src}
+            alt={alt}
+            width={width}
+            height={height}
+            priority={priority}
+            unoptimized={crisp}
+            sizes="(max-width: 768px) 100vw, 50vw"
+            className="w-full h-auto block"
+          />
+        )}
+      </DotIn>
       {caption && <figcaption className={`${FT} mt-2 mb-4 text-black/45`}>{caption}</figcaption>}
-    </motion.figure>
+    </figure>
   );
 }
 
@@ -210,7 +216,7 @@ export function Chapter({ title, n, lede, children }: { title: string; n?: numbe
   return (
     <>
       <div className="fine-gap" aria-hidden />
-      <motion.div initial={{ opacity: 0 }} whileInView={{ opacity: 1 }} transition={{ duration: 0.8 }} viewport={{ once: true }} className="fine-note">
+      <motion.div initial={{ opacity: 0 }} whileInView={{ opacity: 1 }} transition={{ duration: 0.8 }} viewport={{ once: true }} className="fine-note" data-chapter={label}>
         <h3 className="text-black/45">
           <DotText text={label} play="view" />
         </h3>

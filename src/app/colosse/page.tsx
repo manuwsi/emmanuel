@@ -6,9 +6,8 @@ import Header from '@/components/Header';
 import NextProject from '@/components/dot/NextProject';
 import DotText from '@/components/dot/DotText';
 import More from '@/components/dot/More';
-import { Media, Summary } from '@/components/project/ProjectPage';
+import { CaseHead, Media, Summary } from '@/components/project/ProjectPage';
 import { useT } from '@/components/i18n';
-import Cutter from '@/components/colosse/Cutter';
 import Depth from '@/components/colosse/Depth';
 import Scale from '@/components/colosse/Scale';
 import Compare from '@/components/colosse/Compare';
@@ -33,35 +32,25 @@ function Zoom({ k, title, src, w, h, alt, bare = false, children }: { k: string;
 }
 
 function Chap({ n, title, depth, lede, children }: { n: number; title: string; depth: string; lede?: string; children?: ReactNode }) {
+  const label = `${String(n).padStart(2, '0')} → ${title}`;
   return (
-    <motion.section
-      initial={{ opacity: 0 }}
-      whileInView={{ opacity: 1 }}
-      transition={{ duration: 0.8 }}
-      viewport={{ once: true, margin: '-80px' }}
-      className="pt-28 pb-8 md:pt-40 md:pb-12"
-    >
-      <div className="grid grid-cols-[1fr_auto] items-baseline gap-4 border-t border-black/15 pt-3">
-        <h3 className="text-[13px] text-black/45">
-          <DotText text={`${String(n).padStart(2, '0')} → ${title}`} play="view" />
+    <>
+      <div className="fine-gap" aria-hidden />
+      <motion.div initial={{ opacity: 0 }} whileInView={{ opacity: 1 }} transition={{ duration: 0.8 }} viewport={{ once: true }} className="fine-note" data-chapter={label}>
+        <h3 className="grid grid-cols-[1fr_auto] gap-3 text-black/45">
+          <DotText text={label} play="view" />
+          <span className="tabular-nums text-[#0a0a0a]">{depth}</span>
         </h3>
-        <span className="text-[13px] tabular-nums">{depth}</span>
-      </div>
-      {lede && (
-        <p className="mt-4 text-[14px] leading-[1.6] md:text-[13px] font-medium max-w-[460px] md:ml-[calc(25%+3px)]">
-          {lede}
-        </p>
-      )}
-      {children && (
-        <More className="text-[14px] leading-[1.6] md:text-[13px] text-black/70 max-w-[460px] md:ml-[calc(25%+3px)]">{children}</More>
-      )}
-    </motion.section>
+        {lede && <p className="mt-3 font-medium">{lede}</p>}
+        {children && (lede ? <More className="text-black/70">{children}</More> : <div className="mt-3 space-y-3 text-black/70">{children}</div>)}
+      </motion.div>
+    </>
   );
 }
 
 function Src({ n }: { n: number }) {
   return (
-    <a href={`#src-${n}`} className="align-super text-[10px] text-black/45 hover:text-black ml-0.5">
+    <a href={`#src-${n}`} className="align-super text-[10px] text-black/45 ml-0.5">
       {n}
     </a>
   );
@@ -140,64 +129,47 @@ export default function Colosse() {
       <Header crumb="Colosse" />
       <Depth />
 
-      {/* HERO */}
-      <section className="relative h-[100svh] min-h-[640px] overflow-hidden">
-        <div className="absolute inset-0 [background-image:radial-gradient(circle,rgba(10,10,10,.10)_1px,transparent_1.6px)] [background-size:20px_20px]" />
-        <Cutter className="absolute right-[-38vw] md:right-[-14vw] top-1/2 -translate-y-1/2 w-[120vw] h-[120vw] md:w-[78vw] md:h-[78vw]" />
-        <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 1 }} className="absolute left-2 md:left-3 top-28 md:top-36 space-y-4">
-          <h1 data-intro-target className="text-[14px] leading-[1.6] md:text-[13px] font-medium">Colosse</h1>
-          <h2 className="text-[13px] leading-[1.35] text-black/50"><span className="bg-white">{t('2026 — Concept UX/UI, poste de pilotage d’un tunnelier', '2026 — UX/UI concept, tunnel boring machine cockpit')}</span></h2>
-        </motion.div>
-        <div className="absolute left-2 md:left-3 bottom-12 text-[13px] text-black/45">{t('Descendre ↓', 'Go down ↓')}</div>
-      </section>
-
-      <div className="px-2 md:px-3 w-full max-w-[1400px] mx-auto">
-        {/* LEDE + META */}
-        <p className="pt-16 md:pt-24 text-[14px] leading-[1.6] md:text-[13px] font-medium max-w-[460px] md:ml-[calc(25%+3px)]">
-          {t(
+      <div className="px-2 pt-24 md:px-3 md:pt-[24vh]">
+        <CaseHead
+          title="Colosse"
+          subtitle={t('2026 — Concept UX/UI, poste de pilotage d’un tunnelier', '2026 — UX/UI concept, tunnel boring machine cockpit')}
+          lede={t(
             'Un tunnelier pèse plus de 1 600 tonnes et creuse sous Paris jour et nuit. J’ai imaginé l’écran de la personne qui le pilote.',
             'A tunnel boring machine weighs over 1,600 tonnes and digs under Paris day and night. I designed the screen of the person who drives it.'
           )}
-        </p>
-        <div className="mt-14 md:mt-20 grid grid-cols-1 md:grid-cols-12 gap-10 md:gap-8 border-t border-black/15 pt-6">
-          <dl className="md:col-span-4 grid grid-cols-2 md:grid-cols-1 gap-6 content-start">
-            {[
-              [t('Année', 'Year'), '2026'],
-              [t('Contexte', 'Context'), t('Projet personnel, concept', 'Personal project, concept')],
-              [t('Rôle', 'Role'), t('Recherche, UX/UI, prototype codé', 'Research, UX/UI, coded prototype')],
-              [t('Outils', 'Tools'), t('HTML, SVG et JS avec Claude', 'HTML, SVG and JS with Claude')],
-            ].map(([k, v]) => (
-              <div key={k} className="space-y-1">
-                <dt className="text-[13px] text-black/45">{k}</dt>
-                <dd className="text-[13px] leading-[1.35]">{v}</dd>
-              </div>
-            ))}
-          </dl>
-          <div className="md:col-span-8 space-y-5 text-[15px] md:text-[17px] leading-[1.55] max-w-2xl">
-            <p>
-              {t('Les tunneliers du Grand Paris Express font une dizaine de mètres de diamètre et avancent d’une douzaine de mètres par jour. Chacun porte le prénom de sa marraine.', 'The Grand Paris Express tunnel boring machines are about ten metres wide and advance a dozen metres a day. Each one bears its godmother’s first name.')}
-              <Src n={1} /><Src n={2} />
-            </p>
-            <p>
-              {t('Colosse est le poste de pilotage d’un tunnelier fictif, Ysée, construit à partir de documents publics.', 'Colosse is the cockpit of a fictional tunnel boring machine, Ysée, built from public documents.')}
-            </p>
-            <p>
-              <a href="/colosse/prototype/index.html" className="underline underline-offset-2">
-                {t('Ouvrir le prototype', 'Open the prototype')} →
-              </a>
-            </p>
-          </div>
-        </div>
-        <figure className="mt-16 md:mt-24">
+          intro={
+            <>
+              <p>
+                {t('Les tunneliers du Grand Paris Express font une dizaine de mètres de diamètre et avancent d’une douzaine de mètres par jour. Chacun porte le prénom de sa marraine.', 'The Grand Paris Express tunnel boring machines are about ten metres wide and advance a dozen metres a day. Each one bears its godmother’s first name.')}
+                <Src n={1} /><Src n={2} />
+              </p>
+              <p>
+                {t('Colosse est le poste de pilotage d’un tunnelier fictif, Ysée, construit à partir de documents publics.', 'Colosse is the cockpit of a fictional tunnel boring machine, Ysée, built from public documents.')}{' '}
+                <a href="/colosse/prototype/index.html" className="text-[#0a0a0a] underline underline-offset-2">
+                  {t('Ouvrir le prototype', 'Open the prototype')}
+                </a>
+              </p>
+            </>
+          }
+          rows={[
+            [t('Année', 'Year'), '2026'],
+            [t('Contexte', 'Context'), t('Projet personnel, concept', 'Personal project, concept')],
+            [t('Rôle', 'Role'), t('Recherche, UX/UI, prototype codé', 'Research, UX/UI, coded prototype')],
+            [t('Outils', 'Tools'), t('HTML, SVG et JS avec Claude', 'HTML, SVG and JS with Claude')],
+          ]}
+        />
+      </div>
+      <div className="fine-flow mt-16 px-2 md:mt-24 md:px-3">
+        <figure>
           <Media src="/colosse/2-anomalie.webp" alt={t('Anomalie : un vide devant la roue, sous une école', 'Anomaly: a void ahead of the wheel, under a school')} priority {...W} />
-          <figcaption className="mt-3 max-w-3xl text-[13px] text-black/50">
+          <figcaption className="mt-2 text-[14px] leading-[1.6] md:text-[13px] text-black/45">
             {t(
               '02:09. La sonde détecte un vide sous une école. L’écran le dessine à sa place dans le sol et propose trois options à l’ingénieur de quart.',
               '02:09. The probe picks up a void under a school. The screen draws it where it is in the ground and gives the shift engineer three options.'
             )}
           </figcaption>
         </figure>
-        <div className="mt-10 md:mt-14">
+        <div className="mt-8">
           <Summary
             items={[
               { k: t('Le problème', 'The problem'), v: t('Le pilote surveille la pression, le terrain et les bâtiments dans des cases séparées, et fait les liens de tête, souvent la nuit.', 'The driver watches pressure, ground and buildings in separate boxes, and makes the links in his head, often at night.') },
@@ -213,7 +185,7 @@ export default function Colosse() {
         <Scale />
       </div>
 
-      <div className="px-2 md:px-3 w-full max-w-[1400px] mx-auto">
+      <div className="fine-flow px-2 md:px-3">
         {/* 02 — PROBLEM */}
         <Chap
           n={2}
@@ -237,23 +209,23 @@ export default function Colosse() {
           depth="−8 m"
           lede={t('Les ingénieurs lisent déjà des coupes, des hachures et des cotes. Alors l’écran parle leur langue.', 'Engineers already read sections, hatches and dimensions. So the screen speaks their language.')}
         />
-        <p className="max-w-3xl pb-12 text-[17px] leading-[1.55] text-black/75">
+        <p className="text-black/70">
           {t('Pas d’écran de science-fiction : à 2 h du matin, une décision peut faire tasser une école. Donc ni effets ni néons, du noir et blanc, et le rouge réservé à ce qui demande une décision.', 'No sci-fi screen: at 2 am, a decision can make a school subside. So no effects or neon, black and white, and red kept for what calls for a decision.')}
         </p>
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8 md:gap-10 pb-16">
+        <div className="grid grid-cols-1 gap-6 py-4 md:grid-cols-3 md:gap-3">
           {principles.map((p, i) => (
-            <div key={p.k} className="border-t-[3px] border-[#0a0a0a] pt-3">
-              <div className="text-[13px] text-black/45">0{i + 1}</div>
+            <div key={p.k} className="border-t border-black/15 pt-2">
+              <div className="text-black/45">0{i + 1}</div>
               <div className="mt-1 font-medium">{p.k}</div>
-              <p className="mt-3 text-[15px] leading-[1.5] text-black/75">{p.v}</p>
+              <p className="mt-1 text-black/70">{p.v}</p>
             </div>
           ))}
         </div>
         <div className="pb-6">
-          <div className="text-[13px] text-black/45 mb-4">{t('Les hachures, une par type de sol, comme sur les plans', 'Hatches, one per type of ground, as on engineering drawings')}</div>
+          <div className="text-black/45 mb-3">{t('Les hachures, une par type de sol, comme sur les plans', 'Hatches, one per type of ground, as on engineering drawings')}</div>
           <Legend />
         </div>
-        <div className="mt-16 md:mt-24 space-y-3">
+        <div className="space-y-2">
           <Media src="/colosse/1-pilotage.webp" alt={t('Pilotage : la coupe du terrain en direct', 'Driving: the live section of the ground')} {...W} />
           <p className="text-[13px] text-black/50 max-w-3xl">
             {t('En haut, la coupe : immeubles, couches de sol, nappe, métro à 3,4 m, et la ligne noire du présent. En bas, trois vues comme sur un plan : la roue, la rue vue du dessus, l’avancée de la nuit.', 'At the top, the section: buildings, ground layers, water table, metro at 3.4 m, and the black line of the present. Below, three views as on a plan: the wheel, the street from above, the night’s progress.')}
@@ -261,36 +233,30 @@ export default function Colosse() {
         </div>
 
         {/* 04 — 02:09 */}
-        <section className="pt-32 md:pt-48">
-          <div className="grid grid-cols-[1fr_auto] items-baseline gap-4 border-t border-black/15 pt-3">
-            <h3 className="text-[13px] text-black/45">04 → {t('Le moment critique', 'The critical moment')}</h3>
-            <span className="text-[13px] tabular-nums">−14 m</span>
-          </div>
-          <motion.div
-            initial={{ opacity: 0 }}
-            whileInView={{ opacity: 1 }}
-            transition={{ duration: 0.9, ease: 'easeOut' }}
-            viewport={{ once: true, margin: '-100px' }}
-            className="mt-6 text-[22vw] md:text-[9vw] leading-[0.85] tracking-[-0.06em] font-medium tabular-nums text-[#e3382a] md:ml-[calc(25%+3px)]"
-          >
-            02:09
-          </motion.div>
-          <p className="mt-4 text-[14px] leading-[1.6] md:text-[13px] font-medium max-w-[460px] md:ml-[calc(25%+3px)]">
-            {t('La sonde à l’avant de la roue détecte un vide, 31 mètres plus loin. Juste au-dessus, il y a une école.', 'The probe at the front of the wheel picks up a void, 31 metres ahead. Right above it, there’s a school.')}
+        <Chap
+          n={4}
+          title={t('Le moment critique', 'The critical moment')}
+          depth="−14 m"
+          lede={t('La sonde à l’avant de la roue détecte un vide, 31 mètres plus loin. Juste au-dessus, il y a une école.', 'The probe at the front of the wheel picks up a void, 31 metres ahead. Right above it, there’s a school.')}
+        >
+          <p>
+            {t('Paris a réellement d’anciennes carrières sous plusieurs arrondissements, surveillées par un service dédié de la Ville.', 'Paris really has old quarries under several districts, monitored by a dedicated city service.')}
+            <Src n={3} /><Src n={4} />
           </p>
-          <div className="mt-10 md:mt-14 grid grid-cols-1 md:grid-cols-12 gap-6">
-            <div className="md:col-start-5 md:col-span-8 text-[15px] md:text-[17px] leading-[1.55] max-w-2xl space-y-4">
-              <p>
-                {t('Paris a réellement d’anciennes carrières sous plusieurs arrondissements, surveillées par un service dédié de la Ville.', 'Paris really has old quarries under several districts, monitored by a dedicated city service.')}
-                <Src n={3} /><Src n={4} />
-              </p>
-              <p>
-                {t('L’écran ne décide pas : il propose trois options avec leur effet en surface, le tassement estimé sous l’école. L’ingénieur de quart, qui supervise le pilote, choisit, et son choix est enregistré avec ce qu’il savait à ce moment-là.', 'The screen doesn’t decide: it offers three options with their effect at the surface, the estimated settlement under the school. The shift engineer, who supervises the driver, chooses, and the choice is logged with what he knew at that moment.')}
-              </p>
-            </div>
-          </div>
-        </section>
-        <div className="mt-14 md:mt-20 grid grid-cols-1 items-start gap-10 md:grid-cols-2 md:gap-6">
+          <p>
+            {t('L’écran ne décide pas : il propose trois options avec leur effet en surface, le tassement estimé sous l’école. L’ingénieur de quart, qui supervise le pilote, choisit, et son choix est enregistré avec ce qu’il savait à ce moment-là.', 'The screen doesn’t decide: it offers three options with their effect at the surface, the estimated settlement under the school. The shift engineer, who supervises the driver, chooses, and the choice is logged with what he knew at that moment.')}
+          </p>
+        </Chap>
+        <motion.div
+          initial={{ opacity: 0 }}
+          whileInView={{ opacity: 1 }}
+          transition={{ duration: 0.9, ease: 'easeOut' }}
+          viewport={{ once: true, margin: '-100px' }}
+          className="text-[16vw] md:text-[4.6vw] leading-[0.85] tracking-[-0.05em] font-medium tabular-nums text-[#e3382a]"
+        >
+          02:09
+        </motion.div>
+        <div className="grid grid-cols-1 items-start gap-6 md:grid-cols-2 md:gap-3">
           <Zoom k="A" title={t('L’alerte.', 'The alert.')} src="/colosse/zoom-alerte.webp" w={2032} h={2096} alt={t('Gros plan : le vide dessiné dans le sol, à 31,6 m de la roue', 'Close-up: the void drawn in the ground, 31.6 m from the wheel')}>
             {t(
               'Le vide est dessiné là où il est, à 31,6 m de la roue et à 2,1 m du haut du tunnel. Au-dessus, le tassement estimé immeuble par immeuble, en rouge pour l’école.',
@@ -317,7 +283,7 @@ export default function Colosse() {
           </p>
         </Chap>
         <Media src="/colosse/3-releve.webp" alt={t('Relève : la nuit dessinée le long du tunnel', 'Handover: the night drawn along the tunnel')} {...W} />
-        <div className="mt-6 md:mt-8">
+        <div>
           <Zoom k="C" title={t('La relève.', 'The handover.')} src="/colosse/zoom-releve.webp" w={3864} h={944} alt={t('Gros plan : ce qui change pour le poste du matin, et le cartouche de relève', 'Close-up: what changes for the morning shift, and the handover title block')}>
             {t(
               'Ce qui change pour le poste du matin est barré puis remplacé : 12 m/jour devient 4 m/jour. La relève se signe dans un cartouche, comme un plan.',
@@ -374,13 +340,13 @@ export default function Colosse() {
           ]}
         />
 
-        <div className="mt-24 md:mt-32">
+        <div>
           <Media video src="/motion/colosse-shift.mp4" width={1920} height={1080} alt={t('Animation : la nuit tombe sur l’écran de pilotage, une anomalie s’allume, puis le jour revient', 'Animation: night falls on the driving screen, an anomaly lights up, then day comes back')} />
         </div>
 
-        <figure className="mt-24 md:mt-32">
+        <figure>
           <Media crisp src="/colosse/tablette-anomalie-v2.jpg" alt={t('Mise en situation : l’écran Anomalie sur une tablette de chantier, tenue par des mains gantées', 'In context: the Anomaly screen on a rugged site tablet, held in gloved hands')} width={2560} height={1920} />
-          <figcaption className="mt-3 text-[13px] text-black/50">{t('Mise en situation, sur une tablette de chantier.', 'In context, on a rugged site tablet.')}</figcaption>
+          <figcaption className="mt-2 text-black/45">{t('Mise en situation, sur une tablette de chantier.', 'In context, on a rugged site tablet.')}</figcaption>
         </figure>
 
         {/* 09 — SYSTEM */}
@@ -396,10 +362,10 @@ export default function Colosse() {
         <div className="md:hidden border border-black/15">
           <Media video src="/colosse/colosse-prototype-v2.mp4" width={1622} height={1208} alt={t('Vidéo du prototype : la machine détecte le vide, le pilote choisit l’option A, puis la relève de 6 h est signée', 'Prototype video: the machine detects the void, the driver picks option A, then the 6 am handover is signed')} />
         </div>
-        <div className="hidden md:block w-full aspect-[16/10] border border-black/15">
+        <div className="fine-r hidden md:block w-full aspect-[16/9] border border-black/15">
           <iframe src="/colosse/prototype/index.html" title={t('Prototype Colosse', 'Colosse prototype')} className="w-full h-full" loading="lazy" />
         </div>
-        <p className="mt-4 text-[13px]">
+        <p>
           <a href="/colosse/prototype/index.html" className="underline underline-offset-2">
             {t('Ouvrir le prototype en plein écran', 'Open the prototype full screen')} →
           </a>
@@ -422,13 +388,13 @@ export default function Colosse() {
         </Chap>
 
         {/* SOURCES */}
-        <section className="pb-6">
-          <div className="text-[13px] text-black/45 border-t border-black/15 pt-3 mb-4">{t('Sources', 'Sources')}</div>
-          <ol className="space-y-2 text-[13px]">
+        <section className="mt-16">
+          <div className="text-black/45 border-t border-black/15 pt-2 mb-3">{t('Sources', 'Sources')}</div>
+          <ol className="space-y-1">
             {sources.map((s) => (
               <li key={s.n} id={`src-${s.n}`} className="flex gap-3">
                 <span className="text-black/45 w-4">{s.n}</span>
-                <a href={s.href} target="_blank" rel="noreferrer" className="underline underline-offset-2 hover:text-black/60">
+                <a href={s.href} target="_blank" rel="noreferrer" className="underline underline-offset-2">
                   {s.label}
                 </a>
               </li>

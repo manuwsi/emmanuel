@@ -39,11 +39,11 @@ export default function Story() {
       <div className="md:col-span-7 md:order-1">
         {steps.map((s, i) => (
           <div key={s.f} ref={(r) => { refs.current[i] = r; }} data-i={i}
-            className="md:min-h-[70vh] flex flex-col justify-center px-6 md:px-14 py-14 border-t border-white/10 first:border-t-0">
+            className="md:min-h-[56vh] flex flex-col justify-center px-6 md:px-14 py-14 border-t border-white/10 first:border-t-0">
             <span className="text-[12px] tracking-[0.08em] uppercase text-white/45">{s.n} · {s.k}</span>
             <h4 className="text-3xl md:text-4xl font-light tracking-[-0.035em] mt-3">{s.title}</h4>
             <div className="text-6xl md:text-7xl font-extralight tracking-[-0.045em] mt-8 tabular-nums" style={{ opacity: a === i ? 1 : 0.25, transition: 'opacity .5s' }}>{s.big}</div>
-            <p className="text-[15px] text-white/60 leading-relaxed mt-6 max-w-sm">{s.text}</p>
+            <p className="text-[14px] md:text-[13px] text-white/60 leading-relaxed mt-6 max-w-sm">{s.text}</p>
           </div>
         ))}
       </div>

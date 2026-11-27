@@ -78,7 +78,7 @@ export default function Constellation() {
                 className={`w-full flex items-center justify-between px-6 md:px-8 py-4 border-b border-white/10 text-left transition-colors ${sel === g.id ? 'bg-white/[0.06]' : 'hover:bg-white/[0.03]'}`}
               >
                 <span>
-                  <span className="block text-[15px]">{g.name}</span>
+                  <span className="block text-[14px] md:text-[13px]">{g.name}</span>
                   <span className="block text-[12px] text-white/45">{g.n} {t('cartes', 'cards')}</span>
                 </span>
                 <span className="text-right">

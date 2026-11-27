@@ -130,7 +130,7 @@ export default function Page() {
           <>
       <Media src="/dailies/01-projet.webp" alt={t('Dailies — le projet et ses huit plans', 'Dailies — the project and its eight shots')} {...W} priority />
           <p className="text-[13px] text-black/50 pt-2">
-            <a href="/dailies/prototype/index.html" className="underline underline-offset-2 hover:text-black">
+            <a href="/dailies/prototype/index.html" className="underline underline-offset-2">
               {t('Ouvrir le prototype cliquable', 'Open the clickable prototype')}
             </a>{' '}
             — {t('à voir sur ordinateur.', 'best on a computer.')}
@@ -212,7 +212,7 @@ export default function Page() {
       <div className="grid grid-cols-1 md:grid-cols-3 gap-px bg-black/15 border border-black/15">
         {roles(t).map((r) => (
           <div key={r.name} className="bg-white p-6 md:p-8 flex flex-col gap-4">
-            <h4 className="text-xl md:text-2xl font-medium tracking-[-0.03em]">{r.name}</h4>
+            <h4 className="font-medium">{r.name}</h4>
             <p className="text-sm text-black/70 leading-relaxed">{r.does}</p>
             <p className="mt-auto text-xs text-black/50 leading-relaxed">
               <span className="text-black/45">{t('Veut : ', 'Wants: ')}</span>
@@ -294,7 +294,7 @@ export default function Page() {
         {personas(t).map((p) => (
           <div key={p.who} className="bg-white p-6 md:p-8 flex flex-col gap-4">
             <span className="text-[13px] text-black/45">{p.who}</span>
-            <h4 className="text-xl md:text-2xl font-medium tracking-[-0.03em] leading-snug">{p.task}</h4>
+            <h4 className="font-medium">{p.task}</h4>
             <p className="text-sm text-black/70 leading-relaxed">{p.found}</p>
             <p className="mt-auto text-xs text-black/50 leading-relaxed">→ {p.change}</p>
           </div>

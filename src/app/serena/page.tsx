@@ -159,7 +159,7 @@ export default function Page() {
             <span className="text-[13px] text-black/45">
               {t('Enseignement', 'Insight')} 0{i + 1}
             </span>
-            <h4 className="text-xl md:text-2xl font-medium tracking-[-0.03em] leading-snug">{ins.title}</h4>
+            <h4 className="font-medium">{ins.title}</h4>
             <blockquote className="text-sm md:text-base italic text-black/70 leading-relaxed border-l border-[#eed349] pl-4">
               {`« ${ins.quote} »`}
             </blockquote>

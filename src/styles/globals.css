@@ -173,3 +173,25 @@ html.lenis, html.lenis body { height: auto; }
   .fine-flow > .fine-wide { grid-column: 1 / -1; }
 }
 .fine-flow p + p { margin-top: 0.75em; }
+/* a strip that starts at the picture column and runs off the right edge */
+.fine-flow > .fine-bleed { grid-column: 1 / -1 !important; margin-left: -8px; margin-right: -8px; min-width: 0; }
+@media (min-width: 768px) {
+  .fine-flow > .fine-bleed { grid-column: 4 / -1 !important; margin-left: 0; margin-right: -12px; }
+  .fine-bleed [data-pad] { padding-left: 0 !important; margin-left: 0 !important; }
+  /* big pieces (dark demos, the prototype): from the picture column to the right margin */
+  .fine-flow > .fine-r { grid-column: 4 / -1; }
+}
+
+/* ── Pictures printed in dots on arrival (DotIn) ─────────────────────────── */
+@property --dr { syntax: '<length>'; inherits: false; initial-value: 0px; }
+.dot-in {
+  --dr: 0px;
+  -webkit-mask-image: radial-gradient(circle, #000 var(--dr), transparent calc(var(--dr) + 0.7px));
+  mask-image: radial-gradient(circle, #000 var(--dr), transparent calc(var(--dr) + 0.7px));
+  -webkit-mask-size: 9px 9px;
+  mask-size: 9px 9px;
+  transition: --dr 1.15s cubic-bezier(0.6, 0, 0.25, 1);
+}
+.dot-in[data-in] { --dr: 7px; }
+.dot-in[data-done] { -webkit-mask-image: none; mask-image: none; }
+@media (prefers-reduced-motion: reduce) { .dot-in { -webkit-mask-image: none; mask-image: none; } }

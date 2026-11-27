@@ -2,10 +2,11 @@
 
 import Link from 'next/link';
 import ArrowOut from './ArrowOut';
-import ProjectMark from './ProjectMark';
 import { useLang, useT } from './i18n';
 import DotText from './dot/DotText';
-import ReadProgress from './dot/ReadProgress';
+import { ChapterCrumb, ReadingMark } from './dot/Reading';
+import { Mark } from './SoutrameMarks';
+import { usePathname } from 'next/navigation';
 
 /**
  * Shared site chrome, in the corners of the screen:
@@ -16,24 +17,28 @@ export default function Header({ active, crumb }: { active?: 'work' | 'about'; c
   const { lang, setLang } = useLang();
   const t = useT();
   const corner = 'fixed z-50 text-white mix-blend-difference text-[13px] leading-[1.35] px-2 md:px-3';
-  const link = (on: boolean) => (on ? 'underline underline-offset-2' : 'hover:underline underline-offset-2');
+  const link = (on: boolean) => (on ? 'underline underline-offset-2' : 'underline-offset-2');
   const here = crumb ?? (active === 'about' ? t('À propos', 'About') : t('Travaux', 'Work'));
+  const soutrame = (usePathname() ?? '').startsWith('/soutrame');
 
   return (
     <>
-      <div className={`${corner} left-0 top-0 py-1.5`}>
-        <Link href="/" className="hover:underline underline-offset-2">
+      {/* the page dissolves under the corners, so text never runs into the name or the menu */}
+      <div aria-hidden className="pointer-events-none fixed inset-x-0 top-0 z-40 h-10 bg-gradient-to-b from-white from-30% to-transparent md:h-11" />
+      <div aria-hidden className="pointer-events-none fixed inset-x-0 bottom-0 z-40 h-12 bg-gradient-to-t from-white from-30% to-transparent md:h-14" />
+      <div className={`${corner} left-0 top-0 whitespace-nowrap py-1.5`}>
+        <Link href="/" className="underline-offset-2">
           <DotText text="Emmanuel Ijjou" play="intro" />
         </Link>{' '}
         → <DotText text={here} play="mount" delay={120} />
-        {crumb && <ReadProgress />}
+        {crumb && <ChapterCrumb />}
       </div>
 
       <div className={`${corner} right-0 top-0 py-1.5`} role="group" aria-label={t('Langue', 'Language')}>
         {(['fr', 'en'] as const).map((l, i) => (
           <span key={l}>
             {i > 0 && <span className="opacity-50"> / </span>}
-            <button type="button" onClick={() => setLang(l)} aria-pressed={lang === l} className={`uppercase ${lang === l ? '' : 'opacity-50 hover:opacity-100'}`}>
+            <button type="button" onClick={() => setLang(l)} aria-pressed={lang === l} className={`uppercase ${lang === l ? '' : 'opacity-50'}`}>
               {l}
             </button>
           </span>
@@ -44,7 +49,7 @@ export default function Header({ active, crumb }: { active?: 'work' | 'about'; c
         <span className="block text-[15px] font-bold uppercase leading-none tracking-[-0.045em] min-[380px]:text-[16px] md:text-[18px]">
           <DotText text="Emmanuel Ijjou" play="intro" delay={200} />
         </span>
-        <span className="mb-[1px]"><ProjectMark /></span>
+        <span className="mb-[1px]">{soutrame ? <Mark className="h-[15px] w-[19px] md:h-[19px] md:w-[24px]" /> : <ReadingMark />}</span>
       </Link>
 
       <nav className={`${corner} bottom-0 right-0 flex gap-3 pb-1.5 sm:gap-4`}>

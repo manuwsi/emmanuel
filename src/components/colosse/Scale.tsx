@@ -49,14 +49,14 @@ export default function Scale() {
   const sw = w / 900; // stroke that stays about 1px
 
   return (
-    <div ref={ref} className="relative h-[420vh]">
+    <div ref={ref} className="relative h-[280vh]">
       <div className="sticky top-0 h-screen flex flex-col justify-center overflow-hidden">
-        <div className="absolute left-2 md:left-3 top-16 md:top-20 z-10">
-          <div className="text-[13px] text-black/45">{t('01 → L’échelle', '01 → The scale')}</div>
-          <div key={stage.big} className="mt-2 text-[22vw] md:text-[13vw] leading-[0.85] tracking-[-0.055em] font-medium tabular-nums">
+        <div className="absolute left-2 md:left-3 top-16 md:top-20 z-10 text-[14px] leading-[1.6] md:text-[13px]" data-chapter={t('01 → L’échelle', '01 → The scale')}>
+          <div className="text-black/45">{t('01 → L’échelle', '01 → The scale')}</div>
+          <div key={stage.big} className="mt-3 text-[14vw] md:text-[4.6vw] leading-[0.85] tracking-[-0.05em] font-medium tabular-nums">
             {stage.big}
           </div>
-          <div className="mt-3 text-[20px] md:text-[28px] tracking-[-0.02em]">{t(stage.fr, stage.en)}</div>
+          <div className="mt-2">{t(stage.fr, stage.en)}</div>
         </div>
         <svg viewBox={`${x0} ${y0} ${w} ${h}`} className="w-full h-[62vh] md:h-[70vh] mt-auto mb-[8vh]" preserveAspectRatio="xMinYMax meet">
           {/* ground */}
@@ -97,7 +97,7 @@ export default function Scale() {
             <line x1={136.5} x2={136.5} y1={-13.3} y2={-11.7} />
           </g>
         </svg>
-        <div className="absolute right-2 md:right-3 bottom-12 text-[11px] text-black/45 text-right max-w-[260px]">
+        <div className="absolute right-2 md:right-3 bottom-12 text-[12px] leading-[1.5] text-black/45 text-right max-w-[260px]">
           {t('Dimensions d’un tunnelier du Grand Paris Express (Tiphaine, ligne 15 Ouest). Tout est à la même échelle.', 'Dimensions of a Grand Paris Express TBM (Tiphaine, line 15 West). Everything is drawn to the same scale.')}
         </div>
       </div>

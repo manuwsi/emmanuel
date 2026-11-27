@@ -134,7 +134,7 @@ export default function Page() {
             <span className="text-[13px] text-black/45">
               {t('Choix', 'Choice')} 0{i + 1}
             </span>
-            <h4 className="text-xl md:text-2xl font-medium tracking-[-0.03em] leading-snug">{d.title}</h4>
+            <h4 className="font-medium">{d.title}</h4>
             <p className="text-sm text-black/60 leading-relaxed">{d.text}</p>
           </div>
         ))}

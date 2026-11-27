@@ -20,11 +20,26 @@ export default function Opening() {
     if (html.dataset.homeIntro !== '1') return;
     const el = root.current!;
     const thumbs = Array.from(el.querySelectorAll<HTMLElement>('[data-thumb]'));
-    const finish = () => {
+    const end = () => {
       delete html.dataset.homeIntro;
       el.style.display = 'none';
     };
-    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return finish();
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return end();
+    let gone = false;
+    // the real covers appear under the thumbnails, which then melt away: the swap can't be seen
+    const finish = async () => {
+      if (gone) return;
+      gone = true;
+      const imgs = Array.from(document.querySelectorAll<HTMLImageElement>('[data-cover] img')).slice(0, 8);
+      await Promise.race([
+        Promise.all(imgs.map((i) => (i.complete ? null : i.decode().catch(() => null)))),
+        new Promise((r) => setTimeout(r, 1200)),
+      ]);
+      delete html.dataset.homeIntro;
+      el.animate([{ opacity: 1 }, { opacity: 0 }], { duration: 240, easing: 'ease', fill: 'forwards' }).onfinish = () => {
+        el.style.display = 'none';
+      };
+    };
 
     const phone = innerWidth < 768;
     const dot = 8;
@@ -55,11 +70,17 @@ export default function Opening() {
       );
       const img = t.querySelector('img')!;
       go(img, [{ opacity: 0 }, { opacity: 1 }], { duration: 360, delay: 1080 + i * 22, easing: 'ease' });
+      // once the picture covers it, the black of the dot goes, so no dark hairline shows around the edges
+      go(t, [{ backgroundColor: '#0a0a0a' }, { backgroundColor: 'rgba(10,10,10,0)' }], { duration: 200, delay: 1440 + i * 22, easing: 'linear' });
     });
 
     // 3. every cover travels to its place in the grid
     const t3 = window.setTimeout(() => {
       el.animate([{ backgroundColor: 'rgba(255,255,255,1)' }, { backgroundColor: 'rgba(255,255,255,0)' }], { duration: 520, fill: 'forwards', easing: 'ease' });
+      // centre of the overlay, not of the window: on Windows the scrollbar takes 15 px off the side
+      const box = el.getBoundingClientRect();
+      const cx = box.left + box.width / 2;
+      const cy = box.top + box.height / 2;
       thumbs.forEach((t, i) => {
         const link = t.dataset.thumb!;
         const target = document.querySelector<HTMLElement>(`[data-cover="${link}"]`);
@@ -70,9 +91,9 @@ export default function Opening() {
         }
         const g = target.getBoundingClientRect();
         // from its centre in the line to the card's rectangle (the element is centred on 50% / 50%)
-        const fromX = r.left + r.width / 2 - innerWidth / 2;
-        const toX = g.left + g.width / 2 - innerWidth / 2;
-        const toY = g.top + g.height / 2 - innerHeight / 2;
+        const fromX = r.left + r.width / 2 - cx;
+        const toX = g.left + g.width / 2 - cx;
+        const toY = g.top + g.height / 2 - cy;
         go(
           t,
           [

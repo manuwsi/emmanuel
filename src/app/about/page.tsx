@@ -125,7 +125,7 @@ export default function AboutPage() {
                     d&apos;images produit générées par IA pour Louis Vuitton.
                   </p>
                   <p>
-                    Je développe aussi <a href="/soutrame" className="underline underline-offset-2 hover:text-black">Soutrame</a>, une marque de vêtements que je mène seul, de la conception
+                    Je développe aussi <a href="/soutrame" className="underline underline-offset-2">Soutrame</a>, une marque de vêtements que je mène seul, de la conception
                     à la boutique en ligne.
                   </p>
                 </>,
@@ -145,7 +145,7 @@ export default function AboutPage() {
                     produce visuals. At OKCC I set up an AI product-image process for Louis Vuitton.
                   </p>
                   <p>
-                    I also run <a href="/soutrame" className="underline underline-offset-2 hover:text-black">Soutrame</a>, a clothing label I lead on my own, from design to the online shop.
+                    I also run <a href="/soutrame" className="underline underline-offset-2">Soutrame</a>, a clothing label I lead on my own, from design to the online shop.
                   </p>
                 </>
               )}
@@ -154,7 +154,7 @@ export default function AboutPage() {
                   href="/CV_Emmanuel_Ijjou.pdf"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="border border-[#0a0a0a] bg-[#0a0a0a] text-white px-5 py-3 text-[13px] hover:bg-transparent hover:text-[#0a0a0a] transition-colors duration-300"
+                  className="border border-[#0a0a0a] bg-[#0a0a0a] text-white px-5 py-3 text-[13px] transition-colors duration-300"
                 >
                   {t('Télécharger le CV', 'Download CV')}
                 </a>
@@ -162,13 +162,13 @@ export default function AboutPage() {
                   href="https://www.linkedin.com/in/emmanuel-ijjou-00a7a9213/"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="border border-[#0a0a0a] px-5 py-3 text-[13px] hover:bg-[#0a0a0a] hover:text-white transition-colors duration-300"
+                  className="border border-[#0a0a0a] px-5 py-3 text-[13px] transition-colors duration-300"
                 >
                   LinkedIn
                 </a>
                 <a
                   href="mailto:emmanuelijjou@gmail.com"
-                  className="border border-[#0a0a0a] px-5 py-3 text-[13px] hover:bg-[#0a0a0a] hover:text-white transition-colors duration-300"
+                  className="border border-[#0a0a0a] px-5 py-3 text-[13px] transition-colors duration-300"
                 >
                   {t('E-mail', 'Email')}
                 </a>

@@ -4,7 +4,8 @@ import Image from 'next/image';
 import { motion } from 'framer-motion';
 import Header from '@/components/Header';
 import { useT } from '@/components/i18n';
-import { Bleed, Chap, Lede, Meta, Next, Principles, Title, WRAP } from '@/components/case/Kit';
+import { Bleed, Chap, Next, Principles, WRAP } from '@/components/case/Kit';
+import { CaseHead } from '@/components/project/ProjectPage';
 import TabletStrip from '@/components/hennessy/TabletStrip';
 import SecondSkin from '@/components/hennessy/SecondSkin';
 import '@/styles/globals.css';
@@ -38,38 +39,17 @@ export default function Page() {
     <main className="w-full min-h-screen bg-white text-[#0a0a0a] font-sans overflow-x-clip relative flex flex-col [scroll-snap-type:none]">
       <Header crumb="Hennessy X.O Second Skin" />
 
-      <div className={`${WRAP} pt-28 md:pt-36`}>
-        <Title title="Hennessy X.O" kicker="Second Skin" subtitle={t('2025 — Art génératif, UI et 3D, avec OKCC', '2025 — Generative art, UI and 3D, with OKCC')} />
-      </div>
-
-      <div className="mt-14 md:mt-20">
-        <Bleed
-          src="/hennessy.webp"
-          alt={t('Rendu 3D : un bras robotisé personnalise la seconde peau d’une bouteille Hennessy X.O', '3D render: a robotic arm customises the second skin of a Hennessy X.O bottle')}
-          aspect="3000/1688"
-          mobileAspect="4/5"
-          position="42% 50%"
-          priority
-          caption={t('Rendu 3D, Blender. Le bras robotisé personnalise la seconde peau.', '3D render, Blender. The robotic arm customises the second skin.')}
-        />
-      </div>
-
-      <div className={WRAP}>
-        <Lede className="pt-20 md:pt-28">
-          {t(
+      <div className="px-2 pt-24 md:px-3 md:pt-[24vh]">
+        <CaseHead
+          title="Hennessy X.O"
+          kicker="Second Skin"
+          subtitle={t('2025 — Art génératif, UI et 3D, avec OKCC', '2025 — Generative art, UI and 3D, with OKCC')}
+          lede={t(
             'Quarante carafes, quarante œuvres. Chaque visiteur choisit deux couleurs sur une tablette, l’œuvre se génère devant lui, puis un bras robotisé personnalise sa bouteille.',
             'Forty decanters, forty artworks. Each visitor picks two colours on a tablet, the artwork is generated in front of them, then a robotic arm customises their bottle.'
           )}
-        </Lede>
-        <Meta
-          rows={[
-            [t('Année', 'Year'), '2025'],
-            [t('Contexte', 'Context'), t('OKCC — présenté à VivaTech 2025', 'OKCC — shown at VivaTech 2025')],
-            [t('Rôle', 'Role'), t('Visuels 3D, UI de la tablette de vente', '3D visuals, sales tablet UI')],
-            [t('Outils', 'Tools'), 'Figma, Blender, After Effects'],
-            [t('Distinction', 'Award'), 'Lovie Award — Best Experience Art Direction'],
-          ]}
-        >
+          intro={
+            <>
           <p>
             {t(
               'Second Skin est une édition limitée du Hennessy X.O, faite avec l’artiste génératif Florian Zumbrunn. Chaque bouteille reçoit une « seconde peau » créée par ses algorithmes, et un numéro de série : aucune n’est identique.',
@@ -82,7 +62,31 @@ export default function Page() {
               'At OKCC, I made the 3D bottle visuals in Blender and the UI of the sales tablet at the château, where visitors personalise their edition.'
             )}
           </p>
-        </Meta>
+            </>
+          }
+          rows={[
+            [t('Année', 'Year'), '2025'],
+            [t('Contexte', 'Context'), t('OKCC — présenté à VivaTech 2025', 'OKCC — shown at VivaTech 2025')],
+            [t('Rôle', 'Role'), t('Visuels 3D, UI de la tablette de vente', '3D visuals, sales tablet UI')],
+            [t('Outils', 'Tools'), 'Figma, Blender, After Effects'],
+            [t('Distinction', 'Award'), 'Lovie Award — Best Experience Art Direction'],
+          ]}
+        />
+      </div>
+
+      <div className="mt-16 md:mt-24">
+        <Bleed
+          src="/hennessy.webp"
+          alt={t('Rendu 3D : un bras robotisé personnalise la seconde peau d’une bouteille Hennessy X.O', '3D render: a robotic arm customises the second skin of a Hennessy X.O bottle')}
+          aspect="3000/1688"
+          mobileAspect="4/5"
+          position="42% 50%"
+          priority
+          caption={t('Rendu 3D, Blender. Le bras robotisé personnalise la seconde peau.', '3D render, Blender. The robotic arm customises the second skin.')}
+        />
+      </div>
+
+      <div className={WRAP}>
 
         {/* 01 — JOURNEY */}
         <Chap
@@ -98,11 +102,10 @@ export default function Page() {
             )}
           </p>
         </Chap>
-      </div>
+        <div className="fine-bleed">
+          <TabletStrip items={screens} hint={t('Faire glisser', 'Drag')} />
+        </div>
 
-      <TabletStrip items={screens} hint={t('Faire glisser', 'Drag')} />
-
-      <div className={WRAP}>
         {/* 02 — COLOURS */}
         <Chap
           n={2}
@@ -110,7 +113,7 @@ export default function Page() {
           aside={t('4 pistes', '4 options')}
           lede={t('C’est le choix des couleurs qui rend chaque bouteille unique. J’ai testé quatre façons de le faire.', 'Choosing colours is what makes each bottle unique. I tested four ways of doing it.')}
         />
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-x-3 gap-y-10">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-x-3 gap-y-6">
           {explorations.map((v) => (
             <motion.figure
               key={v.n}
@@ -125,21 +128,21 @@ export default function Page() {
                   <span className="absolute left-3 top-3 bg-[#0a0a0a] px-2 py-1 text-[11px] tracking-[0.06em] uppercase text-white">{t('Retenue', 'Kept')}</span>
                 )}
               </div>
-              <figcaption className="mt-3 grid grid-cols-[28px_1fr] gap-x-2 text-[13px] leading-[1.45]">
+              <figcaption className="mt-2 grid grid-cols-[28px_1fr] gap-x-2">
                 <span className="text-black/45 tabular-nums">0{v.n}</span>
                 <span className={v.kept ? '' : 'text-black/60'}>{t(v.fr, v.en)}</span>
               </figcaption>
             </motion.figure>
           ))}
         </div>
-        <p className="mt-12 max-w-2xl text-[15px] md:text-[17px] leading-[1.55] text-black/75">
+        <p className="mt-6 max-w-[460px] text-black/70">
           {t(
             'La version finale garde la grille, plus lisible, mais remplace les aplats par des touches de peinture. Et le choix se fait en deux étapes, pour que chacune reste simple.',
             'The final version keeps the grid, which reads best, but swaps flat swatches for paint strokes. And the choice happens in two steps, so each one stays simple.'
           )}
         </p>
-        <div className="mt-20 md:mt-28">
-          <div className="text-[13px] text-black/45 mb-4">{t('Choix de design', 'Design choices')}</div>
+        <div className="mt-16">
+          <div className="mb-3 text-black/45">{t('Choix de design', 'Design choices')}</div>
           <Principles items={principles} />
         </div>
 
@@ -149,36 +152,28 @@ export default function Page() {
           title={t('À toi', 'Your turn')}
           lede={t('Le parcours de la tablette, à refaire ici : deux couleurs, et ta seconde peau.', 'The tablet journey, to replay here: two colours, and your second skin.')}
         />
-      </div>
-
-      <div className="px-2 md:px-3 w-full max-w-[1400px] mx-auto">
         <SecondSkin />
-      </div>
 
-      <div className={WRAP}>
         {/* 04 — THE EDITION */}
-        <section className="pt-32 md:pt-48">
-          <div className="flex items-baseline justify-between border-t border-black/15 pt-3">
-            <h3 className="text-[13px] text-black/45">04 → {t('L’édition', 'The edition')}</h3>
-            <span className="text-[13px]">VivaTech 2025</span>
-          </div>
-          <motion.div
-            initial={{ opacity: 0 }}
-            whileInView={{ opacity: 1 }}
-            transition={{ duration: 0.9, ease: 'easeOut' }}
-            viewport={{ once: true, margin: '-100px' }}
-            className="mt-6 text-[22vw] md:text-[9vw] leading-[0.85] tracking-[-0.06em] font-medium tabular-nums md:ml-[calc(25%+3px)]"
-          >
-            40
-          </motion.div>
-          <p className="mt-4 text-[14px] leading-[1.6] md:text-[13px] font-medium max-w-[460px] md:ml-[calc(25%+3px)]">
-            {t('carafes, chacune avec sa seconde peau et son numéro de série. Aucune n’est identique.', 'decanters, each with its second skin and its serial number. No two are the same.')}
-          </p>
-          <div className="mt-12 border-t border-black/15 pt-3 flex flex-col md:flex-row md:items-baseline md:justify-between gap-2 text-[13px]">
-            <span className="text-black/45">{t('Distinction', 'Award')}</span>
-            <span>Lovie Award — Best Experience Art Direction</span>
-          </div>
-        </section>
+        <Chap
+          n={4}
+          title={t('L’édition', 'The edition')}
+          aside="VivaTech 2025"
+          lede={t('40 carafes, chacune avec sa seconde peau et son numéro de série. Aucune n’est identique.', '40 decanters, each with its second skin and its serial number. No two are the same.')}
+        />
+        <motion.div
+          initial={{ opacity: 0 }}
+          whileInView={{ opacity: 1 }}
+          transition={{ duration: 0.9, ease: 'easeOut' }}
+          viewport={{ once: true, margin: '-100px' }}
+          className="text-[16vw] md:text-[4.6vw] leading-[0.85] tracking-[-0.05em] font-medium tabular-nums"
+        >
+          40
+        </motion.div>
+        <div className="mt-8 flex flex-col gap-1 border-t border-black/15 pt-2 md:flex-row md:items-baseline md:justify-between">
+          <span className="text-black/45">{t('Distinction', 'Award')}</span>
+          <span>Lovie Award — Best Experience Art Direction</span>
+        </div>
       </div>
 
       <Next path="/hennessy" />

@@ -187,7 +187,7 @@ export default function SecondSkin() {
   return (
     <div className="grid grid-cols-1 md:grid-cols-12 bg-[#efece6]">
       {/* stage */}
-      <div className="md:col-span-7 relative flex items-end justify-center gap-[6%] px-6 pt-10 pb-8 md:px-10 md:pt-16 md:pb-12 min-h-[440px] md:min-h-[620px]">
+      <div className="md:col-span-7 relative flex items-end justify-center gap-[6%] px-6 pt-10 pb-8 md:px-6 md:pt-10 md:pb-8 min-h-[400px] md:min-h-[480px]">
         <canvas
           ref={art}
           width={AW}
@@ -207,7 +207,7 @@ export default function SecondSkin() {
         <div className="flex items-center justify-between text-[12px] text-black/45">
           <span>{phase === 'dom' ? '1 / 3' : phase === 'sec' ? '2 / 3' : '3 / 3'}</span>
           {phase !== 'dom' && (
-            <button onClick={reset} className="underline underline-offset-2 hover:text-black">
+            <button onClick={reset} className="underline underline-offset-2">
               {t('Recommencer', 'Start over')}
             </button>
           )}
@@ -219,7 +219,7 @@ export default function SecondSkin() {
             animate={{ opacity: 1 }}
             exit={{ opacity: 0, y: -8 }}
             transition={{ duration: 0.3 }}
-            className="mt-4 text-[22px] md:text-[26px] leading-[1.1]"
+            className="mt-3 text-[17px] leading-[1.2]"
             style={{ fontFamily: 'var(--font-general-sans), Inter, sans-serif', fontWeight: 500, letterSpacing: '-0.02em' }}
           >
             {head}
@@ -255,7 +255,7 @@ export default function SecondSkin() {
                 if (phase === 'dom') setPhase('sec');
                 else if (dom && sec) generate(dom, sec);
               }}
-              className="mt-8 border border-[#0a0a0a] py-2.5 text-[12px] tracking-[0.08em] uppercase transition-colors disabled:border-black/20 disabled:text-black/30 enabled:hover:bg-[#0a0a0a] enabled:hover:text-white"
+              className="mt-8 border border-[#0a0a0a] py-2.5 text-[12px] tracking-[0.08em] uppercase transition-colors disabled:border-black/20 disabled:text-black/30"
             >
               {phase === 'dom' ? t('Valider', 'Confirm') : t('Générer ma création', 'Generate my artwork')}
             </button>
@@ -278,7 +278,7 @@ export default function SecondSkin() {
             <button
               disabled={phase !== 'done'}
               onClick={() => dom && sec && generate(dom, sec)}
-              className="w-full border border-[#0a0a0a] py-2.5 text-[12px] tracking-[0.08em] uppercase disabled:opacity-30 enabled:hover:bg-[#0a0a0a] enabled:hover:text-white transition-colors"
+              className="w-full border border-[#0a0a0a] py-2.5 text-[12px] tracking-[0.08em] uppercase disabled:opacity-30 transition-colors"
             >
               {t('Générer une nouvelle œuvre', 'Generate a new artwork')}
             </button>
@@ -286,7 +286,7 @@ export default function SecondSkin() {
         )}
 
         {phase === 'ok' && (
-          <p className="mt-6 max-w-sm text-[15px] leading-[1.5] text-black/70">
+          <p className="mt-5 max-w-sm text-[14px] leading-[1.6] text-black/70 md:text-[13px]">
             {t(
               'Sur la vraie tablette, l’écran remercie le visiteur : son œuvre sera imprimée, et le bras robotisé peut commencer la personnalisation de sa seconde peau.',
               'On the real tablet, the screen thanks the visitor: the artwork will be printed, and the robotic arm can start customising their second skin.'

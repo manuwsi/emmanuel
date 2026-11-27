@@ -12,7 +12,7 @@ const FT = 'text-[14px] leading-[1.6] md:text-[13px]';
 /**
  * The end of every case. No scrolling trick: the next project, quietly.
  */
-export default function NextProject({ path }: { path: string }) {
+export default function NextProject({ path, whole = false }: { path: string; whole?: boolean }) {
   const t = useT();
   const np = nextProject(path);
   const index = projects.findIndex((p) => p.link === np.link);
@@ -40,8 +40,9 @@ export default function NextProject({ path }: { path: string }) {
           aria-label={title}
           className="block md:col-span-6 md:col-start-4"
         >
-          <DotIn className="relative aspect-[16/10] w-full overflow-hidden">
-            <Image src={np.image} alt="" fill sizes="(max-width: 768px) 100vw, 50vw" className="object-cover" />
+          {/* `whole`: the next project's picture at its own proportions, nothing cut */}
+          <DotIn className={`relative w-full overflow-hidden ${whole ? 'aspect-[4/3]' : 'aspect-[16/10]'}`}>
+            <Image src={np.image} alt="" fill sizes="(max-width: 768px) 100vw, 50vw" className={whole ? 'object-contain' : 'object-cover'} />
           </DotIn>
         </Link>
       </div>

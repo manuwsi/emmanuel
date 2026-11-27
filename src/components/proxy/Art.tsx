@@ -47,13 +47,13 @@ export function TrustLine() {
     <figure ref={ref}>
       <div className="flex justify-between text-[14px] leading-[1.6] md:text-[13px]">
         <span>{t('Proxy demande tout', 'Proxy asks for everything')}</span>
-        <span className="hidden tabular-nums text-black/55 md:inline">{on ? t("Trois semaines plus tard", "Three weeks later") : t("Premier jour", "Day one")}</span>
+        <span className="hidden tabular-nums text-black/60 md:inline">{on ? t("Trois semaines plus tard", "Three weeks later") : t("Premier jour", "Day one")}</span>
         <span>{t('Proxy agit en silence', 'Proxy acts silently')}</span>
       </div>
       <div className="relative mt-6 h-[150px] md:h-[110px]">
         <div className="absolute left-0 right-0 top-[9px] h-px bg-black/20" />
-        <div className="absolute left-0 top-[4px] h-[11px] w-px bg-black/35" />
-        <div className="absolute right-0 top-[4px] h-[11px] w-px bg-black/35" />
+        <div className="absolute left-0 top-[4px] h-[11px] w-px bg-black/40" />
+        <div className="absolute right-0 top-[4px] h-[11px] w-px bg-black/40" />
         {doms.map((d, i) => (
           <div
             key={d.name}
@@ -66,7 +66,7 @@ export function TrustLine() {
           >
             <span className="mx-auto block h-[19px] w-[19px] rounded-full border-[5px] border-white" style={{ background: INK }} />
             <span
-              className="absolute w-[96px] text-[12px] leading-snug text-black/55 transition-opacity duration-500 md:w-[130px] md:text-[13px]"
+              className="absolute w-[96px] text-[12px] leading-snug text-black/60 transition-opacity duration-500 md:w-[130px] md:text-[13px]"
               style={{
                 top: i % 2 ? 70 : 30,
                 left: i === 0 ? -4 : i === doms.length - 1 ? 'auto' : '50%',

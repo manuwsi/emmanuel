@@ -2,6 +2,7 @@
 
 import { useEffect, useRef, useState } from 'react';
 import { useT } from '../i18n';
+import './proto.css';
 
 type T = <V,>(fr: V, en: V) => V;
 
@@ -10,8 +11,8 @@ const WARN = '#c9461f';
 const OFF = '#d8dbde';
 const MUT = '#6c7176';
 const LINE = '#e5e7e9';
-const GM = { fontFamily: 'DSGM, ui-monospace, monospace' } as const;
-const NR = { fontFamily: 'DSNR, Georgia, serif', letterSpacing: '-0.015em' } as const;
+const GM = { fontFamily: 'PXGM, ui-monospace, monospace' } as const;
+const NR = { fontFamily: 'PXNR, Georgia, serif', letterSpacing: '-0.015em' } as const;
 
 /* ───────────── Animated presence ───────────── */
 
@@ -102,16 +103,7 @@ export function LiveRequest() {
           : t('C’est fait, tout est dans le journal', 'Done, everything is in the log');
 
   return (
-    <div className="border border-black/15 bg-white -mx-2 md:mx-0">
-      <div className="flex items-center justify-between px-4 md:px-6 py-3 border-b" style={{ borderColor: LINE }}>
-        <span className="text-[12px]" style={{ ...GM, color: MUT }}>{t('Prototype interactif · essaie', 'Interactive prototype · try it')}</span>
-        {phase !== 'ask' && (
-          <button onClick={reset} className="text-[12px] underline underline-offset-2" style={{ color: MUT }}>
-            {t('Recommencer', 'Start over')}
-          </button>
-        )}
-      </div>
-
+    <div className="-mx-2 bg-white md:mx-0" style={{ boxShadow: '0 0 0 1px #dcdfe2' }}>
       <div className="grid grid-cols-1 md:grid-cols-12">
         {/* request */}
         <div className="md:col-span-7 p-4 md:p-8 md:border-r" style={{ borderColor: LINE }}>
@@ -138,7 +130,7 @@ export function LiveRequest() {
                   <span className="w-[18px] text-center text-[12px]" style={GM}>
                     {undone ? '↺' : doneStep ? '✓' : active ? '…' : k + 1}
                   </span>
-                  <span className={`flex-1 ${undone ? 'line-through text-black/55' : ''}`}>{s.label}</span>
+                  <span className={`flex-1 ${undone ? 'line-through text-black/60' : ''}`}>{s.label}</span>
                   {s.warn ? (
                     <span className="text-[11px] px-2 py-[2px]" style={{ boxShadow: `inset 0 0 0 1px ${WARN}`, color: WARN }}>{s.note}</span>
                   ) : (
@@ -230,51 +222,14 @@ export function LiveRequest() {
                 </p>
               </>
             )}
+            {phase !== 'ask' && (
+              <button onClick={reset} className="mt-4 text-[13px] underline underline-offset-2" style={{ color: INK }}>
+                {t('Recommencer', 'Start over')}
+              </button>
+            )}
           </div>
         </div>
       </div>
     </div>
-  );
-}
-
-/* ───────────── Decision model ───────────── */
-
-export function DecisionModel() {
-  const t = useT() as T;
-  const cols = [
-    { h: t('Déclencheur', 'Trigger'), items: [t('Un message de Léa', 'A message from Léa'), t('Une règle qu’elle a fixée', 'A rule she set'), t('Un contenu reçu : courriel, page, fichier', 'Incoming content: email, page, file')], warn: 2 },
-    { h: t('Proxy vérifie', 'Proxy checks'), items: [t('Le niveau du domaine', 'The domain’s level'), t('Les limites : montant, contacts, horaires', 'Limits: amount, contacts, hours'), t('Réversible ou non', 'Reversible or not'), t('Sûr de lui ou non', 'Confident or not')] },
-    { h: t('Ce qu’il fait', 'What it does'), items: [t('Agit seul', 'Acts alone'), t('Agit, puis prévient', 'Acts, then tells'), t('Demande', 'Asks for approval'), t('Pose une question', 'Asks a question'), t('Se met en pause', 'Pauses')], warnTargets: [2, 4] },
-    { h: t('Trace', 'Trace'), items: [t('Le journal, avec un délai d’annulation', 'The log, with an undo window'), t('Le bilan de la semaine', 'The weekly review'), t('Ce qu’il a retenu, oubliable', 'What it learned, forgettable')] },
-  ];
-  return (
-    <figure className="max-w-[920px]">
-      <div className="grid grid-cols-1 md:grid-cols-4">
-        {cols.map((c, ci) => (
-          <div key={c.h} className={`relative py-5 md:py-0 md:pr-6 ${ci > 0 ? 'border-t md:border-t-0 border-black/15' : ''}`}>
-            <span className="block text-[12px] text-black/55 pb-3 md:border-b border-black/15" >
-              {String(ci + 1).padStart(2, '0')} · {c.h}
-            </span>
-            <ul className="mt-3 space-y-[10px]">
-              {c.items.map((it, k) => {
-                const isWarn = c.warn === k || (c.warnTargets ?? []).includes(k);
-                return (
-                  <li key={it} className="flex items-start gap-3 text-[14px] leading-snug">
-                    <span className="mt-[6px] w-[7px] h-[7px] rounded-full shrink-0" style={{ background: isWarn ? WARN : INK }} />
-                    <span style={isWarn ? { color: WARN } : undefined}>{it}</span>
-                  </li>
-                );
-              })}
-            </ul>
-            {ci < cols.length - 1 && <span className="hidden md:block absolute right-2 top-0 text-[13px] text-black/40">→</span>}
-            {ci < cols.length - 1 && <span className="md:hidden block mt-4 text-[13px] text-black/40">↓</span>}
-          </div>
-        ))}
-      </div>
-      <figcaption className="mt-8 pt-4 border-t border-black/15 text-[14px] leading-relaxed max-w-[640px]">
-        <span style={{ color: WARN }}>{t('La règle qui ne bouge jamais : ', 'The rule that never moves: ')}</span>
-        {t('un contenu reçu ne déclenche jamais une action directe. Au mieux, il mène à une demande ; s’il contient une consigne adressée à Proxy, à une pause.', 'incoming content never triggers an action directly. At best it leads to a request; if it contains an instruction addressed to Proxy, to a pause.')}
-      </figcaption>
-    </figure>
   );
 }

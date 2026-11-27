@@ -1,0 +1,81 @@
+/* Proxy's own interface, rendered live inside the case study.
+   The rules are the prototype's (public/proxy/prototype/proxy.css), scoped under .px so they never touch the folio.
+   Proxy's serif and mono live here only: the page around speaks in the folio's type. */
+@font-face { font-family: PXNR; font-weight: 300; font-display: swap; src: url('/proxy/prototype/fonts/newsreader-latin-300-normal.woff2') format('woff2'); }
+@font-face { font-family: PXNR; font-weight: 400; font-display: swap; src: url('/proxy/prototype/fonts/newsreader-latin-400-normal.woff2') format('woff2'); }
+@font-face { font-family: PXNR; font-weight: 400; font-style: italic; font-display: swap; src: url('/proxy/prototype/fonts/newsreader-latin-400-italic.woff2') format('woff2'); }
+@font-face { font-family: PXGM; font-weight: 400; font-display: swap; src: url('/proxy/prototype/fonts/geist-mono-latin-400-normal.woff2') format('woff2'); }
+@font-face { font-family: PXGM; font-weight: 500; font-display: swap; src: url('/proxy/prototype/fonts/geist-mono-latin-500-normal.woff2') format('woff2'); }
+
+.px {
+  font-family: var(--font-general-sans), sans-serif;
+  font-size: 13px;
+  line-height: 1.38;
+  font-weight: 400;
+  letter-spacing: normal;
+  text-align: left;
+  color: #121212;
+  -webkit-font-smoothing: antialiased;
+}
+.px .row { display: flex; align-items: center; }
+.px .col { display: flex; flex-direction: column; }
+.px .sp { flex: 1; }
+.px .mut { color: #6c7176; }
+.px .dim { color: #a3a8ad; }
+.px .mono { font-family: PXGM, ui-monospace, monospace; font-size: 11.5px; letter-spacing: 0.01em; }
+.px .serif { font-family: PXNR, Georgia, serif; font-weight: 400; letter-spacing: -0.01em; }
+.px .hair { border: 1px solid #dcdfe2; }
+.px .hb { border-bottom: 1px solid #e5e7e9; }
+.px .ht { border-top: 1px solid #e5e7e9; }
+.px .hl { border-left: 1px solid #e5e7e9; }
+.px .hr { border-right: 1px solid #e5e7e9; }
+.px .btn { display: inline-flex; align-items: center; gap: 8px; height: 34px; padding: 0 14px; border: 1px solid #121212; font-weight: 500; white-space: nowrap; background: transparent; }
+.px .btn.k { background: #121212; color: #ffffff; }
+.px .btn.g { border-color: #dcdfe2; color: #34383c; }
+.px .tag { display: inline-flex; align-items: center; gap: 6px; height: 22px; padding: 0 8px; border: 1px solid #dcdfe2; font-size: 11.5px; color: #4c5156; white-space: nowrap; }
+.px .tag.k { background: #121212; color: #ffffff; border-color: #121212; }
+.px .tag.w { border-color: #c9461f; color: #c9461f; }
+.px .lab { font-size: 11px; text-transform: uppercase; letter-spacing: 0.08em; color: #6c7176; }
+.px .top { height: 56px; padding: 0 28px; gap: 22px; }
+.px .logo { gap: 10px; font-weight: 600; letter-spacing: -0.01em; font-size: 14px; }
+.px .nav a { color: #6c7176; margin-right: 20px; }
+.px .nav a.on { color: #121212; }
+.px .av { width: 26px; height: 26px; border-radius: 50%; background: #d3d7da; display: flex; align-items: center; justify-content: center; font-size: 11px; font-weight: 600; color: #34383c; }
+.px .dm { display: grid; gap: 3px; }
+.px .dm i { display: block; width: 5px; height: 5px; border-radius: 50%; background: #d8dbde; }
+.px .dm i.a { background: #121212; }
+.px .dm i.h { background: #868b90; }
+.px .dm i.w { background: #c9461f; }
+.px .dm.big { gap: 7px; }
+.px .dm.big i { width: 11px; height: 11px; }
+.px .dm.xl { gap: 10px; }
+.px .dm.xl i { width: 16px; height: 16px; }
+.px .scale { display: grid; grid-template-columns: repeat(4, 1fr); gap: 0; }
+.px .scale span { height: 6px; background: #e5e7e9; margin-right: 3px; }
+.px .scale span.a { background: #121212; }
+
+/* A frame shows a screen (or a part of one) at the width it is given: the markup keeps its 1440 px layout
+   and is scaled as a whole, so text stays vector-sharp at every size and density. */
+@property --px-cw { syntax: '<length>'; inherits: false; initial-value: 0px; }
+.px-frame { position: relative; overflow: hidden; container-type: inline-size; }
+.px-frame > .px-cam { position: absolute; left: 0; top: 0; transform-origin: 0 0; --px-cw: 100cqw; --k: tan(atan2(var(--px-cw), calc(var(--pw) * 1px))); transform: scale(var(--k)); }
+.px-frame .px { position: absolute; left: 0; top: 0; user-select: none; -webkit-user-select: none; pointer-events: none; }
+
+/* the opening photograph: whole, as large as the first screen allows, hands entering from the bottom edge */
+.px-hero { height: 75vw; right: 0; }
+@media (min-width: 768px) {
+  .px-hero { height: min(calc(100svh - 92px), calc((100vw - 24px) * 0.5625)); }
+}
+
+/* On a display where the whole screen is already at reading size, its enlarged parts step aside:
+   only their notes stay, keyed to the ticks on the screen. */
+.px-beats { container-type: inline-size; container-name: beats; }
+@container beats (min-width: 1280px) {
+  .px-details { grid-template-columns: repeat(3, minmax(0, 1fr)); margin-top: 20px; row-gap: 12px; }
+  .px-details > figure { grid-column: auto / span 1; }
+  .px-details > figure > .px-part { display: none; }
+  .px-details > figure > figcaption { margin-top: 0; }
+  .px-details > .px-keep, .px-details > div { grid-column: 1 / -1; }
+  .px-details > .px-keep > .px-part { display: block; }
+  .px-details > .px-keep > figcaption { margin-top: 8px; }
+}

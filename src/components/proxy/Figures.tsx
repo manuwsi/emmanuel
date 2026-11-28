@@ -201,12 +201,3 @@ export function BeatHead({ m, label }: { m: Moment; label: string }) {
 export function Cap({ children, className = '' }: { children: ReactNode; className?: string }) {
   return <p className={`${FT} mt-2 max-w-[440px] text-black/60 ${className}`}>{children}</p>;
 }
-
-/** Names a screen: its number in the prototype, and what it is. */
-export function ScreenName({ n, children }: { n: string; children: ReactNode }) {
-  return (
-    <p className={`${FT} mt-2 text-black/60`}>
-      <span className="tabular-nums">{n}</span> · <span className="text-[#0a0a0a]">{children}</span>
-    </p>
-  );
-}

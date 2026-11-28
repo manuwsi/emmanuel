@@ -5,22 +5,22 @@ import Image from 'next/image';
 import DotIn from '@/components/dot/DotIn';
 import { useT } from '@/components/i18n';
 import { Proto, Rect, useScaleFallback } from './Proto';
-import { SCREENS, ScreenId } from './screens';
+import { ScreenId } from './screens';
 
 const HAIR = '#dcdfe2';
 
 /** Small square key (A, B, C) that ties a close-up to its place on the whole screen. */
-export function Key({ k, className = '' }: { k: string; className?: string }) {
+export function Key({ k, className = '', small = false }: { k: string; className?: string; small?: boolean }) {
   return (
-    <span className={`inline-flex h-[15px] w-[15px] items-center justify-center bg-[#121212] text-[10px] font-medium leading-none text-white ${className}`} aria-hidden>
+    <span className={`inline-flex items-center justify-center bg-[#121212] font-medium leading-none text-white ${small ? 'h-[11px] w-[11px] text-[8px]' : 'h-[15px] w-[15px] text-[10px]'} ${className}`} aria-hidden>
       {k}
     </span>
   );
 }
 
 /** Four corner ticks, like a viewfinder: they frame a part without boxing it. */
-function Ticks() {
-  const c = 'absolute h-[9px] w-[9px] border-[#121212]';
+export function Ticks({ small = false }: { small?: boolean }) {
+  const c = `absolute border-[#121212] ${small ? 'h-[6px] w-[6px]' : 'h-[9px] w-[9px]'}`;
   return (
     <>
       <i className={`${c} -left-px -top-px border-l border-t`} />
@@ -28,35 +28,6 @@ function Ticks() {
       <i className={`${c} -bottom-px -left-px border-b border-l`} />
       <i className={`${c} -bottom-px -right-px border-b border-r`} />
     </>
-  );
-}
-
-/**
- * A whole screen, shown as it is: one hairline around it, nothing else.
- * `marks` frames the parts that are enlarged next to it, each with its key.
- */
-export function Plate({ id, label, marks = [], className = '' }: { id: ScreenId; label: string; marks?: { k: string; rect: Rect }[]; className?: string }) {
-  const s = SCREENS[id];
-  return (
-    <div className={`relative ${className}`} style={{ boxShadow: `0 0 0 1px ${HAIR}` }}>
-      <Proto id={id} label={label} className="w-full bg-white" />
-      {marks.map((m) => (
-        <span
-          key={m.k}
-          aria-hidden
-          className="absolute"
-          style={{
-            left: `${(m.rect[0] / s.w) * 100}%`,
-            top: `${(m.rect[1] / s.h) * 100}%`,
-            width: `${(m.rect[2] / s.w) * 100}%`,
-            height: `${(m.rect[3] / s.h) * 100}%`,
-          }}
-        >
-          <Ticks />
-          <Key k={m.k} className="absolute -top-px left-[13px] -translate-y-1/2" />
-        </span>
-      ))}
-    </div>
   );
 }
 
@@ -97,14 +68,6 @@ export function Region({ id, rect, label, k, min = 0.86, max = 1.12, className =
       )}
     </figure>
   );
-}
-
-/**
- * The enlarged parts of a screen. On a display wide enough for the whole screen to be read as it is,
- * the enlargements step aside and only their notes remain, keyed to the ticks on the screen.
- */
-export function Details({ children, className = '' }: { children: ReactNode; className?: string }) {
-  return <div className={`px-details mt-12 grid grid-cols-1 items-start gap-x-3 gap-y-10 md:mt-16 md:grid-cols-9 ${className}`}>{children}</div>;
 }
 
 /* ───────────────────────── The photographs, alive ───────────────────────── */
@@ -168,22 +131,6 @@ export function Photo({ src, alt, className = '', sizes = '(min-width: 768px) 40
     <DotIn className={`px-photo ${className}`}>
       <Image src={src} alt={alt} width={2560} height={1920} quality={90} sizes={sizes} className="block h-auto w-full" />
     </DotIn>
-  );
-}
-
-/** The phone screens, side by side near their real size: the product's own mobile layouts, live. On a phone, a strip to swipe. */
-export function Phones({ items }: { items: { id: ScreenId; label: string; name: ReactNode }[] }) {
-  return (
-    <div className="-mx-2 flex snap-x snap-mandatory gap-2 overflow-x-auto px-2 [scrollbar-width:none] md:mx-0 md:grid md:grid-cols-9 md:gap-3 md:overflow-visible md:px-0 [&::-webkit-scrollbar]:hidden">
-      {items.map((it) => (
-        <figure key={it.id} className="w-[78vw] shrink-0 snap-center md:col-span-3 md:w-auto">
-          <div style={{ boxShadow: `0 0 0 1px ${HAIR}` }}>
-            <Proto id={it.id} label={it.label} className="w-full bg-white" />
-          </div>
-          <figcaption className="mt-2 text-[14px] leading-[1.6] text-black/60 md:text-[13px]">{it.name}</figcaption>
-        </figure>
-      ))}
-    </div>
   );
 }
 

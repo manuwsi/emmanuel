@@ -2,7 +2,7 @@
 
 import { useEffect, useRef, useState } from 'react';
 import Image from 'next/image';
-import { FRAG, STOP, VERT, WAIT, WORK, camera } from './ondeShader';
+import { CLOSE, FRAG, STOP, VERT, WAIT, WORK, camera } from './ondeShader';
 
 export type Shown = 'work' | 'wait' | 'stop';
 
@@ -29,7 +29,7 @@ type Api = { fall: (state: Shown, tick: number) => void; turn: (state: Shown) =>
  * Nothing is compiled before the picture comes near the window, and it only runs while it is in it.
  * With reduced motion the canvas draws one frame per state and nothing moves.
  */
-export function Onde({ state, tick, alt, onLive }: { state: Shown; tick: number; alt: string; onLive?: (live: boolean) => void }) {
+export function Onde({ state, tick, alt, onLive, view = 'wide' }: { state: Shown; tick: number; alt: string; onLive?: (live: boolean) => void; /** the whole lake, or the rings from very close */ view?: 'wide' | 'close' }) {
   const wrap = useRef<HTMLDivElement>(null);
   const canvas = useRef<HTMLCanvasElement>(null);
   const api = useRef<Api | null>(null);
@@ -147,7 +147,7 @@ export function Onde({ state, tick, alt, onLive }: { state: Shown; tick: number;
           c.height = H;
         }
         gl.viewport(0, 0, W, H);
-        const cam = camera(W / H);
+        const cam = view === 'close' ? CLOSE : camera(W / H);
         gl.uniform2f(U.uRes, W, H);
         gl.uniform4f(U.uCam, cam[0], cam[1], cam[2], cam[3]);
         gl.uniform2f(U.uLens, cam[4], 0);
@@ -278,6 +278,8 @@ export function Onde({ state, tick, alt, onLive }: { state: Shown; tick: number;
       near.disconnect();
       undo?.();
     };
+    // the view is chosen once, where the picture is hung
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   useEffect(() => {
@@ -291,8 +293,14 @@ export function Onde({ state, tick, alt, onLive }: { state: Shown; tick: number;
 
   return (
     <div ref={wrap} className="absolute inset-0">
-      <Image src="/proxy/world/onde.jpg" alt={alt} fill quality={84} sizes="100vw" className="hidden object-cover md:block" />
-      <Image src="/proxy/world/onde-portrait.jpg" alt={alt} fill quality={84} sizes="100vw" className="object-cover md:hidden" />
+      {view === 'close' ? (
+        <Image src="/proxy/world/onde-detail.jpg" alt={alt} fill quality={84} sizes="(min-width: 768px) 20vw, 40vw" className="object-cover" />
+      ) : (
+        <>
+          <Image src="/proxy/world/onde.jpg" alt={alt} fill quality={84} sizes="(min-width: 768px) 50vw, 100vw" className="hidden object-cover md:block" />
+          <Image src="/proxy/world/onde-portrait.jpg" alt={alt} fill quality={84} sizes="100vw" className="object-cover md:hidden" />
+        </>
+      )}
       <canvas ref={canvas} aria-hidden className={`absolute inset-0 h-full w-full transition-opacity duration-700 ${live ? 'opacity-100' : 'opacity-0'}`} />
     </div>
   );

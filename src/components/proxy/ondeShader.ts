@@ -227,3 +227,9 @@ export function camera(aspect: number): [number, number, number, number, number]
   const pitch = (lerp(19.6, 14.6) * Math.PI) / 180;
   return [y, z, y + z / Math.tan(pitch), tan, lerp(0.205, 0.373)];
 }
+
+/**
+ * The same water from very close and very low: one column of the rain, ring after ring, going off towards the light.
+ * No horizon in this one. [y, z, the y it looks at, tan(half field), lens shift]
+ */
+export const CLOSE: [number, number, number, number, number] = [-0.3, 0.34, 0.8, 0.24, 0.1];

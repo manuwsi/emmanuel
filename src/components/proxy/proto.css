@@ -65,27 +65,15 @@
   .px-frame > .px-cam:not([data-k]) { visibility: hidden; }
 }
 
-/* the opening photograph: whole, as large as the first screen allows, hands entering from the bottom edge */
+/* the opening photograph: whole, seen from a step back. It takes about two thirds of the first screen and leaves the rest white;
+   the hands still enter from the bottom edge of the window */
 .px-hero { height: 75vw; right: 0; }
 @media (min-width: 768px) {
   /* never beyond the photograph's own 1920 px of height; on dense displays it stops at 1200 px so it is not stretched */
-  .px-hero { height: min(calc(100svh - 92px), calc((100vw - 24px) * 0.5625), 1920px); }
+  .px-hero { height: min(70svh, calc((100vw - 24px) * 0.5), 1920px); right: 4.2vw; }
 }
 @media (min-width: 768px) and (min-resolution: 1.5dppx) {
-  .px-hero { height: min(calc(100svh - 92px), calc((100vw - 24px) * 0.5625), 1200px); }
-}
-
-/* On a display where the whole screen is already at reading size, its enlarged parts step aside:
-   only their notes stay, keyed to the ticks on the screen. */
-.px-beats { container-type: inline-size; container-name: beats; }
-@container beats (min-width: 1280px) {
-  .px-details { grid-template-columns: repeat(3, minmax(0, 1fr)); margin-top: 20px; row-gap: 12px; }
-  .px-details > figure { grid-column: auto / span 1; }
-  .px-details > figure > .px-part { display: none; }
-  .px-details > figure > figcaption { margin-top: 0; }
-  .px-details > .px-keep, .px-details > div { grid-column: 1 / -1; }
-  .px-details > .px-keep > .px-part { display: block; }
-  .px-details > .px-keep > figcaption { margin-top: 8px; }
+  .px-hero { height: min(70svh, calc((100vw - 24px) * 0.5), 1200px); }
 }
 
 /* On a phone the photographs are simply there: the dot print is a paint-heavy reveal, kept for wide screens */

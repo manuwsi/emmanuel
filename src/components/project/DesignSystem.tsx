@@ -54,7 +54,8 @@ export function Presence({ k, size = 8 }: { k: string; size?: number }) {
   );
 }
 
-export function ProxySystem() {
+/** `hung`: the sheet is shown on a coloured ground, so it gets the shadow of a sheet of paper instead of an outline. */
+export function ProxySystem({ hung = false }: { hung?: boolean } = {}) {
   const t = useT() as T;
   const [open, setOpen] = useState(false);
   const colours = [
@@ -66,7 +67,7 @@ export function ProxySystem() {
     { name: t('Alerte', 'Alert'), hex: P.warn, n: 1, role: t('L’irréversible et la pause, une fois par écran', 'The irreversible and the pause, once per screen') },
   ];
   return (
-    <section className="mt-6 border" style={{ background: P.paper, color: P.ink, borderColor: P.line }}>
+    <section className={hung ? '' : 'mt-6 border'} style={{ background: P.paper, color: P.ink, borderColor: P.line, boxShadow: hung ? '0 0 0 1px rgba(18,18,18,.06), 0 26px 46px -30px rgba(18,18,18,.38)' : undefined }}>
       <Fonts />
       {/* header strip */}
       <div className="flex flex-wrap items-center justify-between gap-x-4 gap-y-2 px-5 md:px-8 py-4 border-b" style={{ borderColor: P.line }}>
@@ -80,7 +81,7 @@ export function ProxySystem() {
 
       {/* colours: each one a dose */}
       <div className="px-5 md:px-8 pt-8 pb-3">
-        <Label className="text-black/55">{t('Couleur · le nombre de points dit la place qu’elle prend', 'Colour · the number of dots says how much room it takes')}</Label>
+        <Label className="text-black/60">{t('Couleur · le nombre de points dit la place qu’elle prend', 'Colour · the number of dots says how much room it takes')}</Label>
       </div>
       <div className="grid grid-cols-3 md:grid-cols-6 px-5 md:px-8 border-t" style={{ borderColor: P.line }}>
         {colours.map((c, i) => (
@@ -123,7 +124,7 @@ export function ProxySystem() {
       {/* components */}
       <div className="grid grid-cols-1 md:grid-cols-3 border-t" style={{ borderColor: P.line }}>
         <div className="p-5 md:p-8 space-y-5" style={{ borderColor: P.line }}>
-          <Label className="text-black/55">{t('Actions', 'Actions')}</Label>
+          <Label className="text-black/60">{t('Actions', 'Actions')}</Label>
           <div className="flex flex-wrap gap-2 text-[13px]">
             <span className="px-4 py-[10px] font-medium" style={{ background: P.ink, color: P.paper }}>{t('Valider', 'Approve')}</span>
             <span className="px-4 py-[10px]" style={{ boxShadow: `inset 0 0 0 1px ${P.ink}` }}>{t('Modifier', 'Edit')}</span>
@@ -137,7 +138,7 @@ export function ProxySystem() {
           <p className="text-[12px]" style={{ color: P.grey }}>{t('Trois poids : plein, filet noir, filet clair. Le refus n’est jamais rouge.', 'Three weights: filled, black hairline, light hairline. Declining is never red.')}</p>
         </div>
         <div className="p-5 md:p-8 space-y-4" style={{ borderColor: P.line }}>
-          <Label className="text-black/55">{t('Autonomie', 'Autonomy')}</Label>
+          <Label className="text-black/60">{t('Autonomie', 'Autonomy')}</Label>
           {[t('Observer', 'Observe'), t('Proposer', 'Propose'), t('Agir, puis prévenir', 'Act, then tell'), t('Agir seul', 'Act alone')].map((l, i) => (
             <div key={l} className="grid grid-cols-[1fr_120px] items-center gap-4">
               <span className="text-[13px]">{l}</span>
@@ -154,7 +155,7 @@ export function ProxySystem() {
           </div>
         </div>
         <div className="p-5 md:p-8 space-y-5" style={{ borderColor: P.line }}>
-          <Label className="text-black/55">{t('Présence', 'Presence')}</Label>
+          <Label className="text-black/60">{t('Présence', 'Presence')}</Label>
           <div className="flex gap-8">
             {(['work', 'wait', 'stop'] as const).map((k) => (
               <div key={k} className="space-y-3">

@@ -1,5 +1,6 @@
 # onde_shot.py out W H state T [ss=2] : one frame of « L'onde », computed by the page's own shader, in headless Chrome.
 # state: work | wait | stop. T: seconds. ss: supersampling. SINCE=<seconds> in the environment: the moment the state was switched to (from work).
+# VIEW=close in the environment: the page's second view, low over one column of rings (the small print next to the wide one).
 # Needs: pip install playwright && playwright install chromium
 import asyncio, sys, re, json, os
 from playwright.async_api import async_playwright
@@ -13,6 +14,8 @@ WAIT = re.search(r"export const WAIT = '(.*?)';", SRC).group(1); STOP = re.searc
 CAM = re.search(r'export function camera\(aspect: number\).*?\{(.*?)\n\}', SRC, re.S).group(1).replace('(a: number, b: number)', '(a, b)')
 out, W, H, state, T = sys.argv[1], int(sys.argv[2]), int(sys.argv[3]), sys.argv[4], float(sys.argv[5])
 ss = float(sys.argv[6]) if len(sys.argv) > 6 else 2; extra = sys.argv[7] if len(sys.argv) > 7 else ''
+if os.environ.get('VIEW') == 'close':
+    extra = 'cam = ' + re.search(r'export const CLOSE: .*? = (\[.*?\]);', SRC).group(1) + '; ' + extra
 HTML = '''<!doctype html><html><body style="margin:0;background:#000"><canvas id="c" style="display:block;width:%dpx;height:%dpx"></canvas><script>
 const VERT = %s, FRAG = %s, WORK = %s, WAIT = %s, STOP = %s;
 function camera(aspect) {%s}

@@ -13,16 +13,17 @@ shader (WebGL 1), calculé pour chaque pixel à chaque image, dans `src/componen
 - `onde_film.py` — un film image par image : il travaille, il attend, il s'arrête.
 
 ```
-# les deux images fixes de secours de la page
+# les images fixes de secours de la page : la vue large (écran large, téléphone) et la vue de près
 python3 onde_shot.py onde.png 1920 1080 work 8.84 2
 python3 onde_shot.py onde-portrait.png 1080 1350 work 8.84 2
+VIEW=close python3 onde_shot.py onde-detail.png 900 900 work 8.84 2
 # un état précis : la croix qui tombe quand Proxy s'arrête
 SINCE=9.36 python3 onde_shot.py stop.png 2160 2700 stop 10.2 2
 ```
 
 ## Les rendus 3D
 
-- `studio.py` — la scène. `A` : l'ordinateur de Léa, fermé, sur fond gris pâle. `E` : le même cadre, de nuit (la seule image de l'ordinateur encore sur la page, le vendredi à 18 h). `C` : la macro du courriel de 11:17.
+- `studio.py` — la scène. `E` : l'ordinateur de Léa, fermé, de nuit, petit dans le cadre (la seule image de l'ordinateur sur la page, le vendredi à 18 h). `C` : la macro du courriel de 11:17. `A`, le même ordinateur de jour, n'est plus utilisé par la page.
 - `comp.py` — le développement : la pièce et la lumière de Proxy sont rendues séparément, additionnées en linéaire, puis développées (halo, vignettage, grain).
 - `export.py` — compose les passes et écrit les images dans `public/proxy/world/`.
 
@@ -31,23 +32,19 @@ SINCE=9.36 python3 onde_shot.py stop.png 2160 2700 stop 10.2 2
 Il faut Blender en module Python (`pip install bpy`), plus `numpy`, `opencv-python`, `OpenEXR` et `Pillow`.
 
 ```
-# la pièce, sans Proxy
-python3 studio.py A 2400 192 --pass=base --exr --name=F-A-base
-# la lumière de Proxy, seule, un rendu par état (la zone suffit)
-for s in rest work0 work1 work2 work3 wait done stop; do
-  python3 studio.py A 2400 40 --pass=light --state=$s --exr --name=F-A-$s --border=0.385,0.295,0.765,0.715
+# la nuit, vue de loin (4:5) : la pièce, puis la lumière seule, pour la grille et pour le point qui reste
+python3 studio.py E 1400 160 --ar=4:5 --dist=1.9 --lens=50 --elev=24 --lx=0.10 --ly=0.25 --pass=base --exr --name=W-E-base
+for s in work0 done; do
+  python3 studio.py E 1400 48 --ar=4:5 --dist=1.9 --lens=50 --elev=24 --lx=0.10 --ly=0.25 --pass=light --state=$s --exr --name=W-E-$s --border=0.12,0.33,0.58,0.56
 done
-# la nuit, et la macro
-python3 studio.py E 2400 160 --pass=base --exr --name=F-E-base
+# la macro du courriel
 python3 studio.py C 2100 160 --ar=3:2 --phi=9 --elev=40 --dist=0.40 --mrz=-4 --grz=20 --gsize=0.34 --pass=base --exr --name=F-C-base
 python3 studio.py C 2100 72  --ar=3:2 --phi=9 --elev=40 --dist=0.40 --mrz=-4 --grz=20 --gsize=0.34 --pass=light --state=stop --exr --name=F-C-stop
 # puis
 python3 export.py
 ```
 
-Pour une sortie plus grande, changer la largeur (2400) : tout le reste suit. `--blend` enregistre aussi la scène en `.blend`.
-
-Si `export.py` annonce une autre zone de lumière (`LIGHT`, `CX`), reporter ces valeurs en tête de `src/components/proxy/World.tsx`.
+Pour une sortie plus grande, changer la largeur (1400, 2100) : tout le reste suit. `--blend` enregistre aussi la scène en `.blend`.
 
 Le texte du courriel de la macro est celui du prototype, mot pour mot. `fenetre.jpg` est une image générée (le prompt est dans le document de direction artistique), désaturée et grainée par `export.py`.
 

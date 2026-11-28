@@ -120,18 +120,26 @@ html.px-js [data-hang][data-in] { opacity: 1; transform: none; }
 html.px-js [data-hang][data-rest] { transition: none; }
 @media print { html.px-js [data-hang] { opacity: 1 !important; transform: none !important; } }
 
-/* A fold: the reasoning opens in place. The room is made first, the text then comes into focus. */
+/* A fold: the reasoning opens in place. The room is made first, then the text is printed in dots,
+   the way the pictures of the folio arrive (the same mask, the same curve). */
 .px-fold { display: grid; grid-template-rows: 0fr; transition: grid-template-rows 800ms var(--px-inout); }
 .px-fold[data-open] { grid-template-rows: 1fr; }
-.px-fold > [data-fold-in] { min-height: 0; overflow: hidden; visibility: hidden; opacity: 0; filter: blur(4px); transform: translate3d(0, 6px, 0); transition: opacity 360ms var(--px-out), filter 360ms var(--px-out), transform 360ms var(--px-out), visibility 0s linear 800ms; }
-.px-fold[data-open] > [data-fold-in] { visibility: visible; opacity: 1; filter: blur(0); transform: none; transition: opacity 1200ms var(--px-out) 260ms, filter 1200ms var(--px-out) 260ms, transform 1200ms var(--px-out) 260ms, visibility 0s; }
-/* when the whole page changes reading, nothing slides: the text is simply there, and comes into focus */
+.px-fold > [data-fold-in] {
+  min-height: 0; overflow: hidden; visibility: hidden;
+  --dr: 0px;
+  -webkit-mask-image: radial-gradient(circle, #000 var(--dr), transparent calc(var(--dr) + 0.7px));
+  mask-image: radial-gradient(circle, #000 var(--dr), transparent calc(var(--dr) + 0.7px));
+  -webkit-mask-size: 9px 9px; mask-size: 9px 9px;
+  transition: --dr 420ms var(--ease-ink), visibility 0s linear 800ms;
+}
+.px-fold[data-open] > [data-fold-in] { visibility: visible; --dr: 7px; transition: --dr 1150ms var(--ease-print) 320ms, visibility 0s; }
+/* when the whole page changes reading, nothing slides: the room is there at once and the text prints everywhere together */
 [data-reading-jump] .px-fold { transition: none; }
-[data-reading-jump] .px-fold > [data-fold-in] { transition-delay: 0s, 0s, 0s, 0s; }
+[data-reading-jump] .px-fold > [data-fold-in] { transition-delay: 0s, 0s; }
 .px-fold-btn { display: inline-flex; align-items: baseline; text-align: left; transition: color 500ms var(--px-out); }
 .px-fold-btn:hover { color: #0a0a0a; }
 @media (prefers-reduced-motion: reduce) {
-  .px-fold, .px-fold > [data-fold-in], .px-fold[data-open] > [data-fold-in] { transition: none; filter: none; transform: none; }
+  .px-fold, .px-fold > [data-fold-in], .px-fold[data-open] > [data-fold-in] { transition: none; -webkit-mask-image: none; mask-image: none; }
   .px-edge, .px-quiet, .px-fold-btn { transition: none; }
 }
 

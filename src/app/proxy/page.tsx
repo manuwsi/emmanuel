@@ -240,7 +240,7 @@ function Case() {
       <Header crumb="Proxy" />
       <ReadingSwitch />
       <noscript>
-        <style>{'.px-fold{grid-template-rows:1fr}.px-fold>[data-fold-in]{visibility:visible;opacity:1;filter:none;transform:none}'}</style>
+        <style>{'.px-fold{grid-template-rows:1fr}.px-fold>[data-fold-in]{visibility:visible;-webkit-mask-image:none;mask-image:none}'}</style>
       </noscript>
 
       <div className="relative">

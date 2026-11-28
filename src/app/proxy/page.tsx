@@ -47,17 +47,10 @@ const R = {
   weekOffer: [1040, 76, 400, 236],
   weekKept: [1040, 312, 400, 212],
   errNext: [40, 548, 940, 194],
-  // the block that carries the presence and its sentence, on three screens
-  nowWork: [40, 84, 960, 196],
-  nowWait: [40, 100, 960, 196],
-  nowStop: [40, 88, 960, 196],
   // on a phone
   phoneNow: [0, 0, 390, 424],
   phoneDone: [0, 424, 390, 178],
   phonePause: [0, 48, 390, 416],
-  phoneWork: [0, 38, 390, 206],
-  phoneWait: [0, 62, 390, 206],
-  phoneStop: [0, 46, 390, 206],
 } as const;
 
 /** A chapter's note in the left column: its label decodes in dots, its detail folds. */
@@ -276,7 +269,7 @@ export default function Page() {
             <div className="space-y-3 text-black/70 md:col-span-4 md:col-start-4 md:pr-6">
               <p>{t('Les agents IA savent déjà agir à notre place, mais rien ne permet de régler jusqu’où, ni de vérifier après coup ce qu’ils ont fait. Proxy part d’un parti pris : la confiance ne s’accorde pas d’office, elle se règle domaine par domaine et se gagne à l’usage.', 'AI agents can already act on our behalf, but nothing lets you set how far they go, or check afterwards what they did. Proxy starts from one stance: trust is never granted up front, it is set domain by domain and earned through use.')}</p>
               <p>
-                {t('Le case suit Léa, designer indépendante, pendant trois semaines avec son agent. 10 écrans et un prototype codé. Les écrans de cette page ne sont pas des captures : c’est l’interface elle-même. Les figures sont dessinées d’après ses données. Les photographies et les rendus 3D sont des images de concept : ils mettent le produit en scène, sans montrer un usage réel ni une fonction de plus. ', 'The case follows Léa, a freelance designer, through three weeks with her agent. 10 screens and a coded prototype. The screens on this page are not captures: they are the interface itself. The figures are drawn from its data. The photographs and 3D renders are concept images: they stage the product, without showing a real use or an extra feature. ')}
+                {t('Le case suit Léa, designer indépendante, pendant trois semaines avec son agent. 10 écrans et un prototype codé. Les écrans de cette page ne sont pas des captures : c’est l’interface elle-même. Les figures sont dessinées d’après ses données. Les photographies, les rendus 3D et l’eau calculée en direct sont des images de concept : ils mettent le produit en scène, sans montrer un usage réel ni une fonction de plus. ', 'The case follows Léa, a freelance designer, through three weeks with her agent. 10 screens and a coded prototype. The screens on this page are not captures: they are the interface itself. The figures are drawn from its data. The photographs, the 3D renders and the water computed live are concept images: they stage the product, without showing a real use or an extra feature. ')}
                 <a href="/proxy/prototype/index.html" className="text-[#0a0a0a] underline underline-offset-2">
                   {t('Ouvrir le prototype', 'Open the prototype')}
                 </a>
@@ -355,22 +348,44 @@ export default function Page() {
           </div>
         </section>
 
-        {/* the presence twice: the real screens, and the same grid thrown as light in a studio image */}
+        {/* the presence: the real screens first, whole and large; then the same grid as rain on still water, computed live */}
         <div className="-mx-2 pt-12 md:-mx-3 md:pt-[9vh]">
           <PresenceStage
             labels={{ work: stateLabel.work, wait: stateLabel.wait, stop: stateLabel.stop }}
             screens={{
-              work: { id: 'aujourdhui', rect: R.nowWork, phone: { id: 'm-accueil', rect: R.phoneWork }, name: t('Aujourd’hui', 'Today'), label: t('Proxy, l’écran d’accueil : ce qu’il fait en ce moment', 'Proxy, the home screen: what it is doing right now') },
-              wait: { id: 'validation', rect: R.nowWait, phone: { id: 'm-demande', rect: R.phoneWait }, name: t('La demande', 'The request'), label: t('Proxy attend la décision de Léa', 'Proxy is waiting for Léa’s decision') },
-              stop: { id: 'arret', rect: R.nowStop, phone: { id: 'm-pause', rect: R.phoneStop }, name: t('La pause', 'The pause'), label: t('Proxy s’est mis en pause', 'Proxy has paused') },
+              work: {
+                id: 'aujourdhui',
+                phone: 'm-accueil',
+                name: t('Aujourd’hui', 'Today'),
+                label: t('Proxy, l’écran d’accueil : ce qu’il fait en ce moment', 'Proxy, the home screen: what it is doing right now'),
+                says: t('« Proxy compare deux offres de coworking pour janvier. »', '“Proxy is comparing two coworking offers for January.”'),
+              },
+              wait: {
+                id: 'validation',
+                phone: 'm-demande',
+                name: t('La demande', 'The request'),
+                label: t('Proxy attend la décision de Léa', 'Proxy is waiting for Léa’s decision'),
+                says: t('« Réserver Paris → Lyon, jeudi 4 décembre, 7 h 56. »', '“Book Paris → Lyon, Thursday 4 December, 7:56.”'),
+              },
+              stop: {
+                id: 'arret',
+                phone: 'm-pause',
+                name: t('La pause', 'The pause'),
+                label: t('Proxy s’est mis en pause', 'Proxy has paused'),
+                says: t('« Un courriel demande de changer le RIB d’un fournisseur. »', '“An email asks to change a supplier’s bank details.”'),
+              },
             }}
-          />
+            note={t(
+              'À vous : changez l’état de Proxy. Ce n’est pas une capture qui change, c’est l’écran lui-même : trois des dix écrans du produit, entiers.',
+              'Your turn: change Proxy’s state. No capture is swapped: the screen itself changes. Three of the product’s ten screens, whole.'
+            )}
+          >
+            {t(
+              'Proxy est un logiciel. Il n’a ni visage ni appareil : on ne le voit pas, on voit ce qu’il fait. Sa grille de vingt-cinq points tombe ici en pluie sur une eau immobile, au rythme de l’écran du dessus. Il attend : quatre gouttes. Il s’arrête : l’eau se referme et une lumière s’allume sur l’autre rive.',
+              'Proxy is software. It has no face and no device of its own: you never see it, you see what it does. Here its grid of twenty-five points falls as rain on still water, in time with the screen above. It waits: four drops. It stops: the water closes and a light comes on across the lake.'
+            )}
+          </PresenceStage>
         </div>
-        <section className={`${GRID} pt-6 md:pt-[calc(4vh+170px)]`}>
-          <p className={`${FT} max-w-[440px] text-black/60 md:col-span-9 md:col-start-4`}>
-            {t('La même grille, deux fois. Dans le cadre blanc, l’interface : changez l’état, c’est le vrai écran qui répond. Derrière, la même présence, projetée en lumière sur l’ordinateur fermé de Léa. Aucun ordinateur n’affiche ça : c’est une image, pour dire qu’il travaille écran fermé, sans visage ni mascotte.', 'The same grid, twice. In the white frame, the interface: change the state and the real screen answers. Behind it, the same presence, thrown as light on Léa’s closed laptop. No laptop shows this: it is a picture, a way of saying that it works with the lid shut, with no face and no mascot.')}
-          </p>
-        </section>
 
         {/* 04 — THE WEEK */}
         <section className={`${GRID} pb-10 pt-24 md:pb-[10vh] md:pt-[18vh]`}>

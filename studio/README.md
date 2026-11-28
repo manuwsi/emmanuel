@@ -8,6 +8,6 @@ Ce dossier n'est pas mis en ligne sur le site (voir `.vercelignore`).
 - `foil/screens` — écrans de l'appli Foil.
 - `foil/blender` — rendus 3D de Foil (Blender).
 - `proxy/gen.py` — transforme le prototype de Proxy en écrans rendus en direct dans le case.
-- `proxy/world` — les images d'univers de Proxy (Blender) : la présence, la nuit, la macro du courriel.
+- `proxy/world` — les images d'univers de Proxy : « L'onde » (shader, images fixes et film), la nuit et la macro du courriel (Blender).
 
 Les vidéos finales, images sources et rendus ne sont pas versionnés ici (trop lourds).

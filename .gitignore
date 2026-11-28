@@ -39,3 +39,6 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# frames of the Proxy water film (studio/proxy/world/onde_film.py)
+studio/proxy/world/frames/

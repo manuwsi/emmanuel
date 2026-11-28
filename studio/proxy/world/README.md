@@ -1,9 +1,28 @@
 # Proxy — les images d'univers
 
-Trois rendus 3D (Blender, Cycles) et une image générée. Le produit n'y a jamais de corps : sa présence est
-la grille de 25 points de l'interface, projetée en lumière.
+Proxy est un logiciel : il n'a jamais de corps dans ces images, et les vrais écrans passent toujours avant elles.
+Une image calculée en direct par la page (« L'onde »), deux rendus 3D (Blender, Cycles) et une image générée.
 
-- `studio.py` — la scène. `A` : l'ordinateur fermé sur fond gris pâle. `E` : le même cadre, de nuit. `C` : la macro du courriel de 11:17.
+## L'onde
+
+Un lac immobile, une pluie qui tombe en grille : les 25 points de la présence. Ni photo ni fichier 3D : un fragment
+shader (WebGL 1), calculé pour chaque pixel à chaque image, dans `src/components/proxy/ondeShader.ts`. Le composant
+`Onde.tsx` le fait tourner dans la page (et le remplace par une image fixe si le navigateur ne peut pas).
+
+- `onde_shot.py` — une image fixe du même shader, à n'importe quelle taille et proportion (la caméra se replace seule).
+- `onde_film.py` — un film image par image : il travaille, il attend, il s'arrête.
+
+```
+# les deux images fixes de secours de la page
+python3 onde_shot.py onde.png 1920 1080 work 8.84 2
+python3 onde_shot.py onde-portrait.png 1080 1350 work 8.84 2
+# un état précis : la croix qui tombe quand Proxy s'arrête
+SINCE=9.36 python3 onde_shot.py stop.png 2160 2700 stop 10.2 2
+```
+
+## Les rendus 3D
+
+- `studio.py` — la scène. `A` : l'ordinateur de Léa, fermé, sur fond gris pâle. `E` : le même cadre, de nuit (la seule image de l'ordinateur encore sur la page, le vendredi à 18 h). `C` : la macro du courriel de 11:17.
 - `comp.py` — le développement : la pièce et la lumière de Proxy sont rendues séparément, additionnées en linéaire, puis développées (halo, vignettage, grain).
 - `export.py` — compose les passes et écrit les images dans `public/proxy/world/`.
 

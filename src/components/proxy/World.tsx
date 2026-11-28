@@ -8,22 +8,22 @@ import { Proto, Rect } from './Proto';
 import { ScreenId } from './screens';
 import { useSeen } from './Figures';
 import { HAIR, T, WARN } from './marks';
+import { Onde, Shown } from './Onde';
+import { WORK } from './ondeShader';
+
+export type { Shown };
 
 /**
- * The world around the product: studio images where Proxy never has a body.
- * Its presence is the interface's own grid of 25 points, thrown as light. They are concept images
- * (3D renders, one staged photograph), always named as such: none shows a real use or an extra feature.
+ * The world around the product. Proxy is software: it never has a body here, and the product always comes first,
+ * as the real screens. Around them, concept images of several kinds (water computed live, 3D renders, one staged
+ * photograph), always named as such: none shows a real use or an extra feature.
  */
 
 const DIR = '/proxy/world';
 /** Where Proxy's light falls in the studio frame (fractions of the picture): the part that changes with its state. */
 const LIGHT = { x: 0.375, y: 0.2459, w: 0.3975, h: 0.5052 };
-/** The slab's centre, across the picture: what a narrow screen keeps in the middle. */
+/** The laptop's centre, across the picture: what a narrow screen keeps in the middle. */
 const CX = 0.574;
-
-const WORK = ['..a...aha.ahaha.aha...a..', '.....a...a..a..a...a.....', '..h...aaa.hahah.aaa...h..', '.a.a.a...a..a..a...a.a.a.'];
-
-export type Shown = 'work' | 'wait' | 'stop';
 
 /** Says what kind of picture this is, in the same words everywhere. */
 export function Concept({ how, children, className = '', light = false }: { how: string; children?: ReactNode; className?: string; light?: boolean }) {
@@ -36,7 +36,7 @@ export function Concept({ how, children, className = '', light = false }: { how:
   );
 }
 
-/** The studio frame, kept whole on a wide screen and centred on the slab on a narrow one. Everything inside is placed in fractions of the picture. */
+/** The studio frame, kept whole on a wide screen and centred on the laptop on a narrow one. Everything inside is placed in fractions of the picture. */
 function Frame({ children, className = '', style }: { children: ReactNode; className?: string; style?: CSSProperties }) {
   return (
     <div className={`relative aspect-square w-full overflow-hidden md:aspect-auto md:h-[min(56.25vw,94svh)] ${className}`} style={style}>
@@ -66,24 +66,69 @@ function Light({ k, on, slow = false }: { k: string; on: boolean; slow?: boolean
   );
 }
 
+const ORDER: Shown[] = ['work', 'wait', 'stop'];
+
+/** The three states of Proxy, as a switch. The same one sits under the product and on the picture: they share one state. */
+function Switch({ st, set, labels, dark = false, className = '' }: { st: Shown; set: (s: Shown) => void; labels: Record<Shown, string>; dark?: boolean; className?: string }) {
+  const t = useT() as T;
+  return (
+    <div
+      role="group"
+      aria-label={t('L’état de Proxy', 'Proxy’s state')}
+      className={`${FT} pointer-events-auto inline-flex ${dark ? 'bg-[rgba(16,18,20,.5)] text-white backdrop-blur-sm' : 'bg-white'} ${className}`}
+      style={{ boxShadow: dark ? '0 0 0 1px rgba(255,255,255,.16)' : `0 0 0 1px ${HAIR}, 0 18px 40px -18px rgba(18,18,18,.35)` }}
+    >
+      {ORDER.map((k) => {
+        const on = st === k;
+        return (
+          <button
+            key={k}
+            type="button"
+            aria-pressed={on}
+            onClick={() => set(k)}
+            className={`flex items-center gap-2 whitespace-nowrap border-r px-3 py-3 last:border-r-0 md:px-4 ${dark ? 'border-white/20' : 'border-[#dcdfe2]'} ${on ? (dark ? 'text-white' : 'text-[#0a0a0a]') : dark ? 'text-white/50' : 'text-black/40'}`}
+            style={on && k === 'stop' ? { color: dark ? '#ff7a4d' : WARN } : undefined}
+          >
+            <i aria-hidden className="block h-[7px] w-[7px] shrink-0 rounded-full" style={{ background: on ? (k === 'stop' ? (dark ? '#ff7a4d' : WARN) : dark ? '#fff' : '#121212') : dark ? 'rgba(255,255,255,.28)' : '#d8dbde' }} />
+            {labels[k]}
+          </button>
+        );
+      })}
+    </div>
+  );
+}
+
 /**
- * The presence, twice: in the product (the real screens, live) and in the room (a studio image).
- * One switch drives both, and one clock: when Proxy works, the interface's points and the light move together.
+ * The presence. First the product: three real screens, whole and as large as the window allows, one per state.
+ * Then a picture of the same thing with no object in it: still water, and a rain that falls on the grid's 25 points.
+ * One switch drives both, and one clock: a point lights in the interface, a drop falls.
  */
-export function PresenceStage({ labels, screens }: { labels: Record<Shown, string>; screens: Record<Shown, { id: ScreenId; rect: Rect; phone: { id: ScreenId; rect: Rect }; name: string; label: string }> }) {
+export function PresenceStage({
+  labels,
+  screens,
+  note,
+  children,
+}: {
+  labels: Record<Shown, string>;
+  screens: Record<Shown, { id: ScreenId; phone: ScreenId; name: string; label: string; says: string }>;
+  note: ReactNode;
+  children: ReactNode;
+}) {
   const t = useT() as T;
   const [st, setSt] = useState<Shown>('work');
   const [i, setI] = useState(0);
+  const [k, setK] = useState(0);
+  const [isLive, setIsLive] = useState(false);
   const root = useRef<HTMLDivElement>(null);
   const live = useRef<HTMLDivElement>(null);
 
-  // the clock only runs while Proxy works and someone can see it
+  // one clock for the interface's points and for the rain; it only runs while someone can see them
   useEffect(() => {
     const el = root.current;
-    if (!el || st !== 'work' || window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+    if (!el || window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
     let id: ReturnType<typeof setInterval> | undefined;
     const io = new IntersectionObserver(([e]) => {
-      if (e.isIntersecting && !id) id = setInterval(() => setI((x) => (x + 1) % WORK.length), 520);
+      if (e.isIntersecting && !id) id = setInterval(() => setI((x) => x + 1), 520);
       else if (!e.isIntersecting && id) {
         clearInterval(id);
         id = undefined;
@@ -94,69 +139,97 @@ export function PresenceStage({ labels, screens }: { labels: Record<Shown, strin
       io.disconnect();
       if (id) clearInterval(id);
     };
-  }, [st]);
+  }, []);
 
-  // the live screen's own points follow the same frame as the light
+  // the live screen's own points follow the clock while Proxy works
   useEffect(() => {
     const dots = live.current?.querySelectorAll<HTMLElement>('[data-live="work"] .dm.xl i, [data-live="work"] .dm.big i');
     if (!dots || dots.length % 25) return;
-    const f = WORK[i];
-    dots.forEach((d, k) => (d.className = f[k % 25] === '.' ? '' : f[k % 25]));
+    const f = WORK[i % WORK.length];
+    dots.forEach((d, n) => (d.className = f[n % 25] === '.' ? '' : f[n % 25]));
   }, [i, st]);
 
-  const lit = st === 'work' ? `work${i}` : st;
-  const order: Shown[] = ['work', 'wait', 'stop'];
+  // the size the screen is really shown at, said next to it
+  useEffect(() => {
+    const el = live.current;
+    if (!el) return;
+    const set = () => setK(el.clientWidth / (window.matchMedia('(min-width: 768px)').matches ? 1440 : 390));
+    set();
+    const ro = new ResizeObserver(set);
+    ro.observe(el);
+    return () => ro.disconnect();
+  }, []);
+  const pct = Math.round(k * 100);
+
   return (
-    <div ref={root} data-world="stage" className="px-moment relative">
-      <figure className="relative">
-        <Frame className="bg-[#e4e6e8]">
-          <Image src={`${DIR}/presence.jpg`} alt={t('Un ordinateur portable noir, fermé, sur un fond gris pâle. Sur son capot, la grille de points de Proxy, en lumière.', 'A closed black laptop on a pale grey ground. On its lid, Proxy’s grid of dots, as light.')} fill quality={88} sizes="(min-width: 768px) 100vw, 180vw" className="object-cover" />
-          {['work0', 'work1', 'work2', 'work3', 'wait', 'stop'].map((k) => (
-            <Light key={k} k={k} on={lit === k} />
-          ))}
-        </Frame>
-        <figcaption className="absolute right-2 top-2 md:bottom-3 md:right-3 md:top-auto">
-          <Concept how={t('rendu 3D', '3D render')} className="text-right" />
+    <div ref={root}>
+      {/* the product: a real screen, whole, on the studio's pale ground */}
+      <section data-world="stage" className="px-moment relative bg-[#e4e6e8]" aria-label={t('Les trois états de Proxy, sur trois écrans du produit', 'Proxy’s three states, on three screens of the product')}>
+        <div className="px-2 pb-3 pt-3 md:px-3 md:pb-5 md:pt-4 lg:px-[4.4vw] lg:pb-7 lg:pt-6">
+          <div className="mx-auto max-w-[1440px]">
+            <div className={`${FT} flex items-baseline justify-between gap-3 text-black/60`}>
+              <span>
+                <span className="text-[#0a0a0a]">{t('Dans le produit', 'In the product')}</span> · {screens[st].name}
+              </span>
+              <span className="whitespace-nowrap tabular-nums">
+                {t('l’interface elle-même', 'the interface itself')}
+                {pct > 0 && <span className="hidden sm:inline">{pct >= 99 ? t(', à sa taille', ', at full size') : t(`, à ${pct} % de sa taille`, `, at ${pct}% of its size`)}</span>}
+              </span>
+            </div>
+            <div
+              ref={live}
+              className="relative mx-auto mt-3 aspect-[390/844] w-[86%] bg-white md:mt-4 md:aspect-[1440/900] md:w-full"
+              style={{ boxShadow: '0 0 0 1px rgba(18,18,18,.07), 0 44px 90px -46px rgba(18,18,18,.38), 0 14px 28px -18px rgba(18,18,18,.14)' }}
+            >
+              {ORDER.map((s) => (
+                <div key={s} data-live={s} className={`absolute inset-0 transition-opacity duration-300 ${s === st ? '' : 'pointer-events-none opacity-0'}`} aria-hidden={s !== st}>
+                  {/* a wide window shows the desktop screen; a phone, the product's own phone screen, close to its real size */}
+                  <div className="hidden md:block">
+                    <Proto id={screens[s].id} label={screens[s].label} className="w-full bg-white" />
+                  </div>
+                  <div className="md:hidden">
+                    <Proto id={screens[s].phone} label={screens[s].label} className="w-full bg-white" />
+                  </div>
+                </div>
+              ))}
+            </div>
+            {/* the switch stays within reach for as long as the screen is in the window */}
+            <div className="pointer-events-none sticky bottom-[52px] z-10 mt-3 flex justify-center md:bottom-12 md:mt-5">
+              <Switch st={st} set={setSt} labels={labels} />
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <div className="grid grid-cols-1 gap-x-3 px-2 pt-3 md:grid-cols-12 md:px-3 md:pt-4">
+        <p className={`${FT} max-w-[440px] text-black/60 md:col-span-9 md:col-start-4`}>{note}</p>
+      </div>
+
+      {/* the same presence with no object at all: water, computed live */}
+      <figure data-world="onde" className="px-moment relative pt-16 md:pt-[14vh]">
+        <div className="relative aspect-[4/5] w-full overflow-hidden bg-[#22252a] md:aspect-auto md:h-[min(56.25vw,94svh)]">
+          <Onde
+            state={st}
+            tick={i}
+            onLive={setIsLive}
+            alt={t(
+              'Un lac immobile à l’aube, sous la brume. Une pluie y tombe en grille : vingt-cinq gouttes, chacune au centre de ses ronds dans l’eau.',
+              'A still lake at dawn, under mist. Rain falls on it in a grid: twenty-five drops, each at the centre of its rings.'
+            )}
+          />
+          <Concept how={isLive ? t('calculée en direct par cette page', 'computed live by this page') : t('calculée par le code de cette page', 'computed by this page’s code')} className="absolute right-2 top-2 text-right md:right-3 md:top-3" />
+          {/* like the presence in the product, the picture never goes without its sentence. If the browser cannot draw, the still shows Proxy at work and offers no switch */}
+          <div className="absolute inset-x-2 bottom-2 flex flex-col items-start gap-3 md:inset-x-3 md:bottom-3 md:flex-row md:items-end md:justify-between">
+            <p className={`${FT} max-w-[440px] text-white/70`} aria-live="polite">
+              <span className="text-white">{labels[isLive ? st : 'work']}</span> · {screens[isLive ? st : 'work'].says}
+            </p>
+            {isLive && <Switch st={st} set={setSt} labels={labels} dark />}
+          </div>
+        </div>
+        <figcaption className="grid grid-cols-1 gap-x-3 px-2 pt-2 md:grid-cols-12 md:px-3">
+          <p className={`${FT} max-w-[440px] text-black/60 md:col-span-9 md:col-start-4`}>{children}</p>
         </figcaption>
       </figure>
-
-      {/* the product, on the picture's lower edge: the real screen that carries this state */}
-      <div className="relative z-10 mx-2 -mt-10 bg-white md:absolute md:bottom-0 md:left-3 md:mx-0 md:mt-0 md:w-[min(720px,max(50vw,560px))] md:translate-y-[52%]" style={{ boxShadow: `0 0 0 1px ${HAIR}` }}>
-        <div className={`${FT} flex items-baseline justify-between gap-3 px-3 pt-2.5 text-black/60`}>
-          <span>
-            <span className="text-[#0a0a0a]">{t('Dans le produit', 'In the product')}</span> · {screens[st].name}
-          </span>
-          <span className="hidden whitespace-nowrap sm:inline">{t('l’interface elle-même', 'the interface itself')}</span>
-        </div>
-        <div ref={live} className="relative mt-2">
-          {order.map((k) => (
-            <div key={k} data-live={k} className={k === st ? '' : 'pointer-events-none absolute inset-0 opacity-0'} aria-hidden={k !== st}>
-              {/* a wide screen shows the desktop screen; a phone, the product's own phone screen */}
-              <div className="hidden md:block">
-                <Proto id={screens[k].id} region={screens[k].rect} label={screens[k].label} className="w-full bg-white" />
-              </div>
-              <div className="md:hidden">
-                <Proto id={screens[k].phone.id} region={screens[k].phone.rect} label={screens[k].label} className="w-full bg-white" />
-              </div>
-            </div>
-          ))}
-        </div>
-        <div className={`${FT} flex border-t border-[#dcdfe2]`} role="group" aria-label={t('L’état de Proxy', 'Proxy’s state')}>
-          {order.map((k) => (
-            <button
-              key={k}
-              type="button"
-              aria-pressed={st === k}
-              onClick={() => setSt(k)}
-              className={`flex flex-1 items-center gap-2 border-r border-[#dcdfe2] px-3 py-3 text-left last:border-r-0 ${st === k ? 'text-[#0a0a0a]' : 'text-black/40'}`}
-              style={st === k && k === 'stop' ? { color: WARN } : undefined}
-            >
-              <i aria-hidden className="block h-[7px] w-[7px] shrink-0 rounded-full" style={{ background: st === k ? (k === 'stop' ? WARN : '#121212') : '#d8dbde' }} />
-              {labels[k]}
-            </button>
-          ))}
-        </div>
-      </div>
     </div>
   );
 }
@@ -188,7 +261,9 @@ export function WeekClose({ when, line }: { when: string; line: string }) {
           <p className={`${FT} absolute bottom-2 left-2 text-white/60 md:bottom-3 md:left-3`}>
             <span className="tabular-nums text-white">{when}</span> · {line}
           </p>
-          <Concept how={t('rendu 3D', '3D render')} light className="absolute right-2 top-2 text-right md:bottom-3 md:right-3 md:top-auto" />
+          <Concept how={t('rendu 3D', '3D render')} light className="absolute right-2 top-2 text-right md:bottom-3 md:right-3 md:top-auto">
+            {t('L’ordinateur de Léa, refermé pour le week-end', 'Léa’s laptop, shut for the weekend')}
+          </Concept>
         </figcaption>
       </figure>
     </div>

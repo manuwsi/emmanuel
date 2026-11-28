@@ -5,7 +5,7 @@ import { preload } from 'react-dom';
 import { usePathname } from 'next/navigation';
 import { FT } from '@/components/project/ProjectPage';
 import { useT } from '@/components/i18n';
-import { ProxySystem, Presence } from '@/components/project/DesignSystem';
+import { ProxySystem } from '@/components/project/DesignSystem';
 import { LivePresence } from '@/components/proxy/Live';
 import { TrustLine } from '@/components/proxy/Art';
 import { BeatHead, Cap, Model, Moment, Rail, ScreenName } from '@/components/proxy/Figures';
@@ -14,6 +14,7 @@ import { Autonomy } from '@/components/proxy/Autonomy';
 import { Request } from '@/components/proxy/Request';
 import { Timetable } from '@/components/proxy/Timetable';
 import { Trail } from '@/components/proxy/Trail';
+import { PresenceStage, Sentence, WeekClose, WindowSeat } from '@/components/proxy/World';
 import Header from '@/components/Header';
 import NextProject from '@/components/dot/NextProject';
 import DotText from '@/components/dot/DotText';
@@ -46,10 +47,17 @@ const R = {
   weekOffer: [1040, 76, 400, 236],
   weekKept: [1040, 312, 400, 212],
   errNext: [40, 548, 940, 194],
+  // the block that carries the presence and its sentence, on three screens
+  nowWork: [40, 84, 960, 196],
+  nowWait: [40, 100, 960, 196],
+  nowStop: [40, 88, 960, 196],
   // on a phone
   phoneNow: [0, 0, 390, 424],
   phoneDone: [0, 424, 390, 178],
   phonePause: [0, 48, 390, 416],
+  phoneWork: [0, 38, 390, 206],
+  phoneWait: [0, 62, 390, 206],
+  phoneStop: [0, 46, 390, 206],
 } as const;
 
 /** A chapter's note in the left column: its label decodes in dots, its detail folds. */
@@ -268,7 +276,7 @@ export default function Page() {
             <div className="space-y-3 text-black/70 md:col-span-4 md:col-start-4 md:pr-6">
               <p>{t('Les agents IA savent déjà agir à notre place, mais rien ne permet de régler jusqu’où, ni de vérifier après coup ce qu’ils ont fait. Proxy part d’un parti pris : la confiance ne s’accorde pas d’office, elle se règle domaine par domaine et se gagne à l’usage.', 'AI agents can already act on our behalf, but nothing lets you set how far they go, or check afterwards what they did. Proxy starts from one stance: trust is never granted up front, it is set domain by domain and earned through use.')}</p>
               <p>
-                {t('Le case suit Léa, designer indépendante, pendant trois semaines avec son agent. 10 écrans et un prototype codé. Les écrans de cette page ne sont pas des captures : c’est l’interface elle-même. ', 'The case follows Léa, a freelance designer, through three weeks with her agent. 10 screens and a coded prototype. The screens on this page are not captures: they are the interface itself. ')}
+                {t('Le case suit Léa, designer indépendante, pendant trois semaines avec son agent. 10 écrans et un prototype codé. Les écrans de cette page ne sont pas des captures : c’est l’interface elle-même. Les figures sont dessinées d’après ses données. Les photographies et les rendus 3D sont des images de concept : ils mettent le produit en scène, sans montrer un usage réel ni une fonction de plus. ', 'The case follows Léa, a freelance designer, through three weeks with her agent. 10 screens and a coded prototype. The screens on this page are not captures: they are the interface itself. The figures are drawn from its data. The photographs and 3D renders are concept images: they stage the product, without showing a real use or an extra feature. ')}
                 <a href="/proxy/prototype/index.html" className="text-[#0a0a0a] underline underline-offset-2">
                   {t('Ouvrir le prototype', 'Open the prototype')}
                 </a>
@@ -344,17 +352,24 @@ export default function Page() {
           <div className="md:col-span-9 md:col-start-4">
             <p className={`${H} max-w-[22ch]`}>{t('Pas de mascotte : un personnage sympathique pousse à faire confiance trop vite.', 'No mascot: a friendly character makes you trust too fast.')}</p>
             <p className={`${FT} mt-4 max-w-[440px] text-black/70`}>{t('La présence de Proxy est une grille de points à trois états, toujours accompagnée d’une phrase.', 'Proxy’s presence is a three-state grid of dots, always paired with a sentence.')}</p>
-            <div className={`${FT} grid grid-cols-3 gap-x-3 pt-12 md:grid-cols-9`}>
-              {(['work', 'wait', 'stop'] as const).map((k) => (
-                <div key={k} className="md:col-span-2">
-                  {k === 'work' ? <LivePresence state="work" size={11} /> : <Presence k={k} size={11} />}
-                  <p className="mt-5" style={k === 'stop' ? { color: WARN } : undefined}>
-                    {stateLabel[k]}
-                  </p>
-                </div>
-              ))}
-            </div>
           </div>
+        </section>
+
+        {/* the presence twice: the real screens, and the same grid thrown as light in a studio image */}
+        <div className="-mx-2 pt-12 md:-mx-3 md:pt-[9vh]">
+          <PresenceStage
+            labels={{ work: stateLabel.work, wait: stateLabel.wait, stop: stateLabel.stop }}
+            screens={{
+              work: { id: 'aujourdhui', rect: R.nowWork, phone: { id: 'm-accueil', rect: R.phoneWork }, name: t('Aujourd’hui', 'Today'), label: t('Proxy, l’écran d’accueil : ce qu’il fait en ce moment', 'Proxy, the home screen: what it is doing right now') },
+              wait: { id: 'validation', rect: R.nowWait, phone: { id: 'm-demande', rect: R.phoneWait }, name: t('La demande', 'The request'), label: t('Proxy attend la décision de Léa', 'Proxy is waiting for Léa’s decision') },
+              stop: { id: 'arret', rect: R.nowStop, phone: { id: 'm-pause', rect: R.phoneStop }, name: t('La pause', 'The pause'), label: t('Proxy s’est mis en pause', 'Proxy has paused') },
+            }}
+          />
+        </div>
+        <section className={`${GRID} pt-6 md:pt-[calc(4vh+170px)]`}>
+          <p className={`${FT} max-w-[440px] text-black/60 md:col-span-9 md:col-start-4`}>
+            {t('La même grille, deux fois. Dans le cadre blanc, l’interface : changez l’état, c’est le vrai écran qui répond. Derrière, la même présence, projetée en lumière sur l’ordinateur fermé de Léa. Aucun ordinateur n’affiche ça : c’est une image, pour dire qu’il travaille écran fermé, sans visage ni mascotte.', 'The same grid, twice. In the white frame, the interface: change the state and the real screen answers. Behind it, the same presence, thrown as light on Léa’s closed laptop. No laptop shows this: it is a picture, a way of saying that it works with the lid shut, with no face and no mascot.')}
+          </p>
         </section>
 
         {/* 04 — THE WEEK */}
@@ -582,6 +597,9 @@ export default function Page() {
               phone={
                 <>
                   <Photo src="/proxy/photo-pause-v4.jpg" alt={t('Proxy en pause sur le téléphone, après le courriel suspect', 'Proxy paused on the phone, after the suspicious email')} sizes="100vw" />
+                  <div className="-mx-2">
+                    <Sentence className="px-2">{t('Le courriel de l’imprimerie, imprimé. La lumière s’arrête sur la phrase écrite pour l’assistant.', 'The printer’s email, printed out. The light stops on the sentence written for the assistant.')}</Sentence>
+                  </div>
                   <Region id="m-pause" rect={R.phonePause} min={0} label={t('Proxy sur téléphone : la pause', 'Proxy on a phone: the pause')}>
                     <span style={{ color: WARN }}>
                       <span className="tabular-nums">11:17</span> · {t('Paiements en pause.', 'Payments paused.')}
@@ -601,6 +619,9 @@ export default function Page() {
                 <p className={`${FT} md:col-span-3 md:pb-2`} style={{ color: WARN }}>
                   <span className="tabular-nums">11:17</span> · {t('Paiements en pause. L’agenda et les fichiers continuent.', 'Payments paused. Calendar and files carry on.')}
                 </p>
+              </div>
+              <div className="pt-[10vh]">
+                <Sentence>{t('Le courriel de l’imprimerie, imprimé. La lumière s’arrête sur la phrase écrite pour l’assistant ; la même, surlignée dans le produit juste en dessous.', 'The printer’s email, printed out. The light stops on the sentence written for the assistant; the same one, highlighted in the product just below.')}</Sentence>
               </div>
               <div className="pt-[10vh]">
                 <Plate
@@ -672,6 +693,19 @@ export default function Page() {
                     {t('Une seule proposition, appuyée sur douze réservations validées sans modification.', 'A single suggestion, backed by twelve bookings approved unchanged.')}
                   </Region>
                 </>
+              }
+              lead={
+                <Bleed className="mt-10 md:mt-[9vh]">
+                  <WeekClose when={`${fri} · 18:00`} line={stateLabel.done} />
+                </Bleed>
+              }
+              after={
+                <div className="pt-16 md:pt-[16vh]">
+                  <p className={`${H} mb-8 max-w-[22ch] md:mb-10`}>{t('Le jeudi suivant, 7 h 56. Côté fenêtre.', 'The Thursday after, 7:56. By the window.')}</p>
+                  <WindowSeat id="bilan" rect={R.weekKept} label={t('Détail : ce que Proxy a retenu de Léa', 'Detail: what Proxy has learned about Léa')}>
+                    {t('Léa n’a rien demandé : Proxy l’a déduit de cinq réservations, il le dit, et elle peut le lui faire oublier d’un geste.', 'Léa did not ask: Proxy worked it out from five bookings, says so, and she can make it forget in one gesture.')}
+                  </WindowSeat>
+                </div>
               }
               title={t('Le vendredi, Proxy fait le point avec Léa.', 'On Friday, Proxy goes over the week with Léa.')}
               body={<p>{t('Chaque point est une action, rangée par domaine et par jour. Ce que Proxy a retenu de Léa reste visible, et oubliable ligne par ligne. C’est seulement là qu’il propose de monter d’un niveau, quand une habitude est nette. La décision reste à Léa.', 'Each dot is an action, sorted by domain and day. What Proxy has learned about Léa stays visible, and forgettable line by line. Only there does it suggest moving up a level, once a habit is clear. The decision stays with Léa.')}</p>}

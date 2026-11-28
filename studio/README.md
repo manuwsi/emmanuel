@@ -7,5 +7,7 @@ Ce dossier n'est pas mis en ligne sur le site (voir `.vercelignore`).
 - `dailies/reel` — le Reel « DOT » (page HTML animée, rendue image par image avec flou de mouvement).
 - `foil/screens` — écrans de l'appli Foil.
 - `foil/blender` — rendus 3D de Foil (Blender).
+- `proxy/gen.py` — transforme le prototype de Proxy en écrans rendus en direct dans le case.
+- `proxy/world` — les images d'univers de Proxy (Blender) : la présence, la nuit, la macro du courriel.
 
 Les vidéos finales, images sources et rendus ne sont pas versionnés ici (trop lourds).

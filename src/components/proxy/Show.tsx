@@ -51,7 +51,7 @@ export function Region({ id, rect, label, k, min = 0.86, max = 1.12, className =
     return () => ro.disconnect();
   }, []);
   return (
-    <figure className={className}>
+    <figure data-hang className={className}>
       <div ref={wrap} className="px-part relative overflow-x-auto overflow-y-hidden overscroll-x-contain [scrollbar-width:none] [&::-webkit-scrollbar]:hidden" style={{ maxWidth: w * max, boxShadow: `0 0 0 1px ${HAIR}` }}>
         <div style={{ width: `max(100%, ${w * min}px)` }}>
           <Proto id={id} region={rect} label={label} eager={eager} className="w-full bg-white" />

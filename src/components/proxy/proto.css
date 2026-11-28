@@ -94,6 +94,59 @@
 /* The ramp: each dot is printed in turn, from the first level to the last. */
 .px-dot { transform-box: fill-box; transform-origin: center; transition: transform 520ms cubic-bezier(.2, .8, .2, 1); }
 
+/* ── The frame's motion ────────────────────────────────────────────────────────────────────────────
+   Two curves and three speeds for everything that belongs to the page rather than to a picture:
+   what answers the hand is quick; what arrives is slow and barely moves; what changes state eases in and out. */
+:root {
+  --px-out: cubic-bezier(0.165, 0.84, 0.44, 1);
+  --px-inout: cubic-bezier(0.77, 0, 0.175, 1);
+}
+
+/* one state of a screen gives way to the next */
+.px-swap { transition: opacity 700ms var(--px-out); }
+/* the rail steps aside when a moment takes the whole width, and comes back */
+.px-rail { transition: opacity 600ms var(--px-out), transform 600ms var(--px-out), visibility 600ms; }
+
+/* a link or a switch of the frame: it answers without a jolt */
+.px-quiet { transition: opacity 500ms var(--px-out), color 500ms var(--px-out), text-decoration-color 500ms var(--px-out); }
+
+/* the edge of a white screen on the white page; under the hand it turns to ink */
+.px-edge { box-shadow: 0 0 0 1px #dcdfe2; transition: box-shadow 600ms var(--px-out); }
+a:hover > .px-edge, a:focus-visible > .px-edge { box-shadow: 0 0 0 1px #121212; }
+
+/* A piece arrives on the wall once: a slow fade, a few pixels. Pieces that enter together follow each other by a breath. */
+html.px-js [data-hang] { opacity: 0; transform: translate3d(0, 14px, 0); transition: opacity 1500ms var(--px-out), transform 1700ms var(--px-out); transition-delay: calc(var(--hang-i, 0) * 110ms); }
+html.px-js [data-hang][data-in] { opacity: 1; transform: none; }
+html.px-js [data-hang][data-rest] { transition: none; }
+@media print { html.px-js [data-hang] { opacity: 1 !important; transform: none !important; } }
+
+/* A fold: the reasoning opens in place. The room is made first, the text then comes into focus. */
+.px-fold { display: grid; grid-template-rows: 0fr; transition: grid-template-rows 800ms var(--px-inout); }
+.px-fold[data-open] { grid-template-rows: 1fr; }
+.px-fold > [data-fold-in] { min-height: 0; overflow: hidden; visibility: hidden; opacity: 0; filter: blur(4px); transform: translate3d(0, 6px, 0); transition: opacity 360ms var(--px-out), filter 360ms var(--px-out), transform 360ms var(--px-out), visibility 0s linear 800ms; }
+.px-fold[data-open] > [data-fold-in] { visibility: visible; opacity: 1; filter: blur(0); transform: none; transition: opacity 1200ms var(--px-out) 260ms, filter 1200ms var(--px-out) 260ms, transform 1200ms var(--px-out) 260ms, visibility 0s; }
+/* when the whole page changes reading, nothing slides: the text is simply there, and comes into focus */
+[data-reading-jump] .px-fold { transition: none; }
+[data-reading-jump] .px-fold > [data-fold-in] { transition-delay: 0s, 0s, 0s, 0s; }
+.px-fold-btn { display: inline-flex; align-items: baseline; text-align: left; transition: color 500ms var(--px-out); }
+.px-fold-btn:hover { color: #0a0a0a; }
+@media (prefers-reduced-motion: reduce) {
+  .px-fold, .px-fold > [data-fold-in], .px-fold[data-open] > [data-fold-in] { transition: none; filter: none; transform: none; }
+  .px-edge, .px-quiet, .px-fold-btn { transition: none; }
+}
+
+/* The system from very close. A plate arrives as the component seen whole, and the camera closes in on its detail, once.
+   Under the hand it steps back to show where the detail comes from; when the hand leaves, it closes in again. */
+.px-plate-cam { transform: scale(1); transition: transform 1500ms var(--px-inout); }
+.px-plate-cam[data-on] { transform: scale(var(--s)); transition: transform 2400ms var(--px-inout); }
+@media (hover: hover) {
+  .px-plate:hover .px-plate-cam[data-on] { transform: scale(1); transition: transform 1500ms var(--px-inout); }
+}
+.px-plate:focus-visible .px-plate-cam[data-on] { transform: scale(1); transition: transform 1500ms var(--px-inout); }
+.px-plate-times { opacity: 0; transition: opacity 700ms var(--px-out); }
+.px-plate-times[data-on] { opacity: 1; }
+@media (hover: hover) { .px-plate:hover .px-plate-times { opacity: 0; } }
+
 /* The composed moments, for those who asked for less motion: everything is simply there. */
 @media (prefers-reduced-motion: reduce) {
   .px-moment, .px-moment * { transition-duration: 0.01ms !important; transition-delay: 0ms !important; animation: none !important; }

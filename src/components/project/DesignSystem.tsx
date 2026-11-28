@@ -54,7 +54,7 @@ export function Presence({ k, size = 8 }: { k: string; size?: number }) {
   );
 }
 
-/** `hung`: the sheet is shown on a coloured ground, so it gets the shadow of a sheet of paper instead of an outline. */
+/** `hung`: the sheet is placed by the page (no margin of its own) and edged with a hairline. */
 export function ProxySystem({ hung = false }: { hung?: boolean } = {}) {
   const t = useT() as T;
   const [open, setOpen] = useState(false);
@@ -67,7 +67,7 @@ export function ProxySystem({ hung = false }: { hung?: boolean } = {}) {
     { name: t('Alerte', 'Alert'), hex: P.warn, n: 1, role: t('L’irréversible et la pause, une fois par écran', 'The irreversible and the pause, once per screen') },
   ];
   return (
-    <section className={hung ? '' : 'mt-6 border'} style={{ background: P.paper, color: P.ink, borderColor: P.line, boxShadow: hung ? '0 0 0 1px rgba(18,18,18,.06), 0 26px 46px -30px rgba(18,18,18,.38)' : undefined }}>
+    <section className={hung ? '' : 'mt-6 border'} style={{ background: P.paper, color: P.ink, borderColor: P.line, boxShadow: hung ? '0 0 0 1px #dcdfe2' : undefined }}>
       <Fonts />
       {/* header strip */}
       <div className="flex flex-wrap items-center justify-between gap-x-4 gap-y-2 px-5 md:px-8 py-4 border-b" style={{ borderColor: P.line }}>

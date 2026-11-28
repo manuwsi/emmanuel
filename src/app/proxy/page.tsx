@@ -1,25 +1,26 @@
 'use client';
 
-import { ReactNode, useState } from 'react';
+import { ReactNode } from 'react';
 import { preload } from 'react-dom';
 import { usePathname } from 'next/navigation';
 import { FT } from '@/components/project/ProjectPage';
 import { useT } from '@/components/i18n';
 import { ProxySystem } from '@/components/project/DesignSystem';
+import { SystemCloseUp } from '@/components/proxy/Macro';
 import { LivePresence } from '@/components/proxy/Live';
 import { TrustLine } from '@/components/proxy/Art';
 import { BeatHead, Cap, Model, Moment, Rail } from '@/components/proxy/Figures';
 import { Key, LaptopPhoto, LockScreen, Photo, Region } from '@/components/proxy/Show';
-import { PhoneDuo, Planche, WALL } from '@/components/proxy/Hang';
+import { Cartel, PhoneDuo, Planche, useHang } from '@/components/proxy/Hang';
+import { ReadingLine, ReadingProvider, ReadingSwitch, Why } from '@/components/proxy/Reading';
 import { Autonomy } from '@/components/proxy/Autonomy';
 import { Request } from '@/components/proxy/Request';
 import { Timetable } from '@/components/proxy/Timetable';
 import { Trail } from '@/components/proxy/Trail';
-import { PresenceStage, Sentence, WeekClose, WindowSeat } from '@/components/proxy/World';
+import { Concept, PresenceStage, Print, Sentence, WeekClose, WindowSeat } from '@/components/proxy/World';
 import Header from '@/components/Header';
 import NextProject from '@/components/dot/NextProject';
 import DotText from '@/components/dot/DotText';
-import More from '@/components/dot/More';
 
 type T = <V,>(fr: V, en: V) => V;
 
@@ -60,23 +61,19 @@ const R = {
   phoneLog: [0, 0, 390, 462],
 } as const;
 
-/** A chapter's note in the left column: its label decodes in dots, its detail folds. */
-function Note({ label, lede, children }: { label: string; lede?: string; children?: ReactNode }) {
+/** A chapter's note in the left column: its label decodes in dots, one sentence stays, the rest folds. */
+function Note({ label, lede, more, children }: { label: string; lede?: string; more?: string; children?: ReactNode }) {
   return (
     <div className={`${FT} md:col-span-3 md:pr-7`} data-chapter={label}>
       <h3 className="text-black/60">
         <DotText text={label} play="view" />
       </h3>
       {lede && <p className="mt-3 font-medium">{lede}</p>}
-      {children &&
-        (lede ? (
-          <More className="text-black/70">{children}</More>
-        ) : (
-          <>
-            <div className="mt-3 hidden space-y-3 text-black/70 md:block">{children}</div>
-            <More className="text-black/70 md:hidden">{children}</More>
-          </>
-        ))}
+      {children && (
+        <Why label={more} className="mt-3 text-black/70">
+          {children}
+        </Why>
+      )}
     </div>
   );
 }
@@ -136,24 +133,6 @@ function Grounding({ t }: { t: T }) {
   );
 }
 
-/** On a phone, what is secondary stays folded: it opens in place, nothing is removed from the page. */
-function Fold({ label, less, children }: { label: string; less: string; children: ReactNode }) {
-  const [open, setOpen] = useState(false);
-  return (
-    <div className="md:hidden">
-      {open && <div className="pb-2">{children}</div>}
-      <button type="button" onClick={() => setOpen((o) => !o)} aria-expanded={open} className={`${FT} py-2 text-black/60`}>
-        {open ? less : label}
-      </button>
-    </div>
-  );
-}
-
-/**
- * One moment of the week: what happened, in one sentence, a few words of reasoning, then the product.
- * `children` are the pictures composed for a wide screen; `phone` the ones composed for a phone
- * (the product's own phone screens, and parts that fit the width or slide under the finger).
- */
 /** A moment that takes the whole width of the page, from inside the nine columns of the week (it passes over the rail). */
 function Bleed({ children, className = '' }: { children: ReactNode; className?: string }) {
   return <div data-bleed className={`relative z-10 -mx-2 bg-white md:mx-0 md:ml-[calc(-33.3333%-16px)] md:w-[calc(133.3333%+28px)] ${className}`}>{children}</div>;
@@ -180,13 +159,13 @@ function Notes({ items, className = '' }: { items: { k: string; text: ReactNode 
 }
 
 /**
- * One moment of the week. On a wide screen it opens on two things at once: the sentence that says what happened,
- * and next to it, small, the thing seen from a distance (`wide`: a whole screen on the pale ground, a photograph,
- * a picture). The close-ups come below (`children`), each placed for itself.
+ * One moment of the week. On a wide screen it always opens the same way, on two things at once: on the left the sentence
+ * that says what happened, on the right, in the same four columns, the thing seen from a distance (`wide`: a whole screen,
+ * a photograph, a picture). The close-ups come below (`children`), each placed for itself.
  * `phone` are the pictures composed for a phone (the product's own phone screens, and parts that fit the width
  * or slide under the finger).
  */
-function Beat({ m, title, state, children, phone, lead, after, body, more, wide, wideClass = 'lg:col-span-5 lg:col-start-5', last = false }: { m: Moment; title: string; state: string; body: ReactNode; more?: ReactNode; children?: ReactNode; phone?: ReactNode; lead?: ReactNode; after?: ReactNode; wide?: ReactNode; wideClass?: string; last?: boolean }) {
+function Beat({ m, title, state, children, phone, lead, after, body, more, wide, wideClass = 'md:w-[50%] lg:col-span-4 lg:col-start-6', last = false }: { m: Moment; title: string; state: string; body: ReactNode; more?: ReactNode; children?: ReactNode; phone?: ReactNode; lead?: ReactNode; after?: ReactNode; wide?: ReactNode; wideClass?: string; last?: boolean }) {
   return (
     <article id={m.id} data-chapter={`${m.day} · ${m.time}`} className={`scroll-mt-28 ${last ? '' : 'pb-20 md:pb-[24vh]'}`}>
       <BeatHead m={m} label={state} />
@@ -194,14 +173,13 @@ function Beat({ m, title, state, children, phone, lead, after, body, more, wide,
       <div className="lg:grid lg:grid-cols-9 lg:items-start lg:gap-x-3">
         <div className="lg:col-span-4 lg:pr-8">
           <h3 className={`${H} max-w-[21ch]`}>{title}</h3>
-          <div className={`${FT} mt-4 max-w-[440px] space-y-3 text-black/70`}>
+          {/* why it is designed this way: one gesture away in the gallery, unfolded in the study */}
+          <Why className={`${FT} mt-4 max-w-[440px] text-black/70`}>
             {body}
-            {/* the second thought: in full on a wide screen, one tap away on a phone */}
-            {more && <div className="hidden space-y-3 md:block">{more}</div>}
-            {more && <More className="md:hidden">{more}</More>}
-          </div>
+            {more}
+          </Why>
         </div>
-        {wide && <div className={`hidden md:mt-10 md:block md:w-[62%] lg:mt-0 lg:w-auto lg:pt-[7px] ${wideClass}`}>{wide}</div>}
+        {wide && <div className={`hidden md:mt-10 md:block lg:mt-0 lg:w-auto lg:pt-[7px] ${wideClass}`}>{wide}</div>}
       </div>
       {lead}
       {children && <div className="mt-8 hidden md:mt-[10vh] md:block">{children}</div>}
@@ -212,6 +190,15 @@ function Beat({ m, title, state, children, phone, lead, after, body, more, wide,
 }
 
 export default function Page() {
+  return (
+    <ReadingProvider>
+      <Case />
+    </ReadingProvider>
+  );
+}
+
+function Case() {
+  useHang();
   // the opening photograph carries a live screen: Proxy's serif and mono are fetched with the page, so it is set once
   preload('/proxy/prototype/fonts/newsreader-latin-400-normal.woff2', { as: 'font', type: 'font/woff2', crossOrigin: 'anonymous' });
   preload('/proxy/prototype/fonts/geist-mono-latin-400-normal.woff2', { as: 'font', type: 'font/woff2', crossOrigin: 'anonymous' });
@@ -251,6 +238,10 @@ export default function Page() {
   return (
     <main className="relative block min-h-screen w-full overflow-x-clip bg-white font-sans text-[#0a0a0a]">
       <Header crumb="Proxy" />
+      <ReadingSwitch />
+      <noscript>
+        <style>{'.px-fold{grid-template-rows:1fr}.px-fold>[data-fold-in]{visibility:visible;opacity:1;filter:none;transform:none}'}</style>
+      </noscript>
 
       <div className="relative">
         {/* OPENING — the name, the promise and the object, whole. On a wide screen the photograph stays in place: the text leaves with the page, and the case slides over the picture */}
@@ -306,15 +297,19 @@ export default function Page() {
         <section className="relative z-10 min-h-[100svh] border-t border-[#dcdfe2] bg-white px-2 pt-10 md:px-3 md:pt-12">
           <div className={`${GRID} gap-y-8 ${FT}`}>
             <p className="text-black/60 md:col-span-3">{t('L’essentiel', 'In short')}</p>
-            <div className="space-y-3 text-black/70 md:col-span-4 md:col-start-4 md:pr-6">
-              <p>{t('Les agents IA savent déjà agir à notre place, mais rien ne permet de régler jusqu’où, ni de vérifier après coup ce qu’ils ont fait. Proxy part d’un parti pris : la confiance ne s’accorde pas d’office, elle se règle domaine par domaine et se gagne à l’usage.', 'AI agents can already act on our behalf, but nothing lets you set how far they go, or check afterwards what they did. Proxy starts from one stance: trust is never granted up front, it is set domain by domain and earned through use.')}</p>
+            <div className="text-black/70 md:col-span-4 md:col-start-4 md:pr-6">
               <p>
-                {t('Le case suit Léa, designer indépendante, pendant trois semaines avec son agent. 10 écrans et un prototype codé. Les écrans de cette page ne sont pas des captures : c’est l’interface elle-même. Les figures sont dessinées d’après ses données. Les photographies, les rendus 3D et l’eau calculée en direct sont des images de concept : ils mettent le produit en scène, sans montrer un usage réel ni une fonction de plus. ', 'The case follows Léa, a freelance designer, through three weeks with her agent. 10 screens and a coded prototype. The screens on this page are not captures: they are the interface itself. The figures are drawn from its data. The photographs, the 3D renders and the water computed live are concept images: they stage the product, without showing a real use or an extra feature. ')}
-                <a href="/proxy/prototype/index.html" className="text-[#0a0a0a] underline underline-offset-2">
+                {t('Le case suit Léa, designer indépendante, pendant trois semaines avec son agent. 10 écrans et un prototype codé. Les écrans de cette page ne sont pas des captures : c’est l’interface elle-même. ', 'The case follows Léa, a freelance designer, through three weeks with her agent. 10 screens and a coded prototype. The screens on this page are not captures: they are the interface itself. ')}
+                <a href="/proxy/prototype/index.html" className="px-quiet text-[#0a0a0a] underline decoration-black/25 underline-offset-[3px] hover:decoration-black">
                   {t('Ouvrir le prototype', 'Open the prototype')}
                 </a>
               </p>
+              <Why label={t('Le point de départ, et la nature des images', 'The starting point, and what the pictures are')} className="mt-3">
+                <p>{t('Les agents IA savent déjà agir à notre place, mais rien ne permet de régler jusqu’où, ni de vérifier après coup ce qu’ils ont fait. Proxy part d’un parti pris : la confiance ne s’accorde pas d’office, elle se règle domaine par domaine et se gagne à l’usage.', 'AI agents can already act on our behalf, but nothing lets you set how far they go, or check afterwards what they did. Proxy starts from one stance: trust is never granted up front, it is set domain by domain and earned through use.')}</p>
+                <p>{t('Les figures sont dessinées d’après les données du prototype. Les photographies, les images générées, les rendus 3D et l’eau calculée en direct sont des images de concept, toujours nommées comme telles : elles mettent le produit en scène, sans montrer un usage réel ni une fonction de plus.', 'The figures are drawn from the prototype’s data. The photographs, the generated images, the 3D renders and the water computed live are concept images, always named as such: they stage the product, without showing a real use or an extra feature.')}</p>
+              </Why>
             </div>
+            <ReadingLine className="text-black/60 md:col-span-3 md:col-start-10 md:text-right" />
             <div className="md:col-span-9 md:col-start-4 md:pt-6">
               <Summary
                 items={[
@@ -328,13 +323,32 @@ export default function Page() {
 
           {/* 01 — THE PROBLEM */}
           <div className={`${GRID} gap-y-8 pt-24 md:gap-y-10 md:pt-[18vh]`}>
-            <Note label={t('01 → Le problème', '01 → The problem')}>
+            <Note label={t('01 → Le problème', '01 → The problem')} more={t('Le contexte', 'The context')}>
               <p>{t('ChatGPT agent demande la permission avant les actions qui ont des conséquences ; Claude dans Chrome fonctionne par autorisations, site par site. L’OWASP classe l’injection de prompt au premier rang des risques des applications LLM.', 'ChatGPT agent asks for permission before actions with consequences; Claude in Chrome works with site-by-site permissions. OWASP ranks prompt injection as the top risk for LLM applications.')}</p>
               <p>{t('Or le bon réglage dépend de la tâche : Léa veut ses factures classées sans qu’on lui demande, mais relire chaque courriel à un nouveau client.', 'Yet the right setting depends on the task: Léa wants her invoices filed without being asked, but to read every email to a new client.')}</p>
             </Note>
             <div className="md:col-span-9 md:col-start-4">
               <p className={`${H} max-w-[24ch]`}>{t('La supervision se joue au moment de l’action. L’avant et l’après restent peu travaillés.', 'Supervision happens at the moment of action. The before and the after get little attention.')}</p>
-              <figure className="pt-14 md:pt-20">
+              {/* the case's own image: an instrument that plays, and hands that stay right above it. Hung as a print, its label at its foot.
+                  On very wide windows it takes one column less, so it is never stretched far beyond its pixels */}
+              <figure className={`${G9} items-end gap-y-3 pt-12 max-lg:!gap-y-3 md:pt-[11vh]`}>
+                <Print
+                  src="piano"
+                  tone="#131415"
+                  className="col-span-7 col-start-3 lg:order-2 min-[1700px]:col-span-6 min-[1700px]:col-start-4"
+                  sizes="(min-width: 1024px) 58vw, (min-width: 768px) 75vw, 100vw"
+                  alt={t(
+                    'Deux mains au-dessus d’un clavier de piano, en noir et blanc. Plusieurs touches sont enfoncées, aucune main ne les touche.',
+                    'Two hands above a piano keyboard, in black and white. Several keys are down, and no hand is touching them.'
+                  )}
+                />
+                <figcaption className="col-span-2 col-start-1 lg:order-1 lg:row-start-1 lg:pr-4 min-[1700px]:col-start-2">
+                  <Cartel title={t('Les mains', 'The hands')} medium={<Concept how={t('image générée', 'generated image')} />}>
+                    {t('Des touches s’enfoncent seules. Les mains restent juste au-dessus, prêtes à reprendre.', 'Some keys go down on their own. The hands stay just above, ready to take over.')}
+                  </Cartel>
+                </figcaption>
+              </figure>
+              <figure className="pt-16 md:pt-[14vh]">
                 <TrustLine />
                 <Cap className="mt-4">{t('Au premier jour, tout est réglé sur « Proposer ». Trois semaines plus tard, chaque domaine a trouvé sa place.', 'On day one, everything is set to “Propose”. Three weeks later, each domain has found its place.')}</Cap>
               </figure>
@@ -347,7 +361,7 @@ export default function Page() {
         <div className="px-2 md:px-3">
         {/* 02 — THE MODEL */}
         <section className={`${GRID} gap-y-8 pt-24 md:gap-y-10 md:pt-[18vh]`}>
-          <Note label={t('02 → Le modèle', '02 → The model')} lede={t('Ce qui se passe entre un déclencheur et une action.', 'What happens between a trigger and an action.')}>
+          <Note label={t('02 → Le modèle', '02 → The model')} lede={t('Ce qui se passe entre un déclencheur et une action.', 'What happens between a trigger and an action.')} more={t('La méthode', 'The method')}>
             <p>{t('Avant les écrans, j’ai posé ce modèle, et appuyé ses règles sur la recherche publiée. Chaque écran du case en est un état.', 'Before the screens, I laid out this model, and grounded its rules in published research. Every screen in the case is one of its states.')}</p>
           </Note>
         </section>
@@ -376,14 +390,10 @@ export default function Page() {
             </div>
             <p className={`${FT} mb-5 mt-14 max-w-[440px] text-black/70 md:mb-6 md:mt-28`}>{t('Le niveau ne décide pas seul. Quatre moments du mercredi de Léa, suivis à travers le modèle :', 'The level does not decide alone. Four moments of Léa’s Wednesday, followed through the model:')}</p>
             <Model />
-            <div className="mt-10 hidden md:mt-28 md:block">
+            {/* the research behind the rules: a table, unfolded in the study */}
+            <Why label={t('Les trois études derrière ces règles', 'The three studies behind these rules')} className={`${FT} mt-8 md:mt-12`} inner="pb-1 md:pt-16">
               <Grounding t={t} />
-            </div>
-            <div className="mt-8">
-              <Fold label={t('+ Les trois études derrière ces règles', '+ The three studies behind these rules')} less={t('− Réduire', '− Less')}>
-                <Grounding t={t} />
-              </Fold>
-            </div>
+            </Why>
           </div>
         </section>
 
@@ -550,16 +560,52 @@ export default function Page() {
             <Beat
               m={M.m1012}
               state={stateLabel.wait}
-              phone={
-                <Region id="question" rect={R.askWho} min={0.8} label={t('Détail : les deux Nadia', 'Detail: the two Nadias')}>
-                  <span className="tabular-nums text-[#0a0a0a]">04</span> · <span className="text-[#0a0a0a]">{t('Proxy pose une question', 'Proxy asks a question')}</span>. {t('Son hypothèse est mise en avant, avec ce qui la fonde, et la raison pour laquelle il demande au lieu de choisir.', 'Its best guess is highlighted, with what it rests on, and the reason why it asks instead of choosing.')}
-                </Region>
-              }
               title={t('Léa écrit « envoie le devis à Nadia ». Elle connaît deux Nadia.', 'Léa writes “send the quote to Nadia”. She knows two Nadias.')}
               body={<p>{t('Un devis envoyé à la mauvaise personne ne se rattrape pas. Ma règle : irréversible et incertain, il demande, en montrant son hypothèse.', 'A quote sent to the wrong person can’t be taken back. My rule: irreversible and unsure, it asks, showing its best guess.')}</p>}
+              wide={
+                // what "cannot be taken back" looks like: nothing is cut yet. The orange of this thread is the one the product keeps for the irreversible
+                <figure>
+                  <Print
+                    src="fil"
+                    tone="#b4b7bc"
+                    sizes="(min-width: 1024px) 42vw, (min-width: 768px) 60vw, 100vw"
+                    alt={t(
+                      'Des ciseaux de tailleur grands ouverts, tenus par une main en silhouette. Entre les lames, un fil orange tendu, intact.',
+                      'Tailor’s scissors wide open, held by a hand in silhouette. Between the blades, a taut orange thread, intact.'
+                    )}
+                  />
+                  <figcaption className="mt-2">
+                    <Cartel title={t('Le fil', 'The thread')} medium={<Concept how={t('image générée', 'generated image')} />}>
+                      {t('Les lames sont ouvertes, le fil est intact. Avant ce qui ne se rattrape pas, Proxy demande.', 'The blades are open, the thread is intact. Before anything that can’t be taken back, Proxy asks.')}
+                    </Cartel>
+                  </figcaption>
+                </figure>
+              }
+              wideClass="md:w-[62%] lg:col-span-5 lg:col-start-5"
+              phone={
+                <>
+                  <figure>
+                    <Print
+                      src="fil"
+                      tone="#b4b7bc"
+                      sizes="100vw"
+                      alt={t(
+                        'Des ciseaux de tailleur grands ouverts, tenus par une main en silhouette. Entre les lames, un fil orange tendu, intact.',
+                        'Tailor’s scissors wide open, held by a hand in silhouette. Between the blades, a taut orange thread, intact.'
+                      )}
+                    />
+                    <figcaption className="mt-2">
+                      <Concept how={t('image générée', 'generated image')}>{t('Les lames sont ouvertes, le fil est intact', 'The blades are open, the thread is intact')}</Concept>
+                    </figcaption>
+                  </figure>
+                  <Region id="question" rect={R.askWho} min={0.8} label={t('Détail : les deux Nadia', 'Detail: the two Nadias')}>
+                    <span className="tabular-nums text-[#0a0a0a]">04</span> · <span className="text-[#0a0a0a]">{t('Proxy pose une question', 'Proxy asks a question')}</span>. {t('Son hypothèse est mise en avant, avec ce qui la fonde, et la raison pour laquelle il demande au lieu de choisir.', 'Its best guess is highlighted, with what it rests on, and the reason why it asks instead of choosing.')}
+                  </Region>
+                </>
+              }
             >
-              {/* no distant view next to the words this time: the question comes first, at its size, because it answers the sentence above.
-                  Then, side by side, where it sits on the screen and the message that would leave */}
+              {/* the question at its size, because it answers the sentence above. Then, side by side, where it sits on the screen
+                  and the message that would leave */}
               <div className={`${G9} gap-y-[8vh]`}>
                 <Region id="question" rect={R.askWho} k="A" max={1} label={t('Détail : les deux Nadia', 'Detail: the two Nadias')} className="col-span-8">
                   {t('Son hypothèse est mise en avant, avec ce qui la fonde, et la raison pour laquelle il demande au lieu de choisir.', 'Its best guess is highlighted, with what it rests on, and the reason why it asks instead of choosing.')}
@@ -573,9 +619,9 @@ export default function Page() {
                     { k: 'A', rect: R.askWho },
                     { k: 'B', rect: R.askMessage },
                   ]}
-                  className="col-span-5"
+                  className="col-span-4"
                 />
-                <Region id="question" rect={R.askMessage} k="B" max={1} label={t('Détail : le message préparé', 'Detail: the prepared message')} className="col-span-4">
+                <Region id="question" rect={R.askMessage} k="B" max={1} label={t('Détail : le message préparé', 'Detail: the prepared message')} className="col-span-4 col-start-6">
                   {t('Le message préparé reste visible à côté, pour juger sur pièce.', 'The prepared message stays visible alongside, so Léa judges on the evidence.')}
                 </Region>
               </div>
@@ -611,7 +657,7 @@ export default function Page() {
               }
               wide={
                 // the sentence above and the notification that says it, side by side: the lock screen at its real size
-                <figure className="lg:ml-auto lg:max-w-[390px]">
+                <figure data-hang className="lg:ml-auto lg:max-w-[390px]">
                   {/* the interface stays in French, like every screen of the prototype */}
                   <LockScreen
                     label={t('L’écran verrouillé : la notification de Proxy', 'The lock screen: Proxy’s notification')}
@@ -713,7 +759,7 @@ export default function Page() {
               <Bleed>
                 <Sentence
                   strip={
-                    <div className="md:col-span-8 md:col-start-4" style={{ filter: 'drop-shadow(0 18px 26px rgba(0,0,0,.26))' }}>
+                    <div className="md:col-span-8 md:col-start-4">
                       <Region id="arret" rect={R.pauseMail} max={1} label={t('Détail : le courriel et la consigne cachée', 'Detail: the email and the hidden instruction')} />
                     </div>
                   }
@@ -737,7 +783,7 @@ export default function Page() {
                     { k: 'A', rect: R.pauseMail },
                     { k: 'B', rect: R.pauseChecks },
                   ]}
-                  className="col-span-4 col-start-6 mt-[3vh]"
+                  className="col-span-3 col-start-7 mt-[3vh]"
                 />
                 <Region id="arret" rect={R.pauseChecks} k="B" max={1} label={t('Détail : ce que Proxy a vérifié', 'Detail: what Proxy checked')} className="col-span-8">
                   {t('Chaque vérification est montrée, y compris celle qui est conforme. Une fausse alerte se lève en un clic.', 'Every check is shown, including the one that passed. A false alert is cleared in one click.')}
@@ -826,9 +872,9 @@ export default function Page() {
                     { k: 'B', rect: R.weekOffer },
                     { k: 'C', rect: R.weekKept },
                   ]}
-                  className="col-span-6"
+                  className="col-span-5"
                 />
-                <div className="col-span-3">
+                <div className="col-span-3 col-start-7">
                   <Region id="bilan" rect={R.weekOffer} k="B" min={0.8} max={1} label={t('Détail : ce que Proxy propose', 'Detail: what Proxy suggests')}>
                     {t('Une seule proposition, appuyée sur douze réservations validées sans modification.', 'A single suggestion, backed by twelve bookings approved unchanged.')}
                   </Region>
@@ -842,20 +888,15 @@ export default function Page() {
           </div>
         </div>
 
-        {/* 05 — THE SYSTEM. Back in the product's room: the specimen is one sheet, hung on the pale wall that carried the three screens,
-            with air on every side. Like the screen there, it carries its label above it */}
-        <section className="-mx-2 mt-24 px-2 py-12 md:-mx-3 md:mt-[22vh] md:px-[8.5vw] md:py-[11vh]" style={{ background: WALL }}>
-          <div className="mx-auto max-w-[1048px]">
-            <div className={`${FT} md:flex md:items-baseline md:justify-between md:gap-8`} data-chapter={t('05 → Le design system', '05 → The design system')}>
-              {/* one line, whatever the dots do while the label composes */}
-              <h3 className="shrink-0 whitespace-nowrap text-black/60">
-                <DotText text={t('05 → Le design system', '05 → The design system')} play="view" />
-              </h3>
-              <p className="mt-3 font-medium md:mt-0">{t('Blanc, une encre, des gris froids, aucun arrondi, et l’orange réservé à l’irréversible.', 'White, one ink, cool greys, no rounded corners, and orange kept for the irreversible.')}</p>
-            </div>
-            <div className="mt-6 md:mt-5">
+        {/* 05 — THE SYSTEM. First as a picture: six rules, each shown on the real interface, from very close.
+            Then the specimen sheet, for whoever wants to check */}
+        <section className={`${GRID} gap-y-8 pt-24 md:gap-y-10 md:pt-[22vh]`}>
+          <Note label={t('05 → Le design system', '05 → The design system')} lede={t('Blanc, une encre, des gris froids, aucun arrondi, et l’orange réservé à l’irréversible.', 'White, one ink, cool greys, no rounded corners, and orange kept for the irreversible.')} />
+          <div className="md:col-span-9 md:col-start-4">
+            <SystemCloseUp />
+            <Why label={t('La planche du système : couleurs, typographie, composants', 'The system sheet: colours, type, components')} className={`${FT} mt-8 md:mt-10`} inner="px-px pb-px pt-10 md:pt-[10vh]">
               <ProxySystem hung />
-            </div>
+            </Why>
           </div>
         </section>
 

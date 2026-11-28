@@ -158,7 +158,7 @@ export function Rail({ moments, labels }: { moments: Moment[]; labels: Record<Mo
   if (!wide) return null;
   const stop = cur.state === 'stop';
   return (
-    <div className={`sticky top-[19vh] transition-[opacity,transform] duration-300 ease-out motion-reduce:transition-none ${FT}`} style={{ opacity: away ? 0 : 1, transform: away ? 'translateY(-8px)' : 'none', pointerEvents: away ? 'none' : undefined, visibility: away ? 'hidden' : 'visible', transitionProperty: 'opacity, transform, visibility' }}>
+    <div className={`px-rail sticky top-[19vh] motion-reduce:transition-none ${FT}`} style={{ opacity: away ? 0 : 1, transform: away ? 'translateY(-8px)' : 'none', pointerEvents: away ? 'none' : undefined, visibility: away ? 'hidden' : 'visible', transitionProperty: 'opacity, transform, visibility' }}>
       <div className="h-[92px]">{cur.state === 'work' ? <LivePresence state="work" size={11} /> : <Presence k={cur.state} size={11} />}</div>
       <p className="mt-6 tabular-nums text-black/60">{cur.day}</p>
       <p className="mt-1 text-[34px] font-medium tabular-nums leading-none tracking-[-0.03em]" style={{ color: stop ? WARN : INK }}>

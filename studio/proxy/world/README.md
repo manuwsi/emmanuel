@@ -46,6 +46,8 @@ python3 export.py
 
 Pour une sortie plus grande, changer la largeur (1400, 2100) : tout le reste suit. `--blend` enregistre aussi la scène en `.blend`.
 
-Le texte du courriel de la macro est celui du prototype, mot pour mot. `fenetre.jpg` est une image générée (le prompt est dans le document de direction artistique), désaturée et grainée par `export.py`.
+Le texte du courriel de la macro est celui du prototype, mot pour mot.
+
+`fenetre.jpg`, `piano.jpg` et `fil.jpg` sont des images générées (1536 × 864, une génération chacune ; les prompts sont dans le document de direction artistique). `export.py` les fait entrer dans la série : même neutre froid, noirs arrêtés à l'encre, même grain. Sur `fil.jpg`, le fil est ramené à l'orange du produit (#C9461F). Les fichiers source sont à poser dans `gen/` (`train-1.png`, `piano-1.jpg`, `fil-1.jpg`). `python3 export.py buee` développe aussi la vitre embuée, gardée en réserve et absente de la page.
 
 Les rendus `.exr` et les textures ne sont pas versionnés.

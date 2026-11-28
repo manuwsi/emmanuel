@@ -2,13 +2,14 @@
 
 import { ReactNode, useEffect, useRef, useState } from 'react';
 import Image from 'next/image';
+import DotIn from '@/components/dot/DotIn';
 import { useT } from '@/components/i18n';
 import { FT } from '@/components/project/ProjectPage';
 import { Proto, Rect } from './Proto';
 import { ScreenId } from './screens';
 import { useSeen } from './Figures';
 import { HAIR, T, WARN } from './marks';
-import { Cartel, SHEET, WALL } from './Hang';
+import { Cartel, EDGE } from './Hang';
 import { Onde, Shown } from './Onde';
 import { WORK } from './ondeShader';
 
@@ -16,8 +17,8 @@ export type { Shown };
 
 /**
  * The world around the product. Proxy is software: it never has a body here, and the product always comes first,
- * as the real screens. Around them, concept images of several kinds (water computed live, 3D renders, one staged
- * photograph), always named as such: none shows a real use or an extra feature.
+ * as the real screens. Around them, concept images of several kinds (water computed live, 3D renders, generated
+ * photographs), always named as such: none shows a real use or an extra feature.
  */
 
 const DIR = '/proxy/world';
@@ -30,6 +31,18 @@ export function Concept({ how, children, className = '', light = false }: { how:
       <span className={light ? 'text-white' : 'text-[#0a0a0a]'}>{t('Image de concept', 'Concept image')}</span> · {how}
       {children && <>. {children}</>}
     </p>
+  );
+}
+
+/**
+ * A concept photograph, hung as a print: whole, never cropped, at a size its pixels can carry.
+ * Like every picture of the folio it arrives printed in dots; `tone` is the paper it is printed on while it loads.
+ */
+export function Print({ src, alt, sizes, tone = '#17181a', className = '' }: { src: string; alt: string; sizes: string; tone?: string; className?: string }) {
+  return (
+    <DotIn className={`px-photo ${className}`}>
+      <Image src={`${DIR}/${src}.jpg`} alt={alt} width={2100} height={1181} quality={88} sizes={sizes} className="block h-auto w-full" style={{ background: tone }} />
+    </DotIn>
   );
 }
 
@@ -56,8 +69,8 @@ function States({ st, set, labels, className = '' }: { st: Shown; set: (s: Shown
 }
 
 /**
- * The presence, hung in two rooms.
- * On the pale wall, the product at three distances at once: the screen in use, the three states as a contact strip
+ * The presence, hung twice on the same white wall.
+ * First the product at three distances at once: the screen in use, the three states as a contact strip
  * (the strip is the switch), and below them the presence and its sentence at their real size.
  * Then, on white, a picture of the same thing with no object in it: a lake seen from afar and, next to it, its rings
  * from very close. One state drives everything, and one clock: a point lights in the interface, a drop falls.
@@ -121,15 +134,16 @@ export function PresenceStage({
     return () => ro.disconnect();
   }, []);
   const pct = Math.round(k * 100);
-  const fade = (s: Shown) => `absolute inset-0 transition-opacity duration-300 ${s === st ? '' : 'pointer-events-none opacity-0'}`;
+  // one state gives way to the next without a cut
+  const fade = (s: Shown) => `px-swap absolute inset-0 ${s === st ? '' : 'pointer-events-none opacity-0'}`;
 
   return (
     <div ref={root}>
-      <section data-world="stage" className="px-moment relative" style={{ background: WALL }} aria-label={t('Les trois états de Proxy, sur trois écrans du produit', 'Proxy’s three states, on three screens of the product')}>
-        <div className="mx-auto max-w-[1640px] px-2 pb-8 pt-7 md:px-[8.5vw] md:pb-[11vh] md:pt-[10vh]">
-          {/* the screen in use, and the three states as a contact strip */}
-          <div className="grid grid-cols-[minmax(0,1fr)_24vw] items-start gap-x-[5vw] md:grid-cols-[minmax(0,1fr)_clamp(150px,15.5vw,248px)] md:gap-x-[4.4vw]">
-            <div className="min-w-0 md:w-[min(100%,calc(64svh*1.6))]">
+      <section data-world="stage" className="px-moment relative" aria-label={t('Les trois états de Proxy, sur trois écrans du produit', 'Proxy’s three states, on three screens of the product')}>
+        <div className="px-2 pb-8 pt-7 md:px-3 md:pb-[9vh] md:pt-[3vh]">
+          {/* the screen in use, and the three states as a contact strip: on the page's own columns, like everything else */}
+          <div data-hang className="grid grid-cols-[minmax(0,1fr)_24vw] items-start gap-x-[5vw] md:grid-cols-12 md:gap-x-3">
+            <div className="min-w-0 md:col-span-7 md:col-start-4 md:w-[min(100%,calc(64svh*1.6))]">
               <div className={`${FT} flex items-baseline justify-between gap-3 text-black/60`}>
                 <span>
                   <span className="text-[#0a0a0a]">{t('Dans le produit', 'In the product')}</span> · {screens[st].name}
@@ -139,7 +153,7 @@ export function PresenceStage({
                   {pct > 0 && (pct >= 99 ? t(', à sa taille', ', at full size') : t(`, à ${pct} % de sa taille`, `, at ${pct}% of its size`))}
                 </span>
               </div>
-              <div ref={big} className="relative mt-3 aspect-[390/844] bg-white md:aspect-[1440/900]" style={{ boxShadow: SHEET }}>
+              <div ref={big} className="relative mt-3 aspect-[390/844] bg-white md:aspect-[1440/900]" style={{ boxShadow: EDGE }}>
                 {ORDER.map((s) => (
                   <div key={s} data-live={s} className={fade(s)} aria-hidden={s !== st}>
                     <div className="hidden md:block">
@@ -153,7 +167,7 @@ export function PresenceStage({
               </div>
             </div>
             {/* the strip: three screens seen from afar. Choosing one is choosing the state */}
-            <div role="group" aria-label={t('L’état de Proxy', 'Proxy’s state')} className="flex flex-col gap-4 md:gap-5">
+            <div role="group" aria-label={t('L’état de Proxy', 'Proxy’s state')} className="flex flex-col gap-4 md:col-span-2 md:col-start-11 md:gap-5">
               {/* the invitation sits where the hand goes: on the same line as the screen's own label */}
               <p className={`${FT} -mb-1 whitespace-nowrap text-black/60 md:-mb-2`}>
                 <span className="text-[#0a0a0a]">{t('À vous', 'Your turn')}</span>
@@ -163,7 +177,7 @@ export function PresenceStage({
                 const on = s === st;
                 return (
                   <button key={s} type="button" aria-pressed={on} onClick={() => setSt(s)} className="group block text-left">
-                    <div data-live={s} className={`bg-white transition-opacity duration-300 ${on ? '' : 'opacity-60 group-hover:opacity-100'}`} style={{ boxShadow: on ? '0 0 0 1px #121212' : '0 0 0 1px rgba(18,18,18,.08)' }}>
+                    <div data-live={s} className={`px-quiet bg-white ${on ? '' : 'opacity-60 group-hover:opacity-100'}`} style={{ boxShadow: on ? '0 0 0 1px #121212' : '0 0 0 1px #dcdfe2' }}>
                       <div className="hidden md:block">
                         <Proto id={screens[s].id} label="" className="w-full bg-white" />
                       </div>
@@ -181,11 +195,11 @@ export function PresenceStage({
             </div>
           </div>
 
-          {/* the close-up: the presence and its sentence at their real size, set off to the right */}
+          {/* the close-up: the presence and its sentence at their real size, on the same left edge as the screen above */}
           <div className="mt-8 grid grid-cols-1 items-end gap-x-3 gap-y-6 md:mt-[9vh] md:grid-cols-12">
-            <p className={`${FT} max-w-[320px] text-black/60 md:col-span-3`}>{note}</p>
-            <figure className="hidden md:col-span-9 md:block md:w-full md:max-w-[960px] md:justify-self-end">
-              <div className="relative bg-white" style={{ aspectRatio: '960 / 196', boxShadow: SHEET }}>
+            <p className={`${FT} max-w-[320px] text-black/60 md:col-span-3 md:pr-7`}>{note}</p>
+            <figure data-hang className="hidden md:col-span-9 md:block md:w-full md:max-w-[960px]">
+              <div className="relative bg-white" style={{ aspectRatio: '960 / 196', boxShadow: EDGE }}>
                 {ORDER.map((s) => (
                   <div key={s} data-live={s} className={fade(s)} aria-hidden={s !== st}>
                     <Proto id={screens[s].id} region={screens[s].rect} label={`${screens[s].label} ${t('(détail)', '(detail)')}`} className="w-full bg-white" />
@@ -297,7 +311,7 @@ export function WindowSeat({ id, rect, label, children }: { id: ScreenId; rect: 
   return (
     <figure data-world="seat" className="grid grid-cols-1 items-end gap-x-3 gap-y-3 lg:grid-cols-9">
       {/* whole on a wide screen; on a phone it keeps its height and loses a little on each side */}
-      <div className="relative aspect-[4/3] bg-[#17181a] md:aspect-[2100/1181] lg:col-span-6">
+      <DotIn className="px-photo relative aspect-[4/3] bg-[#17181a] md:aspect-[2100/1181] lg:col-span-6">
         <Image
           src={`${DIR}/fenetre.jpg`}
           alt={t('Un siège vide côté fenêtre, dans un train, au petit matin. Dehors, une plaine d’hiver filée par la vitesse.', 'An empty window seat on a train, early in the morning. Outside, a winter plain blurred by speed.')}
@@ -306,14 +320,14 @@ export function WindowSeat({ id, rect, label, children }: { id: ScreenId; rect: 
           sizes="(min-width: 768px) 50vw, 134vw"
           className="object-cover"
         />
-      </div>
-      <div className="lg:col-span-3">
+      </DotIn>
+      <div data-hang className="lg:col-span-3">
         {/* the real line of the weekly review, never larger than its own pixels */}
         <div className="bg-white" style={{ maxWidth: rect[2], boxShadow: `0 0 0 1px ${HAIR}` }}>
           <Proto id={id} region={rect} label={label} className="w-full bg-white" />
         </div>
         <figcaption className="mt-2">
-          <Concept how={t('mise en scène', 'staged picture')}>{children}</Concept>
+          <Concept how={t('image générée', 'generated image')}>{children}</Concept>
         </figcaption>
       </div>
     </figure>

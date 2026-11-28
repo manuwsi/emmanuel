@@ -178,7 +178,7 @@ export function Onde({ state, tick, alt, onLive }: { state: Shown; tick: number;
       let cuts = 0;
       const frame = (t: number) => {
         raf = requestAnimationFrame(frame);
-        const dt = Math.min((t - last) / 1000, 0.25);
+        const dt = Math.min(Math.max((t - last) / 1000, 0), 0.25);
         last = t;
         T += dt;
         lamp += (lampTo - lamp) * (1 - Math.exp(-dt / 0.5));
